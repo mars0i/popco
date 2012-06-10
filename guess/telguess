@@ -1,0 +1,2 @@
+#!/bin/sh
+popguess "$@" ~/mi/guess/telnet2222.py

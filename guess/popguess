@@ -1,0 +1,11 @@
+#!/bin/sh
+guess "$@" ~/mi/guess/popco.py ~/mi/guess/gem.py
+
+# ~/mi/guess/popco.py: 
+#	add various functionality useful for POPCO networks
+# ~/mi/guess/gem.py: 
+#	applies gemLayout plus binPack
+# ~/mi/guess/physics.py: 
+#	applies physicsLayout plus binPack
+# Note that gemLayout and physicsLayout have similar effects,
+# but gemLayout is a lot quicker.
