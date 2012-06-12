@@ -265,6 +265,7 @@
 (defvar *do-report-analogy-nets-to-guess* t)
 (defvar *netlogo-status-flag* "status:")
 (defvar *netlogo-status-message* nil)
+(defvar *utterance-threshold* .2)
 (defvar *sleep-delay* nil) ; if non-nil, gives number of seconds to pause between pop-ticks
 (defvar *max-pop-ticks* 50) ; max number of pop-tick iterations; 0 for infinite
 (defvar *pop-tick* 0)

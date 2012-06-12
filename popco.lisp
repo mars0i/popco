@@ -254,6 +254,13 @@
     (mapcar #'choose-utterance (car conversers-and-pop))
     (cdr conversers-and-pop)))
 
+
+;;(defun make-list (old-list)
+;  (if (passes-test (car old-list))
+;    (cons (do-something-to (car old-list))
+;          (make-list (cdr old-list)))
+;    (make-list (cdr old-list))))
+
 (defun choose-utterance (conversepair)
   (let ((speaker (speaker-of-cpair conversepair)))
     (cons
@@ -276,8 +283,15 @@
   (let* ((converse-strucs (get speaker 'converse-strucs))
          (thoughts (if converse-strucs
                      (apply #'append (mapcar #'propns-from-struc converse-strucs))
-                     (get speaker 'all-propositions))))
-    (elt thoughts (random (length thoughts)))))
+                     (get speaker 'all-propositions)))
+         (intense-thoughts (remove-if #'activn-exceeds-threshold thoughts)))
+    (if intense-thoughts
+      (elt intense-thoughts (random (length intense-thoughts)))
+      nil)))
+
+(defun activn-exceeds-threshold (propn)
+  (< (abs (get propn 'activation))
+     *utterance-threshold*))
 
 ;;-----------------------------------------------------
 ;; TRANSMIT-UTTERANCES, TRANSMIT-ENVIRONMENT
