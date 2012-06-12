@@ -120,7 +120,7 @@
 ; NOTE: Since this is designed for setting proposition-inference network link weights
 ; in POPCO, we pass alternative max link weights to associate-ana. -MA 1/2012
 (defun update-assoc (prop1 prop2 map-unit)
-  (if (sym-linked? prop1 prop2)
+  (if (symlinked? prop1 prop2)
     (set-assoc-weight-from-activn prop1 prop2 map-unit 
                                   *propn-excit-weight* *propn-inhib-weight*)
     (associate-ana prop1 prop2 map-unit 

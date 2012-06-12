@@ -247,7 +247,7 @@
 
 (defvar *trust* .05 "Degree to which utterances are like observations for listeners.")
 
-(defconstant +acme-max-weight+ .5) ; Used in make-sym-link to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
+(defconstant +acme-max-weight+ .5) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
 
 (defvar *the-person* 'the-person) ; value normally swapped among members of population. Setting to 'the-person also makes it work with traditional COHERE.
 (defvar *the-population* 'the-population)

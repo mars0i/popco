@@ -412,9 +412,12 @@
 
 ;; To avoid pushing multiple copies of the same constraint,
 ;; test for oldness outside of this function, e.g. using weight-of-link-between = 0.
-;; This allows slightly better efficient in make-sym-link. Maybe not worth it ....
+;; This allows slightly better efficient in make-symlink. Maybe not worth it ....
 (defun mark-constraint-newly-added (unit1 unit2 weight person)
-    (push `(,unit1 ,unit2 . ,weight) (get person 'newly-added-constraints)))
+  ;(unless (or (eq unit1 'salient) (eq unit2 'salient))
+  (format t "mark-constraint-newly-added: ~S ~S ~S ~S~%" unit1 unit2 weight person) ; DEBUG
+  ;)
+  (push `(,unit1 ,unit2 . ,weight) (get person 'newly-added-constraints)))
 
 (defun mark-contraint-newly-removed (unit1 unit2 person)
     (push `(,unit1 ,unit2) (get person 'newly-removed-constraints))) ; don't need weight
@@ -613,9 +616,9 @@
                         (if *use-arcs-semantics?*
                           (sem-sim-arcs conc1 conc2)    ; s/b personal-conc? 
                           (sem-similarity conc1 conc2)))
-                  ;(format t "sem-sim? for ~S and ~S is: ~S" conc1 conc2 sem-sim?) (if (/= sem-sim? 0) (format t " ... making sym-link~%") (format t "~%")) ; DEBUG
+                  ;(format t "sem-sim? for ~S and ~S is: ~S" conc1 conc2 sem-sim?) (if (/= sem-sim? 0) (format t " ... making symlink~%") (format t "~%")) ; DEBUG
                   (if (/= sem-sim? 0)                                   ; if same preds, or marked as similar,
-                    (make-sym-link 'special new-conc-unit sem-sim?))  ; then link the pred map node to special
+                    (make-symlink 'special new-conc-unit sem-sim?))  ; then link the pred map node to special
                   ; record hypotheses about a concept:
                   (record-hypothesis personal-conc1 new-conc-unit)
                   (record-hypothesis personal-conc2 new-conc-unit))); end cond 2
@@ -634,7 +637,7 @@
                   (record-hypothesis personal-propn2 new-propn-unit)
                   (setf result (cons new-propn-unit result))))  ; This is never used? -MA 6/2011
            ; link proposition unit with concept unit:
-           (make-sym-link new-propn-unit new-conc-unit *excit-weight*)
+           (make-symlink new-propn-unit new-conc-unit *excit-weight*)
 
            ; if msg2 from target contains a query, treat specially:
            (cond ( (and *look-for-queries?* ; cond 3
@@ -649,7 +652,7 @@
                  (t (setf object-units (make-obj-units (get-args msg1) ; Vanilla get-args
                                                          (get-args msg2) ; is correct here.
                                                          *init-activ*))
-                    (make-excit-links new-propn-unit  ; make-excit-links just iterates make-sym-link
+                    (make-excit-links new-propn-unit  ; make-excit-links just iterates make-symlink
                                       object-units
                                       *excit-weight*)
                     (if *link-concepts-objects?*
@@ -789,7 +792,7 @@
               (my-print '"result args " result-args1 result-args2)))
        ; make normal links:
        
-       (make-sym-link propn-unit
+       (make-symlink propn-unit
                       conc-unit
                       *excit-weight*)
        (make-excit-links propn-unit
@@ -1083,7 +1086,7 @@
       ((null args1)
        (setf units-made (remove-duplicates units-made))
        ;(setf *object-units* (union units-made *object-units*))  ; commented out - having no effect in POPCO -MA 4/2012
-       (if *link-objects?* (make-all-excit-links units-made weight)) ; make-all-excit-links merely calls make-sym-link on all poss pairs from units-made
+       (if *link-objects?* (make-all-excit-links units-made weight)) ; make-all-excit-links merely calls make-symlink on all poss pairs from units-made
        units-made)))
 
 ; *****************************
@@ -1131,7 +1134,7 @@
 ; *************************
 ; INHIBIT-MULTIPLE-MAPPINGS sets up inhibitory links among competing
 ; hypotheses about a particular object or concept.
-; Will not clobber excitatory links: see make-sym-link.
+; Will not clobber excitatory links: see make-symlink.
 ; For pragmatics sake, it treats queries differently, forming
 ; excitatory rather than inhibitory links.
 
@@ -1232,7 +1235,7 @@
     ; repeat:
     (let ((personal-unit (generic-to-personal-sym (car units))))
       (unless *silent-run?* (my-print personal-unit '" is a presumed mapping."))
-      (make-sym-link 'pragmatic personal-unit *prag-weight*))))
+      (make-symlink 'pragmatic personal-unit *prag-weight*))))
 
 (defun desired (lst) (presumed lst))
 

@@ -28,7 +28,7 @@
 (defun observed (person feature &optional (degree 1))
   (note-unit feature)
   (addfeature person feature)
-  (make-sym-link 'special feature (* degree *excit-weight*))
+  (make-symlink 'special feature (* degree *excit-weight*))
   (print-si person " is observed as: " feature " with degree " degree))
 
 ; ADDFEATURE lists the feature on the person atom.
@@ -57,7 +57,7 @@
                   &optional (degree 1) (activ1 *init-activ*) (activ2 *init-activ*)
                             (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
   (print-si feature1 " is associated with " feature2 " to degree " degree)
-  (make-sym-link feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight))
+  (make-symlink feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight))
   (note-unit feature1 activ1)
   (note-unit feature2 activ2))
 
@@ -75,7 +75,7 @@
 
 ; SET-ASSOC-WEIGHT: Set the weight of an existing association. -MA 11/2011
 (defun set-assoc-weight (feature1 feature2 degree &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
-  (set-sym-link-weight feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight)))
+  (set-symlink-weight feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight)))
 
 
 ; IMP-RUN runs an experimental condition. The person should be the same

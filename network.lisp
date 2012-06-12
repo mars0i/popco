@@ -24,7 +24,7 @@
 
 ; WEIGHT-OF-LINK-BETWEEN finds the value of a link between two units.
 ; Changed from function to macro 4/20/2012 -MA
-; Note doesn't know the difference between sym-links and one-way links.
+; Note doesn't know the difference between symlinks and one-way links.
 (defmacro weight-of-link-between (unit1 unit2)
   `(or (cdr (assoc ,unit2 (links-from ,unit1))) 0)) ; i.e. if unit2 is listed in unit1's list of links, return the link weight, otherwise 0
 
@@ -95,40 +95,40 @@
 ;  (setf (activation unit) *init-activ*)
 ;  (pushnew unit (get *the-person* 'all-units)))
 
-; MAKE-SYM-LINKS creates symmetric links between all of the members of a set
+; MAKE-SYMLINKS creates symmetric links between all of the members of a set
 ; of units.
 ; *THE-PERSON* MUST BE SET CORRECTLY: See comment on make-link for explanation.
-(defun make-sym-links (list-of-units weight)
+(defun make-symlinks (list-of-units weight)
   (do ((units list-of-units (cdr units)))
       ((null units) nil)
     (dolist (unit (cdr units))
-      (make-sym-link (car units) unit weight))))
+      (make-symlink (car units) unit weight))))
 
-; MAKE-SYM-LINK sets up a symmetric link between units.
+; MAKE-SYMLINK sets up a symmetric link between units.
 ; Important to make no links from unit to itself, and don't clobber
 ; excitatory links with inhibitory ones.  Also won't make an acme map
 ; unit unless it doesn't exist.
 ; Excitatory links sum, but inhibitory don't.
-; This slows down creation of sym-links, but only has to be done once.
+; This slows down creation of symlinks, but only has to be done once.
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person in make-link.
 ; However, DOES NOT CONVERT GENERIC/PERSONAL ETC.: Uses whatever is passed in as the unit name.
 ; 4/20/2012 split the old OR into two cond tests.
-(defun make-sym-link (unit1 unit2 weight)
+(defun make-symlink (unit1 unit2 weight)
   (if (not (eq unit1 unit2))                  ; if distinct nodes
     (let ((old-weight (weight-of-link-between unit1 unit2)))
       (cond ((= old-weight 0)             ; and either never-linked [MAYBE REPLACE WITH UNLINKED?]
-             (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
-             (raw-make-sym-link unit1 unit2 weight +acme-max-weight+)) ; then call make-link to create link, or update weight if existing excitatory link with unmarked units
+             (raw-make-symlink unit1 unit2 weight +acme-max-weight+)) ; then call make-link to create link, or update weight if existing excitatory link with unmarked units
             ((and (> old-weight 0)        ; or [excitatorily-linked
                   (do-sum-weights unit1)  ;    and neither node marked to avoid summing link weights
                   (do-sum-weights unit2)) ;    [popco avoids summing due to conversation.]
-             (raw-make-sym-link unit1 unit2 weight +acme-max-weight+)))))) ; then call make-link to create link, or update weight if existing excitatory link with unmarked units
+             (raw-make-symlink unit1 unit2 weight +acme-max-weight+)))))) ; then call make-link to create link, or update weight if existing excitatory link with unmarked units
 
-;; RAW-MAKE-SYM-LINK
-;; Added 4/20/2012, replaced separate make-link calls in make-sym-link with this. -MA
+;; RAW-MAKE-SYMLINK
+;; Added 4/20/2012, replaced separate make-link calls in make-symlink with this. -MA
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person.
-; And to record sym-links as new in person.
-(defun raw-make-sym-link (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
+; And to record symlinks as new in person.
+(defun raw-make-symlink (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
+  (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
   (make-link unit1 unit2 weight max-weight min-weight)
   (make-link unit2 unit1 weight max-weight min-weight))
 
@@ -363,16 +363,16 @@
 ;    (when link (setf (cdr link) weight))))
 
 ; Added by MA 12/11
-(defun show-sym-link (unit1 unit2)
+(defun show-symlink (unit1 unit2)
   (list (assoc unit2 (links-from unit1))
         (assoc unit1 (links-from unit2))))
 
-; SET-SYM-LINK-WEIGHT: Set weight of an existing sym-link. Added by MA 11/2011.
-(defun set-sym-link-weight (unit1 unit2 weight)
+; SET-SYMLINK-WEIGHT: Set weight of an existing symlink. Added by MA 11/2011.
+(defun set-symlink-weight (unit1 unit2 weight)
   (let ((unit1-link (assoc unit2 (links-from unit1)))
         (unit2-link (assoc unit1 (links-from unit2))))
     (if (not (and unit1-link unit2-link))
-      (error "set-sym-link-weight: Can't set sym-link weight to ~S. No two-way link between ~S and ~S."
+      (error "set-symlink-weight: Can't set symlink weight to ~S. No two-way link between ~S and ~S."
              weight unit1 unit2))
     (setf (cdr unit1-link) weight)
     (setf (cdr unit2-link) weight)))
@@ -380,17 +380,17 @@
 ; Convenience function to set sym link weight from the representation
 ; produced by list-constraints and sometimes stored in person 
 ; property all-constraints.  Added by MA 12/11
-(defun set-sym-link-weight-from-constraint (constraint)
-  (set-sym-link-weight (car constraint) (cadr constraint) (cddr constraint)))
+(defun set-symlink-weight-from-constraint (constraint)
+  (set-symlink-weight (car constraint) (cadr constraint) (cddr constraint)))
 ; tip - example:
-;(mapc #'set-sym-link-weight-from-constraint (mapcar #'maybe-personalize-constraint list-of-constraints))
+;(mapc #'set-symlink-weight-from-constraint (mapcar #'maybe-personalize-constraint list-of-constraints))
 
 ; Added by MA 11/11
-(defun sym-linked? (unit1 unit2)
+(defun symlinked? (unit1 unit2)
   (and (assoc unit2 (links-from unit1))
        (assoc unit1 (links-from unit2))))
 
-; Note unlinked? is not equivalent to not sym-linked? if assymetric links are in use.
+; Note unlinked? is not equivalent to not symlinked? if assymetric links are in use.
 (defun unlinked? (unit1 unit2)
   (not (or (assoc unit2 (links-from unit1))
            (assoc unit1 (links-from unit2)))))

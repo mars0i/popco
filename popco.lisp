@@ -314,14 +314,16 @@
 (defun trust-in (listener speaker) *trust*)
 
 ;; ARGS: - a conversation containing
-;;           - a proposition to be transmitted
+;;           - a speaker's proposition to be transmitted
 ;;           - the speaker
 ;;           - the listener
 ;; RETURNS: - an extended conversation, with t consed on 
 ;;            to indicate it's a new addition to the listener, 
 ;;            or nil consed on to indicate it's not
 (defun transmit-utterance (conversation)
-  ;(format t "transmitting utterance: ~S~%" conversation) ; DEBUG
+  (when (get (second conversation) 'group) 
+  (format t "transmitting utterance: ~S~%" conversation) ; DEBUG
+  )
   (let ((speaker (speaker-of-conv conversation)))
     (setf *the-person* speaker)
     (let* ((listener (listener-of-conv conversation))
@@ -356,10 +358,11 @@
          (is-new-thought (if (member personal-propn (get personal-struc 'propositions)) nil t))) ; the IF converts TRUE to T per se
     (setf (get listener 'settled?) nil) ; analogy net is unsettled by new propn, but propn net is unsettled by any utterance
     (when is-new-thought 
+      (format t "new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
       (add-to-struc personal-struc 'start (list (get generic-propn 'message))) ; this does nothing but set fields (also calls note-unit, but that's overrident in next line)
       (init-propn personal-propn *propn-init-activ*)
       (mark-propn-unit-newly-added personal-propn *the-person*)
-      (apply-semantic-iffs personal-propn *the-person*))
+      (invoke-semantic-iffs-for-propn personal-propn *the-person*))
     (update-salient-link personal-propn (utterance-influence generic-propn trust))
     is-new-thought))
 
@@ -371,18 +374,27 @@
      (sign-of (activation propn-from-speaker))))
 
 ; UPDATE-SALIENT-LINK
-; We need raw-make-sym-link for this purpose because we want to sum 
-; whether negative or positive; make-sym-link won't sum into negative links.
+; We need raw-make-symlink for this purpose because we want to sum 
+; whether negative or positive; make-symlink won't sum into negative links.
 (defun update-salient-link (propn weight)
   (when (unlinked? propn 'salient) ; if this link doesn't exist
     (mark-constraint-newly-added propn 'salient weight *the-person*)) ; record that we're making a new constraint, so popco can tell gui if desired
-  (raw-make-sym-link 'salient propn weight)) ; note this just calls make-link, which merely adds in weight if the link exists
+  (raw-make-symlink 'salient propn weight)) ; note this just calls make-link, which merely adds in weight if the link exists
 
-;; APPLY-SEMANTIC-IFFS
+;; INVOKE-SEMANTIC-IFFS
 ;; NOTE might need to add a max and min weight specification if these are summing with other iff sources such as analogical relationships.
-(defun apply-semantic-iffs (personal-propn person)
-  (mapc #'(lambda (sem-iff) (apply #'raw-make-sym-link sem-iff))
-        (find-semantic-iffs personal-propn (get person 'semantic-iffs))))  ; find-semantic-iffs is in popco-utils.lisp
+(defun invoke-semantic-iffs-for-propn (personal-propn person)
+  (format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
+  (mapc #'apply-raw-make-symlink-if-units
+        (find-semantic-iffs (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs is in popco-utils.lisp
+
+;(defun invoke-semantic-iffs-for-person (person)
+;  (mapc #'apply-raw-make-symlink-if-units (get person 'semantic-iffs)))
+;
+;(defun invoke-semantic-iffs-for-pop (population)
+;  (mapc #'invoke-semantic-iffs-for-person (get population 'members)))
+
+
 
 ;;-----------------------------------------------------
 ;; SETTLE-NETS
@@ -481,14 +493,14 @@
   (setf (get person 'newly-added-propn-units) nil)             ;  ditto
   (mapc #'mark-unit-old (get person 'newly-added-map-units))   ; undo what make-hyp-unit and make-obj-unit did
   (setf (get person 'newly-added-map-units) nil)               ;  ditto
-  (setf (get person 'newly-added-constraints) nil)             ; undo what make-sym-link and update-salient-link did
+  (setf (get person 'newly-added-constraints) nil)             ; undo what make-symlink and update-salient-link and maybe receive-utterance did
   (setf (get person 'newly-removed-constraints) nil))
 
 
 ;;-----------------------------------------------------
 ;; CREATE-NETS
 
-; mnemonic synonym (almost) for create-nets
+; mnemonic synonym for create-nets
 (defun init-pop (&optional (population *the-population*))
   (format t "~%Creating analogy networks for each person ....~%")
   (create-nets population))
@@ -508,9 +520,9 @@
   ;old version: (mapc #'perceived (mapcar #'generic-to-personal-sym (get person 'given-el))) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (mapc #'perceived (get person 'given-el)) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (update-analogy-net person) ; create and record the net from what's been stored in person, analog strucs, propns
-  (update-proposition-net person) ; initialize proposition net [won't reflect pragmatic code in next line, but needed so make-sym-links there have something to attach to]
-  (FORMAT T "~%NEED TO ADD INVOCATION OF SEMANTIC IFFS TO INIT-POP (WITHOUT CALLING TWICE--ONCE FOR EACH END (OR JUST DIVIDE BY 2?))~%")
-  (mapc #'eval (get person 'addl-input))) ; additional code, such as pragmatics directives, that needs to run after the main net is created
+  (update-proposition-net person) ; initialize proposition net [won't reflect code in next lines, but needed so make-symlinks there have something to attach to]
+  (mapc #'apply-raw-make-symlink-if-units (get person 'semantic-iffs))
+  (mapc #'eval (get person 'addl-input))) ; [PROBABLY BUGGY--SHOULDN'T IT RUN IN LATER TICKS, TOO?] additional code, such as pragmatics directives, that needs to run after the main net is created
 
 ;;-----------------------------------------------------
 
@@ -558,7 +570,7 @@
   ; want to sum weights in subsequent pop-ticks when we call constraint map
   ; on the same pairs of nodes again.  It's only when one of the nodes is new, 
   ; due to conversation, that weights should be summed during the initial
-  ;  network construction process involving that node.  [make-sym-link in
+  ;  network construction process involving that node.  [make-symlink in
   ; network.lisp tests for the dont-sum-weights flag on both map units
   ; and will leave the link alone if either it's set for either unit.]
   ; Therefore we set the dont-sum-weights flag *after* calling constraint-map,
@@ -658,46 +670,147 @@
                          weight 
                          person))
 
+; SEMANTIC-IFF
 ; This makes semantic-iff an abbreviation for generic-semantic-iff by setting its function-value to be the same function:
 (setf (symbol-function 'semantic-iff) #'generic-semantic-iff)
 
 ; PERSONAL-SEMANTIC-IFF
-; We give records/specifications of semantic-iff's the structure (propn1 propn2 weight)
-; so that we can just pass the entire list as is to apply.
+; semantic-iffs will have the structure (propn1 propn2 weight)
+; [so that we can just pass the entire list as is to apply].
 (defun personal-semantic-iff (personal-propn1 personal-propn2 weight &optional (person *the-person*))
   (pushnew (list personal-propn1 personal-propn2 weight) (get person 'semantic-iffs)))
 
 
 ;; OBSOLETE--use semantic-iff:
-;; MAKE-PERSONAL-SYM-LINK-IF-UNITS
+;; MAKE-PERSONAL-SYMLINK-IF-UNITS
 ;; SYMLINK-IF-UNITS
 ;; Convenience function, especially for use in specification of a population.
-;; Just calls make-sym-link-if-units after personalizing generic unit names.
+;; Just calls make-symlink-if-units after personalizing generic unit names.
 ;; Allows forcing a link between two nodes within a person, without
 ;; having to embed generic-to-personal-sym's in top-level population code.
 ;; *THE PERSON* MUST BE SET PROPERLY.
-(defun make-personal-sym-link-if-units (generic-unit1 generic-unit2 weight)
-  (make-sym-link-if-units (generic-to-personal-sym generic-unit1)
+(defun make-personal-symlink-if-units (generic-unit1 generic-unit2 weight)
+  (make-symlink-if-units (generic-to-personal-sym generic-unit1)
                           (generic-to-personal-sym generic-unit2)
                           weight))
 
 ;; OBSOLETE--use semantic-iff:
 ;; Abbreviation for preceding, which see.
 (defun symlink-if-units (generic-unit1 generic-unit2 weight)
-  (make-personal-sym-link-if-units generic-unit1 generic-unit2 weight))
+  (make-personal-symlink-if-units generic-unit1 generic-unit2 weight))
 
 ;; OBSOLETE?--use semantic-iff:
-;; MAKE-SYM-LINK-IF-UNITS
+;; MAKE-SYMLINK-IF-UNITS
 ;; Make symlink if the two units to be linked are suitable--if they
 ;; have activation values.  Silently returns nil if not.
 ;; Useful for specification of a population model,
 ;; to run the same function on everyone, but don't have it bomb if the
 ;; appropriate beliefs or other nodes don't exist.
-(defun make-sym-link-if-units (unit1 unit2 weight)
+(defun make-symlink-if-units (unit1 unit2 weight)
   (when (and (unit? unit1)
              (unit? unit2))
-    (make-sym-link unit1 unit2 weight))) ; from network.lisp
+    (make-symlink unit1 unit2 weight))) ; from network.lisp
 
+
+; RAW-MAKE-SYMLINK-IF-UNITS
+;; Make symlink if the two units to be linked are suitable--if they
+;; have activation values.  Silently returns nil if not.
+(defun raw-make-symlink-if-units (unit1 unit2 weight)
+  (when (and (unit? unit1)
+             (unit? unit2))
+    (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
+
+; APPLY-RAW-MAKE-SYMLINK-IF-UNITS
+; Abbreviation for (apply #'raw-make-symlink-if-units lis) where lis is a list of arguments.
+(defun apply-raw-make-symlink-if-units (unit1-unit2-weight-list)
+  (apply #'raw-make-symlink-if-units unit1-unit2-weight-list))
+
+
+
+;;-----------------------------------------------------
+;; BIRTHS-AND-DEATHS
+
+;; currently no-op
+
+; NOTE:
+; Currently the input property of a person functions as its genome
+; (also possibly given-el).
+; persons-like and n-persons in consensus.lisp copy this and
+; almost no other properties.  Except they don't copy--they just
+; reference.  i.e. the input properties of persons created with
+; persons-like are EQ their model's input.  So implementing
+; MUTATION WILL REQUIRE ACTUALLY COPYING THE INPUT PROPERTY
+; e.g. with COPY-TREE--otherwise mutating e.g. a new offspring
+; will affect all of its later cousins as well!
+
+(defun births-and-deaths (population) population)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Utility functions
+
+;; Convert a person-specific symbol name (e.g. for a proposition or predicate)
+;; into a corresponding generic, i.e. not person-specific symbol.
+;; Maybe this should be done with stored pointers instead.
+; *THE-PERSON* MUST BE SET PROPERLY unless optional argument is used
+(defun personal-to-generic-sym (sym &optional (person *the-person*))
+  (if (member sym *special-units*) ; these are special units which should not be converted
+    sym
+    (let ((sym-name (symbol-name sym)))
+      (if (not (search *personal-separator* sym-name))  ; note 0 is true
+        (error "PERSONAL-TO-GENERIC-SYM: Trying to convert a generic symbol to a generic symbol: ~s" sym))
+      (let ((person-tag (concatenate 'string (symbol-name person) *personal-separator*)))
+        (if (eql 0 (search person-tag sym-name)) ; if sym-name begins w/ person-tag [rets nil if not found]
+          (read-from-string (subseq sym-name (length person-tag))) ; get/make symbol without tag
+          (error "PERSONAL-TO-GENERIC-SYM: Personal symbol ~s doesn't belong to person ~s." 
+                 sym person))))))
+
+;; Convert a generic symbol name (e.g. for a proposition or predicate)
+;; into a corresponding persons-specific symbol.
+;; NOTE current version doesn't check for whether there's also a person name embedded
+;; in the symbol-name.
+;; Maybe this should be done with stored pointers instead.
+; *THE-PERSON* MUST BE SET PROPERLY unless optional argument is used
+(defun generic-to-personal-sym (sym &optional (person *the-person*))
+  (if (member sym *special-units*) ; these are special units which should not be converted
+    sym
+    (let ((sym-name (symbol-name sym)))
+      (if (search *personal-separator* sym-name)  ; note 0 is true
+        (error "GENERIC-TO-PERSONAL-SYM: Trying to convert a personal symbol to a personal symbol: ~s" sym))
+      (read-from-string 
+        (concatenate 'string (symbol-name person) 
+                     *personal-separator*
+                     sym-name)))))
+
+; PERSONAL-SYM-P and GENERIC-SYM-P
+; Unsophisticated tests for a symbol being a personalized symbol:
+; personal-sym? just searches for the *personal-separator*, returning 
+; a true valuei f so, nil otherwise.  Note simply returns the result
+; of SEARCH, which could represent true as 0, for example.
+; *THE-PERSON* MUST BE SET PROPERLY.
+(defun personal-sym? (sym) 
+  (search *personal-separator* (symbol-name sym)))
+
+(defun generic-sym? (sym) 
+  (not (personal-sym? sym)))
+
+;; set properties in a person that used to be in globals (in variables.lisp)
+(defun initialize-person-properties (person)
+  (setf *the-person* person)
+  (setf (get *the-person* 'all-constraints) nil)
+  (setf (get *the-person* 'number-units) nil) ;"association list of numbers and unit names"
+  (setf (get *the-person* 'total-units)  0); "length of (get *the-person* 'all-units)"
+  (setf (get *the-person* 'settled?) nil); "Network has settled."
+  (setf (get *the-person* 'all-structures) nil)
+  (setf (get *the-person* 'all-concepts) nil)
+  (setf (get *the-person* 'all-objects) nil)
+  (setf (get *the-person* 'all-preds) nil)
+  (setf (get *the-person* 'all-propositions) nil); "List of all propns."
+  (setf (get *the-person* 'all-units) nil); "List of all units."
+  (setf (get *the-person* 'asymptoted-units) nil); "Units that have reached asymptote."
+  (setf (get *the-person* 'total-links) 0); "Total number of links created."
+  (setf (get *the-person* 'total-times) 0); "Number of settle cycles that have been run."
+  (setf (get *the-person* 'all-valence-units) nil); "List of units that have valences."
+  (setf (get *the-person* 'evaluation-units) nil)) ; for HOTCO 2
 
 ;;-----------------------------------------------------
 ;; BIRTHS-AND-DEATHS

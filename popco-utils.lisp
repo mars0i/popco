@@ -216,8 +216,9 @@
       (eq unit (second semantic-iff))))
 
 ; FIND-SEMANTIC-IFFS
-(defun find-semantic-iffs (unit semantic-iffs)
-  (remove-if-not #'(lambda (sem-iff) (semantic-iff-has-end unit sem-iff)) 
+; order of arguments designed to allow later extension with searching also by optional second end unit
+(defun find-semantic-iffs (semantic-iffs unit1)
+  (remove-if-not #'(lambda (sem-iff) (semantic-iff-has-end unit1 sem-iff)) 
                  semantic-iffs))
 
 ; GET-OTHER-END

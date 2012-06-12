@@ -83,7 +83,7 @@
   (make-explan-unit prop1)
   (make-explan-unit prop2)
   (print-si prop1 '" contradicts " prop2 '".")
-  (make-sym-link prop1 prop2 *inhib-weight*)
+  (make-symlink prop1 prop2 *inhib-weight*)
   (setf (get prop1 'contradicts) (push prop2 (get prop1 'contradicts)))
   (setf (get prop2 'contradicts) (push prop1 (get prop2 'contradicts)))
   (push (list prop1 prop2) *contradictions*)
@@ -122,13 +122,13 @@
   (mapcar #'(lambda (unit-or-pair)
              (cond ((listp unit-or-pair)
                     (setf *all-data* (cons (car unit-or-pair) *all-data*))
-                    (make-sym-link 'special
+                    (make-symlink 'special
                                    (car unit-or-pair)
                                    (* *data-excit* (second unit-or-pair))
                                    )
                     )
                    ; else:
-                   (t (make-sym-link 'special unit-or-pair *data-excit*)
+                   (t (make-symlink 'special unit-or-pair *data-excit*)
                       (setf *all-data* (cons unit-or-pair *all-data*))
                       )
                    )
@@ -250,7 +250,7 @@
   (do ((units other-units (cdr units)))
       ((null units) (return 'done))
     ; repeat:
-    (make-sym-link unit (car units) weight)))
+    (make-symlink unit (car units) weight)))
 
 ; **********************************************************
 ; MAKE-INHIB-LINKS sets up inhibitory links among all pairs of
@@ -276,7 +276,7 @@
       ; exit:
     ( (null unts) (get *the-person* 'total-links))
     ; action:
-    (make-sym-link unit (car unts) weight)))
+    (make-symlink unit (car unts) weight)))
 
 
 
@@ -290,10 +290,10 @@
               (member (second data) (get (second hyps) 'explains))
               )
          ; then:
-         (make-sym-link (car hyps) (second hyps)
+         (make-symlink (car hyps) (second hyps)
                         (* *excit-weight* *analogy-impact*)
                         )
-         (make-sym-link (car data) (second data)
+         (make-symlink (car data) (second data)
                         (* *excit-weight* *analogy-impact*)
                         )
          (print-si '"Explanation of " (car data)
@@ -355,27 +355,27 @@
 ; START-CONTRA, STOP-CONTRA
 
 (defun start-explain ()
-  (setf *start-links* (sym-links))
+  (setf *start-links* (symlinks))
   )
 
 (defun stop-explain ()
   (print-si "Symmetric excitatory links created for explanations: "
-            (- (sym-links) *start-links*)
+            (- (symlinks) *start-links*)
             )
   )
 
 (defun start-contra ()
-  (setf *start-links* (sym-links))
+  (setf *start-links* (symlinks))
   )
 
 (defun stop-contra ()
   (print-si "Symmetric inhibitory links created for contradictions: "
-            (- (sym-links) *start-links*)
+            (- (symlinks) *start-links*)
             )
   )
 
-; SYM-LINKS
-(defun sym-links ()
+; SYMLINKS
+(defun symlinks ()
   (/ (get *the-person* 'total-links) 2)
   )
 
@@ -388,11 +388,11 @@
 ; MAKE-COMPETITION
 
 (defun make-competition ()
-  (setf *start-links* (sym-links))
+  (setf *start-links* (symlinks))
   (print-si "Looking for competing hypotheses ...")
   (competing (find-competitors))
   (print-si "Symmetric inhibitory links created for competition: "
-            (- (sym-links) *start-links*)
+            (- (symlinks) *start-links*)
             )
   )
 
@@ -543,7 +543,7 @@
 ; pieces of evidence. Links are weaker in proportion to the
 ; number of cohypotheses involved in the explanations that produce
 ; the competition. Links are stronger the more pieces of evidence
-; competed for. Note that unlike make-sym-link this allows
+; competed for. Note that unlike make-symlink this allows
 ; summation of inhibition. If two propositions are both
 ; contradictory and competitive, inhibition will be all the greater.
 ; This is a change of July 9, 1990. (put in Allegro ECHO 7/11/90)
