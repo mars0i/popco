@@ -335,9 +335,7 @@
 ;;            to indicate it's a new addition to the listener, 
 ;;            or nil consed on to indicate it's not
 (defun transmit-utterance (conversation)
-  (when (get (second conversation) 'group) 
-  (format t "transmitting utterance: ~S~%" conversation) ; DEBUG
-  )
+  ;(format t "transmitting utterance: ~S~%" conversation) ; DEBUG
   (let ((speaker (speaker-of-conv conversation)))
     (setf *the-person* speaker)
     (let* ((listener (listener-of-conv conversation))
@@ -372,7 +370,7 @@
          (is-new-thought (if (member personal-propn (get personal-struc 'propositions)) nil t))) ; the IF converts TRUE to T per se
     (setf (get listener 'settled?) nil) ; analogy net is unsettled by new propn, but propn net is unsettled by any utterance
     (when is-new-thought 
-      (format t "new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
+      ;(format t "new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
       (add-to-struc personal-struc 'start (list (get generic-propn 'message))) ; this does nothing but set fields (also calls note-unit, but that's overrident in next line)
       (init-propn personal-propn *propn-init-activ*)
       (mark-propn-unit-newly-added personal-propn *the-person*)
@@ -398,15 +396,9 @@
 ;; INVOKE-SEMANTIC-IFFS
 ;; NOTE might need to add a max and min weight specification if these are summing with other iff sources such as analogical relationships.
 (defun invoke-semantic-iffs-for-propn (personal-propn person)
-  (format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
+  ;(format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
   (mapc #'apply-raw-make-symlink-if-units
         (find-semantic-iffs (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs is in popco-utils.lisp
-
-;(defun invoke-semantic-iffs-for-person (person)
-;  (mapc #'apply-raw-make-symlink-if-units (get person 'semantic-iffs)))
-;
-;(defun invoke-semantic-iffs-for-pop (population)
-;  (mapc #'invoke-semantic-iffs-for-person (get population 'members)))
 
 
 
@@ -732,6 +724,7 @@
 (defun raw-make-symlink-if-units (unit1 unit2 weight)
   (when (and (unit? unit1)
              (unit? unit2))
+    (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
     (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
 
 ; APPLY-RAW-MAKE-SYMLINK-IF-UNITS

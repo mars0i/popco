@@ -155,7 +155,7 @@
 ;; It's bad form to mix &optional and &key params in the same defun, as here.... 
 ;; NOTE: Calls must include the optional args if *any* keyword args are given.
 (defun write-person-graphs (basename &optional (persons-or-pop *the-population*) 
-                                     &key (include-special-units t) (show-names nil) (recreate-constraints t) (include-graph-label-nodes t))
+                                     &key (include-special-units t) (show-names nil) (recreate-constraints t) (include-graph-label-nodes nil))
   (let ((persons (if (listp persons-or-pop)
                    persons-or-pop
                    (get persons-or-pop 'members))))

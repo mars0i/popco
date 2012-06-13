@@ -414,9 +414,7 @@
 ;; test for oldness outside of this function, e.g. using weight-of-link-between = 0.
 ;; This allows slightly better efficient in make-symlink. Maybe not worth it ....
 (defun mark-constraint-newly-added (unit1 unit2 weight person)
-  ;(unless (or (eq unit1 'salient) (eq unit2 'salient))
-  (format t "mark-constraint-newly-added: ~S ~S ~S ~S~%" unit1 unit2 weight person) ; DEBUG
-  ;)
+  ;(format t "mark-constraint-newly-added: ~S ~S ~S ~S~%" unit1 unit2 weight person) ; DEBUG
   (push `(,unit1 ,unit2 . ,weight) (get person 'newly-added-constraints)))
 
 (defun mark-contraint-newly-removed (unit1 unit2 person)

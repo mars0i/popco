@@ -128,7 +128,6 @@
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person.
 ; And to record symlinks as new in person.
 (defun raw-make-symlink (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
-  (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
   (make-link unit1 unit2 weight max-weight min-weight)
   (make-link unit2 unit1 weight max-weight min-weight))
 

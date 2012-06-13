@@ -163,7 +163,7 @@
     (semantic-iff 'oe-God-Creates-Naturally 'oe-God-Creates-Human-From-Within .5)
     (semantic-iff 'oe-God-Nurtures 'oe-God-Creates-Human-From-Within .1)
     (semantic-iff 'oe-Human-From-Within-God 'oe-God-Creates-Human-From-Within .5)
-    (semantic-iff 'oe-God-Creates-Human-From-Within 'os-God-Creates-Human -.5)
+    (semantic-iff 'oe-God-Creates-Human-From-Within 'os-God-Creates-Human-From-Object -.5)
    ))
 
     ;(similar 'close 'distant (* -1 *ident-weight*))                ; HAS NO EFFECT since both appear in only target analogs
