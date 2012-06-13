@@ -246,39 +246,39 @@
 ;; RETURNS: A similar list, but with an interpersonal proposition consed onto each pair of persons.
 ;;          This will be what the first person says to the second in each case.
 ;;          Pairs are random without replacement. 
-;;          If population size is odd, one person will sit out this round.
-;; NOTE: Currently tries to communicate from any analog in speaker.  Might want to restrict
-;; this using *communicate-all-analogs*, defined above--see comment there.
+;;          However, if the speaker has nothing suitable to say, the corresponding result
+;;          element will be missing--i.e. the result list will be shorter than the argument list.
+;;          [If population size is odd, one person will sit out this round.]
+;; TODO?: If speaker has nothing to say, then listener looses chance this round to participate in
+;;       conversation.  This is maybe undesirable.  e.g. if there are two such speakers, maybe their
+;;       listeners ought to get a chance to converse with each other.
 (defun choose-utterances (conversers-and-pop)
   (cons 
-    (mapcar #'choose-utterance (car conversers-and-pop))
+    (mapcar-when #'choose-utterance (car conversers-and-pop))
     (cdr conversers-and-pop)))
 
-
-;;(defun make-list (old-list)
-;  (if (passes-test (car old-list))
-;    (cons (do-something-to (car old-list))
-;          (make-list (cdr old-list)))
-;    (make-list (cdr old-list))))
-
+; CHOOSE-UTTERANCE
+; Conses the result of choose-thought onto the speaker/listener pair that's passed as the argument.
+; Or if choose-thought can't find any suitable proposition, and returns nil, choose-utterance also returns nil.
 (defun choose-utterance (conversepair)
-  (let ((speaker (speaker-of-cpair conversepair)))
-    (cons
-      (choose-thought speaker)
-      conversepair)))
+  (let* ((speaker (speaker-of-cpair conversepair))
+         (thought (choose-thought speaker)))
+    (if thought
+      (cons thought conversepair)
+      nil)))
 
 ; CHOOSE THOUGHT
 ; Helper function for choose-utterance.
 ; Currently randomly chooses a proposition from analog structures listed in
-; converse-strucs, or from all-propositions if converse-strucs is nil.
+; converse-strucs, or from all-propositions if converse-strucs is nil, after
+; filtering out any propositions that don't meet a test like exceeding a
+; threshold or having a weighted coin flip come up heads.  If no propositions
+; pass the test, nil is returned.
 ; [Note this appends the proposition lists from structures in converse structs before
 ; making the random choice, rather than randomly choosing a structure first, so
 ; that all propositions in the specified structures get an equal chance.  So if
 ; what you want is for all structures to be used, specify converse-strucs as nil;
 ; this will avoid the expense of the append.]
-; TODO Possibly add threshold, filtering out thoughts with activation near zero.
-; [Question: Does that mean that nothing is said, or that the person chooses
-; something else to say?  What if no proposition has a high enough activation?]
 (defun choose-thought (speaker)
   (let* ((converse-strucs (get speaker 'converse-strucs))
          (thoughts (if converse-strucs

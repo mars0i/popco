@@ -91,6 +91,23 @@
         (t (append (flatten-aux (car tree) acc) 
                    (flatten-aux (cdr tree) acc)))))
 
+; MAPCAR-WHEN
+; Like mapcar, but if the result of the function application to an
+; element is nil, that result--nil--is not included in the output.
+; It's skipped over, creating a result list that's shorter than the
+; second-argument list.
+; Unlike mapcar, doesn't handle multi-argument functions and 
+; multiple list arguments.
+; [note that passing #'identity as the first argument will compress
+; nils out of a list, like sbcl's built-in compress.]
+(defun mapcar-when (fn lis)
+  (if (null lis)
+    lis
+    (let ((result (funcall fn (car lis))))
+      (if result
+        (cons result (mapcar-when fn (cdr lis)))
+        (mapcar-when fn (cdr lis))))))
+
 ; Given a list, create a list of all pairs of elements... unordered,
 ; in that the same pair in two different orders are considered duplicates,
 ; but on the other hand, given two lists of same elements in same
