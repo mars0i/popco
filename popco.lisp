@@ -48,9 +48,9 @@
 (when *use-new-random-seed*
   (setf *random-state* (make-random-state t)))
 
-(defvar *random-state-file* "data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
+(defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
-(defvar *netlogo-output-name* "data/popcodata.txt") ; filename for file-based output to external UI program
+(defvar *netlogo-output-name* "../data/popcodata.txt") ; filename for file-based output to external UI program
 (defvar *netlogo-outstream*)                   ; stream for same
 
 ; SPECIAL is PT's all-purpose external-emphasis node, used to give extra activation
