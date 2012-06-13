@@ -1,0 +1,592 @@
+top tasks:
+
+. NEW BUG:
+        In response to adding links/constraints due to semantic-iffs due to
+        adding propns due to conversation, I put mark-constraint-newly-added
+        in raw-make-symlink.  But I'm also calling that somewhere in popco
+        when I link to salient.  So for those calls, I'm getting the mark
+        happening twice, and it appears in the newly added list twice
+        (with different order of nodes).  This is not right, and it results
+        in POPCO trying to add the link to GUESS twice, which GUESS doesn't like
+        at all.
+
+. Maybe I *need* drifty noise added so that "what everybody says"
+  isn't *so* overwhelming.  e.g. it would be nice to make the analogical
+  relationships weaker, but then they'd be overwhelmed by previous
+  history.  This also provides a way of "forgetting": If there's nothing
+  telling you you gotta believe this, then it eventually fluctuates
+  randomly.
+  OR: What will happen if I reduce the ratio between network settling
+  and utterances?  Suppose that I only allow one tick of settling
+  per pop-tick?  Or less--have network settling intermittent, or
+  allow more utterances per pop-tick?
+
+. Try this: Noting that the population tends to go to consensus on all
+  beliefs, across different runs, is there variation across runs in the
+  not-environmentally influenced beliefs e.g in the non-supported origin
+  domain?  There should be.  This would be good.
+  Note that if so, then if you did many runs, you could get
+  stabilization on many elements of a domain just be chance
+  occasionally.  I could do many runs and test for this.
+
+. DONE BUT TEST.  THEN REPLACE THE FILTER FUNCTION WITH A PROBABILISTIC VERSION.
+  NOTE: Currently utterance-influence in popco.lisp gives every positively
+  activated proposition a contributing activation of .5 if positive, -.5
+  if negative.  i.e.  degrees of confidence are erased.  This sortof
+  makes sense since (a) people don't usually convey a degree of
+  confidence very effectively, and (b) degrees of confidence in POPCO
+  are pretty sloppy.  
+  Assigned to Kristen (as first programming task/investigation) 6/4/2012:
+  NOTE that choose-thought does *no* thresholding at
+  present.  POSSIBLY FIX THAT.  This behavior is probably what's causing
+  odd belief patterns to become fixed, as shown in NetLogo.  It might
+  also be what causes the propn activation cycling near the end of the
+  UNCC model run.
+  [See todo04092012 "A proposal about conversation" for further discussion.]
+;; TODO?: If speaker has nothing to say, then listener looses chance this round to participate in
+;;       conversation.  This is maybe undesirable.  e.g. if there are two such speakers, maybe their
+;;       listeners ought to get a chance to converse with each other.
+
+. - HALF-FIXED?: NOW HAVE SEMANTIC-IFF IN POPCO.LISP; NEED TO ADD CODE TO USE FIELD 'SEMANTIC-IFFS.
+  - OK MAYBE FIXED BUT NEED TO TEST EFFECTS: ADDED UPDATE-SEMANTIC-IFF MAPC TO
+    UPDATE-PROPOSITION-NETWORK.  IS THIS GOING TO OVER-SUM?  WHAT DOES IT DO IN THE END?
+    DOES IT WORK AT ALL?
+  - SEEMS TO WORK AT ALL, BUT SEEMS TO BE SUMMING WEIGHTS UP TO THE +ACME-MAX-WEIGHT+ OF .5
+    ON THE POSITIVE SIDE, BUT MAYBE NOT SUMMING NEGATIVE LINKS.
+  - YES, THIS MAKES SENSE THAT IT DOES THAT, THOUGH IT SHOULDN'T DO THAT.  
+    BECAUSE I'M IMPLEMENTING THE SEMANTIC IFF
+    BY CALLING MAKE-SYM-LINK-IF-EXISTS, WHICH CALLS MAKE-SYM-LINK, WHICH (A) WON'T
+    SUM PAST THE +ACME-MAX-WEIGHT+, AND (B) WON'T SUM ON THE NEGATIVE SIDE.  ALTHOUGH
+    THE LATTER IS MY DESIRED BEHAVIOR, THE FORMER IS NOT, AND THE LATTER ISN'T REALLY
+    HAPPENING FOR THE RIGHT REASON.  SO I NEED TO DO SOMETHING ELSE. MAKE-SYM-LINK ISN'T
+    THE RIGHT CALL.  PROBABLY NEED TO HAVE A SPECIAL WRAPPER AROUND RAW-MAKE-SYM-LINK,
+    OR EVEN GO LOWER.
+    QUESTION: HOW DOES SIMILAR DO IT?
+    ANSWER: The effect is a link to SPECIAL, and it's only created when the map node
+    is initially created.  That's because the make-sym-link that does this is inside
+    the cond in make-hyp-net that tests whether the node is already in the person's 'all-units.
+    SO: I could just do the same thing, and only symlink-if-units the first time that both units
+    exist, i.e. when at least one is new.  I could do it with the new-propn flag (whatever it's called), 
+    or better yet when the propn nodes are created.  
+    THIS WILL WORK AS LONG AS I only use this method to make within-struc iffs.  Cross-struc links
+    can come from analogies, so if I make cross-struc links, they ought to be able to sum.  But still
+    I think I could nevertheless adopt the strategy of creating the extra symlink when the second
+    unit is created.  And it might be analogized away.  Although maybe that's undesirable for such
+    a link to be "forgotten".  Or maybe not.
+    ON THE OTHER HAND, MAKING SYMLINKS ONLY WHEN THE SECOND UNIT IS CREATED WOULD MAKE IT IMPOSSIBLE
+    TO ADD SUCH SEMANTIC LINKS LATER ON, AND THE LATTER SEEMS POTENTIALLY USEFUL.
+    MAYBE FOR NOW THOUGH IGNORE THAT.  I COULD ALWAYS JUST CALL SYMLINK-IF-UNITS DIRECTLY OR SOMETHING.
+    OK: THE FINAL STRATEGY:
+    	1. Implement the semantic-iff in receive-utterance.  Only do it when it's a new thought added
+	to the receiver analog struc, but check for the existence of the other end of the iff in all-propns,
+	not just those in the struc.  This allows cross-struc iffs.
+	2. Do it with raw-sym-link or something that calls it.  That way, if there's e.g. analogical link
+	already, it will sum, but there won't be any assymetry to the summing as if I used make-sym-link.
+	3. I need to specify a max and min in the call to raw-sym-link.
+	4. Any later interventions adding semantic iffs can be done by calling symlink-if-units or something
+	like that directly, and perhaps also adding a semantic iff to the list.  e.g. if you're not sure
+	whether the units exist yet, you can call both.
+    THIS HAS BEEN IMPLEMENTED IN RECEIVE-UTTERANCE AND INIT-POP BUT NOT TESTED.
+    SEEMS TO BE WORKING IN INIT-POP BUT NOT RECEIVE-UTTERANCE.  Seems no effect for conversation-introduced propns.
+    OR MAYBE IT'S JUST NOT UPDATING GUESS??
+
+  BUG when conversations introduce new predicates, at least:
+  Question: Shouldn't semantic relations be reinvoked later if the
+  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
+  to a map node.  But if the map node doesn't exist initially, these
+  special links won't get created; currently (4/2012) they are only
+  created by create-net by the line
+  	(mapc #'eval (get person 'input))
+  This also might have to be reinvoked:
+  	(mapc #'eval (get person 'addl-input))
+  Or maybe they should always exist in everyone?
+  this is at least an issue with specifying direct symlinks on units.
+  ANSWER:
+        - Extra symlinks to propn nodes due to SYMLINK-IF-UNITS don't get created.
+        However:
+        - SPECIAL links to map nodes due to SIMILAR do get created (!) [why?]
+                Where? 
+                It doesn't seem to be happening in transmit-utterance and its callees.
+                It happens later.  update-analogy-nets is in the toplevel loop, but
+		is also called in init-pop.  Update-analogy-nets
+		calls constraint-map, which calls make-constraint-net, which calls
+                make-units-for-fields, which indirectly calls make-hyp-unit repeatedly.
+                make-hyp-unit checks to see if there's a similarity relationship between
+                two predicates, and makes the symlink to special if so.  
+                It checks for similarity by calling sem-similarity, which checks for
+                eq'uality (actually it uses equal) OR similar? returning t.
+                similar? checks whether the predicate pair is listed in *similarities*.
+                THESE PAIRS ARE GENERIC [all predicates are], so 
+--->            THIS IS ACTUALLY A BUG because it means that all persons are sharing
+                predicate similarities, and overriding variants.  
+                *similiar* should be a field of the person rather than a global.
+                Or the similarities could be personalized.  But then everyone has to
+                through a long list of similarities.
+                This is OK at present because all of my persons *do* share similarities.
+		(Which if they're thought of as semantic, is how it should be, usually.)
+		THIS BUG WAS FIXED AROUND THE END OF MAY 2012.  Now every person has a 'similarities field.
+        SO: The similarity relations get applied to new map nodes because we just sortof
+        redo them all from scratch each time.
+        The difference between update-analogy-net and update-proposition-net is in
+        how the semantic stuff is implemented for predicates and propositions.
+        Thagard's SIMILAR simply records the similarity relationship, and then
+        update-analogy-net applies it.  But my symlink-if-exist actually creates the
+        symlink rather than recording the intention to do so.  And update-analogy-net
+        has nothing to do with it.
+        TWO POSS FIXES:
+
+		1. Find the semantic code and reexecute it in each loop.
+		This would be messy, though Lisp being Lisp, it could be
+		done--just find the calls in the list.  It's actually pretty simple,
+                but inelegant.  Might be a quick fix.
+
+		2. Change from symlink-if-exists to something like
+		Thagard's record-for-later strategy, and then add code
+		to update-proposition-net to execute it.  Maybe call the
+                new function "SOFT-IFF" or something like that.  And call
+		sym-link-if-exists for each such soft-iff pair
+		recorded in a field in the person.
+		Note that this will produce a bit different behavior from now, potentially.
+
+		3. Temp hack fix: Put symlink-if-exists calls
+		in the middle of the sequence function.
+
+	Question: What should happen if a new analogical relationship
+	supports or conflicts with an old semantic relationship?  I think by
+	default they should both exist and be summed.  So that the semantic
+	relationship (which might actually be a kludged analogical relationship)
+	could pull in one direction, and the analogy in another.  Or they could
+	reinforce each other.
+
+. Can I solve the possible problem of having analogs mixed in source
+  and target, by going further with the e-god/s-god strategy and making
+  sure that I don't share predicates or objects between analog clusters
+  within the same struc?  Note that there are *no* mappings
+  within-struc, so there is no semantic reason that e.g. you can't have
+  two cause predicates.  It's a kludge, but I think it would serve to
+  make the sets of propns independent and not have mixing between them.
+  (or can I have multiple source and target analogs, which is cleaner
+  maybe, but maybe less realism-ey?)
+  The general idea is that the reason that there's a problem that
+  prevented gathering from working (?) is that it's more or less
+  syntax only that's doing the work.  What semantical help there is,
+  is pretty weak.  So you have to enhance the semantics a bit with
+  naming conventions.
+
+..............................................................
+EXPERIMENT VARIATIONS:
+
+. Let origin stories filter into society from one or two sources.
+. Let effects of parent, or hunting, salience filter in from few sources.
+. Let effects of both filter in from few sources.  See variation in
+  pops wrt how patterns end up.
+. Do the preceding iteratively to produce cumulative evolution.
+. Here's something that would be nice with cumulative stuff:
+  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
+  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
+  there is a context for them, let them become significant.
+. Take stabilized pop and flip salience, or change salience in a few
+  gradually, or drop saliences and make a small subset with opposite
+  salience (as in parenting14k.nts).
+. Question: Can conversation can create links that don't correspond
+  to map nodes?  Or only that aren't reflected in the colored
+  triangles.
+
+..............................................................
+NETLOGO and LISP/NETLOGO INTERFACE:
+
+. Consider transmitting propns only when new.  This could be a lot
+  more efficient.
+
+. Per Jason, Aaron, there's a java-to-C calling interface that could be
+  used with NetLogo.  Not sure whether this is something NetLogo
+  specific or just a general interface you could use.  Jason suggested
+  that I could just hook in SBCL this way.  (M: Or at least ecl. but
+  sbcl would be better.)  I think the way you have to do it is to use
+  JNI which is a generic Java callout lib, and then use it in an
+  Extension.  And have to figure how/whether you can do this with SBCL
+  readily.  (Can Kristen H. do this?)
+
+. Jason's graphics extension will allow placing text at arbitrary
+locations.  I could use that to pop on/off names of propns.
+
+. notes on netlogo speed:
+update-population-state is taking most of the time
+everything else runs fast, including reading and processing the
+conversations (with take-turns-speaking = false).
+I got rid of some remaining code that dealt with predicates and objects,
+but it only helped a little.  There are also some spurious function calls
+for maplinks between objects or predicates, but no real work happens--
+you just get some extra loop iterations and function calls that do nothing.
+I wouldn't think it's having much effect on time.
+I MIGHT SAVE SOME TIME BY TURNING OFF UPDATING OF LINKS (i.e. mapnode
+activations).
+
+. What about using the shell extension of NetLogo, and then shell out to
+  Lisp??
+
+. Display statistics in netlogo.  
+  Maybe use Bill Dressler's concepts.
+  [Question: Do I (a) write the mathematical functions myself
+  (b) find some extension or code that does it (c) call out to R?]
+
+. I think the main loop has a with-open-file around it that should be conditional
+  on do-report-to-netlogo.  It works because when do-report-to-netlogo
+  is false, nothing actually gets written.
+
+. Consider removing the data on objects and predicates from the
+  NetLogo input file. This might speed up big data loads.  On the other
+  hand, I might want to display statistics about them.
+
+. Allow adding and removing persons from population.
+  Note that if persons die, their place in the big circle could be
+  taken by new individuals.
+  Maybe specify maximum pop size?  And then let the big circle be
+  determined by that?  Do I specify it from Lisp or from the NetLogo
+  interface?  Dunno--maybe from NetLogo, since Lisp shouldn't care.
+
+. NetLogo does incremental file reading!  It was my fault.
+
+. Still might be nice to add some kind of telnet or something interface
+  if it would allow two-way interaction with Lisp.
+. Maybe use the R or SQL interfaces as a starting point.  They probably do
+  something analogous.  No, they probably use existing Java libraries
+  which wrap the tcp calls.  Or maybe look at the source code for
+  HubNet, which is already doing networking.  Then I could communicate
+  with NetLogo from SBCL.  This could in theory allow the interactivity
+  that I wanted with ABCL, but with a faster Lisp engine.  And you could
+  even run NetLogo on a different machine from SBCL.  I could even run
+  SBCL on Cheaha, for example, with live updates to NetLogo.  
+
+. The take-turns-speaking function doesn't work right.  Instead of
+  displaying each utterance sequentially, it only displays one.
+
+. Make NetLogo links reflect Lisp link weights rather than map node
+  activations?
+
+. Integrate with ABCL??
+
+..............................................................
+re GUESS
+
+. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
+  the nodes that result from conversation?)
+
+. The first time after boot you run telguesses with multiple persons,
+  it fails on all but one of the GUESS instances.  After that it's fine.
+  I think that it starts the processes too close in time to each other,
+  and there's a moment when one instance has started loading Java,
+  but Java can't respond by saying it's loaded, and the OS won't respond
+  by saying it's not.  The error you get suggests this interpretation.
+  I don't know that it's worth adding a delay.
+
+. TODO: Reorganize the code in popco-fmt-guessCmds.lisp and revise
+report-persons-to-guess in popco.lisp so that I can
+mapc through persons all at once, instead of individually for each
+kind of communication to guess.  (?)
+
+. Consider coloring nodes by category, specifying colors in Lisp,
+  so that it's obvious which categories are going positive and negative.
+  I also don't think white/black is the best choice for propositions,
+  since they are a primary focus.
+
+. Make menu item that sets/unsets labelvisible.
+  [You have to use a trick query to refer to all nodes.
+  e.g. (activation<>100).labelvisible=true]
+
+. Still want to figure out how to pass a telnet port to a single
+  script, or enter it in GUESS or something.  (GUESS doesn't seem to be
+  set up for passing parameters to scripts.)  It certainly ought to be
+  possible to run the telnet server from a menu, but that hasn't worked
+  yet.  Also need to figure out how to close and reopent telnet
+  connections.
+
+. Bug in newly-added edges?: They don't have all of the informative
+  fields that old edges have?  Possibly add code to assign that stuff.
+
+. I seem to be losing the informative rollover functionality in edges sometimes.
+
+. Sometimes GUESS errors out (and stops Lisp, eventually) if you run dynamic
+  updating too long.  Index out of bounds.
+  Question: Does this happen without node/edge adds?
+  Question: Is there some GUESS operation that would prevent this?
+  Presumably it's a memory leak or involves exceeding some bound.
+
+. See Overview Needs list.
+
+. btw isomLayout() with binPack() is pretty nice, if slow, but isn't on the menu.  
+
+. tips:
+	remove(node2==SALIENT)
+	remove(OE_NOTHING-P_NOTHING)
+	remove([OE_NOTHING-P_NOTHING,P_NOTHING-P_CHILD_ALIVE])
+	note removing an edge that doesn't exist seems unproblematic.
+
+..............................................................
+LISP:
+
+. BUG AS OF 5/27/12 because PERCEIVED in popco.lisp always puts propns in
+an env's source struc, even when they are from the target struc.  This
+causes target propns to then be transmitted into the source struc, mixing
+target propns in the person's source struc.  This causes mappings from a
+propn to itself, which is not allowed.
+WORKAROUND: Do not perceive target propns.  This is OK for Sanday models.
+
+. Consider transmitting propns only when new.  This could be a lot
+  more efficient.
+
+. Create sweep file sequences with altered parameters and with
+  deleted propns (which can be done programmatically since propns
+  are just in lists).  If the filenaming is regular then presumably
+  I could run them in Behavior Space.
+
+. BUG: The function SIMILAR? checks whether the predicate pair is listed in
+  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
+  IS ACTUALLY A BUG because it means that all persons are sharing
+  predicate similarities, and overriding variants.  *similiar* should be
+  a field of the person rather than a global.  Or the similarities could
+  be personalized.  But then everyone has to through a long list of
+  similarities.  [This is OK if all of the persons *do* share
+  similarities.]
+
+. POSSIBLE BUG when conversations introduce new predicates, at least:
+  Question: Shouldn't semantic relations be reinvoked later if the
+  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
+  to a map node.  But if the map node doesn't exist initially, these
+  special links won't get created; currently (4/2012) they are only
+  created by create-net by the line
+  	(mapc #'eval (get person 'input))
+  This also might have to be reinvoked:
+  	(mapc #'eval (get person 'addl-input))
+  Or maybe they should always exist in everyone?
+  this is at least an issue with specifying direct symlinks on units.
+
+. On forgetting:
+  Question: Should people forget what has negative degree of belief,
+  or low absolute value of degree of belief.  Seems like both are
+  relevant.  Yet negative degrees of belief are positive degrees of
+  belief in negations.
+
+. SMALL BUG: Calling n-persons-with-name twice with the same name
+  seems to cause an error when popco is run.
+
+. in parenting14l mless-parent, I get completely disconnected
+  proposition nodes (OK) yet some of them change activations, getting
+  significantly positive, or a little negative.  Oh, wait, I think
+  that's because there are unrepresented things in GUESS do to
+  conversation which isn't yet reflected graphically.  OK.
+
+. By specifying different salience for different individuals, you could
+  have the adamant override the lukewarm
+
+. Make procedure to store record state of pop at each generation.
+  (What about during net settling iterations within generations?)
+  Consider extending NetLogo data output procedures to be able
+  to read from this data and convert to NetLogo data.
+
+. Currently, remove-constraint and remove-all-constraints in acme.lisp
+  record the newly-deleted constraints in a single property of the person.
+  This works with GUESS even when I'm not displyaing the analogy net
+  because GUESS is not unhappy with attempts to delete nonexistent edges.
+  However, in the future I may need to split up the newly deleted constraints
+  into analogy and proposition network constraints for some other external
+  display program.
+
+. Currently, I have no standard functions for removing and temporarily
+  recording deleted units.  This will be necessary e.g. if I implement
+  forgetting (see below), or maybe for some experiments, if I want
+  to be able to update GUESS with the deletions.  I'll probably want to
+  keep separate newly-deleted lists for the proposition and analogy
+  networks.
+ 
+. Notes on allowing "forgetting" (removal) of propositions:
+You also have to remove the propn map nodes, and predicate and object map
+nodes *if* there are no remaining proposition mappings that involve those
+predicates and objects.  Something like that.  This sounds
+hard--involving walking back up to propns from preds/objs, or doing a
+mark and sweep or something.  However, I think it's not so hard.
+Here's a proposed algorithm for removing a propn:
+	(1) Get all linked propn map nodes
+		(1a) For each propn map node, do a two-sided unlink with
+		     predicate and obj map nodes.
+	(2) Do a two-sided unlink between the propn and the propn map
+	    nodes.
+	(3) Do the same unlinking for analog structures, etc.--whatever 
+	    is needed.  Make sure, for example, that the proposition's
+	    message is no longer referenced anywhere in the person.
+The idea is that step 1a may or may not leave the "concept" map nodes
+with links back to other proposition map nodes.  If so, then those map
+nodes will also have references to the concept map nodes, and the
+concept map nodes will remain in the network, as desired.  If there
+are no remaining links within the concept map nodes, fine--in that
+case, there will be no links too them, either.  Then these map nodes
+will no longer appear in the analogy network, and Lisp's GC will
+eventually get rid of them.  I don't have to garbage collect per se.
+I just have to do two-way unlinking.
+	(4) However, higher-order propositions make complicate this process.  
+	(5) Also: It probably should be impossible to forget
+	    a proposition without for forgetting all higher-order
+	    propositions in which it's referenced.
+	(6) Also, there are additional steps that must be taken for
+	    the sake of ongoing output to GUESS and NetLogo: When
+	    something is finally completely unlinked, we have to take
+	    note of that in order to tell the display programs to remove
+	    the node.  However, that shouldn't be hard since
+	    everything's got links to what is linked to it.
+
+
+. THIS IS FIXED, but consider modifying make-sym-link to use the
+  new unlinked? function.
+  old:
+  bug in new add-to-guess code:
+	The test for new constraint before pushing onto the 
+	'newly-added-constraints list [with mark-constraint-newly-added]
+	just checks for zero weight.
+	That's what make-sym-link does, and it is sensible there.
+	However, if there actually is a link, but it's zero weight
+	(this could theoretically happen in the proposition network,
+	with conversation), then popco may try later to add it to guess,
+	and guess will complain (or maybe bomb) because the node
+	already exists.
+
+..............................................................
+OVERVIEW NEEDS - NOT URGENT
+
+I need to work toward making sure that the Lisp, NetLogo, and GUESS
+components all allow:
+
+Currently ok in 	Lisp		NetLogo		GUESS
+
+. add persons		yes		no		yes
+. remove persons	yes		not really	n.a.
+. add propositions	yes		yes		yes
+. add links		yes             no		yes
+. remove propositions	no		no		no, but snapshots
+. remove links		not easily	not really	yes
+
+[Note that removing propns--"forgetting"--could be somewhat involved.
+See note below.]
+
+
+..............................................................
+EFFICIENCY:
+
+. As of 4/22/2012, update-guess-edges-for-person in
+popco-fmt-guessCmds.lisp calls guess-send-cmd on new proposition links
+twice, once because they're in 'newly-added-constraints, and once because in
+'all-propositions.  Maybe it would even save time to do a
+set-difference or test each time to make sure a link isn't new.
+
+. QUESTION: IF THERE ARE NO NEW PROPNS ADDED, THEN DON'T NON-SALIENCE
+PROPN LINKS STAY THE SAME?  IN THAT CASE, COULDN'T I JUST SKIP
+SETTLING THE ANALOGY NETWORK ONCE IT'S SETTLED?
+
+. CL's adjoin seems to do part of what PT's pushnew does.  Should I
+use adjoin?
+
+. associate-ana calls associate which calls note-unit, but currently
+  this is getting called only on units (propositions) which have
+  already been note-united.  The net effect is to do nothing, but in
+  the process note-unit calls pushnew on all-units, which does a
+  search through the entire list of units, so that it can push the
+  noted unit into the list iff it's not there.  So this is an
+  unnecessary search on a pretty long list that's happening pretty
+  often.
+
+. Links into special nodes cause them to be updated temporarily?  That's a waste,
+  expecially if there are lots of links.
+
+. receive-utterance currently (4/7/12) contains an unconditional call to
+    (setf (get listener 'settled?) nil)
+  If t, this means that the person's network isn't settled, saving time.
+  This used to be conditional on an utterance introducing a new proposition,
+  thus adding new connections to the network.  But now I'm allowing any proposition
+  to modify the weights on SALIENT links in the proposition network, so we have
+  to be willing to settle every time.  However, if the proposition isn't new,
+  the analogy network hasn't changed, so it's unfortunate to have to settle it.
+  Better if the two networks were settled separately, so that I could settle
+  the proposition network without also running through every unit in the
+  analogy network.
+
+. The call to add-struc and make-propns on each generation as a result of
+  conversation can probably be made more efficient.
+
+. I'm concerned that make-hyp-unit fires on a bunch of message pairs on
+  *every* generation.  It doesn't actually do anything after the initial
+  setup, unless there is conversation adding new propositions.  However,
+  do I really want to do the deep isomorphism test every time unnecessarily?
+  i.e. if I replace or conditionally replace surface-isomporhic-arglists.
+  However, the solution is *not* just to check whether the propn-map-node
+  already exists in propn-map-units, because make-obj-unit can create these
+  units *without* creating corresponding map units for their predicates and arguments.
+  It seems that you actually do need to test whether map nodes of each of the
+  categories exists, each time, because each might have gotten created earlier
+  without all others having been created.
+
+  I suppose I could at least condition on whether conversation is allowed.
+  Or maybe have a flag in each person that says that I have a new proposition.
+  That would help some.
+  Or:
+  SUPPOSE I ONLY CALL MAKE-HYP-UNIT WHEN AT LEAST ONE ARGUMENT IS THE MESSAGE
+  OF A NEW PROPOSITION.
+
+  Note though that there will be other propositions involved, too.  You're
+  looking for potential mappings.  So if the new propn is in a target,
+  you have to look at all propositions in the source, potentially (for each source
+  analog), and vice versa if the new propn is in a source: try to pair with
+  each propn in the target.  But you're adding it to the same net.
+  And the difficulty is that PT's code is designed to operate on messages
+  stored in structures, and it doesn't get out the messages until several
+  wrapper functions down.  So I have to make sure that I do anything that
+  the wrappers do that I want done, or make a temporary structure, or something
+  and pass it in at the higher level, or something.
+
+  MAYBE RUN SOME SPEED TESTS ON DEEP ISOMORPHISM AND SEE IF IT'S REALLY
+  MUCH SLOWER.
+
+  I also want to at least conditionally add isomorphism tests to make-obj-unit
+  for proposition arguments.
+
+..............................................................
+MORE LISP SIDE:
+
+. make-obj-units has a line that seems to sum weights.  This is
+  not currently executing because by default *watch-for-dup-arguments?*
+  is nil.  However, if it were run, would it circumvent the max-weight
+  restriction in network.lisp?
+
+. 1/1/2012 I now have run-hyp-net able to return total activation for
+  a person.  Now need to use that to report averge of unasympoted
+  units, etc.  Also should figure out a more efficient version of 
+  sum-activn-changes rather than consing up a list and then
+  applying + to it.  If nothing else, make a traditional C-style loop.
+
+. FUTURE BUG: make-propns sets activation of a proposition if it's the
+  third argument of a proposition message.  make-propns gets called on
+  all messages in every struc every generation.  so if credences
+  (initial activations) are included in messages, I think they'll
+  clobber any activations that have been developing over time.  THE FIX
+  FOR NOW: DON'T INCLUDE INITIAL CREDENCES.
+
+. I've added a lot of optional arguments in the proposition-update call
+  tree order to use some of this code in new ways while trying not to
+  break old functionality.  This has maybe gone too far.  It might be
+  best to split apart the two call trees, or rewrite in some way so as
+  to preserve flexibility in a more natural way.
+
+. re environmental states:
+	Maybe let each person have a pointer to *an* environment.  Or
+	have envs have pointers to people.  However, allow possibility
+	that later the pointer can be changed by actions.  Also later
+	allow changing the environment that's pointed to.  (This can
+	allow grid-movement as in NetLogo.  Though at that point maybe
+	it would be easiest to break the MVC wall and give NetLogo a
+	central role.) But you still need the pointers, so that
+	different indivs can share the same env, and be affected by how
+	each other updates it.  Later can also add rules that make env
+	update itself.  Though maybe do that with special persons.  No
+	wait--I think I'm treating envs as persons anyway.  However, the
+	thing about an env is that it has special conversation rules.
+	e.g.  maybe it *always* talks to those "in" it.  Also, envs will
+	have their own special rules for responding to person's
+	"utterances" (niche-constructive actions).
