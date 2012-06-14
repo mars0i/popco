@@ -279,19 +279,36 @@
 ; that all propositions in the specified structures get an equal chance.  So if
 ; what you want is for all structures to be used, specify converse-strucs as nil;
 ; this will avoid the expense of the append.]
+; TODO?: See commment on choose-utterances.
 (defun choose-thought (speaker)
-  (let* ((converse-strucs (get speaker 'converse-strucs))
-         (thoughts (if converse-strucs
-                     (apply #'append (mapcar #'propns-from-struc converse-strucs))
-                     (get speaker 'all-propositions)))
-         (intense-thoughts (remove-if #'activn-exceeds-threshold thoughts)))
-    (if intense-thoughts
-      (elt intense-thoughts (random (length intense-thoughts)))
+  (let* ((converse-strucs (get speaker 'converse-strucs)) ; list of analog strucs to use as propn sources. nil for all propns.
+         (candidate-thoughts 
+           (remove-if-not #'seems-worth-saying?
+                          (if converse-strucs
+                            (apply #'append (mapcar #'propns-from-struc converse-strucs)) ; get propns from designated analog strucs
+                            (get speaker 'all-propositions)))))
+    (if candidate-thoughts ; <- maybe there was nothing suitable
+      (elt candidate-thoughts (random (length candidate-thoughts)))
       nil)))
 
-(defun activn-exceeds-threshold (propn)
-  (< (abs (get propn 'activation))
-     *utterance-threshold*))
+; SEEMS-WORTH-SAYING?
+; Persons are more likely to say things that have a high absolute activation,
+; i.e. propns that they believe strongly.  This function determines whether a propn
+; Checks whether a random number in [0,1.0) is less than the scaled absolute activation.
+; i.e. high value for absolute activation gives more chances for uttering, while
+; low values give fewer chances.  Note that if the scaling factor is > 1, then all
+; activations above (/ 1 scaling-factor) will have probability of 1.
+; If *utterance-probability-increment* is a small number > 0, it will allow
+; zero-activation propns to be uttered occasionally.
+; See nts/probabilistic-utterance for further discussion.
+(defun seems-worth-saying? (propn)
+  (< (random 1.0)
+     (+ *utterance-probability-increment* 
+        (* (abs (activation propn)) 
+           *utterance-probability-multiplier*))))
+
+;(defun activn-exceeds-threshold? (propn)
+;  (>= (abs (get propn 'activation)) *utterance-threshold*))
 
 ;;-----------------------------------------------------
 ;; TRANSMIT-UTTERANCES, TRANSMIT-ENVIRONMENT
