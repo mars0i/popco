@@ -1,5 +1,8 @@
 top tasks:
 
+. BUG: If no utterances (since no propns passed tests), popcodata.txt contains
+  "NIL" rather than "[]", which NetLogo doesn't understand.
+
 . Try this:
         have many agents
         distribute propns from the alternative origin story between some agents
