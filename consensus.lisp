@@ -44,7 +44,23 @@
 ; 4/12/2012 added converse-strucs: list of analog structs from which propns can be uttered.
 ; If nil, then all of them.
 ; [To cause silence in a conversing population, list dummy struc name.]
-
+; SUMMARY OF USUAL USAGE:
+; (make-person 'name-of-person *the-population* propns-to-be-perceived-initially
+;              '((make-struc 'target 'problem '(start list-of-target-propns))
+;                (make-struc 'source 'problem '(start list-of-source-propns))
+;                semantic-specification-1
+;                semantic-specification-2
+;                etc.)
+;              list-of-pragmatic-relations-if-any
+;              list-of-analog-strucs-from-which-to-utter-or-nil-for-all)
+; OR:
+; (make-person 'name-of-person *the-population* propns-to-be-perceived-initially
+;              `((make-struc 'target 'problem '(start (,@propns-to-subst-in-here)))
+;                (make-struc 'source 'problem '(start (,@propns-to-subst-in-here)))
+;                ,@semantic-specs-to-subst-in-here)
+;              `(@,pragmatic-relations)
+;              '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
+;
 (defun make-person (person group given initial-input &optional addl-input converse-strucs)
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
   (put person 'group group)

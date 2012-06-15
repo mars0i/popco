@@ -49,8 +49,8 @@
 (defvar *default-activ* .01L0 "Default activation of units.")
 (defvar *excit-weight* .04L0 "Weight of excitatory links--for traditional COHERE networks.")
 (defvar *inhib-weight* -.06L0 "Weight of inhibitory links--for traditional COHERE networks.")
-(defvar *propn-excit-weight* .2L0 "Weight of excitatory links for POPCO proposition-inference networks.")   ; ADDED 1/2012 -MA
-(defvar *propn-inhib-weight* -.1L0 "Weight of inhibitory links for POPCO proposition-inference networks.")  ; ADDED 1/2012 -MA
+(defvar *propn-excit-weight* .2L0 "Weight of excitatory links for POPCO proposition-inference networks.")
+(defvar *propn-inhib-weight* -.025L0 "Weight of inhibitory links for POPCO proposition-inference networks.") ; NOTE: This may need to be adjusted wrt proportion of neg to pos links
 (defvar *simpl-impact* 1L0 "Impact of complexity of structure on coherence.")
 (defvar *goal-excit* .04L0 "Default weight of links from special unit to basic goals.")
 (defvar *weak-incohere-impact* .2L0 "Impact of incohering subgoals.")
