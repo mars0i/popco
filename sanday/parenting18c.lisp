@@ -25,7 +25,8 @@
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("OE" "OS" "P" "H"))
-(setf *propn-category-descriptions* '("creator is of the earth" "creator is from the sky" "parenting is important" "hunting is important"))
+;(setf *propn-category-descriptions* '("creator is of the earth" "creator is from the sky" "parenting is important" "hunting is important"))
+(setf *propn-category-descriptions* '("origin from female" "origin from animal" "parenting is important" "hunting is important"))
 
 ; overwrite definition in imp.lisp:
 ;(defmacro normalize-degree (degree) `(logistic ,degree))
@@ -169,27 +170,58 @@
 
 ; The following functions define two alternative paradigmatic persons.  Differences are uppercased.
 
-; Knows parenting and hunting, but only parenting is salient.  Knows earth propns but not sky propns.
-(defun make-skyless-person (name)
-  (make-person name 'folks PARENTING-PROPNS
-               `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@EARTH-ORIGIN-PROPNS)))
-                 (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                 ,@semantic-relations)
-               `(,@pragmatic-relations)
-               '()))
+; MAKE-SKYLESS-PERSON
+; Make a person that:
+;	Has propns about:
+;		parenting
+;		hunting
+;		earth origin
+;               possibly one other
+;       Lacks:
+;               most propns about sky origin
+;	Initial salience on propns about:
+;		earth origin
+(defun make-skyless-person (name &optional addl-target-propn)
+  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
+    (make-person name 'folks PARENTING-PROPNS
+                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@EARTH-ORIGIN-PROPNS ,@addl-target-propn-list)))
+                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
+                   ,@semantic-relations)
+                 `(,@pragmatic-relations)
+                 '())))
 
-; Knows parenting and hunting, but only hunting is salient.  Knows sky propns but not earth propns.
-(defun make-earthless-person (name)
-  (make-person name 'folks HUNTING-PROPNS
-               `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS)))
-                 (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                 ,@semantic-relations)
-               `(,@pragmatic-relations)
-               '()))
+; MAKE-EARTHLESS-PERSON
+; Make a person that:
+;	Has propns about:
+;		parenting
+;		hunting
+;		sky origin
+;               possibly one other
+;       Lacks:
+;               most propns about earth origin
+;	Initial salience on propns about:
+;		sky origin
+(defun make-earthless-person (name &optional addl-target-propn)
+  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
+    (make-person name 'folks HUNTING-PROPNS
+                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS ,@addl-target-propn-list)))
+                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
+                   ,@semantic-relations)
+                 `(,@pragmatic-relations)
+                 '())))
 
-(defun add-single-propns (analog-struc-name list-of-persons list-of-propns)
-  )
+; MAKE-PERSONS-WITH-ADDL-PROPN 
+; Make as many persons as there are propns in addl-target-propns, adding one such propn to each person.
+; Example usage--note no quotes, no #':
+;       (make-persons-with-addl-propn make-skyless-person e sky-origin-propns)
+;       (make-persons-with-addl-propn make-earthless-person s earth-origin-propns)
+; [There's probably less confusing way to do this as a defun, but I had trouble figuring it out.]
+(defmacro make-persons-with-addl-propn (person-maker basename addl-target-propns &optional (first-number 1))
+  `(let ((names (make-names2 ',basename ,first-number (length ,addl-target-propns)))) ; make one person name for each addl propn to be added
+    (mapc #',person-maker names ,addl-target-propns)))
 
+; TODO: Add test for the existence of a person with all members of a set of propns, and test for it occasionally.
+; That will tell you when to switch the worldly propositions salience.
 
 ; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; ; function that is supposed to switch direction of population

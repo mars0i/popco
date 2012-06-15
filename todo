@@ -1,7 +1,6 @@
 top tasks:
 
 . Try this:
-
         have many agents
         distribute propns from the alternative origin story between some agents
         let them filter with low probability, bit by bit, around the pop
@@ -20,10 +19,12 @@ top tasks:
         and since everyone's got the new worldly stuff going, they will end
         up switching over to the new origin story.
         That's the idea.
-
         Note this is very stochastic, so many runs would be worthwhile
-        too bad no NetLogo behavior space
-        (Can Kristen help?)
+        too bad no NetLogo behavior space (can Kristen help?)
+  Have started this in parenting18c.
+  TODO: Add test for the existence of a person with all members of a set of propns, and test for it occasionally.
+  That will tell you when to switch the worldly propositions salience.
+
 
 . Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical

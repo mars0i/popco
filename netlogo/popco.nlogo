@@ -1195,7 +1195,7 @@ propositions-circle-radius
 propositions-circle-radius
 5
 50
-30
+22
 1
 1
 NIL
@@ -1210,7 +1210,7 @@ person-circle-radius
 person-circle-radius
 20
 200
-60
+70
 2
 1
 NIL
