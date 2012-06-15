@@ -1,7 +1,29 @@
 top tasks:
 
-. REPLACE THRESHOLD FUNCTION IN CHOOSE-THOUGHT WITH ONE THAT'S (ALSO)
-  PROBABILISTIC.
+. Try this:
+
+        have many agents
+        distribute propns from the alternative origin story between some agents
+        let them filter with low probability, bit by bit, around the pop
+        eventually collecting in at least one agent
+        meanwhile everyone is still stable on a salient worldly and origin domain pair
+        now switch worldly
+        what I think could happen is that some would just be kind of confused
+        for a while, and persist in their origin beliefs,
+        but the guy with the right analogy set up, would have hiser alternative
+        origin bels kick in, and then would start saying them to others.
+        who at this point don't even have the right analogy net to make sense
+        of those bels, and maybe will get resistance at least from the conflict
+        with some original origin bels
+        And then maybe over time, from the one evangelist, the new ideas
+        will spread and the analogy nets will become full with the new ideas,
+        and since everyone's got the new worldly stuff going, they will end
+        up switching over to the new origin story.
+        That's the idea.
+
+        Note this is very stochastic, so many runs would be worthwhile
+        too bad no NetLogo behavior space
+        (Can Kristen help?)
 
 . Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical
