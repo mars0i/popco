@@ -3,7 +3,7 @@ top tasks:
 . BUG: If no utterances (since no propns passed tests), popcodata.txt contains
   "NIL" rather than "[]", which NetLogo doesn't understand.
 
-. Try this:
+. Try this (see thelacuna_timescale in CulturalSim nts):
         have many agents
         distribute propns from the alternative origin story between some agents
         let them filter with low probability, bit by bit, around the pop
@@ -27,6 +27,9 @@ top tasks:
   Have started this in parenting18c.
   TODO: Add test for the existence of a person with all members of a set of propns, and test for it occasionally.
   That will tell you when to switch the worldly propositions salience.
+  THIS IS ANALOGOUS TO GENETIC DRIFT AND RECOMBINATION WITH
+  ENVIRONMENTAL CHANGE MAKING NEUTRAL OR SLIGHLTY DELETERIOUS
+  GENOTYPES FIT.
 
 
 . Maybe I *need* drifty noise added so that "what everybody says"

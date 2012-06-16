@@ -45,7 +45,10 @@
 ; Get a seed from the operating system.
 ; (In SBCL on OSX, this new seed to be the result of a pretty good random number
 ; generator--see SBCL source file target-random.lisp and 'man urandom'):
-(when *use-new-random-seed*
+; NOTE: We might nevertheless restore an old random state from a file.  This variable
+; just determines whether we reinitialize the random state on load, rather than allowing
+; the possibility that the Lisp implementation will choose a fixed default.
+(when *use-new-random-state*
   (setf *random-state* (make-random-state t)))
 
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
@@ -73,8 +76,8 @@
 
 (defun popco (&key cont-prev-sess) 
   (format t "~%Running popco with maximum of ~S cycles each in ~S popco tick(s) ....~%" *max-times* (- *max-pop-ticks* *pop-tick*))
-  (format t "*do-converse* = ~S; *do-update-propn-nets* = ~S; *do-report-to-netlogo* = ~S *use-new-random-seed* = ~S~%"
-             *do-converse*        *do-update-propn-nets*      *do-report-to-netlogo*      *use-new-random-seed*)
+  (format t "*do-converse* = ~S; *do-update-propn-nets* = ~S; *do-report-to-netlogo* = ~S *use-new-random-state* = ~S~%"
+             *do-converse*        *do-update-propn-nets*      *do-report-to-netlogo*      *use-new-random-state*)
   (if *time-runs* 
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
@@ -97,16 +100,19 @@
 ;; Specify cont-prev-session as non-nil to append to outfile; otherwise outfile will be deleted.
 
 (defun run-population (population &key cont-prev-sess)
+
   ; If user doesn't request continue prev session, store current random seed/state into a file that can recreate it later:
   (unless cont-prev-sess
     (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
-      (format random-state-file-stream "(setf *random-state* ~S" *random-state*)))
+      (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*)))
+
   ; If user doesn't request continue prev session, then delete/move output file if exists, and create new file:
   (when (and *do-report-to-netlogo* (not cont-prev-sess))
     (format t "Recreating output file for NetLogo ~S~%" *netlogo-output-name*)
     (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)
       (princ *netlogo-syntax-description* *netlogo-outstream*)
       (report-persons-initially population)))
+
   (do ()
     ((time-to-stop) population)
     (when *sleep-delay* (sleep *sleep-delay*))
@@ -119,10 +125,13 @@
       ;(format t "~%found one! ~S~%" *pop-tick*) ; DEBUG
       (setf *write-person-graphs-at-pop-ticks* (cdr *write-person-graphs-at-pop-ticks*))
       (write-person-graphs (format nil "~A/~A/" *person-graphs-basename* *pop-tick*))))
+
   (when *do-report-to-netlogo*
     (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)))
+
   t)
-; maybe these multiple open files can be cleaned up...
+  ; end of run-population
+
 
 ;; RUN-POPULATION-ONCE
 ;; Guts of the main loop.

@@ -72,7 +72,9 @@
 ;; Given a string that's a printable representation of a Lisp list, replaces
 ;; all parentheses with square brackets (NetLogo's list delimiter).
 (defun fmt-list-string-for-netlogo (listring)
-  (substitute #\] #\) (substitute #\[ #\( listring)))   ; faster to explode string and do both at once? use a regexp lib?
+  (if (equal listring "NIL")
+    "[]"
+    (substitute #\] #\) (substitute #\[ #\( listring))))   ; faster to explode string and do both at once? use a regexp lib?
 
 ;; FMT-TREE-FOR-NET-LOGO
 ;; Given a list--possibly of lists [of lists, etc.]--
