@@ -291,7 +291,7 @@
 
 (defmacro my-max (num1 num2) `(max ,num1 ,num2))
 
-(defmacro subset (l1 l2) `(subsetp ,l1 ,l2))
+;(defmacro subset (l1 l2) `(subsetp ,l1 ,l2))
 
 
 
