@@ -85,3 +85,9 @@
 ;
 ;(defun invoke-semantic-iffs-for-pop (population)
 ;  (mapc #'invoke-semantic-iffs-for-person (get population 'members)))
+
+(defun time-to-stop ()
+  (or 
+    (and (> *max-pop-ticks* 0)
+         (>= *pop-tick* *max-pop-ticks*))
+    (user-says-stop)))

@@ -70,10 +70,13 @@
 ; from the ACME network.  [NOTE though that special is still used by similar functions e.g. in ECHO.]
 (setf (activation 'salient) *special-activation*)
 
-;; [POPCO is a convenience front-end/abbreviation for this function.]
-
 (defvar *time-runs* t)
 
+; POPCO
+; Run the main loop on *the-population* until *max-pop-ticks* is reached.
+; If  ':cont-prev-sess t' is added, then don't recreate output files such 
+; as the netlogo output file from scratch, but instead add to the existing file.
+; Also displays basic information on nature of the run, and times it by default, i.e. if *time-runs* is true.
 (defun popco (&key cont-prev-sess) 
   (format t "~%Running popco with maximum of ~S cycles each in ~S popco tick(s) ....~%" *max-times* (- *max-pop-ticks* *pop-tick*))
   (format t "*do-converse* = ~S; *do-update-propn-nets* = ~S; *do-report-to-netlogo* = ~S *use-new-random-state* = ~S~%"
@@ -82,10 +85,17 @@
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
 
+; POPCO-PLUS-T
+; Run the main loop on *the-population*, starting from the current *pop-tick*, until
+; addl-ticks more ticks are added.  Note ':cont-prev-sess t' will be passed to the popco command,
+; so an existing data files such as the netlogo file will appended to, rather than recreated.
+; This means that you should normally run (popco) first before running (popco-plus-t).
 (defun popco-plus-t (addl-ticks)
   (setf *max-pop-ticks* (+ *pop-tick* addl-ticks))
   (popco :cont-prev-sess t))
 
+; POPCO1
+; Abbreviation for (popco-plus-t 1)
 (defun popco1 ()
   (popco-plus-t 1))
 
@@ -114,15 +124,13 @@
       (report-persons-initially population)))
 
   (do ()
-    ((time-to-stop) population)
+      ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
     (when *sleep-delay* (sleep *sleep-delay*))
     (if *do-report-to-netlogo*
       (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)
         (run-population-once population))
       (run-population-once population))
-    ;(format t "~%here: ~S ~S~%" (car *write-person-graphs-at-pop-ticks*) *pop-tick*) ; DEBUG
     (when (and *write-person-graphs-at-pop-ticks* (= *pop-tick* (car *write-person-graphs-at-pop-ticks*)))
-      ;(format t "~%found one! ~S~%" *pop-tick*) ; DEBUG
       (setf *write-person-graphs-at-pop-ticks* (cdr *write-person-graphs-at-pop-ticks*))
       (write-person-graphs (format nil "~A/~A/" *person-graphs-basename* *pop-tick*))))
 
@@ -205,14 +213,23 @@
 
 ;; Check wether it's time to break out of main loop
 (defun time-to-stop ()
-  (or 
-    (and (> *max-pop-ticks* 0)
-         (>= *pop-tick* *max-pop-ticks*))
-    (user-says-stop)))
+  (>= *pop-tick* *max-pop-ticks*))
 
-;; Check whether use has indicated wants to interrupt the loop
-;; might be made more complicated if needed for run-time interaction with user
-(defun user-says-stop () *stop-run?*)
+; Variants:
+
+; This variant is useful if you want to be able to run forever:
+; It has the result that if *max-pop-ticks* is zero, popco will loop forever.
+;(defun time-to-stop ()
+;  (and (> *max-pop-ticks* 0)
+;       (>= *pop-tick* *max-pop-ticks*)))
+
+; This variant might be useful e.g. if we capture ^C's and make the capture routine setf *stop-run?*:
+;(defun time-to-stop ()
+;  (or 
+;    (>= *pop-tick* *max-pop-ticks*)
+;    (user-says-stop)))
+;
+;(defun user-says-stop () *stop-run?*)
 
 
 ;;-----------------------------------------------------

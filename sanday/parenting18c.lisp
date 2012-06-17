@@ -14,7 +14,7 @@
 
 ;*************************
 ; INITIAL SETTINGS
-(setf *max-pop-ticks* 10)
+(setf *max-pop-ticks* 0)
 (setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
@@ -229,26 +229,47 @@
           (make-names2 basename first-number (length addl-target-propns)))) ; make one person name for each addl propn to be added
     (mapc person-maker names addl-target-propns)))
 
-; TODO: Add test for the existence of a person with all members of a set of propns, and test for it occasionally.
-; That will tell you when to switch the worldly propositions salience.
-; DONE?:
+; POP-HAS-MEMBER-WITH-THESE-PROPNS-IN-STRUC? 
+; Test for the existence of a person with all members of a set of propns.
 (defun pop-has-member-with-these-propns-in-struc? (generic-struc propns &optional (population *the-population*))
   (member-if #'(lambda (pers) (person-struc-has-these-propns? pers generic-struc propns))
-             population))
+             (get population 'members)))
 
 (defun person-struc-has-these-propns? (person generic-struc propns)
-  (struc-has-these-propns? (generic-to-personal-sym generic-struc person) 
-                           propns))
+  (struc-has-these-propns? (generic-to-personal-sym generic-struc person) propns))
 
 (defun struc-has-these-propns? (personal-struc propns)
   (subsetp propns (get personal-struc 'propositions)))
 
 
+; POPCO-UNTIL-PERSON-HAS-PROPNS 
+; Run popco until there exists of a person with all members of a set of propns.
+; This loop version seems a little easier to read than the tail-recursive version below
+(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
+  (do ()
+      ((pop-has-member-with-these-propns-in-struc? generic-struc propns) t) ; terminate when test succeeds
+    (popco-plus-t how-often-to-test)))
+
+; tail recursive version
+;(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
+;  (unless (pop-has-member-with-these-propns-in-struc? generic-struc propns)
+;    (popco-plus-t how-often-to-test)
+;    (popco-until-person-has-propns how-often-to-test generic-struc propns)))
+
 
 ; TEST RUN
-(make-persons-with-addl-propn #'make-skyless-person 'e sky-origin-propns)
+(make-persons-with-addl-propn #'make-skyless-person 'e sky-origin-propns) ; give each individual a distinct member of the sky-origin-propns
 (init-pop)
 (print (get 'folks 'members))
+(setf *max-pop-ticks* 0)
+(popco) ; initialize output files, etc.
+(setf *time-runs* nil)
+(time
+  (popco-until-person-has-propns 10 'target sky-origin-propns) ; run until someone has collected all of the sky-origin-propns
+)
+
+
+
 
 ; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; ; function that is supposed to switch direction of population
