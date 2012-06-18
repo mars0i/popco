@@ -1,0 +1,41 @@
+Notes on structural relations in the Socrates analogies
+cf. HTsOriginalSocratesOutput.xlsx in the propositions sheet.
+
+It's the combination of the 1-arg m1/s1 and 3-arg m5/s5 that causes
+obj-midwife to be mapped to Socrates.  Similarly, m2/s2 combined with
+m5/s5 causes obj-mother to be mapped to obj-student.  Likewise for m3/s3
+and m5/s5 wrt obj-father and obj-partner.
+So that 3-arg m5/s5 mapping is doing a lot of work just through
+argument placement.
+
+Oh, actually, there are additional propositions that help the mapping of
+obj-midwife/Socrates (m10/s10) and obj-mother/obj-student (m6/s6, again
+m10/s10, and m8/s8, although it's confounded by m8/s9).  The obj-father
+mapping depends only on m1 and m5, however.
+
+Note the obj-mother/obj-student mapping is particularly strong (in my
+runs, though not in the original table 20), being pegged at .99 in the
+isomorphic analogy, and still getting .79 in the noniso, noprag analogy,
+although the confounding mapping with obj-wife gets a higher value, .99.
+So this maybe makes sense since obj-mother/obj-student appears in more
+propositions than either obj-midwife/Socrates or obj-father/obj-partner.
+Interestingly, obj-midwife/Socrates isn't much higher than
+obj-father/obj-partner, despite the former appearing in three
+propositions rather than only two.
+
+
+
+
+Note this point: Argument placement can do a a lot of work in ACME, as
+illustrated e.g. by obj-father/obj-partner.  That's fishy/hacky; it's
+really semantically irrelevant.  Real thought can recognize
+active/passive predicate relationships, facts about categories of slots,
+etc.  So argument order functions as a kind of *very* abstract argument
+categorization, which has potential to push mappings that are
+semantically silly.  Of course you can code around this.  Still, I
+wonder wether adding more propositions can deal with this.  I'm not sure
+it can, unless something was added to ACME to ignore argument order--and
+then you'd have to code more to force relevant relationships.  (cf. that
+in Copycat, order matters by default, but you can override it in various
+ways.  But the domain of Copycat is order, so that's appropriate.  It's
+not in the general case, which is what ACME addresses.)

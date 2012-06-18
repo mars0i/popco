@@ -1,0 +1,13 @@
+
+
+;; NOTES ON RUNS
+; In ecl:
+; For the ISOMORPHIC, NONPRAGMATIC version:
+; I'm getting almost exact replication of results reported
+; in H&T 1989, p. 346, table 20, except for these differences:
+; For obj-idea=obj-child I get around .92 rather than .90
+; For obj-student=obj-mother I get .99 (max possible) rather than .69
+; There are couple of others that are 1/100 off.
+; However, all of the best maps are as H&T say, and the result is
+; very clean, in that in each case the alternatives are substantially
+; negative.  The proposition maps also come out very cleanly.

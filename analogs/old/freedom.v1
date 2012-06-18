@@ -1,0 +1,32 @@
+; freedom.lisp
+
+(mapcar #'clear-plists (get 'americans 'members))
+(clear-person-nets 'americans)
+
+(make-person 'joe 'americans '()
+             '((make-struc 'target 'problem
+                           '(start
+                              ((sacrifice (soldiers) true t-sac-solds)
+                               (protect (safety soldiers citizens) true t-prot-safe)
+                               (lose (safety citizens) unknown t-lose-safe)
+                               (bad (t-lose-safe) true t-bad-lose-safe)))) 
+               (make-struc 'source 'problem 
+                           '(start 
+                              ((sacrifice (soldiers) true s-sac-solds)
+                               (protect (freedom soldiers citizens) true s-prot-freed)
+                               (lose (freedom citizens) unknown s-lose-free)
+                               (bad (s-lose-free) true s-bad-lose-free))))))
+
+
+(make-person 'jane 'americans '()
+             '((make-struc 'target 'problem
+                           '(start
+                              ((sacrifice (soldiers) true t-sac-solds)
+                               (protect (safety soldiers citizens) true t-prot-safe)
+                               (lose (safety citizens) unknown t-lose-safe)
+                               (bad (t-lose-safe) true t-bad-lose-safe)))) 
+               (make-struc 'source 'problem 
+                           '(start 
+                              ()))))
+
+(create-nets 'americans)

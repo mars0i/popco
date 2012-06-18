@@ -1,0 +1,44 @@
+; HTsOriginalNicaragua.lisp
+
+; Attempt to recreate original Nicaragua/Contras example from Holyoak and Thagard 1989
+; "Analog Retrieval by Constraint Satisfaction", embedding it in a single person 
+; (which does not engage in communication).
+
+;; first clear everything out
+(mapcar #'clear-plists (get 'politicians 'members))
+(clear-person-nets 'politicians)
+
+;*************************
+(SETF *DONT-CONVERSE* T)
+(SETF *SILENT-RUN?* nil)
+;*************************
+
+(make-person 'polly 'pols '()
+             '((make-struc 'target 'problem
+                           '(start 
+                              ((country (Nicaragua) c1) 
+                               (govern (Sandinistas Nicaragua) c2) 
+                               (aim-to-overthrow (Contras Sandinistas) c3) 
+                               (terrorists? (Contras Contra-terror?) c4) 
+                               (freedom-fighters? (Contras Contra-freedom?) c5) 
+                               (should-support? (US Contras support?) c6))))
+               (make-struc 'source 'problem
+                           '(start 
+                              (; Hungarian communists analogy:
+                               (country (Hungary) h1) 
+                               (govern (communists Hungary) h2) 
+                               (aim-to-overthrow (Hungarians communists) h3) 
+                               (terrorists? (Hungarians terrorists-no) h4) 
+                               (freedom-fighters? (Hungarians freedom-fighters-yes) h5) 
+                               (should-support? (US Hungarians support-yes) h6)
+                               ; PLO analogy:
+                               (country (Israel) i1) 
+                               (govern (Israelis Israel) i2) 
+                               (aim-to-overthrow (PLO Israelis) i3) 
+                               (terrorists? (PLO terrorists-yes) i4) 
+                               (freedom-fighters? (PLO freedom-fighters-no) i5) 
+                               (should-support? (US PLO support-no) i6))))
+               (presumed '(polly_support=support-yes))))
+
+(create-nets 'pols)
+(my-print (get 'pols 'members))
