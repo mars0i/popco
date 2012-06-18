@@ -242,7 +242,7 @@
 
 (defvar *use-new-random-state* t) ; set to nil to use whatever seed the Lisp implementation provides by default
 
-(defvar *perceived-excit* 1.0) ; default link weight to salient for propositions perceived as true in env
+(defvar *perceived-excit* .5) ; default link weight to salient for propositions perceived as true in env
 (defvar *special-units* '(special salient pragmatic)) ; units which require special handling by personalization code
 
 (defconstant +acme-max-weight+ .5) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.

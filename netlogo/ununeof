@@ -1,0 +1,4 @@
+#!/bin/sh
+# convert NetLogo POPCO model that uses the uneof extension to one that doesn't
+
+sed -e 's/uneof:file-at-end-now?/file-at-end?/' -e 's/uneof //' "$@"

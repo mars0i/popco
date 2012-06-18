@@ -1,0 +1,7 @@
+#!/bin/sh
+# convert NetLogo POPCO model that doesn't use the uneof extension to one 
+# that does (assuming nothing's changed in how I use it--i.e. the
+# model must be designed for this purpose).
+DOESN'T WORK
+
+sed -e 's/file-at-end?/uneof:file-at-end-now?/' -e 's/extensions \[/extensions \[uneof /'
