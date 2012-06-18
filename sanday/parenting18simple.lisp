@@ -25,7 +25,7 @@
   '(
     (alive (human) o-Human-Alive)
     ;; sky-origin-propns:
-    (creates (s-god o-Human-Alive) os-God-Creates-Human-From-Object) ; e-god's process is more complex
+    (creates (s-god o-Human-Alive) os-God-Creates-Human-From-Object)
     (mysterious-process (os-God-Creates-Human) os-God-Creates-Mysteriously)
     (offends (human s-god) os-Human-Offends-God)
     (harms (s-god human) os-God-Harms-Human)
@@ -119,12 +119,21 @@
              `(,@pragmatic-relations)
              '()) ; empty means use all strucs' propns for conversation
 
-(persons-like 'alex '(bo chris drew))
-;(n-persons 'alex 4 1) ; make four persons like the first one, numbering them starting from 1
+; make persons like the first one, with names as listed:
+;(persons-like 'alex '(bailey chris dana))
+
+; Make five persons like the first one, using first one's name 
+; as starting point, and numbering them starting from 1:
+;(n-persons 'alex 5 1)
+
+; Make five persons like the first one, using a new name quinn
+; as a starting point, and numbering them starting from 1:
+;(n-persons-with-name 'alex 'quinn 5)
+
 
 ;*************************
 ; INITIAL SETTINGS
-(setf *max-pop-ticks* 10)
+(setf *max-pop-ticks* 20)
 (setf *do-converse* NIL)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
@@ -135,5 +144,4 @@
 ; TEST RUN
 (init-pop)
 (print (get 'folks 'members))
-;(popco)
-
+(popco)

@@ -138,17 +138,17 @@
 
 ; catname in acme-personal.lisp has more complex function -MA 7/2011
 ; [using this now for make-names called by n-persons in consensus-personal.lisp]
-(defun simple-catname (front back)
-  (read-from-string 
-    (concatenate 'string 
-                 (symbol-name front) 
-                 (symbol-name back))))
-
-; old version based on PT's code:
 ;(defun simple-catname (front back)
-;    (read-from-string (coerce (append (coerce (princ-to-string front) 'list)
-;                                      (coerce (princ-to-string back) 'list))
-;                              'string)))
+;  (read-from-string 
+;    (concatenate 'string 
+;                 (symbol-name front) 
+;                 (symbol-name back))))
+
+; old version based on PT's code [advantage over MA's simple version: front and back can be anything e.g. a number]
+(defun simple-catname (front back)
+    (read-from-string (coerce (append (coerce (princ-to-string front) 'list)
+                                      (coerce (princ-to-string back) 'list))
+                              'string)))
 
 
 ; Does this symbol represent a proposition?
