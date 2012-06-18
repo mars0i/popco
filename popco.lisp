@@ -99,6 +99,20 @@
 (defun popco1 ()
   (popco-plus-t 1))
 
+; POPCO-UNTIL
+; Run POPCO until test-function returns true, testing every how-often pop-ticks.
+; Returns the elapsed real time in seconds.
+; test-function takes no arguments, but obviously can reference globals such as *the-population*.
+; Continues previous session, so (popco) should normally be run first.
+(defun popco-until (how-often test-function)
+  (let ((start-time (get-internal-real-time)))
+    (do ()
+        ((funcall test-function)               ; terminate when test returns true,
+         (real-time-elapsed-since start-time)) ; returning number of elapsed seconds
+      (setf *max-pop-ticks* (+ *pop-tick* how-often))
+      (run-population *the-population* :cont-prev-sess t))))
+
+
 ;; MAIN LOOP
 ;; RUN-POPULATION
 ;; Main loop through ticks/time, with inner loop through persons

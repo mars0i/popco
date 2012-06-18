@@ -243,6 +243,7 @@
 
 
 ; POPCO-UNTIL-PERSON-HAS-PROPNS 
+; Deprecated: Use popco-until in popco.lisp instead
 ; Run popco until there exists of a person with all members of a set of propns.
 ; This loop version seems a little easier to read than the tail-recursive version below
 (defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
@@ -258,16 +259,16 @@
 
 
 ; TEST RUN
+(setf *time-runs* nil)
 (make-persons-with-addl-propn #'make-skyless-person 'e sky-origin-propns) ; give each individual a distinct member of the sky-origin-propns
 (init-pop)
 (print (get 'folks 'members))
 (setf *max-pop-ticks* 0)
 (popco) ; initialize output files, etc.
 (setf *time-runs* nil)
-(time
-  (popco-until-person-has-propns 10 'target sky-origin-propns) ; run until someone has collected all of the sky-origin-propns
-)
+(popco-until 10 #'(lambda () (or (>= *pop-tick* 100) (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propns))))
 
+;(popco-until-person-has-propns 10 'target sky-origin-propns) ; run until someone has collected all of the sky-origin-propns
 
 
 

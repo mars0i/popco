@@ -10,6 +10,27 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+; REAL-TIME-ELAPSED-SINCE
+; Return number of seconds elapsed since earlier time as a float.
+(defun real-time-elapsed-since (earlier)
+  (coerce (/ (- (get-internal-real-time) earlier) 
+             internal-time-units-per-second)
+          'float))
+
+; RUN-TIME-ELAPSED-SINCE
+; Return number of seconds of "run time" elapsed since earlier time as a float.
+; The CL Spec says:
+;	The precise meaning of this quantity is implementation-defined; it may
+;	measure real time, run time, CPU cycles, or some other quantity. The
+;	intent is that the difference between the values of two calls to this
+;	function be the amount of time between the two calls during which
+;	computational effort was expended on behalf of the executing program.
+(defun run-time-elapsed-since (earlier)
+  (coerce (/ (- (get-internal-run-time) earlier) 
+             internal-time-units-per-second)
+          'float))
+
+
 ; Returns first n persons in the population's list of members:
 (defun first-n-persons (n)
   (subseq (get *the-population* 'members) 0 n))
