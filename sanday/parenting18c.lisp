@@ -244,9 +244,9 @@
 ; POP-HAS-MEMBER-WITH-THESE-PROPNS-IN-STRUC? 
 ; Test for the existence of a person with all members of a set of propns.
 ; Note: Propositions are proposition symbols, NOT the messages containing predicate, arguments, and name.
-(defun pop-has-member-with-these-propns-in-struc? (generic-struc propns &optional (population *the-population*))
-  (member-if #'(lambda (pers) (person-struc-has-these-propns? pers generic-struc propns))
-             (get population 'members)))
+(defun find-member-with-propns-in-struc? (generic-struc propns &optional (population *the-population*))
+  (find-if #'(lambda (pers) (person-struc-has-these-propns? pers generic-struc propns))
+           (get population 'members)))
 
 (defun person-struc-has-these-propns? (person generic-struc propns)
   (struc-has-these-propns? (generic-to-personal-sym generic-struc person)
@@ -256,21 +256,17 @@
 (defun struc-has-these-propns? (personal-struc propns)
   (subsetp propns (get personal-struc 'propositions)))
 
+; add salience for hunting propns to one person
+(defun hunterize-person (person) (setf *the-person* person) (mapc #'perceived HUNTING-PROPNS))
 
-; POPCO-UNTIL-PERSON-HAS-PROPNS 
-; Deprecated: Use popco-until in popco.lisp instead
-; Run popco until there exists of a person with all members of a set of propns.
-; This loop version seems a little easier to read than the tail-recursive version below
-;(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
-;  (do ()
-;      ((pop-has-member-with-these-propns-in-struc? generic-struc propns) t) ; terminate when test succeeds
-;    (popco-plus-t how-often-to-test)))
+; add salience for hunting propns to one person
+(defun parentize-person (person) (setf *the-person* person) (mapc #'perceived PARENTING-PROPNS))
 
-; tail recursive version
-;(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
-;  (unless (pop-has-member-with-these-propns-in-struc? generic-struc propns)
-;    (popco-plus-t how-often-to-test)
-;    (popco-until-person-has-propns how-often-to-test generic-struc propns)))
+; add salience for parenting propns to one person
+(defun deparentize-person (person) (setf *the-person* person) (mapc #'perceived-negation PARENTING-PROPNS))
+
+; add salience for parenting propns to one person
+(defun dehunterize-person (person) (setf *the-person* person) (mapc #'perceived-negation HUNTING-PROPNS))
 
 
 ; TEST RUN
@@ -282,8 +278,12 @@
 (popco) ; initialize output files, etc.
 (setf *time-runs* nil)
 
-;(popco-until 10 #'(lambda () (or (>= *pop-tick* 100) (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propns))))
-(popco-until 10 #'(lambda () (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propn-syms)) 2000)  
+(set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
+(popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) 1000)  
+(set-status-message "   sky propns filter through pop until collected in one person \\n-> env switches from parenting to some hunting <-")
+(defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms))
+(drop-salience)
+(hunterize-person sky-believer)
+(popco-plus-t 500)
 
-;(popco-until-person-has-propns 10 'target sky-origin-propns) ; run until someone has collected all of the sky-origin-propns
 

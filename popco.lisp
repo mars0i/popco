@@ -9,17 +9,17 @@
 
 ;; TO USE
 ;; First load:
-;;	popco-start.lisp [or its abbrevation start.lisp]
+;; 	popco-start.lisp [or its abbrevation start.lisp]
 ;; which loads the framework.
 ;; Then load 
 ;;	some persons in a population (cf. testbush.lisp).
 ;; which should run
-;;	(create-nets population)
+;; 	(create-nets population)
 ;; or
-;;	(init-pop population)
+;; 	(init-pop population)
 ;; [which do the same thing] to initialize the coherence network in each person.
 ;; Then call 
-;;	one of the run-population functions below, or their popco abbreviations.
+;; 	one of the run-population functions below, or their popco abbreviations.
 ;; You might also want to change the global variables mentioned below.
 
 ;; NAMING CONVENTION:
@@ -45,7 +45,7 @@
 ; Get a seed from the operating system.
 ; (In SBCL on OSX, this new seed to be the result of a pretty good random number
 ; generator--see SBCL source file target-random.lisp and 'man urandom'):
-; NOTE: We might nevertheless restore an old random state from a file.	This variable
+; NOTE: We might nevertheless restore an old random state from a file.  This variable
 ; just determines whether we reinitialize the random state on load, rather than allowing
 ; the possibility that the Lisp implementation will choose a fixed default.
 (when *use-new-random-state*
@@ -54,7 +54,7 @@
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
 (defvar *netlogo-output-name* "../data/popcodata.txt") ; filename for file-based output to external UI program
-(defvar *netlogo-outstream*)		       ; stream for same
+(defvar *netlogo-outstream*)                   ; stream for same
 
 ; SPECIAL is PT's all-purpose external-emphasis node, used to give extra activation
 ; to identical or semantically-related predicates, propositions presumed or desired
@@ -80,7 +80,7 @@
 (defun popco (&key cont-prev-sess) 
   (format t "~%Running popco with maximum of ~S cycles each in ~S popco tick(s) ....~%" *max-times* (- *max-pop-ticks* *pop-tick*))
   (format t "*do-converse* = ~S; *do-update-propn-nets* = ~S; *do-report-to-netlogo* = ~S *use-new-random-state* = ~S~%"
-	     *do-converse*	  *do-update-propn-nets*      *do-report-to-netlogo*	  *use-new-random-state*)
+             *do-converse*        *do-update-propn-nets*      *do-report-to-netlogo*      *use-new-random-state*)
   (if *time-runs* 
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
@@ -107,16 +107,20 @@
 ; test-function takes no arguments, but obviously can reference globals such as *the-population*.
 ; Continues previous session, so (popco) should normally be run first.
 (defun popco-until (how-often test-function &optional stop-after)
+
   (let ((start-time (get-internal-real-time)))
+
     (do ()
-        ((or (when stop-after		 ; if stop-after was specified
-               (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
-             (funcall test-function)))	 ; or test returns true, then terminate
-      (setf *max-pop-ticks* (+ *pop-tick* how-often))	   ; increment tick to run
+      ((or (when stop-after              ; if stop-after was specified
+             (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
+           (funcall test-function)))     ; or test returns true, then terminate
+      (setf *max-pop-ticks* (+ *pop-tick* how-often))      ; increment tick to run
       (run-population *the-population* :cont-prev-sess t)) ; and run until then
+
     ; now that we're done with the loop, tell user how long it ran:
     (let ((elapsed  (real-time-elapsed-since start-time)))
-      (format t "~%~S seconds (~S minutes)~%" elapsed (/ elapsed 60.0)))))
+      (format t "~%~S seconds (~S minutes)~%" elapsed (/ elapsed 60.0))
+      elapsed))) ; end of popco-until
 
 
 ;; MAIN LOOP
@@ -130,36 +134,36 @@
 ;; Specify cont-prev-session as non-nil to append to outfile; otherwise outfile will be deleted.
 
 (defun run-population (population &key cont-prev-sess)
-  
+
   ; If user doesn't request continue prev session, store current random seed/state into a file that can recreate it later:
   (unless cont-prev-sess
     (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
       (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*)))
-  
+
   ; If user doesn't request continue prev session, then delete/move output file if exists, and create new file:
   (when (and *do-report-to-netlogo* (not cont-prev-sess))
     (format t "Recreating output file for NetLogo ~S~%" *netlogo-output-name*)
     (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)
       (princ *netlogo-syntax-description* *netlogo-outstream*)
       (report-persons-initially population)))
-  
+
   (do ()
       ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
     (when *sleep-delay* (sleep *sleep-delay*))
     (if *do-report-to-netlogo*
-        (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)
-          (run-population-once population))
+      (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)
+        (run-population-once population))
       (run-population-once population))
     (when (and *write-person-graphs-at-pop-ticks* (= *pop-tick* (car *write-person-graphs-at-pop-ticks*)))
       (setf *write-person-graphs-at-pop-ticks* (cdr *write-person-graphs-at-pop-ticks*))
       (write-person-graphs (format nil "~A/~A/" *person-graphs-basename* *pop-tick*))))
-  
+
   (when *do-report-to-netlogo*
     (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)))
-  
+
   t)
-; end of run-population
-        
+  ; end of run-population
+
 
 ;; RUN-POPULATION-ONCE
 ;; Guts of the main loop.
@@ -172,16 +176,16 @@
 
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
   (incf *pop-tick*)
-  (update-proposition-nets			 ; update proposition network links based on activations of proposition-map-units [pop->pop]
-    (update-analogy-nets			 ; update internal analogy nets to reflect newly added propositions [pop->pop]
-      (report-conversations			 ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
-	(transmit-environments			 ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
-	  (transmit-utterances			 ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
-	    (choose-utterances			 ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
-	      (choose-conversers		 ; choose who talks to whom [pop->(converser-pairs . pop)]
-		(births-and-deaths		 ; choose who lives, dies, has babies, and do it [pop->pop] [split?] [currently a NO-OP]
-		  (report-persons		 ; optionally report state of persons to external gui, etc. [pop->pop]
-		    (settle-nets population)))))))))) ; settle nets, at least partially [pop->pop] +
+  (update-proposition-nets                       ; update proposition network links based on activations of proposition-map-units [pop->pop]
+    (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
+      (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
+        (transmit-environments                   ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
+          (transmit-utterances                   ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
+            (choose-utterances                   ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
+              (choose-conversers                 ; choose who talks to whom [pop->(converser-pairs . pop)]
+                (births-and-deaths               ; choose who lives, dies, has babies, and do it [pop->pop] [split?] [currently a NO-OP]
+                  (report-persons                ; optionally report state of persons to external gui, etc. [pop->pop]
+                    (settle-nets population)))))))))) ; settle nets, at least partially [pop->pop] +
   (report-progress-to-console) ; brief report on what tick [etc.] just occurred
   (finish-output))
 
@@ -196,7 +200,7 @@
 ; Also assumes less than 1 billion pop-ticks.
 (defun report-progress-to-console ()
   (format t "~C~C~C~C~C~C~C~C~C~S" #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace
-					 *pop-tick*))
+                                         *pop-tick*))
 
 (defun del-popco-outfile ()
   (delete-file *netlogo-output-name*))
@@ -210,7 +214,7 @@
 ;(defmacro listener-of-conv (conversation) `(third ,conversation))
 ;(defmacro analog-struc-of-propn (propn) `(caar (get ,propn 'belongs-to))) ; there's only one such [like struc-from-propn in acme.lisp]
 ;(defmacro analog-struc-of-pred (pred) `(car (get ,pred 'belongs-to)))
-;(defmacro analog-struc-of-obj (obj) `(car (get ,obj 'belongs-to)))	; BUG CURRENTLY OBJS DON'T HAVE THIS
+;(defmacro analog-struc-of-obj (obj) `(car (get ,obj 'belongs-to)))     ; BUG CURRENTLY OBJS DON'T HAVE THIS
 ;(defmacro speaker-of-cpair (conversepair) `(car ,conversepair))
 ;(defmacro listener-of-cpair (conversepair) `(cdr ,conversepair))
 ;(defmacro target-analog-strucs-of-person (person)
@@ -241,7 +245,7 @@
 ; It has the result that if *max-pop-ticks* is zero, popco will loop forever.
 ;(defun time-to-stop ()
 ;  (and (> *max-pop-ticks* 0)
-;	(>= *pop-tick* *max-pop-ticks*)))
+;       (>= *pop-tick* *max-pop-ticks*)))
 
 ; This variant might be useful e.g. if we capture ^C's and make the capture routine setf *stop-run?*:
 ;(defun time-to-stop ()
@@ -261,16 +265,16 @@
 ;; [consensus.lisp's make-meeters isn't appropriate here]
 ;; ARGS:    population
 ;; RETURNS: a cons with a list of pairs (lists) of persons as car, 
-;;	    and the entire population as cdr
+;;          and the entire population as cdr
 (defun choose-conversers (population) 
   (if (not *do-converse*)
     (cons nil population)
     (let* ((pop-members (get population 'members))
-	   (pop-size (length pop-members))
-	   (half-size (round (/ pop-size 2)))	; round up if odd number of members
-	   (randomized-members (randomize pop-members))
-	   (subpop1-members (butlast randomized-members half-size)) ; If pop-size is odd, we left out the member in the middle of the randomized list.
-	   (subpop2-members (nthcdr half-size randomized-members))) ; That's OK; s/he'll just have to wait until next time.
+           (pop-size (length pop-members))
+           (half-size (round (/ pop-size 2)))   ; round up if odd number of members
+           (randomized-members (randomize pop-members))
+           (subpop1-members (butlast randomized-members half-size)) ; If pop-size is odd, we left out the member in the middle of the randomized list.
+           (subpop2-members (nthcdr half-size randomized-members))) ; That's OK; s/he'll just have to wait until next time.
       ;(unless *silent-run?*
       ;  (format t "pop-members: ~s~%" pop-members)
       ;  (format t "pop-size: ~s~%" pop-size)
@@ -279,8 +283,8 @@
       ;  (format t "subpop1-members: ~s~%" subpop1-members)
       ;  (format t "subpop2-members: ~s~%" subpop2-members))
       (cons
-	(mapcar #'list subpop1-members subpop2-members) ; list of pairs
-	population))))
+        (mapcar #'list subpop1-members subpop2-members) ; list of pairs
+        population))))
 
 
 
@@ -288,16 +292,16 @@
 ;; CHOOSE-UTTERANCES
 
 ;; ARG: A list whose car is a set of pairs of persons (the first of whom will speak to the other)
-;;	and the population (not used--simply passed through for the sake of functional-ey-ness).
+;;      and the population (not used--simply passed through for the sake of functional-ey-ness).
 ;; RETURNS: A similar list, but with an interpersonal proposition consed onto each pair of persons.
-;;	    This will be what the first person says to the second in each case.
-;;	    Pairs are random without replacement. 
-;;	    However, if the speaker has nothing suitable to say, the corresponding result
-;;	    element will be missing--i.e. the result list will be shorter than the argument list.
-;;	    [If population size is odd, one person will sit out this round.]
+;;          This will be what the first person says to the second in each case.
+;;          Pairs are random without replacement. 
+;;          However, if the speaker has nothing suitable to say, the corresponding result
+;;          element will be missing--i.e. the result list will be shorter than the argument list.
+;;          [If population size is odd, one person will sit out this round.]
 ;; TODO?: If speaker has nothing to say, then listener looses chance this round to participate in
-;;	 conversation.	This is maybe undesirable.  e.g. if there are two such speakers, maybe their
-;;	 listeners ought to get a chance to converse with each other.
+;;       conversation.  This is maybe undesirable.  e.g. if there are two such speakers, maybe their
+;;       listeners ought to get a chance to converse with each other.
 (defun choose-utterances (conversers-and-pop)
   (cons 
     (mapcar-when #'choose-utterance (car conversers-and-pop))
@@ -308,7 +312,7 @@
 ; Or if choose-thought can't find any suitable proposition, and returns nil, choose-utterance also returns nil.
 (defun choose-utterance (conversepair)
   (let* ((speaker (speaker-of-cpair conversepair))
-	 (thought (choose-thought speaker)))
+         (thought (choose-thought speaker)))
     (if thought
       (cons thought conversepair)
       nil)))
@@ -328,11 +332,11 @@
 ; TODO?: See commment on choose-utterances.
 (defun choose-thought (speaker)
   (let* ((converse-strucs (get speaker 'converse-strucs)) ; list of analog strucs to use as propn sources. nil for all propns.
-	 (candidate-thoughts 
-	   (remove-if-not #'seems-worth-saying?
-			  (if converse-strucs
-			    (apply #'append (mapcar #'propns-from-struc converse-strucs)) ; get propns from designated analog strucs
-			    (get speaker 'all-propositions)))))
+         (candidate-thoughts 
+           (remove-if-not #'seems-worth-saying?
+                          (if converse-strucs
+                            (apply #'append (mapcar #'propns-from-struc converse-strucs)) ; get propns from designated analog strucs
+                            (get speaker 'all-propositions)))))
     (if candidate-thoughts ; <- maybe there was nothing suitable
       (elt candidate-thoughts (random (length candidate-thoughts)))
       nil)))
@@ -350,8 +354,8 @@
 (defun seems-worth-saying? (propn)
   (< (random 1.0)
      (+ *utterance-probability-increment* 
-	(* (abs (activation propn)) 
-	   *utterance-probability-multiplier*))))
+        (* (abs (activation propn)) 
+           *utterance-probability-multiplier*))))
 
 ;(defun activn-exceeds-threshold? (propn)
 ;  (>= (abs (get propn 'activation)) *utterance-threshold*))
@@ -370,15 +374,15 @@
 (defun make-env-conversations (person)
   (let ((env (get person 'env)))
     (mapcar #'(lambda (propn) (list propn env person))
-	    (get env 'all-propositions))))
+            (get env 'all-propositions))))
 
 ;; ARG: - car is a list of conversations; cdr is the population
-;;	- a conversation is a list with a personal proposition first
-;;	  the speaker who's proposition it is second, and the intended
-;;	  listener third.
+;;      - a conversation is a list with a personal proposition first
+;;        the speaker who's proposition it is second, and the intended
+;;        listener third.
 ;; RETURNS: The list of conversations with added new-propn flag, and population 
-;;	  after communication has taken place, with internal networks possibly 
-;;	  altered, but without new network settling.
+;;        after communication has taken place, with internal networks possibly 
+;;        altered, but without new network settling.
 (defun transmit-utterances (conversations-and-pop)
   (cons
     (mapcar #'transmit-utterance (car conversations-and-pop))
@@ -391,46 +395,46 @@
 (defun trust-in (listener speaker) *trust*)
 
 ;; ARGS: - a conversation containing
-;;	     - a speaker's proposition to be transmitted
-;;	     - the speaker
-;;	     - the listener
+;;           - a speaker's proposition to be transmitted
+;;           - the speaker
+;;           - the listener
 ;; RETURNS: - an extended conversation, with t consed on 
-;;	      to indicate it's a new addition to the listener, 
-;;	      or nil consed on to indicate it's not
+;;            to indicate it's a new addition to the listener, 
+;;            or nil consed on to indicate it's not
 (defun transmit-utterance (conversation)
   ;(format t "transmitting utterance: ~S~%" conversation) ; DEBUG
   (let ((speaker (speaker-of-conv conversation)))
     (setf *the-person* speaker)
     (let* ((listener (listener-of-conv conversation))
-	   (speaker-propn (prop-of-conv conversation))
-	   (generic-propn (personal-to-generic-sym speaker-propn)))
+           (speaker-propn (prop-of-conv conversation))
+           (generic-propn (personal-to-generic-sym speaker-propn)))
       (setf (activation generic-propn) (activation speaker-propn)) ; temporarily store activn in generic propn for communic to listener
       (list ; this list can provide information for displaying conversations in a gui
-	; next call adds proposition to listener if not already there, returning t if added, nil if not
+        ; next call adds proposition to listener if not already there, returning t if added, nil if not
 	; note: changes *the-person*
-	(receive-utterance generic-propn
-			   (personal-to-generic-sym 
+        (receive-utterance generic-propn
+                           (personal-to-generic-sym 
 			     (analog-struc-of-propn speaker-propn))
-			   listener
-			   (trust-in listener speaker)) ; calculate trust here - receive-utterance doesn't know the speaker
-			   
-	generic-propn
-	speaker
-	listener))))
+                           listener
+                           (trust-in listener speaker)) ; calculate trust here - receive-utterance doesn't know the speaker
+                           
+        generic-propn
+        speaker
+        listener))))
 
 ;; RECEIVE-UTTERANCE
 ;; ARGS: - a generic (interpersonal) proposition symbol.
-;;	 - the car of first item from the source personal proposition's belongs-to property:
-;;	    i.e. name of an analog struc
-;;	 - a person to whom this utterance should be sent
-;;	 - a degree of trust: number between 0 and 1 to weight the propn's transmitted credence;
-;;	   see utterance-influence to see what this really means.
+;;       - the car of first item from the source personal proposition's belongs-to property:
+;;          i.e. name of an analog struc
+;;       - a person to whom this utterance should be sent
+;;       - a degree of trust: number between 0 and 1 to weight the propn's transmitted credence;
+;;         see utterance-influence to see what this really means.
 ;; RETURNS: The new-flag: t if the proposition is a new addition to listener's analog struc, nil if not
 (defun receive-utterance (generic-propn generic-struc listener trust)
   (setf *the-person* listener)
   (let* ((personal-propn (generic-to-personal-sym generic-propn))
-	 (personal-struc (generic-to-personal-sym generic-struc))
-	 (is-new-thought (if (member personal-propn (get personal-struc 'propositions)) nil t))) ; the IF converts TRUE to T per se
+         (personal-struc (generic-to-personal-sym generic-struc))
+         (is-new-thought (if (member personal-propn (get personal-struc 'propositions)) nil t))) ; the IF converts TRUE to T per se
     (setf (get listener 'settled?) nil) ; analogy net is unsettled by new propn, but propn net is unsettled by any utterance
     (when is-new-thought 
       ;(format t "new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
@@ -461,7 +465,7 @@
 (defun invoke-semantic-iffs-for-propn (personal-propn person)
   ;(format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
   (mapc #'apply-raw-make-symlink-if-units
-	(find-semantic-iffs (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs is in popco-utils.lisp
+        (find-semantic-iffs (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs is in popco-utils.lisp
 
 
 
@@ -472,7 +476,7 @@
 ;; small number of cycles is reached, whether convegred or not.
 ;; ARGS:    a population
 ;; RETURNS: the same population, but after each person's network has settled
-;;	    for *max-times* cycles
+;;          for *max-times* cycles
 (defun settle-nets (population)
   (mapc #'settle-net (get population 'members))
   population)
@@ -491,7 +495,7 @@
 ;; REPORT-CONVERSATIONS
 ;; Outputs data on conversations for use by an external GUI etc.
 ;; ARG: conversations/population pair produced by transmit-utterances.
-;;	i.e. the conversations have added new-propn flags.
+;;      i.e. the conversations have added new-propn flags.
 ;; RETURNS: the population, unchanged
 (defun report-conversations (conversations-plus-and-pop)
   (when *do-report-to-netlogo* 
@@ -550,7 +554,7 @@
 (defun report-population-to-netlogo (population)
     (princ 
       (fmt-tree-for-netlogo
-	(mapcar #'fmt-person-for-netlogo (get population 'members)))
+        (mapcar #'fmt-person-for-netlogo (get population 'members)))
       *netlogo-outstream*)
     (terpri *netlogo-outstream*))
 
@@ -559,10 +563,10 @@
 
 (defun mark-items-old (person)
   (mapc #'mark-unit-old (get person 'newly-added-propn-units)) ; undo what receive-utterance did
-  (setf (get person 'newly-added-propn-units) nil)	       ;  ditto
+  (setf (get person 'newly-added-propn-units) nil)             ;  ditto
   (mapc #'mark-unit-old (get person 'newly-added-map-units))   ; undo what make-hyp-unit and make-obj-unit did
-  (setf (get person 'newly-added-map-units) nil)	       ;  ditto
-  (setf (get person 'newly-added-constraints) nil)	       ; undo what make-symlink and update-salient-link and maybe receive-utterance did
+  (setf (get person 'newly-added-map-units) nil)               ;  ditto
+  (setf (get person 'newly-added-constraints) nil)             ; undo what make-symlink and update-salient-link and maybe receive-utterance did
   (setf (get person 'newly-removed-constraints) nil))
 
 
@@ -621,10 +625,10 @@
 ; constraint-map from acme.lisp does most of the real work here
 (defun update-analogy-net (person)
   (setf *the-person* person) ; [redund when called from create-net]
-  (mapc (lambda (targ)	   ; applies constraint-map to all pairs of target, source analogs
-	  (mapc (lambda (src) (constraint-map targ src))
-		(source-analog-strucs-of-person person)))  ; note *the-person* has to be set properly
-	(target-analog-strucs-of-person person))	   ;  even though person is passed in here
+  (mapc (lambda (targ)     ; applies constraint-map to all pairs of target, source analogs
+          (mapc (lambda (src) (constraint-map targ src))
+                (source-analog-strucs-of-person person)))  ; note *the-person* has to be set properly
+        (target-analog-strucs-of-person person))           ;  even though person is passed in here
   (mapc #'mark-dont-sum-weights (get person 'newly-added-map-units)))  ; Added by MA 12/2011
   ; EXPLANATION OF MARKING: 
   ; 1. Map units are marked as new when created, in acme.lisp.
@@ -639,7 +643,7 @@
   ; want to sum weights in subsequent pop-ticks when we call constraint map
   ; on the same pairs of nodes again.  It's only when one of the nodes is new, 
   ; due to conversation, that weights should be summed during the initial
-  ;  network construction process involving that node.	[make-symlink in
+  ;  network construction process involving that node.  [make-symlink in
   ; network.lisp tests for the dont-sum-weights flag on both map units
   ; and will leave the link alone if either it's set for either unit.]
   ; Therefore we set the dont-sum-weights flag *after* calling constraint-map,
@@ -666,7 +670,7 @@
 ; OLD CODE FORMERLY IN UPDATE-NET:
     ; old two-analog version of the constraint-map calls:
     ; (constraint-map (generic-to-personal-sym 'target)
-    ;		      (generic-to-personal-sym 'source))
+    ;                 (generic-to-personal-sym 'source))
 
     ; The following code used to appear in update-analogy-net after the double mapc ... constraint-map ... form,
     ;  near the end of update-analogy-net, but it's only needed on demand, not in every pop-tick.
@@ -674,7 +678,7 @@
     ;  seem to matter for sbcl or ccl--Maybe they were compiling it away since nothing used it?]
     ;(setf *weight-of-all-constraints* (sum-constraints)) ; only used in coh-score; maybe delete
     ;(setf (get *the-person* 'all-constraints) 
-    ;	   (list-constraints (get *the-person* 'all-units))) ; useful to have record of constraints in person
+    ;      (list-constraints (get *the-person* 'all-units))) ; useful to have record of constraints in person
 
 
 ; RECORD-CONSTRAINTS
@@ -707,13 +711,13 @@
 ; *THE-PERSON* MUST BE SET CORRECTLY.
 (defun perceived (msg &optional (degree 1.0))
   (let* ((env (make-persons-env-sym *the-person*))
-	 (struc (generic-to-personal-sym 'source env)))
-    (unless (get *the-person* 'env)	      ; give the person its environment if doesn't exist
+         (struc (generic-to-personal-sym 'source env)))
+    (unless (get *the-person* 'env)           ; give the person its environment if doesn't exist
       (setf (get *the-person* 'env) env)
       (push struc (get env 'all-structures)))
     (make-propn struc 'ignored msg env)
     (init-propn (generic-to-personal-sym (last-element msg) env)
-		degree env)))
+                degree env)))
 
 ; PERCEIVED-NEGATION
 ; Perceive a propn.  Insert the proposition into a person's "external" 
@@ -722,6 +726,15 @@
 ; *THE-PERSON* MUST BE SET CORRECTLY.
 (defun perceived-negation (msg)
   (perceived msg -1))
+
+; DROP SALIENCE
+; make nothing salient for anyone:
+(defun drop-salience ()
+  (remove-all-constraints-from 'salient)
+  ; THIS SHOULD MAYBE BE DONE WITH CLEAR-PROPN IN acme.lisp:
+  (mapc #'(lambda (person) (setf (get (get person 'env) 'all-propositions) '()))
+        (get *the-population* 'members)))
+
 
 ; UNPERCEIVED
 ; Remove the property of being perceived from a proposition or its negation.  
@@ -735,9 +748,9 @@
 ; This is to replace calls to symlink-if-units in model specification files such as those in the sanday directory.
 (defun generic-semantic-iff (generic-propn1 generic-propn2 weight &optional (person *the-person*))
   (personal-semantic-iff (generic-to-personal-sym generic-propn1)
-			 (generic-to-personal-sym generic-propn2)
-			 weight 
-			 person))
+                         (generic-to-personal-sym generic-propn2)
+                         weight 
+                         person))
 
 ; SEMANTIC-IFF
 ; This makes semantic-iff an abbreviation for generic-semantic-iff by setting its function-value to be the same function:
@@ -760,8 +773,8 @@
 ;; *THE PERSON* MUST BE SET PROPERLY.
 (defun make-personal-symlink-if-units (generic-unit1 generic-unit2 weight)
   (make-symlink-if-units (generic-to-personal-sym generic-unit1)
-			  (generic-to-personal-sym generic-unit2)
-			  weight))
+                          (generic-to-personal-sym generic-unit2)
+                          weight))
 
 ;; OBSOLETE--use semantic-iff:
 ;; Abbreviation for preceding, which see.
@@ -777,7 +790,7 @@
 ;; appropriate beliefs or other nodes don't exist.
 (defun make-symlink-if-units (unit1 unit2 weight)
   (when (and (unit? unit1)
-	     (unit? unit2))
+             (unit? unit2))
     (make-symlink unit1 unit2 weight))) ; from network.lisp
 
 
@@ -786,7 +799,7 @@
 ;; have activation values.  Silently returns nil if not.
 (defun raw-make-symlink-if-units (unit1 unit2 weight)
   (when (and (unit? unit1)
-	     (unit? unit2))
+             (unit? unit2))
     (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
     (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
 
@@ -826,13 +839,13 @@
   (if (member sym *special-units*) ; these are special units which should not be converted
     sym
     (let ((sym-name (symbol-name sym)))
-      (if (not (search *personal-separator* sym-name))	; note 0 is true
-	(error "PERSONAL-TO-GENERIC-SYM: Trying to convert a generic symbol to a generic symbol: ~s" sym))
+      (if (not (search *personal-separator* sym-name))  ; note 0 is true
+        (error "PERSONAL-TO-GENERIC-SYM: Trying to convert a generic symbol to a generic symbol: ~s" sym))
       (let ((person-tag (concatenate 'string (symbol-name person) *personal-separator*)))
-	(if (eql 0 (search person-tag sym-name)) ; if sym-name begins w/ person-tag [rets nil if not found]
-	  (read-from-string (subseq sym-name (length person-tag))) ; get/make symbol without tag
-	  (error "PERSONAL-TO-GENERIC-SYM: Personal symbol ~s doesn't belong to person ~s." 
-		 sym person))))))
+        (if (eql 0 (search person-tag sym-name)) ; if sym-name begins w/ person-tag [rets nil if not found]
+          (read-from-string (subseq sym-name (length person-tag))) ; get/make symbol without tag
+          (error "PERSONAL-TO-GENERIC-SYM: Personal symbol ~s doesn't belong to person ~s." 
+                 sym person))))))
 
 ;; Convert a generic symbol name (e.g. for a proposition or predicate)
 ;; into a corresponding persons-specific symbol.
@@ -845,11 +858,11 @@
     sym
     (let ((sym-name (symbol-name sym)))
       (if (search *personal-separator* sym-name)  ; note 0 is true
-	(error "GENERIC-TO-PERSONAL-SYM: Trying to convert a personal symbol to a personal symbol: ~s" sym))
+        (error "GENERIC-TO-PERSONAL-SYM: Trying to convert a personal symbol to a personal symbol: ~s" sym))
       (read-from-string 
-	(concatenate 'string (symbol-name person) 
-		     *personal-separator*
-		     sym-name)))))
+        (concatenate 'string (symbol-name person) 
+                     *personal-separator*
+                     sym-name)))))
 
 ; PERSONAL-SYM-P and GENERIC-SYM-P
 ; Unsophisticated tests for a symbol being a personalized symbol:
@@ -911,13 +924,13 @@
   (if (member sym *special-units*) ; these are special units which should not be converted
     sym
     (let ((sym-name (symbol-name sym)))
-      (if (not (search *personal-separator* sym-name))	; note 0 is true
-	(error "PERSONAL-TO-GENERIC-SYM: Trying to convert a generic symbol to a generic symbol: ~s" sym))
+      (if (not (search *personal-separator* sym-name))  ; note 0 is true
+        (error "PERSONAL-TO-GENERIC-SYM: Trying to convert a generic symbol to a generic symbol: ~s" sym))
       (let ((person-tag (concatenate 'string (symbol-name person) *personal-separator*)))
-	(if (eql 0 (search person-tag sym-name)) ; if sym-name begins w/ person-tag [rets nil if not found]
-	  (read-from-string (subseq sym-name (length person-tag))) ; get/make symbol without tag
-	  (error "PERSONAL-TO-GENERIC-SYM: Personal symbol ~s doesn't belong to person ~s." 
-		 sym person))))))
+        (if (eql 0 (search person-tag sym-name)) ; if sym-name begins w/ person-tag [rets nil if not found]
+          (read-from-string (subseq sym-name (length person-tag))) ; get/make symbol without tag
+          (error "PERSONAL-TO-GENERIC-SYM: Personal symbol ~s doesn't belong to person ~s." 
+                 sym person))))))
 
 ;; Convert a generic symbol name (e.g. for a proposition or predicate)
 ;; into a corresponding persons-specific symbol.
@@ -930,11 +943,11 @@
     sym
     (let ((sym-name (symbol-name sym)))
       (if (search *personal-separator* sym-name)  ; note 0 is true
-	(error "GENERIC-TO-PERSONAL-SYM: Trying to convert a personal symbol to a personal symbol: ~s" sym))
+        (error "GENERIC-TO-PERSONAL-SYM: Trying to convert a personal symbol to a personal symbol: ~s" sym))
       (read-from-string 
-	(concatenate 'string (symbol-name person) 
-		     *personal-separator*
-		     sym-name)))))
+        (concatenate 'string (symbol-name person) 
+                     *personal-separator*
+                     sym-name)))))
 
 ; PERSONAL-SYM-P and GENERIC-SYM-P
 ; Unsophisticated tests for a symbol being a personalized symbol:
