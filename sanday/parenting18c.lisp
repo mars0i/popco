@@ -70,6 +70,8 @@
     (distant (s-god human) os-Heavenly-God)
    ))
 
+(defvar sky-origin-propn-syms (mapcar #'last-element sky-origin-propns))
+
 (defvar earth-origin-propns
   '(
     (inside (human e-god) oe-Protohuman-Inside)
@@ -82,7 +84,11 @@
     (close (e-god human) oe-Earthly-God)
    ))
 
+(defvar earth-origin-propn-syms (mapcar #'last-element earth-origin-propns))
+
+
 (defvar origin-propns (append generic-origin-propns sky-origin-propns earth-origin-propns))
+
 
 ; Hunting involves emotional/metaphorical paradox [problematic for ACME]: 
 ; Man and animal are both predator and prey; animal is both life-taking and and life-giving.
@@ -106,6 +112,9 @@
     (distant-agent (game man) h-Game-Distant) ; man treats game as agent--but as distant, as other
    ))
 
+(defvar hunting-propn-syms (mapcar #'last-element hunting-propns))
+
+
 (defvar parenting-propns
   '(
     (alive (child) p-Child-Alive)
@@ -121,6 +130,8 @@
     (causes (nothing p-Woman-Helps-Child) p-Woman-Nurtures)
     (nothing (nothing) p-Nothing) ; allows nothings in source and target to become related
    ))
+
+(defvar parenting-propn-syms (mapcar #'last-element parenting-propns))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -229,14 +240,18 @@
           (make-names2 basename first-number (length addl-target-propns)))) ; make one person name for each addl propn to be added
     (mapc person-maker names addl-target-propns)))
 
+
 ; POP-HAS-MEMBER-WITH-THESE-PROPNS-IN-STRUC? 
 ; Test for the existence of a person with all members of a set of propns.
+; Note: Propositions are proposition symbols, NOT the messages containing predicate, arguments, and name.
 (defun pop-has-member-with-these-propns-in-struc? (generic-struc propns &optional (population *the-population*))
   (member-if #'(lambda (pers) (person-struc-has-these-propns? pers generic-struc propns))
              (get population 'members)))
 
 (defun person-struc-has-these-propns? (person generic-struc propns)
-  (struc-has-these-propns? (generic-to-personal-sym generic-struc person) propns))
+  (struc-has-these-propns? (generic-to-personal-sym generic-struc person)
+                           (mapcar #'(lambda (p) (generic-to-personal-sym p person))
+                                   propns)))
 
 (defun struc-has-these-propns? (personal-struc propns)
   (subsetp propns (get personal-struc 'propositions)))
@@ -246,10 +261,10 @@
 ; Deprecated: Use popco-until in popco.lisp instead
 ; Run popco until there exists of a person with all members of a set of propns.
 ; This loop version seems a little easier to read than the tail-recursive version below
-(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
-  (do ()
-      ((pop-has-member-with-these-propns-in-struc? generic-struc propns) t) ; terminate when test succeeds
-    (popco-plus-t how-often-to-test)))
+;(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
+;  (do ()
+;      ((pop-has-member-with-these-propns-in-struc? generic-struc propns) t) ; terminate when test succeeds
+;    (popco-plus-t how-often-to-test)))
 
 ; tail recursive version
 ;(defun popco-until-person-has-propns (how-often-to-test generic-struc propns)
@@ -266,136 +281,9 @@
 (setf *max-pop-ticks* 0)
 (popco) ; initialize output files, etc.
 (setf *time-runs* nil)
-(popco-until 10 #'(lambda () (or (>= *pop-tick* 100) (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propns))))
+
+;(popco-until 10 #'(lambda () (or (>= *pop-tick* 100) (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propns))))
+(popco-until 10 #'(lambda () (pop-has-member-with-these-propns-in-struc? 'target sky-origin-propn-syms)) 2000)  
 
 ;(popco-until-person-has-propns 10 'target sky-origin-propns) ; run until someone has collected all of the sky-origin-propns
 
-
-
-; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; ; function that is supposed to switch direction of population
-; ; does it by desalientizing everyone, then adding new members with opposite view.
-; 
-; ; make nothing salient for anyone:
-; (defun drop-salience ()
-;   (remove-all-constraints-from 'salient)
-;   ; THIS SHOULD MAYBE BE DONE WITH CLEAR-PROPN IN acme.lisp:
-;   (mapc #'(lambda (person) (setf (get (get person 'env) 'all-propositions) '()))
-;         (get *the-population* 'members)))
-; 
-; ; add salience for hunting propns to one person
-; (defun hunterize-person (person)
-;   (setf *the-person* person)
-;   (mapc #'perceived HUNTING-PROPNS))
-; 
-; ; add salience for hunting propns to one person
-; (defun parentize-person (person)
-;   (setf *the-person* person)
-;   (mapc #'perceived PARENTING-PROPNS))
-; 
-; ; add salience for parenting propns to one person
-; (defun deparentize-person (person)
-;   (setf *the-person* person)
-;   (mapc #'perceived-negation PARENTING-PROPNS))
-; 
-; ; add salience for parenting propns to one person
-; (defun dehunterize-person (person)
-;   (setf *the-person* person)
-;   (mapc #'perceived-negation HUNTING-PROPNS))
-; 
-; ; add salience for parenting propns to one person
-; ; DOESN'T WORK AS OF 5/27/12 because PERCEIVED in popco.lisp always puts propns in an env's source struc,
-; ; even when they are from the target struc.  This causes the propns to then be transmitted into the source
-; ; struc, mixing target propns in the person's source struc.  This causes mappings from a propn to itself,
-; ; which is not allowed.
-; ;(defun deskyize-person (person)
-; ;  (setf *the-person* person)
-; ;  (mapc #'perceived-negation sky-origin-propns))
-; 
-; ; add salience for hunting propns for the first n members of the pop [i.e. first in the member list]
-; (defun hunterize-n-persons (n)
-;   (mapc #'hunterize-person (first-n-persons n)))
-; 
-; ; add negative salience for parenting propns for the last n members of the pop [i.e. last in the member list]
-; (defun deparentize-n-persons (n)
-;   (mapc #'deparentize-person (last-n-persons n)))
-; 
-; ; add salience for hunting propns for the first n members of the pop [i.e. first in the member list]
-; (defun parentize-n-persons (n)
-;   (mapc #'parentize-person (first-n-persons n)))
-; 
-; ; add negative salience for parenting propns for the last n members of the pop [i.e. last in the member list]
-; (defun dehunterize-n-persons (n)
-;   (mapc #'dehunterize-person (last-n-persons n)))
-; 
-; (defun switch-pop ()
-;   (let ((pop-size (length (get *the-population* 'members))))
-;     (drop-salience)
-;     ; now make hunting salient for some:
-;     (parentize-n-persons (round (* pop-size *fraction-to-parentize*)))
-;     (dehunterize-n-persons (round (* pop-size *fraction-to-dehunterize*)))
-;     ; now start people talking
-;     (setf *do-converse* t)))
-; 
-; (defvar basic-status-message 
-; "stabilize on hunting; no conversation
-; begin conversation
-; two drop salience, two switch to parenting")
-; 
-; (defun setup-pop ()
-;   (setf *time-runs* nil)
-; ;  (setf *write-person-graphs-at-pop-ticks* '(25 200 500 1000 1100 1200 1500 2000 2100 2200 2500 3000))
-; ;  (setf *person-graphs-basename* "graphs/sanday/parenting18/a/noanalogy")
-;   (n-persons-with-name 'sky-hunter 's 2)
-;   (rem-elt-from-property 'sky-hunter 'folks 'members) ; but then delete it--simply because its name is long
-;   (persons-like 'hunter-parent-A '(hA))
-;   (persons-like 'hunter-parent-B '(hB))
-;   (rem-elt-from-property 'hunter-parent-A 'folks 'members) ; but then delete it--simply because its name is long
-;   (rem-elt-from-property 'hunter-parent-B 'folks 'members) ; but then delete it--simply because its name is long
-;   (init-pop))
-; 
-; (defun make-initial-graphs ()
-;   (setf *do-report-analogy-nets-to-guess* t)
-;   (write-person-graphs "graphs/sanday/parenting18/a/analogy/0/" 'folks :include-graph-label-nodes nil)
-;   (setf *do-report-analogy-nets-to-guess* nil)
-;   (write-person-graphs "graphs/sanday/parenting18/a/noanalogy/0/" 'folks :include-graph-label-nodes nil))
-; 
-; (defun run-pop ()
-;   (time (progn
-;           (set-status-message 
-; "-> stabilize on hunting; no conversation <- [until tick 30]\\n   begin conversation   \\n   two drop salience, two switch to parenting")
-;           (setf *max-pop-ticks* 30)
-;           (setf *do-converse* nil)
-;           (popco)
-;           (set-status-message
-; "   stabilize on hunting; no conversation   \\n-> begin conversation <- [until tick 600]\\n   two drop salience, two switch to parenting")
-;           (setf *do-converse* t)
-;           (popco-plus-t 570)
-;           ;(setf *do-report-analogy-nets-to-guess* t)(write-person-graphs "graphs/sanday/parenting18/a/analogy/600/")
-;           ;(setf *do-report-analogy-nets-to-guess* nil)(write-person-graphs "graphs/sanday/parenting18/a/noanalogy/600/")
-;           (set-status-message
-; "   stabilize on hunting; no conversation   \\n   begin conversation   \\n-> two switch to parenting salience, two drop salience <- [until tick 3000]")
-;           (drop-salience)
-;           (dehunterize-person 'hA)
-;           (parentize-person 'hA)
-;           (dehunterize-person 'hB)
-;           (parentize-person 'hB)
-;           (popco-plus-t 1400)
-;           ;(setf *do-report-analogy-nets-to-guess* t)(write-person-graphs "graphs/sanday/parenting18/a/analogy/2000/")
-;           ;(setf *do-report-analogy-nets-to-guess* nil)(write-person-graphs "graphs/sanday/parenting18/a/noanalogy/2000/")
-;           (popco-plus-t 1000)
-;           ;(setf *do-report-analogy-nets-to-guess* t)(write-person-graphs "graphs/sanday/parenting18/a/analogy/3000/")
-;           ;(setf *do-report-analogy-nets-to-guess* nil)(write-person-graphs "graphs/sanday/parenting18/a/noanalogy/3000/")
-;         )))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; RUN IT:
-
-;(prompt-for-params)
-;(n-persons-with-name 'hunter-parent 'p *pop-size*) ; clone 'mless-hunter-parent
-;(rem-elt-from-property 'hunter-parent 'folks 'members) ; but then delete it--simply because its name is long
-;(print-parameters)
-;(init-pop)
-;(print (get 'folks 'members))
-
-;(setup-pop)

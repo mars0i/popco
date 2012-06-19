@@ -101,16 +101,22 @@
 
 ; POPCO-UNTIL
 ; Run POPCO until test-function returns true, testing every how-often pop-ticks.
+; optional arg stop-after is a tick after which to terminate.  Note won't necessarily
+; stop exactly at that tick, unless how-often = 1.
 ; Returns the elapsed real time in seconds.
 ; test-function takes no arguments, but obviously can reference globals such as *the-population*.
 ; Continues previous session, so (popco) should normally be run first.
-(defun popco-until (how-often test-function)
+(defun popco-until (how-often test-function &optional stop-after)
   (let ((start-time (get-internal-real-time)))
     (do ()
-        ((funcall test-function)               ; terminate when test returns true,
-         (real-time-elapsed-since start-time)) ; returning number of elapsed seconds
-      (setf *max-pop-ticks* (+ *pop-tick* how-often))
-      (run-population *the-population* :cont-prev-sess t))))
+      ((or (when stop-after              ; if stop-after was specified
+             (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
+           (funcall test-function)))     ; or test returns true, then terminate
+      (setf *max-pop-ticks* (+ *pop-tick* how-often))      ; increment tick to run
+      (run-population *the-population* :cont-prev-sess t)) ; and run until then
+    ; now that we're done with the loop, tell user how long it ran:
+    (let ((elapsed  (real-time-elapsed-since start-time)))
+      (format t "~%~S seconds (~S minutes)~%" elapsed (/ elapsed 60.0)))))
 
 
 ;; MAIN LOOP
