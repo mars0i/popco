@@ -10,6 +10,15 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+(defun symbol-lessp (sym1 sym2)
+  (string-lessp (symbol-name sym1) (symbol-name sym2)))
+
+(defun symbol< (sym1 sym2)
+  (string< (symbol-name sym1) (symbol-name sym2)))
+
+(defun symbol-sort (syms)
+  (stable-sort (copy-list syms) #'symbol<))
+
 ; REAL-TIME-ELAPSED-SINCE
 ; Return number of seconds elapsed since earlier time as a float.
 (defun real-time-elapsed-since (earlier)
@@ -70,11 +79,6 @@
     nil
     (cons (car plist) 
           (keys-from-plist (cddr plist)))))
-
-; Define these little functions first in case compiler wants to inline them.
-
-(defun symbol-lessp (sym1 sym2)
-  (string-lessp (symbol-name sym1) (symbol-name sym2)))
 
 (defun activn-greaterp (u1 u2)
   (> (activation u1) (activation u2)))

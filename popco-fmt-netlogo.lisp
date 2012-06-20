@@ -3,6 +3,8 @@
 ;; May be distributed only with permission from the author.
 ;; Data-formatting functions for output to NetLogo
 
+;; 6/20/2012 fmt-activation moved to popco-fmt-utils.lisp
+
 ;;----------------------------------------------------------
 ;; POPCO/COHERE->NETLOGO functions
 
@@ -38,15 +40,11 @@
         '() ;(mapcar #'personal-to-generic-sym (get person 'all-objects))      ; object names     ; NOT CURRENTLY USED
         (mapcar #'fmt-map-unit-for-netlogo (remove-if-not #'propn-map? (get person 'all-units))) ; use #'is-acme-unit to get all map units
         (mapcar #'fmt-activation (get person 'all-propositions)))) ; activactions of propns, in the same order as propn names
+        ; fmt-activation is in popco-fmt-utils.lisp
 
 (defun fmt-map-unit-for-netlogo (unit)
   (append (mapcar #'personal-to-generic-sym (get unit 'concerns))
           (list (coerce (get unit 'activation) 'single-float))))
-
-(defun fmt-activation (unit)
-  (if (activation unit)
-    (coerce (activation unit) 'short-float)
-    0.0))
 
 ;; Replace fmt-list-string with fmt-tree-..., as in old report-activation?
 ;; [No: Then can't take advantage of some Lisp's default pretty-printing.]
@@ -77,6 +75,10 @@
 ;; Given a list--possibly of lists [of lists, etc.]--
 ;; produces a string which is a representation of the same list [of lists, etc.],
 ;; but with square brackets instead of parentheses.
+(defun fmt-tree-for-netlogo (tree)
+  (concatenate-tree (fmt-tree-for-netlogo-aux tree))) ; concatenate-tree in popco-fmt-utils.lisp
+
+;; old version of preceding, replaced when I abstracted out concatenate-tree
 (defun fmt-tree-for-netlogo (tree)
   (let ((netlogo-strings 
           (flatten (fmt-tree-for-netlogo-aux tree)))) ; flatten is in popco-utils.lisp

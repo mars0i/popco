@@ -105,6 +105,8 @@
 (terpri)
 
 (print "Loading POPCO data formatting functions:")
+(myload "popco-fmt-utils") (print "popco-fmt-utils loaded")
+(myload "popco-fmt-csv") (print "popco-fmt-csv loaded")
 (myload "popco-fmt-netlogo") (print "popco-fmt-netlogo loaded")
 (myload "popco-fmt-guessML-general") (print "popco-fmt-guessML-general loaded")
 (myload "popco-fmt-guessML-specific1") (print "popco-fmt-guessML-specific1 loaded")
