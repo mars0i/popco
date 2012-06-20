@@ -1,35 +1,11 @@
 top tasks:
 
-. Try this (see thelacuna_timescale in CulturalSim nts):
-        have many agents
-        distribute propns from the alternative origin story between some agents
-        let them filter with low probability, bit by bit, around the pop
-        eventually collecting in at least one agent
-        meanwhile everyone is still stable on a salient worldly and origin domain pair
-        now switch worldly
-        what I think could happen is that some would just be kind of confused
-        for a while, and persist in their origin beliefs,
-        but the guy with the right analogy set up, would have hiser alternative
-        origin bels kick in, and then would start saying them to others.
-        who at this point don't even have the right analogy net to make sense
-        of those bels, and maybe will get resistance at least from the conflict
-        with some original origin bels
-        And then maybe over time, from the one evangelist, the new ideas
-        will spread and the analogy nets will become full with the new ideas,
-        and since everyone's got the new worldly stuff going, they will end
-        up switching over to the new origin story.
-        That's the idea.
-        Note this is very stochastic, so many runs would be worthwhile
-        too bad no NetLogo behavior space (can Kristen help?)
-  Have started this in parenting18c.
-  TODO: Add test for the existence of a person with all members of a set of propns, and test for it occasionally.
-  That will tell you when to switch the worldly propositions salience.
-  THIS IS ANALOGOUS TO GENETIC DRIFT AND RECOMBINATION WITH
-  ENVIRONMENTAL CHANGE MAKING NEUTRAL OR SLIGHLTY DELETERIOUS
-  GENOTYPES FIT.
+. UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
+  New nodes in analogy net appear but don't get linked.
+  Is the is-new-link stuff broken??  Or what?
 
-  TEST ISN'T WORKING YET.  Run is not stopping when it should.
-
+. MAKE CSV FILE FOR PROPN ACTIVNS AT LEAST.
+  [IN PROGRESS]
 
 . Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical
