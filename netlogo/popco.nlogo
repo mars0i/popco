@@ -44,6 +44,8 @@ globals
   person-size
   person-color
   
+  data-is-from-file ; true if we are reading our data from a file, false if we are getting it from internal processes (e.g. abcl)
+  
   population-data-file ; gives a series of internal states of each person in pop at a given time/tick
   ;SYNTAX: list-of-persons list-of-conversations list-of-persons list-of-conversations ...
   ; person: [name [proposition ...] [predicate ...] [object ...] [maplink ...]]
@@ -253,9 +255,9 @@ to finish
   file-close-all
 end
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Setup Procedures ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Data Input Procedures ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to-report open-population-data
   file-close-all  ; make sure no open files hanging around from previous runs
@@ -268,23 +270,61 @@ to-report open-population-data
   ]
   
   file-open population-data-file
+  set data-is-from-file true
   
   report true
 end
 
-; wrappers for future generalization (assumes data file open):
-
 to-report get-propn-cat-prefixes
-  report (file-read)
+  if-else data-is-from-file [
+    report (file-read)
+  ][
+    error "Getting data from internal processes is not yet implemented."
+  ]
 end
 
 to-report get-propn-cat-descs
-  report (file-read)
+  if-else data-is-from-file [
+    report (file-read)
+  ][
+    error "Getting data from internal processes is not yet implemented."
+  ]
 end
 
 to-report get-initial-state
-  report (file-read)
+  if-else data-is-from-file [
+    report (file-read)
+  ][
+    error "Getting data from internal processes is not yet implemented."
+  ]
 end
+
+; Wrapper function for whatever operation gets the next population state data
+; Returns false if at end of file, or data list otherwise.
+to-report get-next-state
+  if-else data-is-from-file [
+    if-else uneof:file-at-end-now? [
+      report false
+    ][
+      report file-read
+    ]
+  ][
+    error "Getting data from internal processes is not yet implemented."
+  ]  
+end
+
+; wrapper function for whatever operation gets the next conversation data
+to-report get-next-convs
+  if-else data-is-from-file [
+    report (file-read)  ; if we hit EOF here, the file is bad; let it error out.
+  ][
+    error "Getting data from internal processes is not yet implemented."
+  ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Setup Procedures ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 to-report set-initial-population-config []
   let result 0 ; temporary dummy value
@@ -304,7 +344,7 @@ to-report set-initial-population-config []
     ]
         
     set pop-initial-state get-initial-state
-    set all-proposition-names (get-all-proposition-names pop-initial-state)
+    set all-proposition-names (extract-proposition-names pop-initial-state)
     set result true
   ][
     print "In procedure set-initial-population-config:"
@@ -320,7 +360,7 @@ to-report set-initial-population-config []
   report result
 end
 
-to-report get-all-proposition-names [pop-initial-state]
+to-report extract-proposition-names [pop-initial-state]
   report remove-duplicates                                     ; Remove dupes from ...
            reduce [sentence ?1 ?2]                             ; a list concatenated from ...
               map [item PROPOSITIONS-idx ?] pop-initial-state  ; a list of lists of proposition names ...
@@ -644,21 +684,6 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Main Procedures ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;
-
-; Wrapper function for whatever operation gets the next population state data
-; Returns false if at end of file, or data list otherwise.
-to-report get-next-state
-  if-else uneof:file-at-end-now? [
-    report false
-  ][
-    report file-read
-  ]
-end
-
-; wrapper function for whatever operation gets the next conversation data
-to-report get-next-convs
-  report (file-read)  ; if we hit EOF here, the file is bad; let it error out.
-end
 
 to go-movie
   show (sentence "running movie for " population-data-ticks " ticks")
@@ -1195,7 +1220,7 @@ propositions-circle-radius
 propositions-circle-radius
 5
 50
-22
+10
 1
 1
 NIL
@@ -1210,7 +1235,7 @@ person-circle-radius
 person-circle-radius
 20
 200
-70
+82
 2
 1
 NIL
