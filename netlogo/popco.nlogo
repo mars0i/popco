@@ -194,8 +194,6 @@ to setup
   clear-output
   reset-timer
   reset-ticks
-  ; next line uses goo functions, which seem to behave oddly sometimes when called from setup; better to run from a button.
-  ;add-plot-descs ; this should go after reset-ticks because it calls functions from the goo extension, which can cause a premature exit from setup
 end
 ;; end of to setup
 
