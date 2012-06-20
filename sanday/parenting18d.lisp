@@ -280,12 +280,17 @@
 
 (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
 (popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) 1000)  
+
 (defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms))
 (set-status-message 
-  (format nil "   sky propns filter through pop until collected in one person [$S]\\n-> env switched from parenting, add hunting for ~S <-"
-          sky-believer sky-believer)
+  (format nil "   sky propns filter through pop until collected in one person [$S at tick ~S]\\n-> drop parenting, added hunting for several <-"
+          sky-believer *pop-tick*))
 (drop-salience)
-(hunterize-person sky-believer)
+(do ((persons (get *the-population* 'members))
+     (i 0 (1+ i)))
+    ((>= i 5))
+  (hunterize-person (elt persons i)))
+
 (popco-plus-t 1000)
 
 

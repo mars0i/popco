@@ -1218,7 +1218,7 @@ propositions-circle-radius
 propositions-circle-radius
 5
 50
-10
+23
 1
 1
 NIL
@@ -1233,7 +1233,7 @@ person-circle-radius
 person-circle-radius
 20
 200
-82
+74
 2
 1
 NIL
@@ -1265,7 +1265,7 @@ OUTPUT
 448
 1447
 605
-4
+9
 
 MONITOR
 501
