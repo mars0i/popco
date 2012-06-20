@@ -142,6 +142,9 @@
 ;*************************
 
 ; TEST RUN
-(init-pop)
 (print (get 'folks 'members))
-(popco)
+(format t "~%See end of input file for commands to run the model.~%")
+
+; To run the model, you can use these commands, for example:
+;(init-pop)
+;(popco)

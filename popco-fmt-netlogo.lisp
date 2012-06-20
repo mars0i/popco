@@ -1,10 +1,7 @@
 ;; popco-fmt-netlogo.lisp
-;; Copyright (c) 2012 by Marshall Abrams
+;; Copyright (c) 2011, 2012 by Marshall Abrams
 ;; May be distributed only with permission from the author.
-;;
 ;; Data-formatting functions for output to NetLogo
-;; Copyright (c) 2011 by Marshall Abrams
-;; May be distributed only with permission from the author.
 
 ;;----------------------------------------------------------
 ;; POPCO/COHERE->NETLOGO functions
