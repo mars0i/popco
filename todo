@@ -1,5 +1,14 @@
 top tasks:
 
+. notes on what needs to be stored to recreate a population state:
+	*pop-tick*
+	symbols and plists of:
+		all persons in pop's members
+		all units in each person's all-units
+		all structures in each person's all-structures
+	I think that's it.
+
+
 . UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
   New nodes in analogy net appear but don't get linked.
   Is the is-new-link stuff broken??  Or what?
