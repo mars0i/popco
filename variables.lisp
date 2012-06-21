@@ -260,6 +260,7 @@
 ;	nor updated. Propositions exist regardless, but won't have activations
 ;	 or links.  Causes update-proposition-nets to be a no-op.
 (defvar *do-report-to-netlogo* t)
+(defvar *do-report-propns-to-csv* nil) ; whether to write proposition activations to a csv file
 (defvar *do-report-analogy-nets-to-guess* t)
 (defvar *netlogo-status-flag* "status:")
 (defvar *netlogo-status-message* nil)

@@ -53,8 +53,10 @@
 
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
-(defvar *netlogo-output-name* "../data/popcodata.txt") ; filename for file-based output to external UI program
-(defvar *netlogo-outstream*)                   ; stream for same
+(defvar *netlogo-output-name* "../data/popcoNetLogoData.txt") ; filename for file-based output to external UI program
+(defvar *netlogo-outstream*)    ; stream for same
+(defvar *propns-csv-output-name* "../data/popcoPropnCsvData.txt") ; file to write propn activn data in csv format
+(defvar *propns-csv-outstream*) ; stream for same
 
 ; SPECIAL is PT's all-purpose external-emphasis node, used to give extra activation
 ; to identical or semantically-related predicates, propositions presumed or desired
@@ -172,7 +174,7 @@
 ;; - There might be one or more agents who represent the
 ;;   environment rather than persons, with different internals.  [not yet implemented]
 ;; - sex-and-death might cause beliefs of newborns to be partly initialized. [not yet implemented]
-;; If called directly, output file will automatically be appended to [call del-popco-outfile to start fresh]
+;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
 
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
   (incf *pop-tick*)
@@ -202,7 +204,7 @@
   (format t "~C~C~C~C~C~C~C~C~C~S" #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace
                                          *pop-tick*))
 
-(defun del-popco-outfile ()
+(defun del-netlogo-outfile ()
   (delete-file *netlogo-output-name*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -506,11 +508,13 @@
   (cdr conversations-plus-and-pop))
 
 ;; REPORT-PERSONS-INITIALLY
-;; Currently only do NetLogo at the beginning, not eg GUESS, which I'm init'ing by hand outside of this code
+;; Currently only do at the beginning, not eg GUESS, which I'm init'ing by hand outside of this code
 (defun report-persons-initially (population)
   (when *do-report-to-netlogo* 
     (report-propn-categories-to-netlogo)
-    (report-population-to-netlogo population)))
+    (report-population-to-netlogo population))
+  (when *do-report-propns-to-csv*
+    (report-pop-propns-csv-header-row population)))
 
 ;; REPORT-PERSONS
 ;; ARG: a population
@@ -523,6 +527,8 @@
       (report-status-to-netlogo)
       (setf *netlogo-status-message* nil))
     (report-population-to-netlogo population))
+  (when *do-report-propns-to-csv*
+    (report-pop-propns-csv-activns-row population))
   (mark-persons-items-old population) ; since done reporting, no longer need to know what's new, so make it old
   population)
 
@@ -557,6 +563,14 @@
         (mapcar #'fmt-person-for-netlogo (get population 'members)))
       *netlogo-outstream*)
     (terpri *netlogo-outstream*))
+
+(defun report-pop-propns-csv-header-row (population)
+  (princ (fmt-pop-propn-labels-csv-row population) *propns-csv-outstream*)
+  (terpri *propns-csv-outstream*))
+
+(defun report-pop-propns-csv-activns-row (population)
+  (princ (fmt-pop-propn-activns-csv-row population) *propns-csv-outstream*)
+  (terpri *propns-csv-outstream*))
 
 (defun mark-persons-items-old (population)
   (mapc #'mark-items-old (get population 'members)))
