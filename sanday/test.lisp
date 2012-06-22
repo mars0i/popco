@@ -134,7 +134,7 @@
 ;*************************
 ; INITIAL SETTINGS
 (setf *max-pop-ticks* 20)
-(setf *do-converse* NIL)             ; Whether to send utterances between persons
+(setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
 (setf *do-report-analogy-nets-to-guess* t)

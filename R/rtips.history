@@ -1,0 +1,211 @@
+source("/Users/mabrams/docs/phil/software/cohere/data/popcoPropnData.csv")
+cars <- c(1, 3, 6, 4, 9)
+plot(cars)
+cars
+plot(cars, type="o", col="blue")
+test<-read.csv(/Users/mabrams/docs/phil/software/cohere/data/popcoPropnData.csv)
+test<-read.csv("/Users/mabrams/docs/phil/software/cohere/data/popcoPropnData.csv")
+test
+test[1]
+test[,1]
+plot(test[1])
+test[15]
+plot(test[15])
+flip(test[15])
+flip.matrix(test[15])
+hist(test[15])
+test[15]
+test[15][1]
+test
+test[1]
+test[2]
+test[2,8]
+test[1,8]
+test[1]
+test[1,1]
+test[1,2]
+test[1,3]
+test[2]
+test[2,0]
+test[2,1]
+test[2,2]
+test[2,3]
+test[,3]
+test[,1]
+mymat<-as.matrix(read.csv("/Users/mabrams/docs/phil/software/cohere/data/popcoPropnData.csv"))
+mymat
+mymat[0]
+mymat[1]
+mymat[3]
+mymat[1,]
+mymat[,1]
+test[1]
+plot(mymat[,1])
+plot(mymat[,15])
+plot(mymat[,15],col="blue")
+plot(mymat[,15],type="o",col="blue")
+plot(mymat[,15],type="o",col="blue";mymat[,16])
+ggplot(mymat[,15])
+ggplot2(mymat[,15])
+plot(mymat)
+plot(test)
+multiplot(test)
+cars <- c(1, 3, 6, 4, 9)#
+trucks <- c(2, 5, 4, 5, 12)
+trucks
+cars
+plot(cars, type="o", col="blue", ylim=c(0,12))
+lines(trucks, type="o", pch=22, lty=2, col="red")
+title(main="Autos", col.main="red", font.main=4)
+help
+help lines
+help "lines"
+lines
+lines help
+plot(test$ALEX_H.GAME.DISTANT)
+plot(test$QUINN_H.GAME.DISTANT)
+plot(test$yaya_H.GAME.DISTANT)
+plot(test$ALEX2_H.GAME.DISTANT)
+plot(test$ALEX2_H.GAME.DISTANT)
+lines(test$ALEX2_H.GAME.DISTANT)
+lines(test$ALEX2_H.GAME.DISTANT)
+plot(test$ALEX_OE.GOD.HELPS.human)
+plot(test$ALEX_OE.GOD.HELPS.HUMAN)
+plot(test$ALEX_OE.GOD.NURTURES)
+lines(test$ALEX_OE.GOD.NURTURES)
+lines(test$ALEX_OE.GOD.NURTURES)
+lines(test$ALEX_OE.GOD.HELPS.HUMAN)
+lines(test$ALEX_OE.GOD.HELPS.HUMAN)
+plot.new
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="b")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="o")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="h")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="s")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="p")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+plot(test$ALEX_OE.GOD.NURTURES, type="l",add=TRUE)
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+plot(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+lines(test$ALEX_OE.GOD.NURTURES, type="l")
+plot(test$ALEX_OE.GOD.NURTURES, type="l")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="blue")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+lines(test$ALEX_OE.GOD.NURTURES, type="l",col="blue")
+lines(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA")
+plot(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA")
+plot(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA",ylim=c(-1,1))
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+lines(test$ALEX_OS.GOD.CREATES.HUMAN.FROM.OBJECT, type="l",col="green")
+plot.new()
+lines(test[17], type="l",col="green")
+plot(test$ALEX_OE.GOD.NURTURES, type="l")
+lines(test$ALEX_OE.GOD.NURTURES, type="l",col="blue")
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+plot(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA",ylim=c(-1,1))
+plot(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA",ylim=c(-1,1))
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+lines(test$ALEX_OS.GOD.CREATES.HUMAN.FROM.OBJECT, type="l",col="green")
+lines(test[17], type="l",col="purple")
+lines(test, type="l",col="purple")
+plot(test$ALEX_OE.GOD.NURTURES, type="l",col="blue",main="YOWZA",ylim=c(-1,1))
+lines(test$ALEX_OE.GOD.HELPS.HUMAN, type="l",col="red")
+lines(test$ALEX_OS.GOD.CREATES.HUMAN.FROM.OBJECT, type="l",col="green")
+lines(test[17], type="l",col="purple")
+length(test)
+for(i in 1:length(test)){lines(test[i],type="l",col="black")}
+plot(test[1],ylim=(-1,1),main="all activations",type="l")
+plot(test[1],ylim=c(-1,1),main="all activations",type="l")
+plot(test[1],ylim=c(-1,1),main="activations",type="l")
+plot(test[1],ylim=c(-1,1),main="activations",type="o")
+plot(test[1],type="l",ylim=c(-1,1),main="activations")
+plot(testALEX_OE.GOD.NURTURES, type="l", ylim=c(-1,1), main="activations")
+plot(test$ALEX_OE.GOD.NURTURES, type="l", ylim=c(-1,1), main="activations")
+for(i in 1:length(test)){lines(test[i],type="l",col="black")}
+for(i in 1:length(test)){lines(test[i],type="l",col="black")}
+mod(15,3)
+2+3
+c(2+3,4+5)
+for(i in 1:length(test)){lines(test[i],type="l",col="black")}
+plot(test$ALEX_OE.GOD.NURTURES, type="l", ylim=c(-1,1), main="activations")
+for(i in 1:25){lines(test[i],type="l",col="black")}
+plot(test$ALEX_OE.GOD.NURTURES, type="l", ylim=c(-1,1), main="activations")
+for(i in 1:9){lines(test[i],type="l",col="black")}
+plot(test[10], type="l", ylim=c(-1,1), main="activations")
+plot(test[10], type="l", ylim=c(-1,1), main="activations")
+plot(test[1],type="l",ylim=c(-1,1),main="activations")
+lines(test[17], type="l",col="purple")
+plot(test[17], type="l",col="purple")
+plot.new()
+lines(test[17], type="l",col="purple")
+plot(test[17], type="l",col="purple")
+plot(ylim=c(-1,1),main="activations")
+plot(1,ylim=c(-1,1),main="activations")
+plot(1,ylim=c(-1,1),xlim=c(1,100),main="activations")
+for(i in 1:9){lines(test[i],type="l",col=rgb())}
+plot(1,type="n",ylim=c(-1,1),xlim=c(1,100),main="activations")
+plot(1,ylim=c(-1,1),xlim=c(1,100),main="activations")
+plot(1,type="n",ylim=c(-1,1),xlim=c(1,100),main="activations")
+for(i in 10:19){lines(test[i],type="l",col=rgb())}
+for(i in 10:19){lines(test[i],type="l",col = sample(colours(), 9))}
+plot(1,type="n",ylim=c(-1,1),xlim=c(1,20),main="activations")
+for(i in 10:19){lines(test[i],type="l",col = sample(colours(), 9))}
+for(i in 10:19){lines(test[i],type="l",col=1:9)}
+for(i in 10:19){lines(test[i],type="l",col<-rgb(runif(9),runif(9),runif(9))}
+for(i in 10:19){lines(test[i],type="l",col<-rgb(runif(9),runif(9),runif(9)))}
+plot(1,type="n",ylim=c(-1,1),xlim=c(1,20),main="activations")
+for(i in 10:19){lines(test[i],type="l",col<-rgb(runif(9),runif(9),runif(9)))}
+plot(1,type="n",ylim=c(-1,1),xlim=c(1,20),main="activations")
+for(i in 10:19){lines(test[i],type="l",col<-rgb(runif(5),runif(5),runif(5)) )}
+for(i in 10:19){lines(test[i],type="l",col=rgb(runif(9),runif(9),runif(9)))}
+for(i in 10:40){lines(test[i],type="l",col=rgb(runif(30),runif(30),runif(30)))}
+myplot<-function(data){len<-length(data)}
+myplot<-function(data){len<-length(data); len}
+myplot
+myplot()
+myplot(test)
+myplot<-function(data){len<-length(data); plot(1,type="n",ylim=c(-1,1),xlim=c(1,20),for(i in 1:len){lines(data[i],type"l",col=rgb(runif(len),runif(len),runif(len)))}}
+myplot<-function(data){len<-length(data); plot(1,type="n",ylim=c(-1,1),xlim=c(1,20)),for(i in 1:len){lines(data[i],type"l",col=rgb(runif(len),runif(len),runif(len)))}}
+myplot<-function(data){len<-length(data); plot(1,type="n",ylim=c(-1,1),xlim=c(1,20));for(i in 1:len){lines(data[i],type"l",col=rgb(runif(len),runif(len),runif(len)))}}
+myplot<-function(data){len<-length(data);     plot(1, type="n", ylim=c(-1,1), xlim=c(1,20));      for(i in 1:len){lines(data[i], type"l", col=rgb(runif(len),runif(len),runif(len)))}}
+myplot<-function(data){len<-length(data);     plot(1, type="n", ylim=c(-1,1), xlim=c(1,20));      for(i in 1:len){lines(data[i], type="l", col=rgb(runif(len),runif(len),runif(len)))}}
+myplot(test)
+myplot(test)
+myplot(test)
+width(test)
+nrow(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,nrow));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,nrow));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(data)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(data)
+myplot(data)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,cols));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,cols));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(data)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(data)
+print "yo"
+print("yo")
+myplot<-function(data){cols<-length(data); rows<-nrow(data);print(rows);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(data)
+data
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="o", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="b", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="o", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot<-function(data){cols<-length(data); rows<-nrow(data);plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows));for(i in 1:cols){lines(data[i], type="l", col=rgb(runif(cols),runif(cols),runif(cols)))}}
+myplot(test)
+myplot(test)
+myplot(test)

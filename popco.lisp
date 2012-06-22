@@ -54,9 +54,9 @@
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
 (defvar *netlogo-output-name* "../data/popcoNetLogoData.txt") ; filename for file-based output to external UI program
-(defvar *netlogo-outstream*)    ; stream for same
-(defvar *propns-csv-output-name* "../data/popcoPropnCsvData.txt") ; file to write propn activn data in csv format
-(defvar *propns-csv-outstream*) ; stream for same
+(defvar *netlogo-outstream* nil)    ; stream for same
+(defvar *propns-csv-output-name* "../data/popcoPropnData.csv") ; file to write propn activn data in csv format
+(defvar *propns-csv-outstream* nil) ; stream for same
 
 ; SPECIAL is PT's all-purpose external-emphasis node, used to give extra activation
 ; to identical or semantically-related predicates, propositions presumed or desired
@@ -81,8 +81,8 @@
 ; Also displays basic information on nature of the run, and times it by default, i.e. if *time-runs* is true.
 (defun popco (&key cont-prev-sess) 
   (format t "~%Running popco with maximum of ~S cycles each in ~S popco tick(s) ....~%" *max-times* (- *max-pop-ticks* *pop-tick*))
-  (format t "*do-converse* = ~S; *do-update-propn-nets* = ~S; *do-report-to-netlogo* = ~S *use-new-random-state* = ~S~%"
-             *do-converse*        *do-update-propn-nets*      *do-report-to-netlogo*      *use-new-random-state*)
+  (format t "*do-converse* ~S; *do-update-propn-nets* ~S; *do-report-to-netlogo* ~S; *do-report-propns-to-csv* ~S; *use-new-random-state* ~S~%"
+             *do-converse*     *do-update-propn-nets*     *do-report-to-netlogo*     *do-report-propns-to-csv*      *use-new-random-state*)
   (if *time-runs* 
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
@@ -109,9 +109,7 @@
 ; test-function takes no arguments, but obviously can reference globals such as *the-population*.
 ; Continues previous session, so (popco) should normally be run first.
 (defun popco-until (how-often test-function &optional stop-after)
-
   (let ((start-time (get-internal-real-time)))
-
     (do ()
       ((or (when stop-after              ; if stop-after was specified
              (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
@@ -133,38 +131,53 @@
 ;; Population is a Lisp symbol with a list of persons in its members field--
 ;; synonym for Thagard's group (see e.g. make-persons in PT's consensus.lisp)
 ;; OPTIONAL KEYWORD ARGS:
-;; Specify cont-prev-session as non-nil to append to outfile; otherwise outfile will be deleted.
+;; Specify cont-prev-session as non-nil to append to outfile; otherwise outfile will be deleted or renamed.
 
 (defun run-population (population &key cont-prev-sess)
+  (unwind-protect ; allows us to ensure that files will be closed
+    (progn
+      ; what's inside this progn is the real work we want done
 
-  ; If user doesn't request continue prev session, store current random seed/state into a file that can recreate it later:
-  (unless cont-prev-sess
-    (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
-      (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*)))
+      ; If user doesn't request continue prev session, store current random seed/state into a file that can recreate it later:
+      (unless cont-prev-sess
+        (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
+          (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*)))
 
-  ; If user doesn't request continue prev session, then delete/move output file if exists, and create new file:
-  (when (and *do-report-to-netlogo* (not cont-prev-sess))
-    (format t "Recreating output file for NetLogo ~S~%" *netlogo-output-name*)
-    (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)
-      (princ *netlogo-syntax-description* *netlogo-outstream*)
-      (report-persons-initially population)))
+      ; Now open files to record data as we go, if user specifies that we should.
+      ; Whether we open the files for appending or for recreating depends on whether cont-prev-sess was specified as t, or is nil.
 
-  (do ()
-      ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
-    (when *sleep-delay* (sleep *sleep-delay*))
-    (if *do-report-to-netlogo*
-      (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)
-        (run-population-once population))
-      (run-population-once population))
-    (when (and *write-person-graphs-at-pop-ticks* (= *pop-tick* (car *write-person-graphs-at-pop-ticks*)))
-      (setf *write-person-graphs-at-pop-ticks* (cdr *write-person-graphs-at-pop-ticks*))
-      (write-person-graphs (format nil "~A/~A/" *person-graphs-basename* *pop-tick*))))
+      (when *do-report-to-netlogo*
+        (cond (cont-prev-sess
+                (setf *netlogo-outstream* (open *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :error)))
+              (t
+                (format t "Recreating output file for NetLogo ~S~%" *netlogo-output-name*)
+                (setf *netlogo-outstream* (open *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)))))
 
-  (when *do-report-to-netlogo*
-    (with-open-file (*netlogo-outstream* *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :create)))
+      (when *do-report-propns-to-csv*
+        (cond (cont-prev-sess
+                (setf *propns-csv-outstream* (open *propns-csv-output-name* :direction :output :if-exists :append :if-does-not-exist :error)))
+              (t
+                (format t "Recreating output file csv file ~S~%" *propns-csv-output-name*)
+                (setf *propns-csv-outstream* (open *propns-csv-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)))))
 
-  t)
-  ; end of run-population
+      (report-persons-initially population)
+
+      (do ()
+          ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
+        (when *sleep-delay* (sleep *sleep-delay*))
+        (run-population-once population)
+        (when (and *write-person-graphs-at-pop-ticks* (= *pop-tick* (car *write-person-graphs-at-pop-ticks*)))
+          (setf *write-person-graphs-at-pop-ticks* (cdr *write-person-graphs-at-pop-ticks*))
+          (write-person-graphs (format nil "~A/~A/" *person-graphs-basename* *pop-tick*))))
+
+     ) ; end of progn for main code in unwind-protect
+
+    ; cleanup routines for unwind-protect
+    (when *netlogo-outstream* (close *netlogo-outstream*))
+    (when *propns-csv-outstream* (close *propns-csv-outstream*))
+   ) ; end of unwind-protect
+ t)
+; end of run-population
 
 
 ;; RUN-POPULATION-ONCE
@@ -511,6 +524,7 @@
 ;; Currently only do at the beginning, not eg GUESS, which I'm init'ing by hand outside of this code
 (defun report-persons-initially (population)
   (when *do-report-to-netlogo* 
+    (princ *netlogo-syntax-description* *netlogo-outstream*)
     (report-propn-categories-to-netlogo)
     (report-population-to-netlogo population))
   (when *do-report-propns-to-csv*
