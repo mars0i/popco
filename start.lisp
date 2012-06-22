@@ -110,6 +110,7 @@
 (myload "popco-fmt-netlogo") (print "popco-fmt-netlogo loaded")
 (myload "popco-fmt-guessML-general") (print "popco-fmt-guessML-general loaded")
 (myload "popco-fmt-guessML-specific1") (print "popco-fmt-guessML-specific1 loaded")
+(myload "popco-model-run") (print "popco-model-run loaded")
 
 #+sbcl (progn
         (myload "sbcl-sockets") (print "sbcl-sockets SBCL socket-handling code loaded.")

@@ -18,7 +18,8 @@
 
 ;*************************
 ; INITIAL SETTINGS
-(setf *max-pop-ticks* 0) ; we'll manage this with popco-plus-t
+;(setf *time-runs* nil)   ; set below
+;(setf *max-pop-ticks* 0) ; set below
 (setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
@@ -221,28 +222,56 @@
 (defun dehunterize-person (person) (setf *the-person* person) (mapc #'perceived-negation HUNTING-PROPNS))
 
 
-; TEST RUN
-(setf *time-runs* nil)
-(make-persons-with-addl-propn #'make-skyless-person 'e sky-origin-propns) ; give each individual a distinct member of the sky-origin-propns
-(init-pop)
-(print (get 'folks 'members))
-(setf *max-pop-ticks* 0)
-(popco) ; initialize output files, etc.
-(setf *time-runs* nil)
 
-(set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
-(popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) 1000)  
+(defun earth-to-sky-pop-no-neg (output-basename addl-ticks num-extra-persons num-to-flip add-negative-salience)
+  (let ((anti-flip-fn (if add-negative-salience #'deparentize-person nil)))
+    (collect-and-continue-run #'make-skyless-person sky-origin-propns output-basename addl-ticks num-extra-persons num-to-flip #'hunterize-person anti-flip-fn)))
 
-(defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms))
-(set-status-message 
-  (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
-          sky-believer *pop-tick* sky-believer))
-(drop-salience)
-(do ((persons (get *the-population* 'members))
-     (i 0 (1+ i)))
-    ((>= i 5))
-  (hunterize-person (elt persons i)))
 
-(popco-plus-t 1000)
+(defun collect-and-continue-run (make-person-fn propns-to-distrib output-basename addl-ticks num-extra-persons num-to-flip flip-fn anti-flip-fn)
+  
+  ; make earth-origin persons that also each have a distinct member of sky-origin-propns
+  (make-persons-with-addl-propn make-person-fn 'x propns-to-distrib) ; ["x" for has extra propn]
 
+  ; if requested, make additional earth-origin persons with none of the sky-origin-propns
+  (when (> num-extra-persons 0)
+    (funcall make-person-fn 'temp-person) ; template for the additional persons
+    (n-persons-with-name 'temp-person 'n num-extra-persons) ; ["n" for relatively naive--no extra propns]
+    (rem-elt-from-property 'temp-person 'folks 'members)) ; abandon temp-person to the garbage collector ...
+  
+  ; now that pop is set up, we can start the run
+  (init-pop)
+  (print (get 'folks 'members))
+  (setf *time-runs* nil)
+  (setf *max-pop-ticks* 0)
+  (popco) ; initialize output files, etc.  Won't do anything else since max-pop-ticks is 0
+
+  ; the status messages are for the NetLogo file, which might not actually get used
+  (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
+
+  ; run until we have at least one member who's collected all of the sky propns, checking every 10 ticks.  (The 1000 is just a failsafe max stopping point.)
+  (popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) 1000)  
+  (defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) ; store the name of the lucky individual was
+
+  (set-status-message 
+    (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
+            sky-believer *pop-tick*))
+
+  ; Now we switch the environment
+  (drop-salience) ; remove salience from all propns in all persons
+
+  (let ((to-choose-from (get *the-population* 'members))
+        (chosen '()))
+    (dotimes (ignored num-to-flip)
+      (when (plusp (length to-choose-from)) ; a trivial inefficiency--keep going but don't do anything if we've used them all up
+        (let ((to-move (elt to-choose-from (random (length to-choose-from)))))
+          (push to-move chosen)
+          (setf chosen (remove to-move chosen)))))
+    (mapc flip-fn chosen)
+    (when anti-flip-fn
+      (mapc anti-flip-fn chosen)))
+
+  (popco-plus-t 2000) 
+
+) ; end of collect-and-continue-run
 

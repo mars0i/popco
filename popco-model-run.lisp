@@ -1,7 +1,9 @@
 ;; popco-model-run.lisp
 ;; Copyright (c) 2012 by Marshall Abrams
 ;; May be distributed only with permission from the author.
-;; Data-formatting functions for output to csv files
+;;
+;; Useful tools for for model runs
+
 
 ; MAKE-PERSONS-WITH-ADDL-PROPN 
 ; Make as many persons as there are propns in addl-target-propns, adding one such propn to each person.
@@ -21,6 +23,7 @@
   (let ((names 
           (make-names2 basename first-number (length addl-target-propns)))) ; make one person name for each addl propn to be added
     (mapc person-maker names addl-target-propns)))
+
 
 
 ; POP-HAS-MEMBER-WITH-THESE-PROPNS-IN-STRUC? 
