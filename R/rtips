@@ -1,0 +1,27 @@
+
+
+# other tips:
+
+# to get data, try something like
+# var <- read.csv("mypath")
+# var is called a data frame
+# Then you can refer to columns by name as var$colname, 
+# or refer to cols by index as var[i]
+#
+# here is something bizarre:
+# var[2] refers to the second column
+# var[3,2] refers to the third entry in the second column
+# var[3,] refers to the third row
+
+# to set/get the directory, use getwd() and setwd(path)
+# to load a script, use source(script)
+
+# for (i in 1:519){names<-colnames(tst); if (pmatch("CHRIS",names[i],nomatch=0)) {print(names[i])}}
+
+#  for (n in grep(paste0("CHRIS", "_OE"), colnames(data), value=TRUE)) { # grep searches through array colnames(data)
+#    cat(n)                                                              # returning elements that match
+#    cat(": ")
+#    cat(tst[2,n])  # here we are using the returned name as the column index, and 2 as the row index
+#    cat("\n")
+#  }
+

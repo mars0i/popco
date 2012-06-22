@@ -283,8 +283,8 @@
 
 (defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms))
 (set-status-message 
-  (format nil "   sky propns filter through pop until collected in one person [$S at tick ~S]\\n-> drop parenting, added hunting for several <-"
-          sky-believer *pop-tick*))
+  (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
+          sky-believer *pop-tick* sky-believer))
 (drop-salience)
 (do ((persons (get *the-population* 'members))
      (i 0 (1+ i)))
