@@ -17,7 +17,6 @@ plotCols <- function(data){
 findActivns <- function(data, person, domain, tick) {
   # find column names that start with person_domain, return corresponding column indexes
   indexes <- grep(paste0("^", person, "_", domain), colnames(data))
-  print(grep(paste0("^", person, "_", domain), colnames(data)))
   data[tick, indexes]  # return row passed in parameter tick, from each column referenced by indexes
 }
 
