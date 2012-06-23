@@ -4,6 +4,16 @@ top tasks:
   (Or else there's a more serious problem.)
   Also, you get no entries before the propns appear.
   This all confuses R.
+  PARTLY DONE:
+  Header now has all possible personal propositions.
+  Next I have to make the row-generation code loop through all poss propns,
+  producting 0.0 if not exist.
+  OK, THAT'S DONE.
+  EXCEPT THAT NOW IT APPEARS THAT ALL POSSIBLE PROPOSITIONS ARE GETTING
+  ADDED TO EVERY PERSON FROM THE START. !
+  BUT IT DOESN'T LOOK THE PROBLEM IS THE INIT ROUTINE 
+  RECORD-POSS-PERSONAL-PROPNS-IN-POP POPULATION.  !
+  So what is doing that??
 
 . Possibly write code to clear out everything.  Maybe walk plists
   and possibly symbol values, clearing them out.

@@ -612,6 +612,7 @@
 (defun create-nets (population)
   (mapc #'create-net (get population 'members))
   (mark-persons-items-old population) ; previous step marked all items new, but we didn't need to know that.
+  (record-poss-personal-propns-in-pop population)
   population)
 
 ;; Currently a person's input field should contain a list of Lisp code

@@ -275,6 +275,8 @@
   ; make earth-origin persons that also each have a distinct member of sky-origin-propns
   (make-persons-with-addl-propn make-person-fn 'x propns-to-distrib) ; ["x" for has extra propn]
 
+  (error "you asked me to stop")
+
   ; if requested, make additional earth-origin persons with none of the sky-origin-propns
   (when (> num-extra-persons 0)
     (funcall make-person-fn 'temp-person) ; template for the additional persons

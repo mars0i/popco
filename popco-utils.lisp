@@ -10,6 +10,44 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+
+
+;; SAFE SORT FUNCTIONS
+;; The built in Lisp functions sort and stable-sort are destructive--they can modify
+;; the list which is their argument, causing surprises--and normally should only be used on a
+;; copy of a list.  Here are convenience functions that do this:
+
+(defun sort-copy (lis fn)
+  (sort (copy-list lis) fn))
+
+(defun stable-sort-copy (lis fn)
+  (stable-sort (copy-list lis) fn))
+
+
+;; SPECIAL MAP FUNCTIONS:
+
+;; MAPCAR-WITH-TAIL
+;; Works just like mapcar for a single list, but can do something different to the
+;; last element of the list.  Calls fn on each element of the list except the last,
+;; on which tail-fn is called.
+(defun mapcar-with-tail (fn tail-fn lis)
+  (cond ((null lis) ())    ; only invoked when passed an empty list from the start
+        ((null (cdr lis))  ; look ahead to see if this is the last element
+         (list (funcall tail-fn (car lis)))) ; if so then call tail-fn rather than fn.
+        (t 
+          (cons (funcall fn (car lis))
+                (mapcar-with-tail fn tail-fn (cdr lis))))))
+
+;; CROSS-MAPCAR
+;; applies a 2-argument fn to the cross product of lis1 and lis2, i.e. to all possible pairs, one element from each list
+(defun cross-mapcar (fn lis1 lis2)
+  (apply #'append
+         (mapcar #'(lambda (x2)
+                     (mapcar #'(lambda (x1) (funcall fn x1 x2))
+                             lis1))
+                 lis2)))
+
+
 (defun symbol-lessp (sym1 sym2)
   (string-lessp (symbol-name sym1) (symbol-name sym2)))
 

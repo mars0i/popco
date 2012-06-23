@@ -27,10 +27,10 @@ extractPersons <- function(data) {
 
 # extract the proposition domains from the data
 extractDomains <- function(data) {
-  unique(sub(".*_([^.]*)\\..*", "\\1", colnames(tst)))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates:
+  unique(sub(".*_([^.]*)\\..*", "\\1", colnames(data)))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates:
 }
 
-plotAvgs <- function(data, domain) {
+plotAvgsForDomain <- function(data, domain) {
   persons <- extractPersons(data)
   npersons <- length(persons)
   rows <- nrow(data)

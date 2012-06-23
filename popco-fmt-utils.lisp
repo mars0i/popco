@@ -7,6 +7,10 @@
   (if (activation unit)
     (coerce (activation unit) 'short-float)
     0.0))
+; note that non-existent units still exist as symbols if they are ever referenced,
+; and if passed to this function, they are obviously referenced, but the macro
+; activation just does (get unit 'activation), which will return nil if there is
+; no such property.
 
 ; note that this can fail in some Lisps such as LispWorks and CLISP which have a limit
 ; on the max number of arguments that a function can take.
