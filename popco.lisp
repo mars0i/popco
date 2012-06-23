@@ -108,6 +108,8 @@
 ; Returns the elapsed real time in seconds.
 ; test-function takes no arguments, but obviously can reference globals such as *the-population*.
 ; Continues previous session, so (popco) should normally be run first.
+; Note this function uses run-population directly to avoid the messages and time output that
+; popco/popco-plus-t currently generate.
 (defun popco-until (how-often test-function &optional stop-after)
   (let ((start-time (get-internal-real-time)))
     (do ()
@@ -151,16 +153,17 @@
                 (setf *netlogo-outstream* (open *netlogo-output-name* :direction :output :if-exists :append :if-does-not-exist :error)))
               (t
                 (format t "Recreating output file for NetLogo ~S~%" *netlogo-output-name*)
-                (setf *netlogo-outstream* (open *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)))))
+                (setf *netlogo-outstream* (open *netlogo-output-name* :direction :output :if-exists :rename :if-does-not-exist :create))
+                (report-persons-initially-for-netlogo population))))
 
       (when *do-report-propns-to-csv*
         (cond (cont-prev-sess
                 (setf *propns-csv-outstream* (open *propns-csv-output-name* :direction :output :if-exists :append :if-does-not-exist :error)))
               (t
                 (format t "Recreating output file csv file ~S~%" *propns-csv-output-name*)
-                (setf *propns-csv-outstream* (open *propns-csv-output-name* :direction :output :if-exists :rename :if-does-not-exist :create)))))
+                (setf *propns-csv-outstream* (open *propns-csv-output-name* :direction :output :if-exists :rename :if-does-not-exist :create))
+                (report-persons-initially-for-csv population))))
 
-      (report-persons-initially population)
 
       (do ()
           ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
@@ -520,15 +523,15 @@
     (terpri *netlogo-outstream*))
   (cdr conversations-plus-and-pop))
 
-;; REPORT-PERSONS-INITIALLY
+;; REPORT-PERSONS-INITIALLY-FOR-x
 ;; Currently only do at the beginning, not eg GUESS, which I'm init'ing by hand outside of this code
-(defun report-persons-initially (population)
-  (when *do-report-to-netlogo* 
-    (princ *netlogo-syntax-description* *netlogo-outstream*)
-    (report-propn-categories-to-netlogo)
-    (report-population-to-netlogo population))
-  (when *do-report-propns-to-csv*
-    (report-pop-propns-csv-header-row population)))
+(defun report-persons-initially-for-netlogo (population)
+  (princ *netlogo-syntax-description* *netlogo-outstream*)
+  (report-propn-categories-to-netlogo)
+  (report-population-to-netlogo population))
+
+(defun report-persons-initially-for-csv (population)
+  (report-pop-propns-csv-header-row population))
 
 ;; REPORT-PERSONS
 ;; ARG: a population

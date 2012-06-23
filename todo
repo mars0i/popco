@@ -1,8 +1,9 @@
 top tasks:
 
-. In middle of csv-writing code addition.
-  Not done yet: opening/closing file for writing.
-  Testing.
+. Possibly write code to clear out everything.  Maybe walk plists
+  and possibly symbol values, clearing them out.
+  Question: Can I get random-state in the middle of a Lisp session and
+  be able to use it properly in a brand new Lisp session?
 
 . notes on what needs to be stored to recreate a population state:
 	*pop-tick*

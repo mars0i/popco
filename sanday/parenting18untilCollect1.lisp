@@ -22,7 +22,8 @@
 ;(setf *max-pop-ticks* 0) ; set below
 (setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
+;(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
+;(setf *do-report-propns-to-csv* t)
 (setf *do-report-analogy-nets-to-guess* nil)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
@@ -222,14 +223,55 @@
 (defun dehunterize-person (person) (setf *the-person* person) (mapc #'perceived-negation HUNTING-PROPNS))
 
 
+;; SKY-TO-EARTH-POP-NO-NEG 
+;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
+;; Start with salience on hunting.
+;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience.
+(defun sky-to-earth-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+  (collect-and-continue-run 
+    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person nil output-basename))
 
-(defun earth-to-sky-pop-no-neg (output-basename addl-ticks num-extra-persons num-to-flip add-negative-salience)
-  (let ((anti-flip-fn (if add-negative-salience #'deparentize-person nil)))
-    (collect-and-continue-run #'make-skyless-person sky-origin-propns output-basename addl-ticks num-extra-persons num-to-flip #'hunterize-person anti-flip-fn)))
+;; SKY-TO-EARTH-POP-ADD-NEG 
+;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
+;; Start with salience on hunting.
+;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience and anti-hunting salience.
+(defun sky-to-earth-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+  (collect-and-continue-run 
+    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person #'dehunterize-person output-basename))
 
+;; EARTH-TO-SKY-POP-NO-NEG 
+;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
+;; Start with salience on parenting.
+;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience.
+(defun earth-to-sky-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+  (collect-and-continue-run 
+    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person nil output-basename))
 
-(defun collect-and-continue-run (make-person-fn propns-to-distrib output-basename addl-ticks num-extra-persons num-to-flip flip-fn anti-flip-fn)
-  
+;; EARTH-TO-SKY-POP-ADD-NEG 
+;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
+;; Start with salience on parenting.
+;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience and anti-parenting salience.
+(defun earth-to-sky-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+  (collect-and-continue-run 
+    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename))
+
+;; COLLECT-AND-CONTINUE-RUN 
+;; Create persons with make-person-fn, making at least as many as there are propositions in 
+;; propns-to-distrib, each getting one of those propns.  Make num-extra-persons additional
+;; persons without any extra propositions from propns-to-distrib, also with make-person-fn.
+;; Run until at least one person has all of the propns in propns-to-distrib.
+;; Then drop salience and add back salience to num-to-flip randomly chosen persons using 
+;; flip-fn (required), as well as anti-flip-fn if not nil.  See functions above for illustrations.
+;; NetLogo and csv data will be stored in filenames constructed from output-basename.  
+(defun collect-and-continue-run (make-person-fn propns-to-distrib num-extra-persons addl-ticks num-to-flip flip-fn anti-flip-fn output-basename)
+  (setf *netlogo-output-name* (concatenate 'string "../data/" output-basename "NetLogoData.txt"))
+  (setf *propns-csv-output-name* (concatenate 'string "../data/" output-basename "PropnData.csv"))
+  (setf *random-state-file* (concatenate 'string "../data/" output-basename "RandomState.lisp"))
+  (setf *time-runs* t)
+  (setf *do-report-to-netlogo* t)
+  (setf *do-report-propns-to-csv* t)
+  (setf *max-pop-ticks* 0)
+
   ; make earth-origin persons that also each have a distinct member of sky-origin-propns
   (make-persons-with-addl-propn make-person-fn 'x propns-to-distrib) ; ["x" for has extra propn]
 
@@ -238,24 +280,22 @@
     (funcall make-person-fn 'temp-person) ; template for the additional persons
     (n-persons-with-name 'temp-person 'n num-extra-persons) ; ["n" for relatively naive--no extra propns]
     (rem-elt-from-property 'temp-person 'folks 'members)) ; abandon temp-person to the garbage collector ...
+
+  ; the status messages are for the NetLogo file, which might not actually get used
+  (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
   
   ; now that pop is set up, we can start the run
   (init-pop)
   (print (get 'folks 'members))
-  (setf *time-runs* nil)
-  (setf *max-pop-ticks* 0)
   (popco) ; initialize output files, etc.  Won't do anything else since max-pop-ticks is 0
-
-  ; the status messages are for the NetLogo file, which might not actually get used
-  (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
 
   ; run until we have at least one member who's collected all of the sky propns, checking every 10 ticks.  (The 1000 is just a failsafe max stopping point.)
   (popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) 1000)  
-  (defvar sky-believer (find-member-with-propns-in-struc? 'target sky-origin-propn-syms)) ; store the name of the lucky individual was
 
-  (set-status-message 
-    (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
-            sky-believer *pop-tick*))
+  (let ((first-to-collect (find-member-with-propns-in-struc? 'target sky-origin-propn-syms))) ; store the name of the lucky individual was
+    (set-status-message 
+      (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
+              first-to-collect *pop-tick*)))
 
   ; Now we switch the environment
   (drop-salience) ; remove salience from all propns in all persons
@@ -271,7 +311,6 @@
     (when anti-flip-fn
       (mapc anti-flip-fn chosen)))
 
-  (popco-plus-t 2000) 
+  (popco-plus-t addl-ticks) 
 
 ) ; end of collect-and-continue-run
-

@@ -17,6 +17,7 @@ plotCols <- function(data){
 findActivns <- function(data, person, domain, tick) {
   # find column names that start with person_domain, return corresponding column indexes
   indexes <- grep(paste0("^", person, "_", domain), colnames(data))
+  print(grep(paste0("^", person, "_", domain), colnames(data)))
   data[tick, indexes]  # return row passed in parameter tick, from each column referenced by indexes
 }
 
@@ -38,15 +39,8 @@ plotAvgs <- function(data, domain) {
   plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows))
 
   for (p in persons) {
-    print(p)
     lines( rowMeans(findActivns(data, p, domain, )),  # missing tick returns a vector
            type="l", col=rgb(runif(npersons), runif(npersons), runif(npersons)))
   }
 }
 
-
-#plotAvgs <- function(data) {
-#  persons <- extractPersons(data)
-#  domains <- extractDomains(data)
-#  ...
-#}
