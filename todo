@@ -1,5 +1,10 @@
 top tasks:
 
+. BUG: csv code lacks header entries when propositions are added later.
+  (Or else there's a more serious problem.)
+  Also, you get no entries before the propns appear.
+  This all confuses R.
+
 . Possibly write code to clear out everything.  Maybe walk plists
   and possibly symbol values, clearing them out.
   Question: Can I get random-state in the middle of a Lisp session and
