@@ -1,14 +1,9 @@
-; parenting18untilCollect1.lisp
-; v.1 of code for multiple runs of models using parenting18 code that
-; runs until all parts of an origin domain are collected in one individual,
-; and then possibly change salience relations.
-; Based on parenting18d.lisp
-
+; parenting18NoRun.lisp
+; like parenting18c.lisp, but doesn't try to run anything
 
 ; many of these params will be overrident in (sequence)
 
 ;*************************************
-; These are probably just the defaults in variables.lisp:
 (setf *propn-excit-weight* .2L0)
 (setf *propn-inhib-weight* -.025L0)
 (setf *trust* .05)
@@ -18,13 +13,11 @@
 
 ;*************************
 ; INITIAL SETTINGS
-;(setf *time-runs* nil)   ; set below
-;(setf *max-pop-ticks* 0) ; set below
+(setf *max-pop-ticks* 0)
 (setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-;(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-;(setf *do-report-propns-to-csv* t)
-(setf *do-report-analogy-nets-to-guess* nil)
+(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
+(setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
@@ -75,7 +68,8 @@
     ;; location:
     (distant (s-god human) os-Heavenly-God)
    ))
-(defvar sky-origin-propn-syms (mapcar #'last-element sky-origin-propns)) ; list of the propn names
+
+(defvar sky-origin-propn-syms (mapcar #'last-element sky-origin-propns))
 
 (defvar earth-origin-propns
   '(
@@ -88,7 +82,9 @@
     (nothing (nothing) oe-Nothing) ; allows nothings in source and target to become related
     (close (e-god human) oe-Earthly-God)
    ))
-(defvar earth-origin-propn-syms (mapcar #'last-element earth-origin-propns)) ; list of the propn names
+
+(defvar earth-origin-propn-syms (mapcar #'last-element earth-origin-propns))
+
 
 (defvar origin-propns (append generic-origin-propns sky-origin-propns earth-origin-propns))
 
@@ -114,7 +110,8 @@
     ;; social location:
     (distant-agent (game man) h-Game-Distant) ; man treats game as agent--but as distant, as other
    ))
-(defvar hunting-propn-syms (mapcar #'last-element hunting-propns)) ; list of the propn names
+
+(defvar hunting-propn-syms (mapcar #'last-element hunting-propns))
 
 
 (defvar parenting-propns
@@ -132,7 +129,8 @@
     (causes (nothing p-Woman-Helps-Child) p-Woman-Nurtures)
     (nothing (nothing) p-Nothing) ; allows nothings in source and target to become related
    ))
-(defvar parenting-propn-syms (mapcar #'last-element parenting-propns)) ; list of the propn names
+
+(defvar parenting-propn-syms (mapcar #'last-element parenting-propns))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -184,9 +182,15 @@
 
 ; MAKE-SKYLESS-PERSON
 ; Make a person that:
-; Has propns about: parenting, hunting, EARTH origin, and possibly one other propn
-; Lacks: most propns about SKY origin
-; Initial salience on propns about: EARTH origin
+;	Has propns about:
+;		parenting
+;		hunting
+;		earth origin
+;               possibly one other
+;       Lacks:
+;               most propns about sky origin
+;	Initial salience on propns about:
+;		earth origin
 (defun make-skyless-person (name &optional addl-target-propn)
   (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
     (make-person name 'folks PARENTING-PROPNS
@@ -198,9 +202,15 @@
 
 ; MAKE-EARTHLESS-PERSON
 ; Make a person that:
-; Has propns about: parenting, hunting, SKY origin, and possibly one other propn
-; Lacks: most propns about EARTH origin
-; Initial salience on propns about: SKY origin
+;	Has propns about:
+;		parenting
+;		hunting
+;		sky origin
+;               possibly one other
+;       Lacks:
+;               most propns about earth origin
+;	Initial salience on propns about:
+;		sky origin
 (defun make-earthless-person (name &optional addl-target-propn)
   (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
     (make-person name 'folks HUNTING-PROPNS
@@ -221,98 +231,3 @@
 
 ; add salience for parenting propns to one person
 (defun dehunterize-person (person) (setf *the-person* person) (mapc #'perceived-negation HUNTING-PROPNS))
-
-
-;; SKY-TO-EARTH-POP-NO-NEG 
-;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
-;; Start with salience on hunting.
-;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience.
-(defun sky-to-earth-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
-  (collect-and-continue-run 
-    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person nil output-basename))
-
-;; SKY-TO-EARTH-POP-ADD-NEG 
-;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
-;; Start with salience on hunting.
-;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience and anti-hunting salience.
-(defun sky-to-earth-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
-  (collect-and-continue-run 
-    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person #'dehunterize-person output-basename))
-
-;; EARTH-TO-SKY-POP-NO-NEG 
-;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
-;; Start with salience on parenting.
-;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience.
-(defun earth-to-sky-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
-  (collect-and-continue-run 
-    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person nil output-basename))
-
-;; EARTH-TO-SKY-POP-ADD-NEG 
-;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
-;; Start with salience on parenting.
-;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience and anti-parenting salience.
-(defun earth-to-sky-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
-  (collect-and-continue-run 
-    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename))
-
-;; COLLECT-AND-CONTINUE-RUN 
-;; Create persons with make-person-fn, making at least as many as there are propositions in 
-;; propns-to-distrib, each getting one of those propns.  Make num-extra-persons additional
-;; persons without any extra propositions from propns-to-distrib, also with make-person-fn.
-;; Run until at least one person has all of the propns in propns-to-distrib.
-;; Then drop salience and add back salience to num-to-flip randomly chosen persons using 
-;; flip-fn (required), as well as anti-flip-fn if not nil.  See functions above for illustrations.
-;; NetLogo and csv data will be stored in filenames constructed from output-basename.  
-(defun collect-and-continue-run (make-person-fn propns-to-distrib num-extra-persons addl-ticks num-to-flip flip-fn anti-flip-fn output-basename)
-  (setf *netlogo-output-name* (concatenate 'string "../data/" output-basename "NetLogoData.txt"))
-  (setf *propns-csv-output-name* (concatenate 'string "../data/" output-basename "PropnData.csv"))
-  (setf *random-state-file* (concatenate 'string "../data/" output-basename "RandomState.lisp"))
-  (setf *time-runs* t)
-  (setf *do-report-to-netlogo* t)
-  (setf *do-report-propns-to-csv* t)
-  (setf *max-pop-ticks* 0)
-
-  ; make earth-origin persons that also each have a distinct member of sky-origin-propns
-  (make-persons-with-addl-propn make-person-fn 'x propns-to-distrib) ; ["x" for has extra propn]
-
-  ; if requested, make additional earth-origin persons with none of the sky-origin-propns
-  (when (> num-extra-persons 0)
-    (funcall make-person-fn 'temp-person) ; template for the additional persons
-    (n-persons-with-name 'temp-person 'n num-extra-persons) ; ["n" for relatively naive--no extra propns]
-    (rem-elt-from-property 'temp-person 'folks 'members)) ; abandon temp-person to the garbage collector ...
-
-  ; the status messages are for the NetLogo file, which might not actually get used
-  (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
-  
-  ; now that pop is set up, we can start the run
-  (init-pop)
-  (print (get 'folks 'members))
-  (popco) ; initialize output files, etc.  Won't do anything else since max-pop-ticks is 0
-
-  (let ((propns-to-distrib-syms (mapcar #'last-element propns-to-distrib))) ; get proposition names
-
-    ; run until we have at least one member who's collected all of the sky propns, checking every 10 ticks.  (The 1000 is just a failsafe max stopping point.)
-    (popco-until 1 #'(lambda () (find-member-with-propns-in-struc? 'target propns-to-distrib-syms)) 1000)  
-
-    (let ((first-to-collect (find-member-with-propns-in-struc? 'target propns-to-distrib-syms))) ; store the name of the lucky individual was
-      (set-status-message 
-        (format nil "   sky propns filter through pop until collected in one person [~S at tick ~S]\\n-> drop parenting, added hunting for several <-"
-                first-to-collect *pop-tick*))))
-
-  ; Now we switch the environment
-  (drop-salience) ; remove salience from all propns in all persons
-
-  (let ((to-choose-from (get *the-population* 'members))
-        (chosen '()))
-    (dotimes (ignored num-to-flip)
-      (when (plusp (length to-choose-from)) ; a trivial inefficiency--keep going but don't do anything if we've used them all up
-        (let ((to-move (elt to-choose-from (random (length to-choose-from)))))
-          (push to-move chosen)
-          (setf chosen (remove to-move chosen)))))
-    (mapc flip-fn chosen)
-    (when anti-flip-fn
-      (mapc anti-flip-fn chosen)))
-
-  (popco-plus-t addl-ticks) 
-
-) ; end of collect-and-continue-run
