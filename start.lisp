@@ -121,7 +121,7 @@
 ;; overwriting the defmacro of normalize-degree in imp.lisp with a
 ;; different one in popco.lisp.
 ;(print "Loading POPCO")
-(myload "logistic")
+;(myload "logistic")
 (myload "popco")
 (print "Main POPCO routines loaded (popco.lisp).")
 

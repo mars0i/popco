@@ -1,24 +1,16 @@
 top tasks:
 
-. BUG: csv code lacks header entries when propositions are added later.
-  (Or else there's a more serious problem.)
-  Also, you get no entries before the propns appear.
-  This all confuses R.
-  PARTLY DONE:
-  Header now has all possible personal propositions.
-  Next I have to make the row-generation code loop through all poss propns,
-  producting 0.0 if not exist.
-  OK, THAT'S DONE.
-  EXCEPT THAT NOW IT APPEARS THAT ALL POSSIBLE PROPOSITIONS ARE GETTING
-  ADDED TO EVERY PERSON FROM THE START. !
-  BUT IT DOESN'T LOOK THE PROBLEM IS THE INIT ROUTINE 
-  RECORD-POSS-PERSONAL-PROPNS-IN-POP POPULATION.  !
-  So what is doing that??
-  FIXED. The problem was not that all poss propns were getting added.
-  It was that the main function in parenting18untilCollect1.lisp had one
-  list of propositions hardcoded--I had forgetten to replace it with
-  the parameter that I was passing in.  So the test for collection always
-  succeeded sometimes, because it was looking for the wrong thing.
+. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
+  using Lisp code rather than restarting sbcl and having to manage it
+  from shell code.  Not sure if these are sufficient.
+        (mapcar #'clear-plists (get 'folks 'members))
+        (clear-person-nets 'folks)
+  What's needed is:
+        1. Clear plists recursively starting from *the-population*, and symbol values
+           if there are any (I don't think there are).
+        2. Set all globals back to defaults.  Note that at present, not all are in
+           variables.lisp, so I can't just reload that file.
+        3. Make sure that random-state is managed properly and saved properly.
 
 . Possibly write code to clear out everything.  Maybe walk plists
   and possibly symbol values, clearing them out.
