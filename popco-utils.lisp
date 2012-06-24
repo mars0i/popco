@@ -397,7 +397,7 @@
 
 ;; blow away everything in the property list of symbols
 (defun clear-plists (&rest symbols)
-  (mapc #'clear-props symbols)) ; network-personal.lisp
+  (mapc #'clear-props symbols)) ; network.lisp
 
 ;; clear out the constraint networks
 (defun clear-person-net (person)

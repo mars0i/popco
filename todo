@@ -14,6 +14,11 @@ top tasks:
   BUT IT DOESN'T LOOK THE PROBLEM IS THE INIT ROUTINE 
   RECORD-POSS-PERSONAL-PROPNS-IN-POP POPULATION.  !
   So what is doing that??
+  FIXED. The problem was not that all poss propns were getting added.
+  It was that the main function in parenting18untilCollect1.lisp had one
+  list of propositions hardcoded--I had forgetten to replace it with
+  the parameter that I was passing in.  So the test for collection always
+  succeeded sometimes, because it was looking for the wrong thing.
 
 . Possibly write code to clear out everything.  Maybe walk plists
   and possibly symbol values, clearing them out.
