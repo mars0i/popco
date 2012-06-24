@@ -113,9 +113,9 @@
 (defun popco-until (how-often test-function &optional stop-after)
   (let ((start-time (get-internal-real-time)))
     (do ()
-      ((or (when stop-after              ; if stop-after was specified
-             (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
-           (funcall test-function)))     ; or test returns true, then terminate
+        ((or (when stop-after              ; if stop-after was specified
+               (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
+             (funcall test-function)))     ; or test returns true, then terminate
       (setf *max-pop-ticks* (+ *pop-tick* how-often))      ; increment tick to run
       (run-population *the-population* :cont-prev-sess t)) ; and run until then
 
