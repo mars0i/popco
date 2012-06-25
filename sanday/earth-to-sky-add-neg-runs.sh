@@ -14,21 +14,21 @@ echo
 numToFlip=1
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=4
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=8
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
@@ -42,28 +42,28 @@ echo
 numToFlip=1
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=4
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=8
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=18
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
@@ -76,35 +76,35 @@ echo
 numToFlip=1
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=4
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=8
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=20
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=30
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
@@ -117,42 +117,42 @@ echo
 numToFlip=1
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=4
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=8
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=20
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=50
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
 numToFlip=80
 runNum=1
 while [ $runNum -le $numRunsPerParams ]; do
-        time sbcl.executable --load sanday/earth-to-sky-add-neg-runs $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
+        time sbcl.executable --script sanday/earth-to-sky-add-neg-runs.lisp $extraPersons $addlTicks $numToFlip "e2sAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
         runNum=$(($runNum+1))
 done
 
