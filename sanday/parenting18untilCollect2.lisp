@@ -4,8 +4,6 @@
 ; and then possibly change salience relations.
 ; Based on parenting18d.lisp
 
-(error "Don't use parenting18untilCollect1.lisp.  It has a serious bug.")
-
 
 ; many of these params will be overrident in (sequence)
 
@@ -229,7 +227,7 @@
 ;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
 ;; Start with salience on hunting.
 ;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience.
-(defun sky-to-earth-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+(defun sky-to-earth-no-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
     #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person nil output-basename))
 
@@ -237,7 +235,7 @@
 ;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
 ;; Start with salience on hunting.
 ;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience and anti-hunting salience.
-(defun sky-to-earth-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+(defun sky-to-earth-add-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
     #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person #'dehunterize-person output-basename))
 
@@ -245,7 +243,7 @@
 ;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
 ;; Start with salience on parenting.
 ;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience.
-(defun earth-to-sky-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+(defun earth-to-sky-no-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
     #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person nil output-basename))
 
@@ -253,7 +251,7 @@
 ;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
 ;; Start with salience on parenting.
 ;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience and anti-parenting salience.
-(defun earth-to-sky-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
+(defun earth-to-sky-add-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
     #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename))
 
@@ -265,7 +263,7 @@
 ;; Then drop salience and add back salience to num-to-flip randomly chosen persons using 
 ;; flip-fn (required), as well as anti-flip-fn if not nil.  See functions above for illustrations.
 ;; NetLogo and csv data will be stored in filenames constructed from output-basename.  
-(defun collect-and-continue-run (make-person-fn propns-to-distrib num-extra-persons addl-ticks num-to-flip flip-fn anti-flip-fn output-basename)
+(defun collect-and-continue-run (make-person-fn propns-to-distrib num-extra-persons burn-in-ticks addl-ticks num-to-flip flip-fn anti-flip-fn output-basename)
   (setf *netlogo-output-name* (concatenate 'string "../data/" output-basename "NetLogoData.txt"))
   (setf *propns-csv-output-name* (concatenate 'string "../data/" output-basename "PropnData.csv"))
   (setf *random-state-file* (concatenate 'string "../data/" output-basename "RandomState.lisp"))
@@ -283,16 +281,19 @@
     (rem-elt-from-property 'temp-person 'folks 'members)) ; abandon temp-person to the garbage collector ...
 
   ; the status messages are for the NetLogo file, which might not actually get used
-  (set-status-message "-> sky propns spread through pop until collected <- \\n   env switches from parenting to some hunting")
+  (set-status-message "-> letting pop stabilize before conversation <-\\n   sky propns spread through pop until collected   \\n   env switches from parenting to some hunting")
   
   ; now that pop is set up, we can start the run
   (init-pop)
   (print (get 'folks 'members))
 
-  (setf *max-pop-ticks* 1000)
+  ; population "burn-in": bring population to a stable state before allowing conversation to start
+  (setf *max-pop-ticks* burn-in-ticks)
   (setf *do-converse* nil)
   (popco) ; initialize output files, and then allow initial settling of the culture before conversation begins
   (setf *do-converse* t) ; after this we allow conversation
+
+  (set-status-message "   letting pop stabilize before conversation   \\n-> sky propns spread through pop until collected <-\\n   env switches from parenting to some hunting")
 
   (let ((propns-to-distrib-syms (mapcar #'last-element propns-to-distrib))) ; get proposition names
 
@@ -307,13 +308,8 @@
   ; Now we switch the environment
   (drop-salience) ; remove salience from all propns in all persons
 
-  (let ((to-choose-from (get *the-population* 'members))
-        (chosen '()))
-    (dotimes (ignored num-to-flip)
-      (when (plusp (length to-choose-from)) ; a trivial inefficiency--keep going but don't do anything if we've used them all up
-        (let ((to-move (elt to-choose-from (random (length to-choose-from)))))
-          (push to-move chosen)
-          (setf chosen (remove to-move chosen)))))
+  (let ((to-flip (random-subset num-to-flip (get *the-population* 'members))))
+    (format t "Flipping ~S~%" to-flip)
     (mapc flip-fn chosen)
     (when anti-flip-fn
       (mapc anti-flip-fn chosen)))

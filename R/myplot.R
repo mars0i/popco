@@ -44,18 +44,18 @@ rowVars <- function(row){var(t(row))}
 
 # these work
 plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans)}
-plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs)}
+plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, ymin = 0)}
 
 # but these don't:
 plotColsForDomain <- function(data, domain) {plotForDomain(data, domain, identity)}
-plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars)}
+plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, ymin = 0)}
 
-plotForDomain <- function(data, domain, aggregFn) {
+plotForDomain <- function(data, domain, aggregFn, ymin = -1, ymax = 1) {
   persons <- extractPersons(data)
   npersons <- length(persons)
   rows <- nrow(data)
 
-  plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), main=domain) # initialize plot
+  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), main=domain) # initialize plot
 
   for (p in persons) {
     lines(aggregFn(findActivns(data, p, domain, )),  # missing tick returns a vector
@@ -63,26 +63,30 @@ plotForDomain <- function(data, domain, aggregFn) {
   }
 }
 
+plotAvgsFourDomains <- function(data, titl) {plotFourDomains(data, rowMeans, titl)}
+plotSDsFourDomains <- function(data, titl) {plotFourDomains(data, rowSDs, titl)}
 
-# experiment
-plotFourDomains <- function(data, aggregFn, title.ignored) {
-  # copied and modified from http://sphaerula.com/legacy/R/multiplePlotFigure.html
-  ##  Open a new default device.
-  getOption( "device" )()
-
-  ##  Split the screen into two rows and one column, defining screens 1 and 2.
-  split.screen( figs = c( 2, 1 ) )
-  ##  Split screen 1 into one row and two columns, defining screens 3 and 4
-  split.screen( figs = c( 1, 2 ), screen = 1 )
-  ##  Split screen 2 into one row and two columns, defining screens 6 and 7.
-  split.screen( figs = c( 1, 2 ), screen = 2 )
-
-  screen( 3 )
+plotFourDomains <- function(data, aggregFn, titl) {
+  # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
+  
+  getOption( "device" )() # open new default device.
+  par(mfrow=c(2,2)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
+  # add the four subplots in order :
   plotForDomain(data, "P", aggregFn)
-  screen( 4 )
   plotForDomain(data, "H", aggregFn)
-  screen( 5 )
   plotForDomain(data, "OE", aggregFn)
-  screen( 6 )
   plotForDomain(data, "OS", aggregFn)
+
+  # print title in outer margin at top, adding a newline as a simple way to shift it down
+  title(paste0("\n", titl), outer=TRUE)
 }
+
+# quick and dirty load the file and plot the averages in each domain
+loadNplotAvgs <- function(filename) {
+  data <- read.csv(filename)
+  titl <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
+  plotAvgsFourDomains(data, titl)
+}
+  
+# to pop up plots for a lot of files at once, you can do something like this:
+# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }

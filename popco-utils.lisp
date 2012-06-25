@@ -10,6 +10,22 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+;; RANDOM-SUBSET
+;; Does what you think it does: Give it a length and a list, and it will give
+;; you a new list of that length randomly chosen from the list.
+;; [Honestly, tried to write this as a loop, but it wasn't working right, and the
+;; tail-recursive version worked the first time.]
+(defun random-subset-aux (remaining oldset newset)
+  (if (or (<= remaining 0) 
+          (null oldset))
+    newset
+    (let ((elt-to-move (elt oldset (random (length oldset)))))
+      (r-s-aux (1- remaining)
+               (remove elt-to-move oldset)
+               (cons elt-to-move newset)))))
+
+(defun random-subset (size superset)
+  (r-s-aux size superset ()))
 
 
 ;; SAFE SORT FUNCTIONS
