@@ -20,7 +20,7 @@
 ; INITIAL SETTINGS
 ;(setf *time-runs* nil)   ; set below
 ;(setf *max-pop-ticks* 0) ; set below
-(setf *do-converse* t)             ; Whether to send utterances between persons
+;(setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 ;(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
 ;(setf *do-report-propns-to-csv* t)
@@ -270,7 +270,6 @@
   (setf *time-runs* t)
   (setf *do-report-to-netlogo* t)
   (setf *do-report-propns-to-csv* t)
-  (setf *max-pop-ticks* 0)
 
   ; make earth-origin persons that also each have a distinct member of sky-origin-propns
   (make-persons-with-addl-propn make-person-fn 'x propns-to-distrib) ; ["x" for has extra propn]
@@ -287,12 +286,16 @@
   ; now that pop is set up, we can start the run
   (init-pop)
   (print (get 'folks 'members))
-  (popco) ; initialize output files, etc.  Won't do anything else since max-pop-ticks is 0
+
+  (setf *max-pop-ticks* 1000)
+  (setf *do-converse* nil)
+  (popco) ; initialize output files, and then allow initial settling of the culture before conversation begins
+  (setf *do-converse* t) ; after this we allow conversation
 
   (let ((propns-to-distrib-syms (mapcar #'last-element propns-to-distrib))) ; get proposition names
 
     ; run until we have at least one member who's collected all of the sky propns, checking every 10 ticks.  (The 1000 is just a failsafe max stopping point.)
-    (popco-until 1 #'(lambda () (find-member-with-propns-in-struc? 'target propns-to-distrib-syms)) 1000)  
+    (popco-until 10 #'(lambda () (find-member-with-propns-in-struc? 'target propns-to-distrib-syms)) 1000)  
 
     (let ((first-to-collect (find-member-with-propns-in-struc? 'target propns-to-distrib-syms))) ; store the name of the lucky individual was
       (set-status-message 

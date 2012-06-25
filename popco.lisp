@@ -103,15 +103,16 @@
 
 ; POPCO-UNTIL
 ; Run POPCO until test-function returns true, testing every how-often pop-ticks.
-; optional arg stop-after is a tick after which to terminate.  Note won't necessarily
-; stop exactly at that tick, unless how-often = 1.
+; optional arg stop-after-addl is the number of ticks after which to terminate if test still
+; hasn't fired.  Note won't necessarily stop exactly at that tick, unless how-often = 1.
 ; Returns the elapsed real time in seconds.
 ; test-function takes no arguments, but obviously can reference globals such as *the-population*.
 ; Continues previous session, so (popco) should normally be run first.
 ; Note this function uses run-population directly to avoid the messages and time output that
 ; popco/popco-plus-t currently generate.
-(defun popco-until (how-often test-function &optional stop-after)
-  (let ((start-time (get-internal-real-time)))
+(defun popco-until (how-often test-function &optional stop-after-addl)
+  (let ((stop-after (if stop-after-addl (+ *pop-tick* stop-after-addl) nil))
+        (start-time (get-internal-real-time)))
     (do ()
         ((or (when stop-after              ; if stop-after was specified
                (>= *pop-tick* stop-after)) ; and pop-tick is stop-after or greater
