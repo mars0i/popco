@@ -87,6 +87,17 @@ loadNplotAvgs <- function(filename) {
   titl <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
   plotAvgsFourDomains(data, titl)
 }
+
+# quick and dirty load the file and plot the averages and sd's in each domain
+loadNplot <- function(filename) {
+  data <- read.csv(filename)
+  basetitl <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
+  plotAvgsFourDomains(data, paste(basetitl, "avgs"))
+  plotSDsFourDomains(data, paste(basetitl, "sd's"))
+}
+  
+# to pop up plots for a lot of files at once, you can do something like this:
+# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }
   
 # to pop up plots for a lot of files at once, you can do something like this:
 # for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }

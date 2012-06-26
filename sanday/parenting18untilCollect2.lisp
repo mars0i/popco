@@ -227,33 +227,33 @@
 ;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
 ;; Start with salience on hunting.
 ;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience.
-(defun sky-to-earth-no-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
+(defun sky-to-earth-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
-    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person nil output-basename))
+    #'make-earthless-person earth-origin-propns num-extra-persons 20 addl-ticks num-to-flip #'parentize-person nil output-basename))
 
 ;; SKY-TO-EARTH-POP-ADD-NEG 
 ;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
 ;; Start with salience on hunting.
 ;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience and anti-hunting salience.
-(defun sky-to-earth-add-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
+(defun sky-to-earth-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
-    #'make-earthless-person earth-origin-propns num-extra-persons addl-ticks num-to-flip #'parentize-person #'dehunterize-person output-basename))
+    #'make-earthless-person earth-origin-propns num-extra-persons 20 addl-ticks num-to-flip #'parentize-person #'dehunterize-person output-basename))
 
 ;; EARTH-TO-SKY-POP-NO-NEG 
 ;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
 ;; Start with salience on parenting.
 ;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience.
-(defun earth-to-sky-no-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
+(defun earth-to-sky-no-neg (num-extra-persons addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
-    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person nil output-basename))
+    #'make-skyless-person sky-origin-propns num-extra-persons 20 addl-ticks num-to-flip #'hunterize-person nil output-basename))
 
 ;; EARTH-TO-SKY-POP-ADD-NEG 
 ;; Start with persons who know earth origin, parenting, hunting, and possibly one sky origin propn.
 ;; Start with salience on parenting.
 ;; Once someone collects all of the sky origin propns, drop all salience, give num-to-flip hunting salience and anti-parenting salience.
-(defun earth-to-sky-add-neg (num-extra-persons 20 addl-ticks num-to-flip output-basename)
+(defun earth-to-sky-add-neg (num-extra-persons addl-ticks num-to-flip output-basename)
   (collect-and-continue-run 
-    #'make-skyless-person sky-origin-propns num-extra-persons addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename))
+    #'make-skyless-person sky-origin-propns num-extra-persons 20 addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename))
 
 ;; COLLECT-AND-CONTINUE-RUN 
 ;; Create persons with make-person-fn, making at least as many as there are propositions in 
@@ -310,9 +310,9 @@
 
   (let ((to-flip (random-subset num-to-flip (get *the-population* 'members))))
     (format t "Flipping ~S~%" to-flip)
-    (mapc flip-fn chosen)
+    (mapc flip-fn to-flip)
     (when anti-flip-fn
-      (mapc anti-flip-fn chosen)))
+      (mapc anti-flip-fn to-flip)))
 
   (popco-plus-t addl-ticks) 
 

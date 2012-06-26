@@ -20,12 +20,12 @@
           (null oldset))
     newset
     (let ((elt-to-move (elt oldset (random (length oldset)))))
-      (r-s-aux (1- remaining)
+      (random-subset-aux (1- remaining)
                (remove elt-to-move oldset)
                (cons elt-to-move newset)))))
 
 (defun random-subset (size superset)
-  (r-s-aux size superset ()))
+  (random-subset-aux size superset ()))
 
 
 ;; SAFE SORT FUNCTIONS
