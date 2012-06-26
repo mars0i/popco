@@ -81,6 +81,25 @@ plotFourDomains <- function(data, aggregFn, titl) {
   title(paste0("\n", titl), outer=TRUE)
 }
 
+plotFourDomainsTwoWays <- function(data, titl) {
+  # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
+  
+  getOption( "device" )() # open new default device.
+  par(mfrow=c(2,4)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
+  # add the four subplots in order :
+  plotForDomain(data, "P", rowMeans)
+  plotForDomain(data, "H", rowMeans)
+  plotForDomain(data, "P", rowSDs, 0)
+  plotForDomain(data, "H", rowSDs, 0)
+  plotForDomain(data, "OE", rowMeans)
+  plotForDomain(data, "OS", rowMeans)
+  plotForDomain(data, "OE", rowSDs, 0)
+  plotForDomain(data, "OS", rowSDs, 0)
+
+  # print title in outer margin at top, adding a newline as a simple way to shift it down
+  title(paste0("\n", titl), outer=TRUE)
+}
+
 # quick and dirty load the file and plot the averages in each domain
 loadNplotAvgs <- function(filename) {
   data <- read.csv(filename)
