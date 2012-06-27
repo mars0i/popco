@@ -180,13 +180,19 @@
 ;             '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
 
 
-; The following functions define two alternative paradigmatic persons.  Differences are uppercased.
+; The following functions define alternative paradigmatic persons.  Differences are uppercased.
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; THESE FIRST TWO functions make persons that start with origin beliefs that are in sync with what's salient.
+;; i.e. make-skyless-person creates someone who emphasizes parenting, and has available earth-origin beliefs.
+;; i.e. make-earthess-person creates someone who emphasizes hunting, and has available sky-origin beliefs.
 
 ; MAKE-SKYLESS-PERSON
 ; Make a person that:
 ; Has propns about: parenting, hunting, EARTH origin, and possibly one other propn
 ; Lacks: most propns about SKY origin
-; Initial salience on propns about: EARTH origin
+; Initial salience on propns about: PARENTING
 (defun make-skyless-person (name &optional addl-target-propn)
   (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
     (make-person name 'folks PARENTING-PROPNS
@@ -200,10 +206,42 @@
 ; Make a person that:
 ; Has propns about: parenting, hunting, SKY origin, and possibly one other propn
 ; Lacks: most propns about EARTH origin
-; Initial salience on propns about: SKY origin
+; Initial salience on propns about: HUNTING
 (defun make-earthless-person (name &optional addl-target-propn)
   (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
     (make-person name 'folks HUNTING-PROPNS
+                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS ,@addl-target-propn-list)))
+                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
+                   ,@semantic-relations)
+                 `(,@pragmatic-relations)
+                 '())))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; THESE NEXT TWO FUNCTIONS MAKE "PARADOXICAL" PERSONS that start with origin beliefs that are out of sync with what's salient.
+;; i.e. make-skyless-hunter creates someone who emphasizes hunting, and does not initially have available many (or any) sky-origin beliefs.
+;; i.e. make-earthess-parent creates someone who emphasizes parenting, and does not have available many (or any) earth-origin beliefs.
+
+; MAKE-SKYLESS-HUNTER
+; Make a person that:
+; Has propns about: parenting, hunting, EARTH origin, and possibly one other propn
+; Lacks: most propns about SKY origin
+; Initial salience on propns about: HUNTING
+(defun make-skyless-hunter (name &optional addl-target-propn)
+  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
+    (make-person name 'folks HUNTING-PROPNS
+                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@EARTH-ORIGIN-PROPNS ,@addl-target-propn-list)))
+                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
+                   ,@semantic-relations)
+                 `(,@pragmatic-relations)
+                 '())))
+
+; MAKE-EARTHLESS-PARENT
+; Make a person that:
+; Has propns about: parenting, hunting, SKY origin, and possibly one other propn
+; Lacks: most propns about EARTH origin
+; Initial salience on propns about: PARENTING
+(defun make-earthless-parent (name &optional addl-target-propn)
+  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
+    (make-person name 'folks PARENTING-PROPNS
                  `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS ,@addl-target-propn-list)))
                    (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
                    ,@semantic-relations)
@@ -255,13 +293,19 @@
   (collect-and-continue-run 
     #'make-skyless-person sky-origin-propns num-extra-persons 20 addl-ticks num-to-flip #'hunterize-person #'deparentize-person output-basename do-drop-salience))
 
-(defun earth-to-earth (num-extra-persons addl-ticks num-to-flip output-basename &optional (do-drop-salience t))
+;; GROWTH-OF-SKY-POP 
+;; A pop in which hunting is salient, but sky origin propns are present only here and there in pop, and need to be collected to be invoked.
+;; No flipping.
+(defun growth-of-sky-pop (num-extra-persons addl-ticks output-basename)
   (collect-and-continue-run 
-    #'make-skyless-person earth-origin-propns num-extra-persons 20 addl-ticks 0 #'identity #'identity output-basename nil))
+    #'make-skyless-hunter sky-origin-propns num-extra-persons 20 addl-ticks 0 nil nil output-basename nil))
 
-(defun sky-to-sky (num-extra-persons addl-ticks num-to-flip output-basename &optional (do-drop-salience t))
+;; GROWTH-OF-EARTH-POP 
+;; A pop in which parenting is salient, but earth origin propns are present only here and there in pop, and need to be collected to be invoked.
+;; No flipping.
+(defun growth-of-earth-pop (num-extra-persons addl-ticks output-basename)
   (collect-and-continue-run 
-    #'make-earthless-person sky-origin-propns num-extra-persons 20 addl-ticks 0 #'identity #'identity output-basename nil))
+    #'make-earthless-parent earth-origin-propns num-extra-persons 20 addl-ticks 0 nil nil output-basename nil))
 
 ;; COLLECT-AND-CONTINUE-RUN 
 ;; Create persons with make-person-fn, making at least as many as there are propositions in 
@@ -298,11 +342,13 @@
   ; population "burn-in": bring population to a stable state before allowing conversation to start
   (setf *max-pop-ticks* burn-in-ticks)
   (setf *do-converse* nil)
+  (format t "~%~%Population \"burn-in\" ...~%")
   (popco) ; initialize output files, and then allow initial settling of the culture before conversation begins
   (setf *do-converse* t) ; after this we allow conversation
 
   (set-status-message "   letting pop stabilize before conversation   \\n-> sky propns spread through pop until collected <-\\n   env switches from parenting to some hunting")
 
+  (format t "~%Run until someone collects designated propositions ...~%~%")
   (let ((propns-to-distrib-syms (mapcar #'last-element propns-to-distrib))) ; get proposition names
 
     ; run until we have at least one member who's collected all of the sky propns, checking every 10 ticks.  (The 1000 is just a failsafe max stopping point.)
@@ -319,10 +365,10 @@
 
   (let ((to-flip (random-subset num-to-flip (get *the-population* 'members))))
     (format t "Flipping ~S~%" to-flip)
-    (mapc flip-fn to-flip)
-    (when anti-flip-fn
-      (mapc anti-flip-fn to-flip)))
+    (when flip-fn (mapc flip-fn to-flip))
+    (when anti-flip-fn (mapc anti-flip-fn to-flip)))
 
+  (format t "~%~%Run for ~S more ticks ....~%" addl-ticks)
   (popco-plus-t addl-ticks) 
 
 ) ; end of collect-and-continue-run
