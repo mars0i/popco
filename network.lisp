@@ -293,13 +293,16 @@
         (min *max-activation*
              (max *min-activation*
                   (+ (* (activation unit) (- 1.0 *decay-amount*))
-                     (* (- *max-activation* (activation unit)) *current-excit*)
-                     (* (- (activation unit) *min-activation*) *current-inhib*))))))
+                     (* (- *max-activation* (activation unit)) *current-excit*) ; *current-excit* and *current-inhib* are set by excit-and-inhib*
+                     (* (- (activation unit) *min-activation*) *current-inhib*)))))) ; and contain sums of activns from linked nodes
 
 ; EXCIT-AND-INHIB is just like net-input, except that it keeps track
 ; of excitation and inhibition separately. EXCIT-AND-INHIB-TVERSKY is
 ; identical except that units with negative activation can pull down
 ; their excitatory neighbors.
+; The algorithm is roughly: sum the positive and negative activations of
+; linked nodes, separately, and then set these into two global variables,
+; which are used to pass these sums to e.g. update-unit-activn-gross.
 (defun excit-and-inhib (unit)
   (declare (ftype (function (&rest float) float) max + *)
            (ftype (function (float float) symbol) >))

@@ -1,3 +1,4 @@
+# myplot.R
 
 # plot each column as a timeseries, all on the same plot, with random colors
 plotCols <- function(data){
@@ -110,9 +111,8 @@ loadNplotAvgs <- function(filename) {
 # quick and dirty load the file and plot the averages and sd's in each domain
 loadNplot <- function(filename) {
   data <- read.csv(filename)
-  basetitl <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
-  plotAvgsFourDomains(data, paste(basetitl, "avgs"))
-  plotSDsFourDomains(data, paste(basetitl, "sd's"))
+  basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
+  plotFourDomainsTwoWays(data, basetitle)
 }
   
 # to pop up plots for a lot of files at once, you can do something like this:
