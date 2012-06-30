@@ -1,5 +1,11 @@
 # myplot.R
 
+# (6/30 changed runif(blahblah) to runif(1) in rgb() calls.
+# runif(blahblah) where blahblah > 1 makes multiple random numbers,
+# which was making multiple rgb numbers.  These would get used to
+# color distinct points if I was plotting points as such, and I
+# wouldn't want them to have distinct colors anyway.)
+
 # THIS IS APPARENTLY THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])
 #        2 
@@ -22,7 +28,7 @@ plotAllActivns <- function(data){
   # set up empty plot window with limits xlim, ylim
   plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time")
   for(i in 1:cols){
-    lines(data[i], type="l", col=rgb(runif(cols), runif(cols), runif(cols)))
+    lines(data[i], type="l", col=rgb(runif(1), runif(1), runif(1)))
   }
 }
 
@@ -41,7 +47,7 @@ extractPersons <- function(data) {
 
 # extract the proposition domains from the data
 extractDomains <- function(data) {
-  unique(sub(".*_([^.]*)\\..*", "\\1", colnames(data)))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates:
+  unique(sub(".*_([^.]*)\\..*", "\\1", colnames(data)))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates
 }
 
 # a standard dev fn that can be passed to plotForDomain
@@ -66,7 +72,7 @@ plotActivnsForDomain <- function(data, domain){
   plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time", main=domain.labels[1,domain]) # initialize plot window
 
   for(i in grep(paste0("_", domain, "."), colnames(data))) {
-    lines(data[i], type="l", col=rgb(runif(cols), runif(cols), runif(cols)))
+    lines(data[i], type="l", col=rgb(runif(1), runif(1), runif(1)))
   }
 }
 
@@ -91,7 +97,7 @@ plotForDomain <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1) {
 
   for (p in persons) {
     lines(aggregFn(findActivns(data, p, domain, )),  # missing tick returns a vector
-           type="l", col=rgb(runif(npersons), runif(npersons), runif(npersons)))
+           type="l", col=rgb(runif(1), runif(1), runif(1)))
   }
 }
 
@@ -104,7 +110,7 @@ plotForDomain <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1) {
 #
 #  for (pers in persons) {
 #    for (tick in 1:rows) {
-#      lines(aggregFn(findActivns(data, pers, domain, tick)), type="l", col=rgb(runif(npersons), runif(npersons), runif(npersons)))
+#      lines(aggregFn(findActivns(data, pers, domain, tick)), type="l", col=rgb(runif(1), runif(1), runif(1)))
 #    }
 #  }
 #}
