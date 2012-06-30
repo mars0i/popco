@@ -1,12 +1,12 @@
-; sky-to-earth-add-neg-runs.lisp
+; earth-to-sky-add-neg-runs.lisp
 ; setup script for specific run scripts
 #-sbcl (error "This script is designed to run in SBCL, not other Common Lisps.")
 (unlock-package 'common-lisp)
 (load "start") ; popco
 (load "sanday/parenting18untilCollect5")  ; library of functions that define persons, run popoco, etc.
 
-(defvar *run-fn-name* 'sky-to-earth-add-neg) ; change this for different script behavior
-(defvar *run-fn* #'sky-to-earth-add-neg) ; change this for different script behavior
+(defvar *run-fn-name* 'earth-to-sky-add-neg) ; change this for different script behavior
+(defvar *run-fn* #'earth-to-sky-add-neg) ; change this for different script behavior
 
 ; get parameters from the command line:
 (defvar *argv* (cdr *posix-argv*)) ; in sbcl, do this

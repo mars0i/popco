@@ -1071,13 +1071,13 @@ to-report flatten-aux [ lis ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-1628
-12
-2351
-758
-150
-150
-2.12625
+1633
+13
+2530
+936
+240
+240
+1.47
 1
 12
 1
@@ -1087,10 +1087,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--150
-150
--150
-150
+-240
+240
+-240
+240
 1
 1
 1
@@ -1177,7 +1177,7 @@ SWITCH
 657
 show-Person-labels
 show-Person-labels
-0
+1
 1
 -1000
 
@@ -1218,7 +1218,7 @@ propositions-circle-radius
 propositions-circle-radius
 5
 50
-20
+5
 1
 1
 NIL
@@ -1232,8 +1232,8 @@ SLIDER
 person-circle-radius
 person-circle-radius
 20
-200
-128
+250
+222
 2
 1
 NIL
@@ -1265,7 +1265,7 @@ OUTPUT
 566
 1034
 724
-9
+8
 
 MONITOR
 1097
@@ -1399,8 +1399,8 @@ PENS
 PLOT
 4
 15
-450
-561
+451
+940
 key
 (must be wider than the longest name)
 NIL

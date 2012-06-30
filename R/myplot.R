@@ -1,13 +1,26 @@
 # myplot.R
 
+# THIS IS APPARENTLY THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
+# rowVars(d75[2,])
+#        2 
+# 0.1506642 
+# that last number is the answer
+
+
+# global definition of domain plot labels. 	
+domain.labels=data.frame(H="hunting", "P"="parenting", OE="earth origin", OS="sky origin")
+
+# R's built-in var and sd are sample variance and standard dev.
+# These population versions are what I should be using below.
+pvar(x) = ((n-1)/n)var(x)
+psd(x) = ((n-1)/n)sd(x)
+
 # plot each column as a timeseries, all on the same plot, with random colors
-plotCols <- function(data){
+plotAllActivns <- function(data){
   cols <- length(data)
   rows <- nrow(data)
-
   # set up empty plot window with limits xlim, ylim
-  plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows))
-
+  plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time")
   for(i in 1:cols){
     lines(data[i], type="l", col=rgb(runif(cols), runif(cols), runif(cols)))
   }
@@ -36,27 +49,45 @@ extractDomains <- function(data) {
 # t() is transform, i.e. flip a row to a column
 # The apply() stuff is just what R told me to do when I ran sd():
 # It said "sd(<matrix>) is deprecated. Use apply(*, 2, sd) instead."
-rowSDs <- function(row){apply(t(row),2,sd)}
+rowSDs <- function(row) {apply(t(row),2,sd)}
+rowVars <- function(row) {(rowSDs(row))^2}
 
 # this doesn't work right with plotForDomain, although this
 #       rowVars(data[2,])
 # works.
-rowVars <- function(row){var(t(row))}
+#rowVars <- function(row){var(t(row))}
+
+# I haven't figured out how define this functionally, like plotAvgsForDomain and
+# plotSDsForDomain below, so I'm just giving it its own definition.
+plotActivnsForDomain <- function(data, domain){
+  rows <- nrow(data)
+  cols <- length(data)
+
+  plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time", main=domain.labels[1,domain]) # initialize plot window
+
+  for(i in grep(paste0("_", domain, "."), colnames(data))) {
+    lines(data[i], type="l", col=rgb(runif(cols), runif(cols), runif(cols)))
+  }
+}
 
 # these work
-plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans)}
-plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, ymin = 0)}
+plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "avg activation")}
+plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
+plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, "var", ymin = 0); print("Warning: Is rowVars defined correctly?");}
+
+#plotAvgsForDomain2 <- function(data, domain) {plotForDomain2(data, domain, rowMeans)}
+#plotSDsForDomain2 <- function(data, domain) {plotForDomain2(data, domain, rowSDs, ymin = 0)}
 
 # but these don't:
-plotColsForDomain <- function(data, domain) {plotForDomain(data, domain, identity)}
-plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, ymin = 0)}
+#plotActivnsForDomain <- function(data, domain) {plotForDomain(data, domain, identity)}
+#plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, ymin = 0)}
 
-plotForDomain <- function(data, domain, aggregFn, ymin = -1, ymax = 1) {
+plotForDomain <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1) {
   persons <- extractPersons(data)
   npersons <- length(persons)
   rows <- nrow(data)
 
-  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), main=domain) # initialize plot
+  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), ylab=ylabel, xlab="time", main=domain.labels[1,domain]) # initialize plot
 
   for (p in persons) {
     lines(aggregFn(findActivns(data, p, domain, )),  # missing tick returns a vector
@@ -64,10 +95,23 @@ plotForDomain <- function(data, domain, aggregFn, ymin = -1, ymax = 1) {
   }
 }
 
-plotAvgsFourDomains <- function(data, titl) {plotFourDomains(data, rowMeans, titl)}
-plotSDsFourDomains <- function(data, titl) {plotFourDomains(data, rowSDs, titl)}
+#plotForDomain2 <- function(data, domain, aggregFn, ymin = -1, ymax = 1) {
+#  persons <- extractPersons(data)
+#  npersons <- length(persons)
+#  rows <- nrow(data)
+#
+#  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), main=domain) # initialize plot
+#
+#  for (pers in persons) {
+#    for (tick in 1:rows) {
+#      lines(aggregFn(findActivns(data, pers, domain, tick)), type="l", col=rgb(runif(npersons), runif(npersons), runif(npersons)))
+#    }
+#  }
+#}
 
-plotFourDomains <- function(data, aggregFn, titl) {
+plotAvgsFourDomainsOld <- function(data, titl) {plotFourDomains(data, rowMeans, titl)}
+plotSDsFourDomainsOld <- function(data, titl) {plotFourDomains(data, rowSDs, titl)}
+plotFourDomainsOld <- function(data, aggregFn, titl) {
   # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
   
   getOption( "device" )() # open new default device.
@@ -82,7 +126,41 @@ plotFourDomains <- function(data, aggregFn, titl) {
   title(paste0("\n", titl), outer=TRUE)
 }
 
-plotFourDomainsTwoWays <- function(data, titl) {
+plotActivnsFourDomains <- function(data, titl) {plotFourDomains(data, plotActivnsForDomain, titl)}
+plotAvgsFourDomains <- function(data, titl) {plotFourDomains(data, plotAvgsForDomain, titl)}
+plotSDsFourDomains <- function(data, titl) {plotFourDomains(data, plotSDsForDomain, titl)}
+plotVarsFourDomains <- function(data, titl) {plotFourDomains(data, plotVarsForDomain, titl)}
+
+plotFourDomains <- function(data, plotFn, titl) {
+  # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
+  
+  getOption( "device" )() # open new default device.
+  par(mfrow=c(2,2)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
+  # add the four subplots in order :
+  plotFn(data, "P")
+  plotFn(data, "H")
+  plotFn(data, "OE")
+  plotFn(data, "OS")
+
+  # print title in outer margin at top, adding a newline as a simple way to shift it down
+  title(paste0("\n", titl), outer=TRUE)
+}
+
+plotFourDomainsSummary <- function(data, titl) {
+  getOption( "device" )() # open new default device.
+  par(mfrow=c(2,4)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
+  plotAvgsForDomain(data, "P")
+  plotAvgsForDomain(data, "H")
+  plotSDsForDomain(data, "P")
+  plotSDsForDomain(data, "H")
+  plotAvgsForDomain(data, "OE")
+  plotAvgsForDomain(data, "OS")
+  plotSDsForDomain(data, "OE")
+  plotSDsForDomain(data, "OS")
+  title(paste0("\n", titl), outer=TRUE) # print title in outer margin at top, adding a newline as a simple way to shift it down
+}
+
+plotFourDomainsTwoWaysOld <- function(data, titl) {
   # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
   
   getOption( "device" )() # open new default device.
@@ -112,7 +190,8 @@ loadNplotAvgs <- function(filename) {
 loadNplot <- function(filename) {
   data <- read.csv(filename)
   basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
-  plotFourDomainsTwoWays(data, basetitle)
+  plotFourDomainsSummary(data, basetitle)
+  plotActivnsFourDomains(data, basetitle)
 }
   
 # to pop up plots for a lot of files at once, you can do something like this:
