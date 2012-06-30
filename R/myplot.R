@@ -16,10 +16,15 @@
 # global definition of domain plot labels. 	
 domain.labels=data.frame(H="hunting", "P"="parenting", OE="earth origin", OS="sky origin")
 
-# R's built-in var and sd are sample variance and standard dev.
-# These population versions are what I should be using below.
-pvar(x) = ((n-1)/n)var(x)
-psd(x) = ((n-1)/n)sd(x)
+# make a sequence of colors to be used by all plotting functions
+maxcolors = 40000  # should be more than the number of lines we might plot
+mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
+
+# NOTE: R's built-in var and sd are sample variance and standard dev.
+# I should actually multiply them by N/(N-1).  The problem is that I'm not
+# confident that I always know how to determine N.  R is finicky about data
+# structures and dimensions.
+
 
 # plot each column as a timeseries, all on the same plot, with random colors
 plotAllActivns <- function(data){
@@ -28,7 +33,7 @@ plotAllActivns <- function(data){
   # set up empty plot window with limits xlim, ylim
   plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time")
   for(i in 1:cols){
-    lines(data[i], type="l", col=rgb(runif(1), runif(1), runif(1)))
+    lines(data[i], type="l", col=mycolors[i])
   }
 }
 
@@ -72,7 +77,7 @@ plotActivnsForDomain <- function(data, domain){
   plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time", main=domain.labels[1,domain]) # initialize plot window
 
   for(i in grep(paste0("_", domain, "."), colnames(data))) {
-    lines(data[i], type="l", col=rgb(runif(1), runif(1), runif(1)))
+    lines(data[i], type="l", col=mycolors[i])
   }
 }
 
@@ -95,41 +100,12 @@ plotForDomain <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1) {
 
   plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), ylab=ylabel, xlab="time", main=domain.labels[1,domain]) # initialize plot
 
+  color.index = 1
   for (p in persons) {
     lines(aggregFn(findActivns(data, p, domain, )),  # missing tick returns a vector
-           type="l", col=rgb(runif(1), runif(1), runif(1)))
+           type="l", col=mycolors[color.index])
+    color.index=color.index+1
   }
-}
-
-#plotForDomain2 <- function(data, domain, aggregFn, ymin = -1, ymax = 1) {
-#  persons <- extractPersons(data)
-#  npersons <- length(persons)
-#  rows <- nrow(data)
-#
-#  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), main=domain) # initialize plot
-#
-#  for (pers in persons) {
-#    for (tick in 1:rows) {
-#      lines(aggregFn(findActivns(data, pers, domain, tick)), type="l", col=rgb(runif(1), runif(1), runif(1)))
-#    }
-#  }
-#}
-
-plotAvgsFourDomainsOld <- function(data, titl) {plotFourDomains(data, rowMeans, titl)}
-plotSDsFourDomainsOld <- function(data, titl) {plotFourDomains(data, rowSDs, titl)}
-plotFourDomainsOld <- function(data, aggregFn, titl) {
-  # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
-  
-  getOption( "device" )() # open new default device.
-  par(mfrow=c(2,2)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
-  # add the four subplots in order :
-  plotForDomain(data, "P", aggregFn)
-  plotForDomain(data, "H", aggregFn)
-  plotForDomain(data, "OE", aggregFn)
-  plotForDomain(data, "OS", aggregFn)
-
-  # print title in outer margin at top, adding a newline as a simple way to shift it down
-  title(paste0("\n", titl), outer=TRUE)
 }
 
 plotActivnsFourDomains <- function(data, titl) {plotFourDomains(data, plotActivnsForDomain, titl)}
@@ -166,24 +142,6 @@ plotFourDomainsSummary <- function(data, titl) {
   title(paste0("\n", titl), outer=TRUE) # print title in outer margin at top, adding a newline as a simple way to shift it down
 }
 
-plotFourDomainsTwoWaysOld <- function(data, titl) {
-  # cf. http://sphaerula.com/legacy/R/multiplePlotFigure.html
-  
-  getOption( "device" )() # open new default device.
-  par(mfrow=c(2,4)) # set the mfrow param to 2x2 subplots accessed from left to right, then top to bottom
-  # add the four subplots in order :
-  plotForDomain(data, "P", rowMeans)
-  plotForDomain(data, "H", rowMeans)
-  plotForDomain(data, "P", rowSDs, 0)
-  plotForDomain(data, "H", rowSDs, 0)
-  plotForDomain(data, "OE", rowMeans)
-  plotForDomain(data, "OS", rowMeans)
-  plotForDomain(data, "OE", rowSDs, 0)
-  plotForDomain(data, "OS", rowSDs, 0)
-
-  # print title in outer margin at top, adding a newline as a simple way to shift it down
-  title(paste0("\n", titl), outer=TRUE)
-}
 
 # quick and dirty load the file and plot the averages in each domain
 loadNplotAvgs <- function(filename) {
