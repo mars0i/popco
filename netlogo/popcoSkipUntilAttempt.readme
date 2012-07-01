@@ -1,0 +1,10 @@
+popcoSkipUntilAttempt.nlogo is a modification of popcoWideWorld.nlogo
+(which is the same as popco.nlogo but with a rearranged interface to allow
+displaying more persons).  The mod was supposed to allow skipping displaying
+of data until you get to a certain point.  However (a) it seems not to work.
+Eventually you get an error, which I believe is due to conversation adding
+propositions to persons.  Probably what's happening is that something is
+assuming that a proposition has been added, but it wasn't because we skipped
+processing for the tick where it was added.  And (b) the skipping isn't
+very fast, even with updates turned off.  Not useful e.g. for skipping
+2000 ticks.

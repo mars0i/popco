@@ -201,6 +201,8 @@ end
 to go
   ;print date-and-time ; DEBUG
   
+  let skip-this-tick (ticks < skip-until-tick) ; set this variable to true if we are waiting until we get to a certain tick
+  
   popup-elem-info
   
   set person-list get-next-state  ; try to get population state data
@@ -220,23 +222,30 @@ to go
     ; if we did get data, it's either a status message or a new population state:
     if-else (status-message-flag = (first person-list)) [ ; if not really a person-list, but a status update
       clear-output
-      output-print (item 1 person-list)
+      output-print (item 1 person-list)  ; this is quick, so don't bother skipping if we're skipping ticks
       ; now back to beginning of the go procedure. note we don't increment the tick.
     ][ 
       ; if we really did get a list of persons and their internal states, then:
-      if not update-population-state person-list [   ; use the data to modify the state of the pop on screen, etc.
-        error "update-population-state returned false; this should not happen."
+      if not skip-this-tick [
+        if not update-population-state person-list [   ; use the data to modify the state of the pop on screen, etc.
+          error "update-population-state returned false; this should not happen."
+        ]
       ]
 
       let conversation-list get-next-convs ; try to get new data on conversation
-      if not do-conversations conversation-list [  ; display it
-        error "do-conversations returned false; this should not happen."
+
+      if not skip-this-tick [
+        if not do-conversations conversation-list [  ; display it
+          error "do-conversations returned false; this should not happen."
+        ]
       ]
-  
-      ask turtles [show-turtle] ; This seems necessary to get everything displayed,
-      ask links [show-link]     ; but I don't understand why calling update-display
-      update-display            ; isn't enough on its own, given the code in it.
-      write-to-my-plots
+ 
+      if not skip-this-tick [ 
+        ask turtles [show-turtle] ; This seems necessary to get everything displayed,
+        ask links [show-link]     ; but I don't understand why calling update-display
+        update-display            ; isn't enough on its own, given the code in it.
+        write-to-my-plots
+      ]
       tick ; note that we only update the tick number in this if fork, i.e. if we got new state data
     ]
   ]
@@ -1464,6 +1473,17 @@ true
 false
 "" ""
 PENS
+
+INPUTBOX
+1445
+623
+1538
+683
+skip-until-tick
+100
+1
+0
+Number
 
 @#$#@#$#@
 These notes are incomplete.
