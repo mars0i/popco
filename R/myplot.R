@@ -11,7 +11,17 @@
 #        2 
 # 0.1506642 
 # that last number is the answer
+# No, better:
+# var(as.numeric(d75[2,]))
+# or
+# convert the data frame to a matrix using:
+# m75 <- data.matrix(d75)
 
+# my population variance function that can be applied to rows (!)
+pop.var <- function(x){
+	n = length(x)
+	var(as.numeric(x)) * ((n-1)/n)
+}
 
 # global definition of domain plot labels. 	
 domain.labels=data.frame(H="hunting", "P"="parenting", OE="earth origin", OS="sky origin")
