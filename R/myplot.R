@@ -1,21 +1,30 @@
 # myplot.R
-
-# (6/30 changed runif(blahblah) to runif(1) in rgb() calls.
-# runif(blahblah) where blahblah > 1 makes multiple random numbers,
-# which was making multiple rgb numbers.  These would get used to
-# color distinct points if I was plotting points as such, and I
-# wouldn't want them to have distinct colors anyway.)
+# Marshall Abrams
+# R plotting designed for POPCO Sanday simulations
 
 # THIS IS APPARENTLY THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])
 #        2 
 # 0.1506642 
 # that last number is the answer
-# No, better:
+# NO, BETTER:
 # var(as.numeric(d75[2,]))
 # or
 # convert the data frame to a matrix using:
 # m75 <- data.matrix(d75)
+
+#####################################
+## GLOBALS USED BY FUNCTIONS BELOW
+
+# make a sequence of colors to be used by all plotting functions
+maxcolors = 40000  # should be more than the number of lines we might plot
+mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
+
+# This is a transparent gray for shading part of a plot
+bgray <- rgb(190, 190, 190, alpha=80, maxColorValue=255) # alph 0 = fully transparent; 180 = opaque (?)
+
+#####################################
+## THE FUNCTIONS BELOW ...
 
 # my population variance function that can be applied to rows (!)
 pop.var <- function(x){
@@ -23,17 +32,10 @@ pop.var <- function(x){
 	var(as.numeric(x)) * ((n-1)/n)
 }
 
+pop.sd <- function(x){sqrt(pop.var(x))}
+
 # global definition of domain plot labels. 	
-domain.labels=data.frame(H="hunting", "P"="parenting", OE="earth origin", OS="sky origin")
-
-# make a sequence of colors to be used by all plotting functions
-maxcolors = 40000  # should be more than the number of lines we might plot
-mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
-
-# NOTE: R's built-in var and sd are sample variance and standard dev.
-# I should actually multiply them by N/(N-1).  The problem is that I'm not
-# confident that I always know how to determine N.  R is finicky about data
-# structures and dimensions.
+domain.labels=data.frame(H="hunting", P="parenting", OE="earth origin", OS="sky origin")
 
 
 # plot each column as a timeseries, all on the same plot, with random colors
@@ -62,7 +64,11 @@ extractPersons <- function(data) {
 
 # extract the proposition domains from the data
 extractDomains <- function(data) {
-  unique(sub(".*_([^.]*)\\..*", "\\1", colnames(data)))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates
+  sub(".*_([^.]*)\\..*", "\\1", colnames(data))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates
+}
+
+extractPropns <- function(data) {
+  sub(".*_(.*)", "\\1", colnames(data))
 }
 
 # a standard dev fn that can be passed to plotForDomain
@@ -91,8 +97,25 @@ plotActivnsForDomain <- function(data, domain){
   }
 }
 
-# these work
-plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "avg activation")}
+plotActivnsForDomainWithBox <- function(data, domain, boxright){
+  rows <- nrow(data)
+  cols <- length(data)
+
+  plot(1, type="n", ylim=c(-1,1), xlim=c(1,rows), ylab="activation", xlab="time", main=domain.labels[1,domain]) # initialize plot window
+
+  if (boxright > 0) {
+    rect(xleft=0, xright=boxright, ybottom=-1, ytop=1, density=100, col=bgray) # make gray box
+  }
+
+  for(i in grep(paste0("_", domain, "."), colnames(data))) {
+    lines(data[i], type="l", col=mycolors[i])
+  }
+}
+
+plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "activation values for all propositions")}
+# plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.var, "var", ymin = 0)}
+# plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.sd, "sd", ymin = 0)}
+# old versions:
 plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
 plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, "var", ymin = 0); print("Warning: Is rowVars defined correctly?");}
 
@@ -109,6 +132,29 @@ plotForDomain <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1) {
   rows <- nrow(data)
 
   plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), ylab=ylabel, xlab="time", main=domain.labels[1,domain]) # initialize plot
+
+  color.index = 1
+  for (p in persons) {
+    lines(aggregFn(findActivns(data, p, domain, )),  # missing tick returns a vector
+           type="l", col=mycolors[color.index])
+    color.index=color.index+1
+  }
+}
+
+plotAvgsForDomainWithBox <- function(data, domain, boxr) {plotForDomainWithBox(data, domain, rowMeans, "per-person average activation values", boxright=boxr)}
+plotAvgsFourDomainsWithBoxes <- function(data, titl, boxr) {plotFourDomains(data, function(data, domain){plotAvgsForDomainWithBox(data, domain, boxr)}, titl)}
+plotActivnsFourDomainsWithBoxes <- function(data, titl, boxr) {plotFourDomains(data, function(data, domain){plotActivnsForDomainWithBox(data, domain, boxr)}, titl)}
+
+plotForDomainWithBox <- function(data, domain, aggregFn, ylabel, ymin = -1, ymax = 1, boxleft = 0, boxright = 0) {
+  persons <- extractPersons(data)
+  npersons <- length(persons)
+  rows <- nrow(data)
+
+  plot(1, type="n", ylim=c(ymin,ymax), xlim=c(1,rows), ylab=ylabel, xlab="time", main=domain.labels[1,domain]) # initialize plot
+
+  if (boxright > 0) {
+    rect(xleft=boxleft, xright=boxright, ybottom=ymin, ytop=ymax, density=100, col=bgray) # make gray box
+  }
 
   color.index = 1
   for (p in persons) {
