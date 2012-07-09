@@ -23,7 +23,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-extensions [table uneof goo profiler]  ; hashtable/lookup table functions, and replacement for file-at-end?
+extensions [table uneof profiler]  ; hashtable/lookup table functions, and replacement for file-at-end?
 
 ; convention: breeds are studly-capped
 breed [Persons Person]

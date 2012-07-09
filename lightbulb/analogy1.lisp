@@ -23,13 +23,23 @@
 
 ;;Lightbulb Info and Goals, Good- and Poor-Constraint Versions
 ;;;TODO Figure out what to do with the goals
-(defvar lightbulb-info-good
-    '(
+(defvar lightbulb-common
+  '(
         (laser (obj-laser) lg-Obj-Laser)
         (bulb (obj-bulb) lg-Obj-Bulb)
         (filament (obj-filament) lg-Obj-Filament)
         (surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
         (outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
+   ))
+
+(defvar lightbulb-info-good
+    `(
+        ,@lightbulb-common   
+        ;(laser (obj-laser) lg-Obj-Laser)
+        ;(bulb (obj-bulb) lg-Obj-Bulb)
+        ;(filament (obj-filament) lg-Obj-Filament)
+        ;(surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
+        ;(outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
         (can-produce (obj-laser obj-beams-high) lg-Laser-Can-Produce-High-Beams)
         (high-intensity (obj-beams-high) lg-High-Beams-Are-High-Intensity)
         (can-destroy (obj-beams-high obj-bulb) lg-High-Beams-Can-Destroy-Bulbs)
@@ -38,6 +48,9 @@
         (cannot-fuse (obj-beams-low obj-filament) lg-Low-Beams-Cannot-Fuse-Filament)
         (cannot-destroy (obj-beams-low obj-bulb) lg-Low-Beams-Cannot-Destroy-Bulb)
     ))
+
+;(defvar all-lightbulb-good (append lightbulb-common lightbulb-info-good))
+;(defvar all-lightbulb-good `(,@lightbulb-common ,@lightbulb-info-good))
 
 (defvar lightbulb-info-poor
     '(
@@ -158,7 +171,7 @@
 (setf *do-converse* nil)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-(setf *do-report-analogy-nets-to-guess* nil)
+(setf *do-report-analogy-nets-to-guess* t)
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
 
@@ -168,4 +181,4 @@
 
 ; To run the model
 (init-pop)
-(popco)
+;(popco)
