@@ -1,9 +1,11 @@
 ; analogy1.lisp
-; lightbulb/tumor problem
+; lightbulb/tumor problem from Holyoak/Thagard 1989
+; Author:   Kristen Hammack
+; Vers:     1.0.0 07/04/2012 kmh - initial coding
 
 ; These are output to NetLogo:
-(setf *propn-category-prefixes* '("LG" "LP" "T"))
-(setf *propn-category-descriptions* '("lightbulb-good" "lightbulb-poor" "tumor"))
+(setf *propn-category-prefixes* '("L" "LG" "LP" "T"))
+(setf *propn-category-descriptions* '("lightbulb-common" "lightbulb-good" "lightbulb-poor" "tumor"))
 
 ;; first clear everything out
 (mapcar #'clear-plists (get 'folks 'members))
@@ -15,31 +17,28 @@
 ;; Proposition names start with a prefix indicating domain, and are mixed case after that.
 ;; prefix key:
 ;;
-;;      lg-  : lightbulb propositions
+;;      l-  : generic lightbulb propositions
+;;      lg- : propositions from the good-constraint version of the lightbulb problem
+;;      lp- : propositions from the poor-constraint version of the lightbulb problem
+;;
 ;;      t-  : tumor propositions
 ;;
 ;; All-uppercase can be used to flag things temporarily.
 
 
 ;;Lightbulb Info and Goals, Good- and Poor-Constraint Versions
-;;;TODO Figure out what to do with the goals
 (defvar lightbulb-common
   '(
-        (laser (obj-laser) lg-Obj-Laser)
-        (bulb (obj-bulb) lg-Obj-Bulb)
-        (filament (obj-filament) lg-Obj-Filament)
-        (surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
-        (outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
+        (laser (obj-laser) l-Obj-Laser)
+        (bulb (obj-bulb) l-Obj-Bulb)
+        (filament (obj-filament) l-Obj-Filament)
+        (surround (obj-bulb obj-filament) l-Bulb-Surrounds-Filament)
+        (outside (obj-laser obj-bulb) l-Laser-Outside-Bulb)
    ))
 
 (defvar lightbulb-info-good
     `(
-        ,@lightbulb-common   
-        ;(laser (obj-laser) lg-Obj-Laser)
-        ;(bulb (obj-bulb) lg-Obj-Bulb)
-        ;(filament (obj-filament) lg-Obj-Filament)
-        ;(surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
-        ;(outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
+        ,@lightbulb-common
         (can-produce (obj-laser obj-beams-high) lg-Laser-Can-Produce-High-Beams)
         (high-intensity (obj-beams-high) lg-High-Beams-Are-High-Intensity)
         (can-destroy (obj-beams-high obj-bulb) lg-High-Beams-Can-Destroy-Bulbs)
@@ -53,12 +52,8 @@
 ;(defvar all-lightbulb-good `(,@lightbulb-common ,@lightbulb-info-good))
 
 (defvar lightbulb-info-poor
-    '(
-        (laser (obj-laser) lp-Obj-Laser)
-        (bulb (obj-bulb) lp-Obj-Bulb)
-        (filament (obj-filament) lp-Obj-Filament)
-        (surround (obj-bulb obj-filament) lp-Bulb-Surrounds-Filament)
-        (outside (obj-laser obj-bulb) lp-Laser-Outside-Bulb)
+    `(
+        ,@lightbulb-common
         (cannot-produce (obj-laser obj-beams-high) lp-Laser-Cannot-Produce-High-Beams)
         (high-intensity (obj-beams-high) lp-High-Beams-Are-High-Intensity)
         (can-fuse (obj-beams-high obj-filament) lp-High-Beams-Can-Fuse-Filament)
@@ -67,17 +62,23 @@
         (cannot-fuse (obj-beams-low obj-filament) lp-Low-Beams-Cannot-Fuse-Filament)      
     ))
 
-(defvar lightbulb-goals-good
+;;;This doesn't seem worth it with only 2 goals in each, but it's probably good practice...
+(defvar lightbulb-goals-common
     '(
-        (fuse (obj-laser obj-filament) lg-Laser-Fuse-Filament)
+        (fuse (obj-laser obj-filament) l-Laser-Fuse-Filament)))
+
+(defvar lightbulb-goals-good
+    `(
+        ,@lightbulb-goals-common
         (not-destroyed (obj-bulb) lg-Do-Not-Destroy-Bulb)
     ))
 
 (defvar lightbulb-goals-poor
-    '(
-        (fuse (obj-laser obj-filament) lp-Laser-Fuse-Filament)
+    `(
+        ,@lightbulb-goals-common
         (can-produce (obj-laser obj-beams-high) lp-Laser-Produce-High-Beams)
     ))
+
 
 ;;Tumor Info and Goals
 (defvar tumor-info
@@ -110,7 +111,7 @@
 (defvar similarity 
     '(
         (similar 'ray-source 'laser (* .8 *ident-weight*))
-        (similar 'filament 'tissue (* .1 *ident-weight*))
+        (similar 'filament 'tumor (* .1 *ident-weight*))
     ))
 
 ; Put PRESUMED and IMPORTANT calls here:

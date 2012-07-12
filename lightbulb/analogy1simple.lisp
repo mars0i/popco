@@ -29,10 +29,6 @@
 (defvar lightbulb-info
   '(
         (laser (obj-laser) l-Obj-Laser)
-        (bulb (obj-bulb) l-Obj-Bulb)
-        (filament (obj-filament) l-Obj-Filament)
-        (surround (obj-bulb obj-filament) l-Bulb-Surrounds-Filament)
-        (outside (obj-laser obj-bulb) l-Laser-Outside-Bulb)
    ))
 
 
@@ -40,10 +36,6 @@
 (defvar tumor-info
     '(
         (ray-source (obj-ray) t-Obj-Ray)
-        (tissue (obj-tissue) t-Obj-Tissue)
-        (tumor (obj-tumor) t-Obj-Tumor)
-        (surround (obj-tissue obj-tumor) t-Tissue-Surrounds-Tumor)
-        (outside (obj-ray obj-tissue) t-Ray-Outside-Tissue)
     ))
 
 
@@ -52,8 +44,7 @@
    
 (defvar similarity 
     '(
-        (similar 'ray-source 'laser (* .8 *ident-weight*))
-        (similar 'filament 'tumor (* .1 *ident-weight*))
+        (similar 'ray-source 'laser (* .08 *ident-weight*))
     ))
 
 ; Put PRESUMED and IMPORTANT calls here:
@@ -72,12 +63,19 @@
 ;             '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
 
 ; make one model person
-(make-person 'alex 'folks tumor-info
-             `((make-struc 'source 'problem '(start (,@tumor-info)))
-               (make-struc 'target 'problem '(start (,@lightbulb-info)))
+(make-person 'alex 'folks lightbulb-info
+             `((make-struc 'target 'problem '(start (,@tumor-info)))
+               (make-struc 'source 'problem '(start (,@lightbulb-info)))
                ,@similarity)
              `(,@pragmatic-relations)
              '())
+
+(make-person 'bailey 'folks tumor-info
+            `((make-struc 'target 'problem '(start (,@lightbulb-info)))
+              (make-struc 'source 'problem '(start (,@tumor-info)))
+              ,@similarity)
+            `(,@pragmatic-relations)
+            '())
 
 
 ;*************************
@@ -98,4 +96,4 @@
 (init-pop)
 (popco1)
 (popco1)
-(write-person-nets "../data/guess/")
+(write-person-graphs "../data/guess/")

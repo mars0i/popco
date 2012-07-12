@@ -2,7 +2,7 @@
 ; lightbulb/tumor problem
 
 ; These are output to NetLogo:
-(setf *propn-category-prefixes* '("LG" "FP" "D"))
+(setf *propn-category-prefixes* '("LG" "LP" "T"))
 (setf *propn-category-descriptions* '("lightbulb-good" "lightbulb-poor" "tumor"))
 
 ;; first clear everything out
@@ -23,13 +23,23 @@
 
 ;;Lightbulb Info and Goals, Good- and Poor-Constraint Versions
 ;;;TODO Figure out what to do with the goals
-(defvar lightbulb-info-good
-    '(
+(defvar lightbulb-common
+  '(
         (laser (obj-laser) lg-Obj-Laser)
         (bulb (obj-bulb) lg-Obj-Bulb)
         (filament (obj-filament) lg-Obj-Filament)
         (surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
         (outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
+   ))
+
+(defvar lightbulb-info-good
+    `(
+        ,@lightbulb-common   
+        ;(laser (obj-laser) lg-Obj-Laser)
+        ;(bulb (obj-bulb) lg-Obj-Bulb)
+        ;(filament (obj-filament) lg-Obj-Filament)
+        ;(surround (obj-bulb obj-filament) lg-Bulb-Surrounds-Filament)
+        ;(outside (obj-laser obj-bulb) lg-Laser-Outside-Bulb)
         (can-produce (obj-laser obj-beams-high) lg-Laser-Can-Produce-High-Beams)
         (high-intensity (obj-beams-high) lg-High-Beams-Are-High-Intensity)
         (can-destroy (obj-beams-high obj-bulb) lg-High-Beams-Can-Destroy-Bulbs)
@@ -39,19 +49,22 @@
         (cannot-destroy (obj-beams-low obj-bulb) lg-Low-Beams-Cannot-Destroy-Bulb)
     ))
 
+;(defvar all-lightbulb-good (append lightbulb-common lightbulb-info-good))
+;(defvar all-lightbulb-good `(,@lightbulb-common ,@lightbulb-info-good))
+
 (defvar lightbulb-info-poor
     '(
-        (laser (obj-laser) lp-1)
-        (bulb (obj-bulb) lp-2)
-        (filament (obj-filament) lp-3)
-        (surround (obj-bulb obj-filament) lp-4)
-        (outside (obj-laser obj-bulb) lp-5)
-        (cannot-produce (obj-laser obj-beams-high) lp-6)
-        (high-intensity (obj-beams-high) lp-7)
-        (can-fuse (obj-beams-high obj-filament) lp-8)
-        (can-produce (obj-laser obj-beams-low) lp-9)
-        (low-intensity (obj-beams-low) lp-10)
-        (cannot-fuse (obj-beams-low obj-filament) lp-11)      
+        (laser (obj-laser) lp-Obj-Laser)
+        (bulb (obj-bulb) lp-Obj-Bulb)
+        (filament (obj-filament) lp-Obj-Filament)
+        (surround (obj-bulb obj-filament) lp-Bulb-Surrounds-Filament)
+        (outside (obj-laser obj-bulb) lp-Laser-Outside-Bulb)
+        (cannot-produce (obj-laser obj-beams-high) lp-Laser-Cannot-Produce-High-Beams)
+        (high-intensity (obj-beams-high) lp-High-Beams-Are-High-Intensity)
+        (can-fuse (obj-beams-high obj-filament) lp-High-Beams-Can-Fuse-Filament)
+        (can-produce (obj-laser obj-beams-low) lp-Laser-Can-Produce-Low-Beams)
+        (low-intensity (obj-beams-low) lp-Low-Beams-Are-Low-Intensity)
+        (cannot-fuse (obj-beams-low obj-filament) lp-Low-Beams-Cannot-Fuse-Filament)      
     ))
 
 (defvar lightbulb-goals-good
@@ -62,32 +75,32 @@
 
 (defvar lightbulb-goals-poor
     '(
-        (fuse (obj-laser obj-filament) lp-21)
-        (can-produce (obj-laser obj-beams-high) lp-22)
+        (fuse (obj-laser obj-filament) lp-Laser-Fuse-Filament)
+        (can-produce (obj-laser obj-beams-high) lp-Laser-Produce-High-Beams)
     ))
 
 ;;Tumor Info and Goals
 (defvar tumor-info
     '(
-        (ray-source (obj-ray) d-Obj-Ray)
-        (tissue (obj-tissue) d-Obj-Tissue)
-        (tumor (obj-tumor) d-Obj-Tumor)
-        (surround (obj-tissue obj-tumor) d-Tissue-Surrounds-Tumor)
-        (outside (obj-ray obj-tissue) d-Ray-Outside-Tissue)
-        (can-produce (obj-ray obj-rays-high) d-Ray-Can-Produce-High-Rays)
-        (high-intensity (obj-rays-high) d-High-Rays-Are-High-Intensity)
-        (can-destroy (obj-rays-high obj-tumor) d-High-Rays-Can-Destroy-Tumor)
-        (can-destroy (obj-rays-high obj-tissue) d-High-Rays-Can-Destroy-Tissue)
-        (can-produce (obj-ray obj-rays-low) d-Ray-Can-Produce-Low-Rays)
-        (low-intensity (obj-rays-low) d-Low-Rays-Are-Low-Intensity)
-        (cannot-destroy (obj-rays-low obj-tumor) d-Low-Rays-Cannot-Destroy-Tumor)
-        (cannot-destroy (obj-rays-low obj-tissue) d-Low-Rays-Cannot-Destroy-Tissue)
+        (ray-source (obj-ray) t-Obj-Ray)
+        (tissue (obj-tissue) t-Obj-Tissue)
+        (tumor (obj-tumor) t-Obj-Tumor)
+        (surround (obj-tissue obj-tumor) t-Tissue-Surrounds-Tumor)
+        (outside (obj-ray obj-tissue) t-Ray-Outside-Tissue)
+        (can-produce (obj-ray obj-rays-high) t-Ray-Can-Produce-High-Rays)
+        (high-intensity (obj-rays-high) t-High-Rays-Are-High-Intensity)
+        (can-destroy (obj-rays-high obj-tumor) t-High-Rays-Can-Destroy-Tumor)
+        (can-destroy (obj-rays-high obj-tissue) t-High-Rays-Can-Destroy-Tissue)
+        (can-produce (obj-ray obj-rays-low) t-Ray-Can-Produce-Low-Rays)
+        (low-intensity (obj-rays-low) t-Low-Rays-Are-Low-Intensity)
+        (cannot-destroy (obj-rays-low obj-tumor) t-Low-Rays-Cannot-Destroy-Tumor)
+        (cannot-destroy (obj-rays-low obj-tissue) t-Low-Rays-Cannot-Destroy-Tissue)
     ))
 
 (defvar tumor-goals
     '(
-        (destroy (obj-ray obj-tumor) d-Ray-Destroy-Tumor)
-        (not-destroyed (obj-tissue) d-Do-Not-Destroy-Tissue)
+        (destroy (obj-ray obj-tumor) t-Ray-Destroy-Tumor)
+        (not-destroyed (obj-tissue) t-Do-Not-Destroy-Tissue)
     ))
 
 
@@ -117,16 +130,24 @@
 
 ; make one model person
 (make-person 'alex 'folks lightbulb-info-good
-             `((make-struc 'target 'problem '(start (,@tumor-info)))
-               (make-struc 'source 'problem '(start (,@lightbulb-info-good)))
+             `((make-struc 'target 'problem '(start (,@tumor-info)) 
+                                            ;'(goals (,@tumor-goals))
+                                            )
+               (make-struc 'source 'problem '(start (,@lightbulb-info-good)) 
+                                            ;'(goals (,@lightbulb-goals-good))
+                                            )
                ,@similarity)
              `(,@pragmatic-relations)
              '())
 (persons-like 'alex '(bailey chris dana))
 
 (make-person 'james 'folks lightbulb-info-poor
-             `((make-struc 'target 'problem '(start (,@tumor-info)))
-               (make-struc 'source 'problem '(start (,@lightbulb-info-poor)))
+             `((make-struc 'target 'problem '(start (,@tumor-info))
+                                            ;'(goals (,@tumor-goals))
+                                            )
+               (make-struc 'source 'problem '(start (,@lightbulb-info-poor))
+                                            ;'(goals (,@lightbulb-goals-poor))
+                                            )
                ,@similarity)
              `(,@pragmatic-relations)
              '())
@@ -147,10 +168,10 @@
 ;*************************
 ; INITIAL SETTINGS
 (setf *max-pop-ticks* 20)
-(setf *do-converse* t)             ; Whether to send utterances between persons
+(setf *do-converse* nil)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-(setf *do-report-analogy-nets-to-guess* nil)
+(setf *do-report-analogy-nets-to-guess* t)
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
 
@@ -160,4 +181,4 @@
 
 ; To run the model
 (init-pop)
-(popco)
+;(popco)
