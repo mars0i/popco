@@ -11,13 +11,12 @@ top tasks:
         2. Set all globals back to defaults.  Note that at present, not all are in
            variables.lisp, so I can't just reload that file.
         3. Make sure that random-state is managed properly and saved properly.
-
-. Possibly write code to clear out everything.  Maybe walk plists
+  Possibly write code to clear out everything.  Maybe walk plists
   and possibly symbol values, clearing them out.
   Question: Can I get random-state in the middle of a Lisp session and
   be able to use it properly in a brand new Lisp session?
 
-. notes on what needs to be stored to recreate a population state:
+  notes on what needs to be stored to recreate a population state:
 	*pop-tick*
 	symbols and plists of:
 		all persons in pop's members
@@ -28,9 +27,6 @@ top tasks:
 . UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
   New nodes in analogy net appear but don't get linked.
   Is the is-new-link stuff broken??  Or what?
-
-. MAKE CSV FILE FOR PROPN ACTIVNS AT LEAST.
-  [IN PROGRESS]
 
 . Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical
@@ -216,14 +212,6 @@ causes target propns to then be transmitted into the source struc, mixing
 target propns in the person's source struc.  This causes mappings from a
 propn to itself, which is not allowed.
 WORKAROUND: Do not perceive target propns.  This is OK for Sanday models.
-
-. Consider transmitting propns only when new.  This could be a lot
-  more efficient.
-
-. Create sweep file sequences with altered parameters and with
-  deleted propns (which can be done programmatically since propns
-  are just in lists).  If the filenaming is regular then presumably
-  I could run them in Behavior Space.
 
 . BUG: The function SIMILAR? checks whether the predicate pair is listed in
   *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS

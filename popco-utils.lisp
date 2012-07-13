@@ -10,6 +10,15 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+; list the property names of a symbol
+(defun sym-props (sym)
+  (sym-props-aux (plist sym)))
+
+(defun sym-props-aux (pl)
+  (if (null pl)
+    ()
+    (cons (car pl) (sym-props-aux (cddr pl)))))
+
 ;; RANDOM-SUBSET
 ;; Does what you think it does: Give it a length and a list, and it will give
 ;; you a new list of that length randomly chosen from the list.

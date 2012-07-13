@@ -740,17 +740,49 @@
 ; PERCEIVED
 ; Perceive a propn.  Insert the proposition into a person's "external" environment, 
 ; setting activation to 1 by default.
-; ARG: a proposition message, i.e. a full subject/predicate representation in list form.
+; ARG: a generic proposition message, i.e. a full subject/predicate representation in list form.
 ; *THE-PERSON* MUST BE SET CORRECTLY.
-(defun perceived (msg &optional (degree 1.0))
-  (let* ((env (make-persons-env-sym *the-person*))
-         (struc (generic-to-personal-sym 'source env)))
-    (unless (get *the-person* 'env)           ; give the person its environment if doesn't exist
-      (setf (get *the-person* 'env) env)
-      (push struc (get env 'all-structures)))
-    (make-propn struc 'ignored msg env)
-    (init-propn (generic-to-personal-sym (last-element msg) env)
+(defun perceived (msg &optional (degree 1.0) (person *the-person*))
+  (let* ((env (make-persons-env-sym person))
+         (generic-propn (last-element msg))
+         (generic-struc (generic-struc-of-propn generic-propn person))
+         (env-struc (generic-to-personal-sym generic-struc env)))
+    (unless (get person 'env)           ; give the person its environment if doesn't exist
+      (setf (get person 'env) env)
+      (push env-struc (get env 'all-structures)))
+    (make-propn env-struc 'ignored msg env)
+    (init-propn (generic-to-personal-sym generic-propn env)
                 degree env)))
+
+; GENERIC-STRUC-OF-PROPN 
+; Roughly: Get the analog struc of a generic propn.  However, generic propns don't have
+; analog strucs, because strucs are something contained in persons.  Therefore only
+; personal propns have strucs.  So this function,
+; given a generic-propn, gets the name of a generic analog struc corresponding 
+; to the personal-struc of the corresponding personal-propn for the present person.
+; *THE-PERSON* MUST BE SET CORRECTLY unless a person is passed in.
+(defun generic-struc-of-propn (generic-propn &optional (person *the-person*))
+  (personal-to-generic-sym 
+    (personal-struc-of-propn 
+      (generic-to-personal-sym generic-propn person))
+    person))
+
+; PERSONAL-STRUC-OF-PROPN 
+; Get the personal analog structure that a personal proposition belongs to.
+; Assumes that the car of the first list in belongs-to is this entity.
+(defun personal-struc-of-propn (personal-propn)
+  (caar (get personal-propn 'belongs-to)))
+
+;; OLD VERSION:
+;(defun perceived (msg &optional (degree 1.0))
+;  (let* ((env (make-persons-env-sym *the-person*))
+;         (struc (generic-to-personal-sym 'source env)))
+;    (unless (get *the-person* 'env)           ; give the person its environment if doesn't exist
+;      (setf (get *the-person* 'env) env)
+;      (push struc (get env 'all-structures)))
+;    (make-propn struc 'ignored msg env)
+;    (init-propn (generic-to-personal-sym (last-element msg) env)
+;                degree env)))
 
 ; PERCEIVED-NEGATION
 ; Perceive a propn.  Insert the proposition into a person's "external" 
