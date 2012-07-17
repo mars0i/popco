@@ -10,6 +10,24 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+(defun print-constraints-example1 (person)
+  (mapc 
+    #'(lambda (c) (format t "~S ~S ~S~%" (car c) (cadr c) (cddr c))) 
+    (mapcar #'(lambda (constraint) `(,(personal-to-generic-sym (car constraint)) 
+                                      ,(personal-to-generic-sym (cadr constraint)) . ,(cddr constraint))) 
+            (list-constraints (get person 'all-units)))) 
+  t)
+
+(defun print-constraints-example2 (person)
+  (setf *the-person* person)
+  (mapc 
+    #'(lambda (c) (format t "~S ~S ~S~%" 
+                          (personal-to-generic-sym (car c))  
+                          (personal-to-generic-sym (cadr c)) 
+                          (cddr c)))
+    (list-constraints (get person 'all-units))) 
+  t)
+
 ; list the property names of a symbol
 (defun sym-props (sym)
   (sym-props-aux (plist sym)))

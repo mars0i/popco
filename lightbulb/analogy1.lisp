@@ -40,6 +40,7 @@
     `(
         ,@lightbulb-common
         (can-produce (obj-laser obj-beams-high) lg-Laser-Can-Produce-High-Beams)
+        (can-fuse (obj-beams-high obj-filament) lg-High-Beams-Can-Fuse-Filament)
         (high-intensity (obj-beams-high) lg-High-Beams-Are-High-Intensity)
         (can-destroy (obj-beams-high obj-bulb) lg-High-Beams-Can-Destroy-Bulbs)
         (can-produce (obj-laser obj-beams-low) lg-Laser-Can-Produce-Low-Beams)
