@@ -1,82 +1,43 @@
 top tasks:
 
-. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
-  using Lisp code rather than restarting sbcl and having to manage it
-  from shell code.  Not sure if these are sufficient.
-        (mapcar #'clear-plists (get 'folks 'members))
-        (clear-person-nets 'folks)
-  What's needed is:
-        1. Clear plists recursively starting from *the-population*, and symbol values
-           if there are any (I don't think there are).
-        2. Set all globals back to defaults.  Note that at present, not all are in
-           variables.lisp, so I can't just reload that file.
-        3. Make sure that random-state is managed properly and saved properly.
-  Possibly write code to clear out everything.  Maybe walk plists
-  and possibly symbol values, clearing them out.
-  Question: Can I get random-state in the middle of a Lisp session and
-  be able to use it properly in a brand new Lisp session?
+. PARTLY FIXED AS OF 7/13/12, BUT NEEDS FURTHER TESTING.
+Seems to hang during conversation.  Maybe the env's are included?
 
-  notes on what needs to be stored to recreate a population state:
-	*pop-tick*
-	symbols and plists of:
-		all persons in pop's members
-		all units in each person's all-units
-		all structures in each person's all-structures
-	I think that's it.
+	BUG AS OF 5/27/12 because PERCEIVED in popco.lisp always puts
+	propns in an env's source struc, even when they are from the
+	target struc.  This causes target propns to then be transmitted
+	into the source struc, mixing target propns in the person's
+	source struc.  This causes mappings from a propn to itself,
+	which is not allowed.
+	WORKAROUND: Do not perceive target propns.  This is OK for
+	Sanday models.
+
+. Write fortress propns
+
+. How does problem solving/filling in work?  Can I use that?  Is it hopelessly
+  complicated and broken??
 
 . UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
   New nodes in analogy net appear but don't get linked.
   Is the is-new-link stuff broken??  Or what?
 
-. Maybe I *need* drifty noise added so that "what everybody says"
+. Consider ways to make analogy weaker or more intermittent relative
+  to conversation.
+  .. What will happen if I reduce the ratio between network settling
+  and utterances?  Suppose that I only allow one tick of settling
+  per pop-tick?  Or less--have network settling intermittent, or
+  allow more utterances per pop-tick?
+  .. Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical
   relationships weaker, but then they'd be overwhelmed by previous
   history.  This also provides a way of "forgetting": If there's nothing
   telling you you gotta believe this, then it eventually fluctuates
   randomly.
-  OR: What will happen if I reduce the ratio between network settling
-  and utterances?  Suppose that I only allow one tick of settling
-  per pop-tick?  Or less--have network settling intermittent, or
-  allow more utterances per pop-tick?
-
-. Can I solve the possible problem of having analogs mixed in source
-  and target, by going further with the e-god/s-god strategy and making
-  sure that I don't share predicates or objects between analog clusters
-  within the same struc?  Note that there are *no* mappings
-  within-struc, so there is no semantic reason that e.g. you can't have
-  two cause predicates.  It's a kludge, but I think it would serve to
-  make the sets of propns independent and not have mixing between them.
-  (or can I have multiple source and target analogs, which is cleaner
-  maybe, but maybe less realism-ey?)
-  The general idea is that the reason that there's a problem that
-  prevented gathering from working (?) is that it's more or less
-  syntax only that's doing the work.  What semantical help there is,
-  is pretty weak.  So you have to enhance the semantics a bit with
-  naming conventions.
-
-..............................................................
-EXPERIMENT VARIATIONS:
-
-. Let origin stories filter into society from one or two sources.
-. Let effects of parent, or hunting, salience filter in from few sources.
-. Let effects of both filter in from few sources.  See variation in
-  pops wrt how patterns end up.
-. Do the preceding iteratively to produce cumulative evolution.
-. Here's something that would be nice with cumulative stuff:
-  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
-  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
-  there is a context for them, let them become significant.
-. Take stabilized pop and flip salience, or change salience in a few
-  gradually, or drop saliences and make a small subset with opposite
-  salience (as in parenting14k.nts).
-. Question: Can conversation can create links that don't correspond
-  to map nodes?  Or only that aren't reflected in the colored
-  triangles.
 
 ..............................................................
 NETLOGO and LISP/NETLOGO INTERFACE:
 
-. Consider transmitting propns only when new.  This could be a lot
+. Consider transmitting propns to NetLogo only when new.  This could be a lot
   more efficient.
 
 . Per Jason, Aaron, there's a java-to-C calling interface that could be
@@ -146,6 +107,7 @@ activations).
   activations?
 
 . Integrate with ABCL??
+  ABCL's R/E now can be called from NetLogo.
 
 ..............................................................
 re GUESS
@@ -206,12 +168,43 @@ kind of communication to guess.  (?)
 ..............................................................
 LISP:
 
-. BUG AS OF 5/27/12 because PERCEIVED in popco.lisp always puts propns in
-an env's source struc, even when they are from the target struc.  This
-causes target propns to then be transmitted into the source struc, mixing
-target propns in the person's source struc.  This causes mappings from a
-propn to itself, which is not allowed.
-WORKAROUND: Do not perceive target propns.  This is OK for Sanday models.
+. Can I solve the possible problem of having analogs mixed in source
+  and target, by going further with the e-god/s-god strategy and making
+  sure that I don't share predicates or objects between analog clusters
+  within the same struc?  Note that there are *no* mappings
+  within-struc, so there is no semantic reason that e.g. you can't have
+  two cause predicates.  It's a kludge, but I think it would serve to
+  make the sets of propns independent and not have mixing between them.
+  (or can I have multiple source and target analogs, which is cleaner
+  maybe, but maybe less realism-ey?)
+  The general idea is that the reason that there's a problem that
+  prevented gathering from working (?) is that it's more or less
+  syntax only that's doing the work.  What semantical help there is,
+  is pretty weak.  So you have to enhance the semantics a bit with
+  naming conventions.
+
+. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
+  using Lisp code rather than restarting sbcl and having to manage it
+  from shell code.  Not sure if these are sufficient.
+        (mapcar #'clear-plists (get 'folks 'members))
+        (clear-person-nets 'folks)
+  What's needed is:
+        1. Clear plists recursively starting from *the-population*, and symbol values
+           if there are any (I don't think there are).
+        2. Set all globals back to defaults.  Note that at present, not all are in
+           variables.lisp, so I can't just reload that file.
+        3. Make sure that random-state is managed properly and saved properly.
+  Possibly write code to clear out everything.  Maybe walk plists
+  and possibly symbol values, clearing them out.
+  Question: Can I get random-state in the middle of a Lisp session and
+  be able to use it properly in a brand new Lisp session?
+  notes on what needs to be stored to recreate a population state:
+	*pop-tick*
+	symbols and plists of:
+		all persons in pop's members
+		all units in each person's all-units
+		all structures in each person's all-structures
+	I think that's it.
 
 . BUG: The function SIMILAR? checks whether the predicate pair is listed in
   *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
@@ -339,6 +332,26 @@ Currently ok in 	Lisp		NetLogo		GUESS
 
 [Note that removing propns--"forgetting"--could be somewhat involved.
 See note below.]
+
+
+..............................................................
+EXPERIMENT VARIATIONS:
+
+. Let origin stories filter into society from one or two sources.
+. Let effects of parent, or hunting, salience filter in from few sources.
+. Let effects of both filter in from few sources.  See variation in
+  pops wrt how patterns end up.
+. Do the preceding iteratively to produce cumulative evolution.
+. Here's something that would be nice with cumulative stuff:
+  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
+  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
+  there is a context for them, let them become significant.
+. Take stabilized pop and flip salience, or change salience in a few
+  gradually, or drop saliences and make a small subset with opposite
+  salience (as in parenting14k.nts).
+. Question: Can conversation can create links that don't correspond
+  to map nodes?  Or only that aren't reflected in the colored
+  triangles.
 
 
 ..............................................................
