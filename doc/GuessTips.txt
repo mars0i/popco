@@ -1,0 +1,10 @@
+GuessTips.txt: Tips for using GUESS with POPCO
+
+
+. popguess is a shell script for starting guess with extra POPCO python
+extensions.
+
+. telguess<port#> is popguess waiting for a telnet connection from
+popco.
+
+. (write-person-graphs "path ending in /") 
