@@ -6,7 +6,7 @@
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "T"))
 (setf *propn-category-descriptions* '("lightbulb" "tumor"))
-(setf *netlogo-output-name* "../data/analogy1SimpleSwitchedNetLogoData.txt")
+;(setf *netlogo-output-name* "../data/analogy1SimpleSwitchedNetLogoData.txt")
 
 ;; first clear everything out
 (mapcar #'clear-plists (get 'folks 'members))
@@ -85,8 +85,8 @@
              '())
 
 (make-person 'bailey 'folks lightbulb-info
-            `((make-struc 'target 'problem '(start (,@bulb-info)))
-              (make-struc 'source 'problem '(start (,@tumor-info)))
+            `((make-struc 'source 'problem '(start (,@bulb-info)))
+              (make-struc 'target 'problem '(start (,@tumor-info)))
               ,@similarity)
             `(,@pragmatic-relations)
             '()) 
@@ -97,7 +97,7 @@
 (setf *max-pop-ticks* 20)
 (setf *do-converse* nil)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
+(setf *do-report-to-netlogo* nil)  ; Whether to create file for input to NetLogo 
 (setf *do-report-analogy-nets-to-guess* t)
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
@@ -110,4 +110,4 @@
 (init-pop)
 (popco1)
 (popco1)
-(write-person-graphs "../data/guess/")
+(write-person-graphs "graphs/")

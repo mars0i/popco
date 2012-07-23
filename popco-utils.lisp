@@ -28,6 +28,26 @@
     (list-constraints (get person 'all-units))) 
   t)
 
+(defun print-constraints-csv (person)
+  (setf *the-person* person)
+  (mapc 
+    #'(lambda (c) (format t "~S,~S,~S~%" 
+                          (personal-to-generic-sym (car c))  
+                          (personal-to-generic-sym (cadr c)) 
+                          (cddr c)))
+    (list-constraints (get person 'all-units)))
+  t)
+
+(defun write-constraints-csv (person )
+  (setf *the-person* person)
+  ((mapc 
+    #'(lambda (c) (format nil "~S,~S,~S~%" 
+                          (personal-to-generic-sym (car c))  
+                          (personal-to-generic-sym (cadr c)) 
+                          (cddr c)))
+    (list-constraints (get person 'all-units)))
+      t))
+
 ; list the property names of a symbol
 (defun sym-props (sym)
   (sym-props-aux (plist sym)))

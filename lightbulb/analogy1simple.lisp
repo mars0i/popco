@@ -6,7 +6,7 @@
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "T"))
 (setf *propn-category-descriptions* '("lightbulb" "tumor"))
-(setf *netlogo-output-name* "../data/analogy1SimpleSwitchedNetLogoData.txt")
+;(setf *netlogo-output-name* "../data/analogy1SimpleSwitchedNetLogoData.txt")
 
 ;; first clear everything out
 (mapcar #'clear-plists (get 'folks 'members))
@@ -96,4 +96,4 @@
 (init-pop)
 (popco1)
 (popco1)
-(write-person-graphs "../data/guess/")
+(write-person-graphs "graphs/")

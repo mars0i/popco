@@ -1,0 +1,1 @@
+The analogy nets for A1 and A2 (source and target switched) are perfectly mirrored.  I called (print-constraints-csv) on both persons, copy/pasted the output to csv files, imported the csv files to LibreOffice Calc (which allowed me to split by "="), sorted the output by the columns that should be mirrored, then put the files through a diff viewer.
