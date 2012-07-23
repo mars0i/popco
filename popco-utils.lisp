@@ -10,6 +10,7 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+; print to the console a person's constraints in space-delimited format
 (defun print-constraints-example1 (person)
   (mapc 
     #'(lambda (c) (format t "~S ~S ~S~%" (car c) (cadr c) (cddr c))) 
@@ -18,6 +19,7 @@
             (list-constraints (get person 'all-units)))) 
   t)
 
+; print to the console a person's constraints in space-delimited format
 (defun print-constraints-example2 (person)
   (setf *the-person* person)
   (mapc 
@@ -28,6 +30,7 @@
     (list-constraints (get person 'all-units))) 
   t)
 
+; print to the console a person's constraints in csv format
 (defun print-constraints-csv (person)
   (setf *the-person* person)
   (mapc 
@@ -38,7 +41,8 @@
     (list-constraints (get person 'all-units)))
   t)
 
-(defun write-constraints-csv (person )
+;;;doesn't work yet...
+#|  (defun write-constraints-csv (person )
   (setf *the-person* person)
   ((mapc 
     #'(lambda (c) (format nil "~S,~S,~S~%" 
@@ -46,7 +50,7 @@
                           (personal-to-generic-sym (cadr c)) 
                           (cddr c)))
     (list-constraints (get person 'all-units)))
-      t))
+      t))  |#
 
 ; list the property names of a symbol
 (defun sym-props (sym)
