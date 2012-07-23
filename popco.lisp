@@ -747,7 +747,6 @@
          (generic-propn (last-element msg))
          (generic-struc (generic-struc-of-propn generic-propn person))
          (env-struc (generic-to-personal-sym generic-struc env)))
-    (format t "In PERCEIVED: person = ~S; generic-propn = ~S; env-struc = ~S~%" person  generic-propn env-struc) ; DEBUG
     (unless (get person 'env)           ; give the person its environment if doesn't exist
       (setf (get person 'env) env))
     (pushnew env-struc (get env 'all-structures))

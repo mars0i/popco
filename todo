@@ -1,8 +1,7 @@
 top tasks:
 
-. "Goals": restricts mapping to category start vs goals
-
-. PARTLY FIXED AS OF 7/13/12, BUT NEEDS FURTHER TESTING.
+. TRY RUNNING analogy1_2source.lisp FOR NEW BUG(?).
+PARTLY FIXED AS OF 7/13/12, BUT NEEDS FURTHER TESTING.
 Seems to hang during conversation.  Maybe the env's are included?
 
 	BUG AS OF 5/27/12 because PERCEIVED in popco.lisp always puts
@@ -13,6 +12,8 @@ Seems to hang during conversation.  Maybe the env's are included?
 	which is not allowed.
 	WORKAROUND: Do not perceive target propns.  This is OK for
 	Sanday models.
+
+. "Goals": restricts mapping to category start vs goals
 
 . Write fortress propns
 
@@ -41,6 +42,232 @@ Seems to hang during conversation.  Maybe the env's are included?
   history.  This also provides a way of "forgetting": If there's nothing
   telling you you gotta believe this, then it eventually fluctuates
   randomly.
+  SEE additional notes below about issues concerning forgetting.
+
+..............................................................
+LISP:
+
+. Can I solve the possible problem of having analogs mixed in source
+  and target, by going further with the e-god/s-god strategy and making
+  sure that I don't share predicates or objects between analog clusters
+  within the same struc?  Note that there are *no* mappings
+  within-struc, so there is no semantic reason that e.g. you can't have
+  two cause predicates.  It's a kludge, but I think it would serve to
+  make the sets of propns independent and not have mixing between them.
+  (or can I have multiple source and target analogs, which is cleaner
+  maybe, but maybe less realism-ey?)
+  The general idea is that the reason that there's a problem that
+  prevented gathering from working (?) is that it's more or less
+  syntax only that's doing the work.  What semantical help there is,
+  is pretty weak.  So you have to enhance the semantics a bit with
+  naming conventions.
+
+. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
+  using Lisp code rather than restarting sbcl and having to manage it
+  from shell code.  Not sure if these are sufficient.
+        (mapcar #'clear-plists (get 'folks 'members))
+        (clear-person-nets 'folks)
+  What's needed is:
+        1. Clear plists recursively starting from *the-population*, and symbol values
+           if there are any (I don't think there are).
+        2. Set all globals back to defaults.  Note that at present, not all are in
+           variables.lisp, so I can't just reload that file.
+        3. Make sure that random-state is managed properly and saved properly.
+  Possibly write code to clear out everything.  Maybe walk plists
+  and possibly symbol values, clearing them out.
+  Question: Can I get random-state in the middle of a Lisp session and
+  be able to use it properly in a brand new Lisp session?
+  notes on what needs to be stored to recreate a population state:
+	*pop-tick*
+	symbols and plists of:
+		all persons in pop's members
+		all units in each person's all-units
+		all structures in each person's all-structures
+	I think that's it.
+
+. BUG: The function SIMILAR? checks whether the predicate pair is listed in
+  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
+  IS ACTUALLY A BUG because it means that all persons are sharing
+  predicate similarities, and overriding variants.  *similiar* should be
+  a field of the person rather than a global.  Or the similarities could
+  be personalized.  But then everyone has to through a long list of
+  similarities.  [This is OK if all of the persons *do* share
+  similarities.]
+
+. POSSIBLE BUG when conversations introduce new predicates, at least:
+  Question: Shouldn't semantic relations be reinvoked later if the
+  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
+  to a map node.  But if the map node doesn't exist initially, these
+  special links won't get created; currently (4/2012) they are only
+  created by create-net by the line
+  	(mapc #'eval (get person 'input))
+  This also might have to be reinvoked:
+  	(mapc #'eval (get person 'addl-input))
+  Or maybe they should always exist in everyone?
+  this is at least an issue with specifying direct symlinks on units.
+
+. On forgetting:
+  Question: Should people forget what has negative degree of belief,
+  or low absolute value of degree of belief.  Seems like both are
+  relevant.  Yet negative degrees of belief are positive degrees of
+  belief in negations.
+
+. SMALL BUG: Calling n-persons-with-name twice with the same name
+  seems to cause an error when popco is run.
+
+. By specifying different salience for different individuals, you could
+  have the adamant override the lukewarm
+
+. Make procedure to store record state of pop at each generation.
+  (What about during net settling iterations within generations?)
+  Consider extending NetLogo data output procedures to be able
+  to read from this data and convert to NetLogo data.
+
+. Currently, remove-constraint and remove-all-constraints in acme.lisp
+  record the newly-deleted constraints in a single property of the person.
+  This works with GUESS even when I'm not displyaing the analogy net
+  because GUESS is not unhappy with attempts to delete nonexistent edges.
+  However, in the future I may need to split up the newly deleted constraints
+  into analogy and proposition network constraints for some other external
+  display program.
+
+. Currently, I have no standard functions for removing and temporarily
+  recording deleted units.  This will be necessary e.g. if I implement
+  forgetting (see below), or maybe for some experiments, if I want
+  to be able to update GUESS with the deletions.  I'll probably want to
+  keep separate newly-deleted lists for the proposition and analogy
+  networks.
+ 
+. Notes on allowing "forgetting" (removal) of propositions:
+You also have to remove the propn map nodes, and predicate and object map
+nodes *if* there are no remaining proposition mappings that involve those
+predicates and objects.  Something like that.  This sounds
+hard--involving walking back up to propns from preds/objs, or doing a
+mark and sweep or something.  However, I think it's not so hard.
+Here's a proposed algorithm for removing a propn:
+	(1) Get all linked propn map nodes
+		(1a) For each propn map node, do a two-sided unlink with
+		     predicate and obj map nodes.
+	(2) Do a two-sided unlink between the propn and the propn map
+	    nodes.
+	(3) Do the same unlinking for analog structures, etc.--whatever 
+	    is needed.  Make sure, for example, that the proposition's
+	    message is no longer referenced anywhere in the person.
+The idea is that step 1a may or may not leave the "concept" map nodes
+with links back to other proposition map nodes.  If so, then those map
+nodes will also have references to the concept map nodes, and the
+concept map nodes will remain in the network, as desired.  If there
+are no remaining links within the concept map nodes, fine--in that
+case, there will be no links too them, either.  Then these map nodes
+will no longer appear in the analogy network, and Lisp's GC will
+eventually get rid of them.  I don't have to garbage collect per se.
+I just have to do two-way unlinking.
+	(4) However, higher-order propositions make complicate this process.  
+	(5) Also: It probably should be impossible to forget
+	    a proposition without for forgetting all higher-order
+	    propositions in which it's referenced.
+	(6) Also, there are additional steps that must be taken for
+	    the sake of ongoing output to GUESS and NetLogo: When
+	    something is finally completely unlinked, we have to take
+	    note of that in order to tell the display programs to remove
+	    the node.  However, that shouldn't be hard since
+	    everything's got links to what is linked to it.
+
+
+. THIS IS FIXED, but consider modifying make-sym-link to use the
+  new unlinked? function.
+  old:
+  bug in new add-to-guess code:
+	The test for new constraint before pushing onto the 
+	'newly-added-constraints list [with mark-constraint-newly-added]
+	just checks for zero weight.
+	That's what make-sym-link does, and it is sensible there.
+	However, if there actually is a link, but it's zero weight
+	(this could theoretically happen in the proposition network,
+	with conversation), then popco may try later to add it to guess,
+	and guess will complain (or maybe bomb) because the node
+	already exists.
+
+..............................................................
+re GUESS
+
+. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
+  the nodes that result from conversation?)
+
+. The first time after boot you run telguesses with multiple persons,
+  it fails on all but one of the GUESS instances.  After that it's fine.
+  I think that it starts the processes too close in time to each other,
+  and there's a moment when one instance has started loading Java,
+  but Java can't respond by saying it's loaded, and the OS won't respond
+  by saying it's not.  The error you get suggests this interpretation.
+  I don't know that it's worth adding a delay.
+
+. in parenting14l mless-parent, I get completely disconnected
+  proposition nodes (OK) yet some of them change activations, getting
+  significantly positive, or a little negative.  Oh, wait, I think
+  that's because there are unrepresented things in GUESS do to
+  conversation which isn't yet reflected graphically.  OK.
+
+. TODO: Reorganize the code in popco-fmt-guessCmds.lisp and revise
+report-persons-to-guess in popco.lisp so that I can
+mapc through persons all at once, instead of individually for each
+kind of communication to guess.  (?)
+
+. Consider coloring nodes by category, specifying colors in Lisp,
+  so that it's obvious which categories are going positive and negative.
+  I also don't think white/black is the best choice for propositions,
+  since they are a primary focus.
+
+. Make menu item that sets/unsets labelvisible.
+  [You have to use a trick query to refer to all nodes.
+  e.g. (activation<>100).labelvisible=true]
+
+. Still want to figure out how to pass a telnet port to a single
+  script, or enter it in GUESS or something.  (GUESS doesn't seem to be
+  set up for passing parameters to scripts.)  It certainly ought to be
+  possible to run the telnet server from a menu, but that hasn't worked
+  yet.  Also need to figure out how to close and reopent telnet
+  connections.
+
+. Bug in newly-added edges?: They don't have all of the informative
+  fields that old edges have?  Possibly add code to assign that stuff.
+
+. I seem to be losing the informative rollover functionality in edges sometimes.
+
+. Sometimes GUESS errors out (and stops Lisp, eventually) if you run dynamic
+  updating too long.  Index out of bounds.
+  Question: Does this happen without node/edge adds?
+  Question: Is there some GUESS operation that would prevent this?
+  Presumably it's a memory leak or involves exceeding some bound.
+
+. See Overview Needs list.
+
+. btw isomLayout() with binPack() is pretty nice, if slow, but isn't on the menu.  
+
+. tips:
+	remove(node2==SALIENT)
+	remove(OE_NOTHING-P_NOTHING)
+	remove([OE_NOTHING-P_NOTHING,P_NOTHING-P_CHILD_ALIVE])
+	note removing an edge that doesn't exist seems unproblematic.
+
+
+..............................................................
+OVERVIEW NEEDS - NOT URGENT
+
+I need to work toward making sure that the Lisp, NetLogo, and GUESS
+components all allow:
+
+Currently ok in 	Lisp		NetLogo		GUESS
+
+. add persons		yes		no		yes
+. remove persons	yes		not really	n.a.
+. add propositions	yes		yes		yes
+. add links		yes             no		yes
+. remove propositions	no		no		no, but snapshots
+. remove links		not easily	not really	yes
+
+[Note that removing propns--"forgetting"--could be somewhat involved.
+See note below.]
 
 ..............................................................
 NETLOGO and LISP/NETLOGO INTERFACE:
@@ -117,229 +344,6 @@ activations).
 . Integrate with ABCL??
   ABCL's R/E now can be called from NetLogo.
 
-..............................................................
-re GUESS
-
-. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
-  the nodes that result from conversation?)
-
-. The first time after boot you run telguesses with multiple persons,
-  it fails on all but one of the GUESS instances.  After that it's fine.
-  I think that it starts the processes too close in time to each other,
-  and there's a moment when one instance has started loading Java,
-  but Java can't respond by saying it's loaded, and the OS won't respond
-  by saying it's not.  The error you get suggests this interpretation.
-  I don't know that it's worth adding a delay.
-
-. TODO: Reorganize the code in popco-fmt-guessCmds.lisp and revise
-report-persons-to-guess in popco.lisp so that I can
-mapc through persons all at once, instead of individually for each
-kind of communication to guess.  (?)
-
-. Consider coloring nodes by category, specifying colors in Lisp,
-  so that it's obvious which categories are going positive and negative.
-  I also don't think white/black is the best choice for propositions,
-  since they are a primary focus.
-
-. Make menu item that sets/unsets labelvisible.
-  [You have to use a trick query to refer to all nodes.
-  e.g. (activation<>100).labelvisible=true]
-
-. Still want to figure out how to pass a telnet port to a single
-  script, or enter it in GUESS or something.  (GUESS doesn't seem to be
-  set up for passing parameters to scripts.)  It certainly ought to be
-  possible to run the telnet server from a menu, but that hasn't worked
-  yet.  Also need to figure out how to close and reopent telnet
-  connections.
-
-. Bug in newly-added edges?: They don't have all of the informative
-  fields that old edges have?  Possibly add code to assign that stuff.
-
-. I seem to be losing the informative rollover functionality in edges sometimes.
-
-. Sometimes GUESS errors out (and stops Lisp, eventually) if you run dynamic
-  updating too long.  Index out of bounds.
-  Question: Does this happen without node/edge adds?
-  Question: Is there some GUESS operation that would prevent this?
-  Presumably it's a memory leak or involves exceeding some bound.
-
-. See Overview Needs list.
-
-. btw isomLayout() with binPack() is pretty nice, if slow, but isn't on the menu.  
-
-. tips:
-	remove(node2==SALIENT)
-	remove(OE_NOTHING-P_NOTHING)
-	remove([OE_NOTHING-P_NOTHING,P_NOTHING-P_CHILD_ALIVE])
-	note removing an edge that doesn't exist seems unproblematic.
-
-..............................................................
-LISP:
-
-. Can I solve the possible problem of having analogs mixed in source
-  and target, by going further with the e-god/s-god strategy and making
-  sure that I don't share predicates or objects between analog clusters
-  within the same struc?  Note that there are *no* mappings
-  within-struc, so there is no semantic reason that e.g. you can't have
-  two cause predicates.  It's a kludge, but I think it would serve to
-  make the sets of propns independent and not have mixing between them.
-  (or can I have multiple source and target analogs, which is cleaner
-  maybe, but maybe less realism-ey?)
-  The general idea is that the reason that there's a problem that
-  prevented gathering from working (?) is that it's more or less
-  syntax only that's doing the work.  What semantical help there is,
-  is pretty weak.  So you have to enhance the semantics a bit with
-  naming conventions.
-
-. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
-  using Lisp code rather than restarting sbcl and having to manage it
-  from shell code.  Not sure if these are sufficient.
-        (mapcar #'clear-plists (get 'folks 'members))
-        (clear-person-nets 'folks)
-  What's needed is:
-        1. Clear plists recursively starting from *the-population*, and symbol values
-           if there are any (I don't think there are).
-        2. Set all globals back to defaults.  Note that at present, not all are in
-           variables.lisp, so I can't just reload that file.
-        3. Make sure that random-state is managed properly and saved properly.
-  Possibly write code to clear out everything.  Maybe walk plists
-  and possibly symbol values, clearing them out.
-  Question: Can I get random-state in the middle of a Lisp session and
-  be able to use it properly in a brand new Lisp session?
-  notes on what needs to be stored to recreate a population state:
-	*pop-tick*
-	symbols and plists of:
-		all persons in pop's members
-		all units in each person's all-units
-		all structures in each person's all-structures
-	I think that's it.
-
-. BUG: The function SIMILAR? checks whether the predicate pair is listed in
-  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
-  IS ACTUALLY A BUG because it means that all persons are sharing
-  predicate similarities, and overriding variants.  *similiar* should be
-  a field of the person rather than a global.  Or the similarities could
-  be personalized.  But then everyone has to through a long list of
-  similarities.  [This is OK if all of the persons *do* share
-  similarities.]
-
-. POSSIBLE BUG when conversations introduce new predicates, at least:
-  Question: Shouldn't semantic relations be reinvoked later if the
-  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
-  to a map node.  But if the map node doesn't exist initially, these
-  special links won't get created; currently (4/2012) they are only
-  created by create-net by the line
-  	(mapc #'eval (get person 'input))
-  This also might have to be reinvoked:
-  	(mapc #'eval (get person 'addl-input))
-  Or maybe they should always exist in everyone?
-  this is at least an issue with specifying direct symlinks on units.
-
-. On forgetting:
-  Question: Should people forget what has negative degree of belief,
-  or low absolute value of degree of belief.  Seems like both are
-  relevant.  Yet negative degrees of belief are positive degrees of
-  belief in negations.
-
-. SMALL BUG: Calling n-persons-with-name twice with the same name
-  seems to cause an error when popco is run.
-
-. in parenting14l mless-parent, I get completely disconnected
-  proposition nodes (OK) yet some of them change activations, getting
-  significantly positive, or a little negative.  Oh, wait, I think
-  that's because there are unrepresented things in GUESS do to
-  conversation which isn't yet reflected graphically.  OK.
-
-. By specifying different salience for different individuals, you could
-  have the adamant override the lukewarm
-
-. Make procedure to store record state of pop at each generation.
-  (What about during net settling iterations within generations?)
-  Consider extending NetLogo data output procedures to be able
-  to read from this data and convert to NetLogo data.
-
-. Currently, remove-constraint and remove-all-constraints in acme.lisp
-  record the newly-deleted constraints in a single property of the person.
-  This works with GUESS even when I'm not displyaing the analogy net
-  because GUESS is not unhappy with attempts to delete nonexistent edges.
-  However, in the future I may need to split up the newly deleted constraints
-  into analogy and proposition network constraints for some other external
-  display program.
-
-. Currently, I have no standard functions for removing and temporarily
-  recording deleted units.  This will be necessary e.g. if I implement
-  forgetting (see below), or maybe for some experiments, if I want
-  to be able to update GUESS with the deletions.  I'll probably want to
-  keep separate newly-deleted lists for the proposition and analogy
-  networks.
- 
-. Notes on allowing "forgetting" (removal) of propositions:
-You also have to remove the propn map nodes, and predicate and object map
-nodes *if* there are no remaining proposition mappings that involve those
-predicates and objects.  Something like that.  This sounds
-hard--involving walking back up to propns from preds/objs, or doing a
-mark and sweep or something.  However, I think it's not so hard.
-Here's a proposed algorithm for removing a propn:
-	(1) Get all linked propn map nodes
-		(1a) For each propn map node, do a two-sided unlink with
-		     predicate and obj map nodes.
-	(2) Do a two-sided unlink between the propn and the propn map
-	    nodes.
-	(3) Do the same unlinking for analog structures, etc.--whatever 
-	    is needed.  Make sure, for example, that the proposition's
-	    message is no longer referenced anywhere in the person.
-The idea is that step 1a may or may not leave the "concept" map nodes
-with links back to other proposition map nodes.  If so, then those map
-nodes will also have references to the concept map nodes, and the
-concept map nodes will remain in the network, as desired.  If there
-are no remaining links within the concept map nodes, fine--in that
-case, there will be no links too them, either.  Then these map nodes
-will no longer appear in the analogy network, and Lisp's GC will
-eventually get rid of them.  I don't have to garbage collect per se.
-I just have to do two-way unlinking.
-	(4) However, higher-order propositions make complicate this process.  
-	(5) Also: It probably should be impossible to forget
-	    a proposition without for forgetting all higher-order
-	    propositions in which it's referenced.
-	(6) Also, there are additional steps that must be taken for
-	    the sake of ongoing output to GUESS and NetLogo: When
-	    something is finally completely unlinked, we have to take
-	    note of that in order to tell the display programs to remove
-	    the node.  However, that shouldn't be hard since
-	    everything's got links to what is linked to it.
-
-
-. THIS IS FIXED, but consider modifying make-sym-link to use the
-  new unlinked? function.
-  old:
-  bug in new add-to-guess code:
-	The test for new constraint before pushing onto the 
-	'newly-added-constraints list [with mark-constraint-newly-added]
-	just checks for zero weight.
-	That's what make-sym-link does, and it is sensible there.
-	However, if there actually is a link, but it's zero weight
-	(this could theoretically happen in the proposition network,
-	with conversation), then popco may try later to add it to guess,
-	and guess will complain (or maybe bomb) because the node
-	already exists.
-
-..............................................................
-OVERVIEW NEEDS - NOT URGENT
-
-I need to work toward making sure that the Lisp, NetLogo, and GUESS
-components all allow:
-
-Currently ok in 	Lisp		NetLogo		GUESS
-
-. add persons		yes		no		yes
-. remove persons	yes		not really	n.a.
-. add propositions	yes		yes		yes
-. add links		yes             no		yes
-. remove propositions	no		no		no, but snapshots
-. remove links		not easily	not really	yes
-
-[Note that removing propns--"forgetting"--could be somewhat involved.
-See note below.]
 
 
 ..............................................................

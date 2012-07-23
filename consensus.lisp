@@ -29,7 +29,7 @@
 
 ; MAKE-PERSON sets up the input information for each person.
 ; GROUP is the consensus group to which the person belongs.
-; GIVEN-EL lists the favored information - data for ECHO, goals
+; GIVEN lists the favored information - data for ECHO, goals
 ; for DECO, observed for IMP ...
 ; and perceived for POPCO. [MA 11/2011]
 ; INPUT is the functions from ECHO etc. for creating a network
