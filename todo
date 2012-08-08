@@ -1,4 +1,40 @@
-top tasks:
+
+. notes on natural selection
+
+  .. birth as copying "genes":
+    I think genes can just be the initial code which is preserved in
+    the person anyway.
+
+  .. death as removal from population
+     Is there anything else that needs to be done other than simply
+     removing it from the list?
+     Hmm well there are still some remaining globals?  Work on that.
+
+  .. A function that's called for each person on each loop that
+     determines whether it's time to give birth, and how many offspring.
+     Initial version might just make one offspring and do it every
+     n ticks.  Maybe allow n to be person-specific.
+
+  .. Allow environments to be shared.
+
+  .. Allow environment contents to be specified initially independent
+     of any person.
+
+  .. This can wait?: Allow shifting of persons between environments.
+
+  .. Allow death to depend on match with env.
+	... simple version: If you don't match enough on one trial,
+	    person dies.
+	... fancier version: Mismatching accumulates negative points.
+	    Too many negative points and person dies.
+	... another version: Matching accumulates positive points.
+	    Too few positive points, person dies.
+
+	    Possible extensions:
+	    	... There is a per-generation decrement of positive points.
+		... Giving birth decrements positive points.
+		... Maybe other things decrement points.
+
 
 . TRY RUNNING analogy1_2source.lisp FOR NEW BUG(?).
 PARTLY FIXED AS OF 7/13/12, BUT NEEDS FURTHER TESTING.
