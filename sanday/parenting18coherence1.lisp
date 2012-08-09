@@ -1,12 +1,42 @@
-; parenting18untilCollect4.lisp
-; v.4 of code for multiple runs of models using parenting18 code that
-; runs until all parts of an origin domain are collected in one individual,
-; and then possibly change salience relations.
-; Based on parenting18d.lisp
+; parenting18coherence1.lisp
+; based originally on parenting18untilCollect5.lisp
+;
+; Goal:
+;
+; Show that coherence due to background analogy can work against
+; believing a propn that otherwise would be consistent with other beliefs.
+; i.e. let salience or conversation emphasize s1-sn, those create emphasis
+; on t1-tm due to analogy, and this fact makes it hard to disbelieve s(n+1),
+; despite that otherwise that would work.
+;
+; Strategy:
+; 
+; Give each individual all of the propns.
+; 
+; Make most source propns in one domain (parenting or hunting) salient for
+; one individual, either by making them directly perceived, or by making
+; the perceived for others, and then letting conversation emphasize these
+; propns.
+; 
+; Make one proposition in the same domain disbelieved, either through
+; direct perception or conversation, as before.
+; 
+; Choose this last proposition so that:
+; 
+; It has no or few positive links to propns in its own (source) domain.
+; 
+; It maps to propns which do have significant positive links to others in
+; the analog (target) domain.
+; 
+; Show that activation flows from the emphasized source propns through the
+; analogical connections to the target propns, and back to the chosen
+; source propn.
+; 
+; Show that this propn will not go as negative as it would otherwise, and
+; maybe even can be maintained as positive.
 
 
-; many of these params will be overrident in (sequence)
-
+; many of these params may be overriden below
 ;*************************************
 ; These are probably just the defaults in variables.lisp:
 (setf *propn-excit-weight* .2L0)
@@ -15,8 +45,6 @@
 (setf *perceived-excit* .5) ; default link weight to salient for propositions perceived as true in env
 ; note setting of +max-weight+ in variables.lisp
 ;*************************************
-
-;*************************
 ; INITIAL SETTINGS
 ;(setf *time-runs* nil)   ; set below
 ;(setf *max-pop-ticks* 0) ; set below
@@ -27,11 +55,10 @@
 (setf *do-report-analogy-nets-to-guess* nil)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
-;*************************
+;*************************************
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("OE" "OS" "P" "H"))
-;(setf *propn-category-descriptions* '("creator is of the earth" "creator is from the sky" "parenting is important" "hunting is important"))
 (setf *propn-category-descriptions* '("origin from female" "origin from animal" "parenting is important" "hunting is important"))
 
 ; overwrite definition in imp.lisp:
@@ -182,68 +209,12 @@
 
 ; The following functions define alternative paradigmatic persons.  Differences are uppercased.
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; THESE FIRST TWO functions make persons that start with origin beliefs that are in sync with what's salient.
-;; i.e. make-skyless-person creates someone who emphasizes parenting, and has available earth-origin beliefs.
-;; i.e. make-earthess-person creates someone who emphasizes hunting, and has available sky-origin beliefs.
 
-; MAKE-SKYLESS-PERSON
-; Make a person that:
-; Has propns about: parenting, hunting, EARTH origin, and possibly one other propn
-; Lacks: most propns about SKY origin
-; Initial salience on propns about: PARENTING
-(defun make-skyless-person (name &optional addl-target-propn)
-  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
-    (make-person name 'folks PARENTING-PROPNS
-                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@EARTH-ORIGIN-PROPNS ,@addl-target-propn-list)))
+(defun make-generic-person (name)
+    (make-person name 'folks '()
+                 `((make-struc 'target 'problem '(start (,@origin-propns)))
                    (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
                    ,@semantic-relations)
                  `(,@pragmatic-relations)
-                 '())))
-
-; MAKE-EARTHLESS-PERSON
-; Make a person that:
-; Has propns about: parenting, hunting, SKY origin, and possibly one other propn
-; Lacks: most propns about EARTH origin
-; Initial salience on propns about: HUNTING
-(defun make-earthless-person (name &optional addl-target-propn)
-  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
-    (make-person name 'folks HUNTING-PROPNS
-                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS ,@addl-target-propn-list)))
-                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                   ,@semantic-relations)
-                 `(,@pragmatic-relations)
-                 '())))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; THESE NEXT TWO FUNCTIONS MAKE "PARADOXICAL" PERSONS that start with origin beliefs that are out of sync with what's salient.
-;; i.e. make-skyless-hunter creates someone who emphasizes hunting, and does not initially have available many (or any) sky-origin beliefs.
-;; i.e. make-earthess-parent creates someone who emphasizes parenting, and does not have available many (or any) earth-origin beliefs.
-
-; MAKE-SKYLESS-HUNTER
-; Make a person that:
-; Has propns about: parenting, hunting, EARTH origin, and possibly one other propn
-; Lacks: most propns about SKY origin
-; Initial salience on propns about: HUNTING
-(defun make-skyless-hunter (name &optional addl-target-propn)
-  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
-    (make-person name 'folks HUNTING-PROPNS
-                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@EARTH-ORIGIN-PROPNS ,@addl-target-propn-list)))
-                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                   ,@semantic-relations)
-                 `(,@pragmatic-relations)
-                 '())))
-
-; MAKE-EARTHLESS-PARENT
-; Make a person that:
-; Has propns about: parenting, hunting, SKY origin, and possibly one other propn
-; Lacks: most propns about EARTH origin
-; Initial salience on propns about: PARENTING
-(defun make-earthless-parent (name &optional addl-target-propn)
-  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
-    (make-person name 'folks PARENTING-PROPNS
-                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@SKY-ORIGIN-PROPNS ,@addl-target-propn-list)))
-                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                   ,@semantic-relations)
-                 `(,@pragmatic-relations)
-                 '())))
+                 '()))
