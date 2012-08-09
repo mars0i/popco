@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+	<graph id="popco-graph" edgedefault="undirected">
+		<key id="guess-node-color" for="node" attr.name="color" attr.type="string">
+			<default>lightgray</default>
+		</key>
+		<key id="guess-node-height" for="node" attr.name="height" attr.type="double">
+			<default>10</default>
+		</key>
+		<key id="guess-node-width" for="node" attr.name="width" attr.type="double">
+			<default>10</default>
+		</key>
+                <!-- The next two keys should be coordinated.... -->
+		<key id="guess-node-label-visible" for="node" attr.name="labelvisible" attr.type="boolean">
+			<default>false</default>
+		</key>
+		<key id="guess-node-style" for="node" attr.name="style" attr.type="int">
+			<default>2</default>
+		</key>
+		<!-- Normally, the node label will be inherited from the node name, but this key allows arbitrary labels without changing the node name. -->
+		<key id="guess-node-label" for="node" attr.name="label" attr.type="string">
+			<!-- No default value is needed.  Default will be the usual inherit-from-nodename behavior. -->
+		</key>
+                <!-- possible styles: rectangle: 1, ellipse: 2, rounded rectangle: 3, text in rectangle: 4,
+                     text in ellipse: 5, text in rounded rectangle: 6, image: 7 -->
+		<!-- For map nodes, 1st and 2nd elements of the CONCERNS property in ACME: -->
+		<key id="guess-node-visible" for="node" attr.name="visible" attr.type="boolean">
+			<default>false</default>  <!-- Set invisible by default.  Elsewhere explicitly set each to be visible. -->
+		</key>
+		<key id="guess-node-concerns1" for="node" attr.name="concerns1" attr.type="string"/>
+		<key id="guess-node-concerns2" for="node" attr.name="concerns2" attr.type="string"/>
+		<!-- ACME unit's activation value (which determines GUESS node size): -->
+		<key id="guess-node-activation" for="node" attr.name="activation" attr.type="string"/>
+		<key id="guess-edge-color" for="edge" attr.name="color" attr.type="string">
+			<default>yellow</default>
+		</key>
+		<!-- Getting edge labels to display is a bit flaky: -->
+		<key id="guess-edge-label-visible" for="edge" attr.name="labelvisible" attr.type="boolean">
+			<default>false</default>
+		</key>
+		<key id="guess-edge-label-color" for="edge" attr.name="labelcolor" attr.type="boolean">
+			<default>white</default>
+		</key>
+		<key id="guess-edge-visible" for="edge" attr.name="visible" attr.type="boolean">
+			<default>false</default>  <!-- Set invisible by default.  Elsewhere explicitly set each to be visible. -->
+		</key>
+		<key id="guess-edge-width" for="edge" attr.name="width" attr.type="double"/>
+		<key id="guess-edge-weight" for="edge" attr.name="weight" attr.type="double"/>
+		<!-- For links between propositions, the edge weight is a function of the activation of this node: -->
+		<key id="guess-edge-weight-source" for="edge" attr.name="weightsource" attr.type="string"/>
+		<node id="SPECIAL">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+	        	<data key="guess-node-color">purple</data>
+	        	<data key="guess-node-height">20</data>
+	        	<data key="guess-node-width">20</data>
+                </node>
+               <node id="E_GOD_maps_WOMAN">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">E_GOD</data>
+			<data key="guess-node-concerns2">WOMAN</data>
+                </node>
+               <node id="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OE_EARTHLY_GOD</data>
+			<data key="guess-node-concerns2">P_CHILD_CLOSE</data>
+                </node>
+               <node id="E_GOD_maps_GAME">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">E_GOD</data>
+			<data key="guess-node-concerns2">GAME</data>
+                </node>
+               <node id="OE_EARTHLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OE_EARTHLY_GOD</data>
+			<data key="guess-node-concerns2">H_GAME_DISTANT</data>
+                </node>
+               <node id="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OS_CONFUSED_GOD</data>
+			<data key="guess-node-concerns2">P_CHILD_CLOSE</data>
+                </node>
+               <node id="CLOSE_maps_INTIMATE_AGENT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">CLOSE</data>
+			<data key="guess-node-concerns2">INTIMATE_AGENT</data>
+                </node>
+               <node id="OS_CONFUSED_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OS_CONFUSED_GOD</data>
+			<data key="guess-node-concerns2">H_GAME_DISTANT</data>
+                </node>
+               <node id="CLOSE_maps_DISTANT_AGENT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">CLOSE</data>
+			<data key="guess-node-concerns2">DISTANT_AGENT</data>
+                </node>
+               <node id="HUMAN_maps_CHILD">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">HUMAN</data>
+			<data key="guess-node-concerns2">CHILD</data>
+                </node>
+               <node id="S_GOD_maps_WOMAN">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">S_GOD</data>
+			<data key="guess-node-concerns2">WOMAN</data>
+                </node>
+               <node id="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OS_HEAVENLY_GOD</data>
+			<data key="guess-node-concerns2">P_CHILD_CLOSE</data>
+                </node>
+               <node id="DISTANT_maps_INTIMATE_AGENT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">DISTANT</data>
+			<data key="guess-node-concerns2">INTIMATE_AGENT</data>
+                </node>
+               <node id="HUMAN_maps_MAN">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">HUMAN</data>
+			<data key="guess-node-concerns2">MAN</data>
+                </node>
+               <node id="S_GOD_maps_GAME">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">S_GOD</data>
+			<data key="guess-node-concerns2">GAME</data>
+                </node>
+               <node id="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">yellow</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">OS_HEAVENLY_GOD</data>
+			<data key="guess-node-concerns2">H_GAME_DISTANT</data>
+                </node>
+               <node id="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">white</data>
+			<data key="guess-node-height">3.1</data>
+			<data key="guess-node-width">3.1</data>
+			<data key="guess-node-activation">0.01</data>
+			<data key="guess-node-concerns1">DISTANT</data>
+			<data key="guess-node-concerns2">DISTANT_AGENT</data>
+                </node>
+               <node id="OS_HEAVENLY_GOD">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">royalblue</data>
+			<data key="guess-node-height">3.0</data>
+			<data key="guess-node-width">3.0</data>
+			<data key="guess-node-activation">0.0</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+               <node id="OS_CONFUSED_GOD">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">royalblue</data>
+			<data key="guess-node-height">3.0</data>
+			<data key="guess-node-width">3.0</data>
+			<data key="guess-node-activation">0.0</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+               <node id="OE_EARTHLY_GOD">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">royalblue</data>
+			<data key="guess-node-height">3.0</data>
+			<data key="guess-node-width">3.0</data>
+			<data key="guess-node-activation">0.0</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+               <node id="H_GAME_DISTANT">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">royalblue</data>
+			<data key="guess-node-height">3.0</data>
+			<data key="guess-node-width">3.0</data>
+			<data key="guess-node-activation">0.0</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+               <node id="P_CHILD_CLOSE">
+		        <data key="guess-node-visible">true</data> <!-- override default set above -->
+			<data key="guess-node-color">royalblue</data>
+			<data key="guess-node-height">3.0</data>
+			<data key="guess-node-width">3.0</data>
+			<data key="guess-node-activation">0.0</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<edge source="OE_EARTHLY_GOD" target="P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OE_EARTHLY_GOD_maps_P_CHILD_CLOSE</data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD" target="H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OE_EARTHLY_GOD_maps_H_GAME_DISTANT</data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD" target="P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OS_CONFUSED_GOD_maps_P_CHILD_CLOSE</data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD" target="H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OS_CONFUSED_GOD_maps_H_GAME_DISTANT</data>
+		</edge>
+		<edge source="OS_HEAVENLY_GOD" target="P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE</data>
+		</edge>
+		<edge source="OS_HEAVENLY_GOD" target="H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
+			<data key="guess-edge-weight-source">OS_HEAVENLY_GOD_maps_H_GAME_DISTANT</data>
+		</edge>
+		<edge source="DISTANT_maps_DISTANT_AGENT" target="SPECIAL">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT" target="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="S_GOD_maps_GAME" target="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="S_GOD_maps_GAME" target="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_MAN" target="S_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_MAN" target="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_MAN" target="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="DISTANT_maps_INTIMATE_AGENT" target="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE" target="DISTANT_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE" target="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="S_GOD_maps_WOMAN" target="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="S_GOD_maps_WOMAN" target="DISTANT_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="S_GOD_maps_WOMAN" target="S_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_CHILD" target="S_GOD_maps_WOMAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_CHILD" target="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_CHILD" target="DISTANT_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="HUMAN_maps_CHILD" target="HUMAN_maps_MAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_DISTANT_AGENT" target="HUMAN_maps_MAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_DISTANT_AGENT" target="S_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_DISTANT_AGENT" target="DISTANT_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_H_GAME_DISTANT" target="CLOSE_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_H_GAME_DISTANT" target="HUMAN_maps_MAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_H_GAME_DISTANT" target="S_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_H_GAME_DISTANT" target="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_INTIMATE_AGENT" target="SPECIAL">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_INTIMATE_AGENT" target="HUMAN_maps_CHILD">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_INTIMATE_AGENT" target="S_GOD_maps_WOMAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_INTIMATE_AGENT" target="CLOSE_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="CLOSE_maps_INTIMATE_AGENT" target="DISTANT_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE" target="CLOSE_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE" target="HUMAN_maps_CHILD">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE" target="S_GOD_maps_WOMAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE" target="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE" target="OS_CONFUSED_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_H_GAME_DISTANT" target="CLOSE_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_H_GAME_DISTANT" target="HUMAN_maps_MAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_H_GAME_DISTANT" target="OS_CONFUSED_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_H_GAME_DISTANT" target="OS_HEAVENLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_GAME" target="HUMAN_maps_MAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_GAME" target="OE_EARTHLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_GAME" target="CLOSE_maps_DISTANT_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_GAME" target="S_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE" target="CLOSE_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE" target="HUMAN_maps_CHILD">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE" target="OS_CONFUSED_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE" target="OS_HEAVENLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE" target="OE_EARTHLY_GOD_maps_H_GAME_DISTANT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_WOMAN" target="HUMAN_maps_CHILD">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_WOMAN" target="OE_EARTHLY_GOD_maps_P_CHILD_CLOSE">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_WOMAN" target="CLOSE_maps_INTIMATE_AGENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.0</data>
+		        <data key="guess-edge-weight">0.1</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_WOMAN" target="E_GOD_maps_GAME">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E_GOD_maps_WOMAN" target="S_GOD_maps_WOMAN">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+	</graph>
+</graphml>

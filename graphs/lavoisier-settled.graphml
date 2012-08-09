@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+	<graph id="popco-graph" edgedefault="undirected">
+		<key id="guess-node-color" for="node" attr.name="color" attr.type="string">
+			<default>lightgray</default>
+		</key>
+		<key id="guess-node-height" for="node" attr.name="height" attr.type="double">
+			<default>10</default>
+		</key>
+		<key id="guess-node-width" for="node" attr.name="width" attr.type="double">
+			<default>10</default>
+		</key>
+                <!-- The next two keys should be coordinated.... -->
+		<key id="guess-node-label-visible" for="node" attr.name="labelvisible" attr.type="boolean">
+			<default>true</default>
+		</key>
+		<key id="guess-node-style" for="node" attr.name="style" attr.type="int">
+			<default>2</default>
+		</key>
+                <!-- possible styles: rectangle: 1, ellipse: 2, rounded rectangle: 3, text in rectangle: 4,
+                     text in ellipse: 5, text in rounded rectangle: 6, image: 7 -->
+		<!-- For map nodes, 1st and 2nd elements of the CONCERNS property in ACME: -->
+		<key id="guess-node-concerns1" for="node" attr.name="concerns1" attr.type="string"/>
+		<key id="guess-node-concerns2" for="node" attr.name="concerns2" attr.type="string"/>
+		<!-- ACME unit's activation value (which determines GUESS node size): -->
+		<key id="guess-node-activation" for="node" attr.name="activation" attr.type="string"/>
+		<key id="guess-edge-color" for="edge" attr.name="color" attr.type="string">
+			<default>yellow</default>
+		</key>
+		<!-- Getting edge labels to display is a bit flaky: -->
+		<key id="guess-edge-label-visible" for="edge" attr.name="labelvisible" attr.type="boolean">
+			<default>false</default>
+		</key>
+		<key id="guess-edge-label-color" for="edge" attr.name="labelcolor" attr.type="boolean">
+			<default>white</default>
+		</key>
+		<key id="guess-edge-width" for="edge" attr.name="width" attr.type="double"/>
+		<key id="guess-edge-weight" for="edge" attr.name="weight" attr.type="double"/>
+		<key id="guess-visible" for="edge" attr.name="visible" attr.type="boolean"/>
+		<!-- For links between propositions, the edge weight is a function of the activation of this node: -->
+		<key id="guess-edge-weight-source" for="edge" attr.name="weightsource" attr.type="string"/>
+		<node id="lavoisier">
+	        	<data key="guess-node-color">white</data>
+	        	<data key="guess-node-label-visible">true</data>
+	        	<data key="guess-node-style">4</data>
+                </node>
+		<node id="SPECIAL">
+	        	<data key="guess-node-color">purple</data>
+	        	<data key="guess-node-height">20</data>
+	        	<data key="guess-node-width">20</data>
+                </node>
+		<node id="ENVIRONMENT">
+	        	<data key="guess-node-color">purple</data>
+	        	<data key="guess-node-height">20</data>
+	        	<data key="guess-node-width">20</data>
+                </node>
+		<node id="PH6">
+			<data key="guess-node-color">blue</data>
+			<data key="guess-node-height">3.2122485302303336</data>
+			<data key="guess-node-width">3.2122485302303336</data>
+			<data key="guess-node-activation">-0.021224853023033348</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="PH5">
+			<data key="guess-node-color">blue</data>
+			<data key="guess-node-height">3.2122485302303336</data>
+			<data key="guess-node-width">3.2122485302303336</data>
+			<data key="guess-node-activation">-0.021224853023033348</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="PH4">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.208867544895525</data>
+			<data key="guess-node-width">3.208867544895525</data>
+			<data key="guess-node-activation">0.020886754489552496</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="PH3">
+			<data key="guess-node-color">blue</data>
+			<data key="guess-node-height">3.136421485895977</data>
+			<data key="guess-node-width">3.136421485895977</data>
+			<data key="guess-node-activation">-0.01364214858959772</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="PH2">
+			<data key="guess-node-color">blue</data>
+			<data key="guess-node-height">3.2899606562084553</data>
+			<data key="guess-node-width">3.2899606562084553</data>
+			<data key="guess-node-activation">-0.028996065620845557</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="PH1">
+			<data key="guess-node-color">blue</data>
+			<data key="guess-node-height">3.136421485895977</data>
+			<data key="guess-node-width">3.136421485895977</data>
+			<data key="guess-node-activation">-0.01364214858959772</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH6">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.3390510549933596</data>
+			<data key="guess-node-width">3.3390510549933596</data>
+			<data key="guess-node-activation">0.033905105499335945</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH5">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.7476119949914617</data>
+			<data key="guess-node-width">3.7476119949914617</data>
+			<data key="guess-node-activation">0.07476119949914618</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH4">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.4846517619209503</data>
+			<data key="guess-node-width">3.4846517619209503</data>
+			<data key="guess-node-activation">0.048465176192095026</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH3">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.6329481130500736</data>
+			<data key="guess-node-width">3.6329481130500736</data>
+			<data key="guess-node-activation">0.06329481130500735</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH2">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">3.166041216050842</data>
+			<data key="guess-node-width">3.166041216050842</data>
+			<data key="guess-node-activation">0.016604121605084222</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="OH1">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.347526639628523</data>
+			<data key="guess-node-width">4.347526639628523</data>
+			<data key="guess-node-activation">0.13475266396285226</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E8">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.96834237438053</data>
+			<data key="guess-node-width">4.96834237438053</data>
+			<data key="guess-node-activation">0.196834237438053</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E7">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.980788024296519</data>
+			<data key="guess-node-width">4.980788024296519</data>
+			<data key="guess-node-activation">0.19807880242965187</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E6">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.968451865118247</data>
+			<data key="guess-node-width">4.968451865118247</data>
+			<data key="guess-node-activation">0.19684518651182475</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E5">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.995611885393586</data>
+			<data key="guess-node-width">4.995611885393586</data>
+			<data key="guess-node-activation">0.19956118853935859</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E4">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.963848953575505</data>
+			<data key="guess-node-width">4.963848953575505</data>
+			<data key="guess-node-activation">0.19638489535755052</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E3">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.973889789579016</data>
+			<data key="guess-node-width">4.973889789579016</data>
+			<data key="guess-node-activation">0.1973889789579016</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E2">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.905450458115972</data>
+			<data key="guess-node-width">4.905450458115972</data>
+			<data key="guess-node-activation">0.19054504581159715</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<node id="E1">
+			<data key="guess-node-color">orange</data>
+			<data key="guess-node-height">4.963286285878989</data>
+			<data key="guess-node-width">4.963286285878989</data>
+			<data key="guess-node-activation">0.1963286285878989</data>
+			<data key="guess-node-concerns1"></data>
+			<data key="guess-node-concerns2"></data>
+                </node>
+		<edge source="E1" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E2" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E3" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E4" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E5" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E6" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E7" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="E8" target="SPECIAL">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E3">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E4">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E5">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E6">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E7">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH1" target="E8">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH2" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH2" target="OH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH3" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH3" target="OH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.1666666666666667</data>
+		        <data key="guess-edge-weight">0.11666666666666667</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH3" target="OH2">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH3" target="E3">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH3" target="E4">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH4" target="E4">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH4" target="OH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.6666666666666666</data>
+		        <data key="guess-edge-weight">0.06666666666666667</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH4" target="OH3">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH4" target="E6">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH5" target="E5">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH5" target="OH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">1.3333333333333335</data>
+		        <data key="guess-edge-weight">0.13333333333333336</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH5" target="E6">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH5" target="OH4">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH5" target="E7">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH6" target="E8">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OH6" target="OH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH1" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH1" target="E2">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH1" target="OH1">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH1" target="OH2">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH1" target="OH3">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH2" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH2" target="PH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH2" target="OH1">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH2" target="OH2">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH2" target="OH3">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="E1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="PH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.6666666666666666</data>
+		        <data key="guess-edge-weight">0.06666666666666667</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="PH2">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="E2">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="OH1">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="OH2">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH3" target="OH3">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH4" target="E2">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH4" target="PH1">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH4" target="PH3">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.3333333333333333</data>
+		        <data key="guess-edge-weight">0.03333333333333333</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH5" target="E5">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH5" target="OH1">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH5" target="OH5">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH6" target="E5">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH6" target="PH5">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH6" target="OH1">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="PH6" target="OH5">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">2.0</data>
+		        <data key="guess-edge-weight">-0.2</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+	</graph>
+</graphml>

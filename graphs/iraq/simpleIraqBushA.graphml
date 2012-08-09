@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+	<graph id="popco-graph" edgedefault="undirected">
+		<key id="guess-node-color" for="node" attr.name="color" attr.type="string">
+			<default>lightgray</default>
+		</key>
+		<key id="guess-node-height" for="node" attr.name="height" attr.type="double">
+			<default>10</default>
+		</key>
+		<key id="guess-node-width" for="node" attr.name="width" attr.type="double">
+			<default>10</default>
+		</key>
+                <!-- The next two keys should be coordinated.... -->
+		<key id="guess-node-label-visible" for="node" attr.name="labelvisible" attr.type="boolean">
+			<default>false</default>
+		</key>
+		<key id="guess-node-style" for="node" attr.name="style" attr.type="int">
+			<default>6</default>
+		</key>
+                <!-- possible styles: rectangle: 1, ellipse: 2, rounded rectangle: 3, text in rectangle: 4,
+                     text in ellipse: 5, text in rounded rectangle: 6, image: 7 -->
+		<key id="guess-edge-color" for="edge" attr.name="color" attr.type="string">
+			<default>yellow</default>
+		</key>
+		<key id="guess-edge-width" for="edge" attr.name="width" attr.type="double"/>
+		<key id="guess-edge-weight" for="edge" attr.name="weight" attr.type="double"/>
+		<key id="guess-visible" for="edge" attr.name="visible" attr.type="boolean"/>
+		<node id="KUWAIT=AUSTRIA"/>
+		<node id="IIK=OGA"/>
+		<node id="INVADE=OCCUPY"/>
+		<node id="KUWAIT=GERMANY"/>
+		<node id="IRAQ=ADOLPH"/>
+		<node id="IIK=FHG"/>
+		<node id="INVADE=FUHRER-OF"/>
+		<node id="IRAQ=AUSTRIA"/>
+		<node id="SADDAM=GERMANY"/>
+		<node id="PSI=OGA"/>
+		<node id="PRESIDENT-OF=OCCUPY"/>
+		<node id="IRAQ=GERMANY"/>
+		<node id="SADDAM=ADOLPH"/>
+		<node id="PSI=FHG"/>
+		<node id="PRESIDENT-OF=FUHRER-OF"/>
+		<edge source="PSI=FHG" target="PRESIDENT-OF=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="SADDAM=ADOLPH" target="PSI=FHG">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="SADDAM=ADOLPH" target="PRESIDENT-OF=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=GERMANY" target="SADDAM=ADOLPH">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=GERMANY" target="PSI=FHG">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=GERMANY" target="PRESIDENT-OF=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="PRESIDENT-OF=OCCUPY" target="PRESIDENT-OF=FUHRER-OF">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="PSI=OGA" target="PRESIDENT-OF=OCCUPY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="PSI=OGA" target="PSI=FHG">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="SADDAM=GERMANY" target="PSI=OGA">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="SADDAM=GERMANY" target="PRESIDENT-OF=OCCUPY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="SADDAM=GERMANY" target="SADDAM=ADOLPH">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="SADDAM=GERMANY" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IRAQ=AUSTRIA" target="SADDAM=GERMANY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=AUSTRIA" target="PSI=OGA">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=AUSTRIA" target="PRESIDENT-OF=OCCUPY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=AUSTRIA" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="INVADE=FUHRER-OF" target="PRESIDENT-OF=FUHRER-OF">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IIK=FHG" target="INVADE=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IIK=FHG" target="PSI=FHG">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IRAQ=ADOLPH" target="IIK=FHG">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=ADOLPH" target="INVADE=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IRAQ=ADOLPH" target="IRAQ=AUSTRIA">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IRAQ=ADOLPH" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IRAQ=ADOLPH" target="SADDAM=ADOLPH">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="KUWAIT=GERMANY" target="IRAQ=ADOLPH">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=GERMANY" target="IIK=FHG">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=GERMANY" target="INVADE=FUHRER-OF">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=GERMANY" target="SADDAM=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="KUWAIT=GERMANY" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="INVADE=OCCUPY" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="INVADE=OCCUPY" target="INVADE=FUHRER-OF">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="INVADE=OCCUPY" target="PRESIDENT-OF=OCCUPY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IIK=OGA" target="INVADE=OCCUPY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IIK=OGA" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="IIK=OGA" target="PSI=OGA">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="IIK=OGA" target="IIK=FHG">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="KUWAIT=AUSTRIA" target="IRAQ=GERMANY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=AUSTRIA" target="IIK=OGA">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=AUSTRIA" target="INVADE=OCCUPY">
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		</edge>
+		<edge source="KUWAIT=AUSTRIA" target="KUWAIT=GERMANY">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+		<edge source="KUWAIT=AUSTRIA" target="IRAQ=AUSTRIA">
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-weight">-0.2</data>
+		        <data key="guess-edge-width">1.0</data>
+		</edge>
+	</graph>
+</graphml>
