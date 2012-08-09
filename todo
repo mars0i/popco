@@ -1,3 +1,38 @@
+. cross-analogy coherence demonstration/experiment:
+  See parenting18coherence1.lisp, etc.
+	Goal:
+
+	Show that coherence due to background analogy can work against
+	believing a propn that otherwise would be consistent with other beliefs.
+	i.e. let salience or conversation emphasize s1-sn, those create emphasis
+	on t1-tm due to analogy, and this fact makes it hard to disbelieve s(n+1),
+	despite that otherwise that would work.
+
+	Strategy:
+	
+	Give each individual all of the propns.
+	
+	Make most source propns in one domain (parenting or hunting) salient for
+	one individual, either by making them directly perceived, or by making
+	the perceived for others, and then letting conversation emphasize these
+	propns.
+	
+	Make one proposition in the same domain disbelieved, either through
+	direct perception or conversation, as before.
+	
+	Choose this last proposition so that:
+	
+	It has no or few positive links to propns in its own (source) domain.
+	
+	It maps to propns which do have significant positive links to others in
+	the analog (target) domain.
+	
+	Show that activation flows from the emphasized source propns through the
+	analogical connections to the target propns, and back to the chosen
+	source propn.
+	
+	Show that this propn will not go as negative as it would otherwise, and
+	maybe even can be maintained as positive.
 
 . notes on natural selection
 
