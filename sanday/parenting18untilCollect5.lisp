@@ -1,5 +1,5 @@
-; parenting18untilCollect4.lisp
-; v.4 of code for multiple runs of models using parenting18 code that
+; parenting18untilCollect5.lisp
+; v.5 of code for multiple runs of models using parenting18 code that
 ; runs until all parts of an origin domain are collected in one individual,
 ; and then possibly change salience relations.
 ; Based on parenting18d.lisp
