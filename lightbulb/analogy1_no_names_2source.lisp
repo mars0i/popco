@@ -1,7 +1,7 @@
-; analogy1.lisp
-; lightbulb/tumor problem from Holyoak/Thagard 1989
+; analogy1_no_names_2source.lisp
+; Generic propns to test what happens when 2 sources are used vs 1 
 ; Author:   Kristen Hammack
-; Vers:     1.0.0 07/04/2012 kmh - initial coding
+; Vers:     1.0.0 07/2012 kmh - initial coding
 
 ; These are output to NetLogo:
 ;(setf *propn-category-prefixes* '("L" "T"))
@@ -89,7 +89,7 @@
 
 
 ;;;a1 has 2 separate sources; a2 has 1 source with all of the propns from a1's 2 sources
-(make-person 'a1 'folks nil
+(make-person 'd1 'folks nil
              `((make-struc 'target 'problem '(start (,@t-1)) 
                                             )
                (make-struc 'source1 'problem '(start (,@l-1))
@@ -100,7 +100,7 @@
              `(,@pragmatic-relations)
              '())
 
-(make-person 'a2 'folks nil
+(make-person 'd2 'folks nil
              `((make-struc 'target 'problem '(start (,@t-1))
                                             )
                (make-struc 'source 'problem '(start (,@l-both))
@@ -129,4 +129,7 @@
 (init-pop)
 (popco-plus-t 2)
 ;(write-person-graphs "graphs/")
-;(print-constraints-csv 'a1)
+#| (format t "~%A1 constraints~%")
+(sort-print-constraints-csv 'd1)
+(format t "~%A2 constraints~%")
+(sort-print-constraints-csv 'd2)  |#

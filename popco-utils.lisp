@@ -41,7 +41,19 @@
     (list-constraints (get person 'all-units)))
   t)
 
-;;;doesn't work yet...
+; print to the console a person's constraints in csv sorted format
+(defun sort-print-constraints-csv (person)
+  (setf *the-person* person)
+  (mapc 
+    #'(lambda (c)
+        (let ((a (personal-to-generic-sym (car c)))  
+              (b (personal-to-generic-sym (cadr c))))
+             (format t "~S,~S,~S~%" (if (string< a b) a b) (if (string< a b) b a) (cddr c))))
+    (list-constraints (get person 'all-units)))
+  t)
+
+
+;;;doesn't work yet... trying to write constraints to a file, or just return them
 #|  (defun write-constraints-csv (person )
   (setf *the-person* person)
   ((mapc 

@@ -1,0 +1,3 @@
+The analogy nets for A1-A2, B1-B2, and C1-C2 (source and target switched) are perfectly mirrored.  I called (print-constraints-csv) on both persons, copy/pasted the output to csv files, imported the csv files to LibreOffice Calc (which allowed me to split by "="), sorted the output by the columns that should be mirrored, then put the files through a diff viewer.
+
+The analogy nets for D1 and D2 (2 sources and 1 merged source, respectively) are identical, once the mappings are sorted using (sort-print-constraints), and the same method of sorting by columns in a spreadsheet viewer is employed as above.
