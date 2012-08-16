@@ -52,7 +52,7 @@
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
 ;(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
 ;(setf *do-report-propns-to-csv* t)
-(setf *do-report-analogy-nets-to-guess* nil)
+(setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************************
@@ -218,3 +218,8 @@
                    ,@semantic-relations)
                  `(,@pragmatic-relations)
                  '()))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(make-generic-person 'p)
+(init-pop)
