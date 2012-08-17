@@ -80,12 +80,12 @@
 ;;Removes person from *the-population* and uninterns the symbol for the person
 ;;I think this still introduces a memory leak, but maybe sbcl is smart enough to kill the
 ;;symbol after a load?
-(defun death (person)
-    (setf (get *the-population* 'members) (remove person (get *the-population* 'members)))
-    (if (eq (get person 'group) *the-population*) 
-        (unintern person)
-        (format t "~%~a is not a member of ~a~%" person *the-population*))
-    (get *the-population* 'members))
+(defun death (person &optional (population *the-population*))
+  (cond ((eq (get person 'group) population) 
+         (setf (get population 'members) (remove person (get population 'members)))
+         (unintern person)
+         (get population 'members))
+        (t (error "~%~a is not a member of ~a~%" person population))))
 
 
 ;;Takes the parent's 'input and makes a new person from it, initializing
@@ -97,10 +97,11 @@
 ;;Could make the name be an input into the function, but geneologies wouldn't be 
 ;;as regulated... which I guess isn't really a problem if we trust the user...
 (defun birth (parent)
-    (let* ((new-person (simple-catname parent "-child")))
-        (make-person new-person (get parent 'group) nil (get parent 'input))
-        (create-net new-person)) ;;to initialise the new person
-    (get *the-population* 'members))
+  (let ((new-person (gentemp "P")))
+    (make-person new-person (get parent 'group) nil (get parent 'input))
+    (setf (get new-person 'parent) parent)
+    (create-net new-person)) ;;to initialise the new person
+  new-person)
 
 
 
