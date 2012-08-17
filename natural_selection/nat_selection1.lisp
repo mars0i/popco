@@ -77,26 +77,30 @@
 ;;;**********************
 ;;;DEATH AND BIRTH FUNCTIONS
 
-;;needs to remove person from the population
-;;Anything else???
+;;Removes person from *the-population* and uninterns the symbol for the person
+;;I think this still introduces a memory leak, but maybe sbcl is smart enough to kill the
+;;symbol after a load?
 (defun death (person)
-    (setf (get *the-population* 'members) (remove person (get *the-population* 'members))))
+    (setf (get *the-population* 'members) (remove person (get *the-population* 'members)))
+    (if (eq (get person 'group) *the-population*) 
+        (unintern person)
+        (format t "~%~a is not a member of ~a~%" person *the-population*))
+    (get *the-population* 'members))
 
 
-;;needs to take parent's input and make a new person with it, without using
-;;a reference to the parent's input symbol
+;;Takes the parent's 'input and makes a new person from it, initializing
+;;the person into *the-population*
 ;;
-;;2 parents or 1?
-;;naming scheme??? something like parent-child1 would require
-;;keeping track of how many children parent has had... also would make
-;;any names past 2 generations ridiculous...
-;;or should name be input to birth function?
+;;Right now naming scheme is parent-child, which doesn't allow for multiple children.
+;;Also this makes multiple generations somewhat unwieldy.
+;;
+;;Could make the name be an input into the function, but geneologies wouldn't be 
+;;as regulated... which I guess isn't really a problem if we trust the user...
 (defun birth (parent)
-    (let* ((new-person-name (concatenate 'string (symbol-name parent) "-child"))
-            (new-person (make-symbol new-person-name)))
+    (let* ((new-person (simple-catname parent "-child")))
         (make-person new-person (get parent 'group) nil (get parent 'input))
-        ;(create-net new-person)
-        )) ;;to initialise the new person
+        (create-net new-person)) ;;to initialise the new person
+    (get *the-population* 'members))
 
 
 
