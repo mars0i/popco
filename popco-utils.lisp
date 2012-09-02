@@ -266,10 +266,19 @@
 ;                 (symbol-name back))))
 
 ; old version based on PT's code [advantage over MA's simple version: front and back can be anything e.g. a number]
-(defun simple-catname (front back)
-    (read-from-string (coerce (append (coerce (princ-to-string front) 'list)
-                                      (coerce (princ-to-string back) 'list))
+;(defun simple-catname (front back)
+;    (read-from-string (coerce (append (coerce (princ-to-string front) 'list)
+;                                      (coerce (princ-to-string back) 'list))
+;                              'string)))
+
+; revised version of PT-based version (q.v.); takes any number of arguments
+(defun simple-catname (&rest things)
+    (read-from-string (coerce (apply #'append 
+                                     (mapcar #'name-to-charlist things))
                               'string)))
+
+(defun name-to-charlist (thing)
+  (coerce (princ-to-string thing) 'list))
 
 
 ; Does this symbol represent a proposition?

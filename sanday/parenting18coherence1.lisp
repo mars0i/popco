@@ -34,6 +34,32 @@
 ; 
 ; Show that this propn will not go as negative as it would otherwise, and
 ; maybe even can be maintained as positive.
+; 
+;..........................
+; A Simpler experiment:
+; TODO:
+; set as perceived all hunting propns except one of
+;         h-Game-harms-human
+;         h-Skillful-hunting
+;         h-Game-rpovides
+;         h-Man-endangers-game
+; and see if the net will make the nonobserved one positive.
+; or try observing all parenting, except for 
+;         p-Protochild-inside 
+;         p-Woman-helps-child
+; These six are part of a richly connected but kind of indirect part of the network.
+; 
+; other similar experiments:
+; observe all except one of
+;         h-hunting-rewareds-skill
+;         h-hunting-is-dangerous
+; This will clearly work since they are part of a 4-node alternativing positive/negative square.
+; 
+; I think ignore the subnet with nothings in it, because it's wierd--includes both parenting and hunting
+; positively linked to o-human-alive.
+; 
+; I think, actually, any of the other parenting or hunting propns would work.  Could just delete
+; them from perception one by one ....
 
 
 ; many of these params may be overriden below
@@ -48,10 +74,10 @@
 ; INITIAL SETTINGS
 ;(setf *time-runs* nil)   ; set below
 ;(setf *max-pop-ticks* 0) ; set below
-;(setf *do-converse* t)             ; Whether to send utterances between persons
+(setf *do-converse* nil)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-;(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-;(setf *do-report-propns-to-csv* t)
+(setf *do-report-to-netlogo* nil)  ; Whether to create file for input to NetLogo 
+(setf *do-report-propns-to-csv* nil)
 (setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
@@ -179,7 +205,7 @@
     ; within-analog antonymic relationships expressed via explicit symlinks on propns:
     (semantic-iff 'oe-Earthly-God 'os-Heavenly-God -.5) ; not contrad since e-god != s-god, but conflicting worldview
     (semantic-iff 'oe-God-Creates-Naturally 'os-God-Creates-Mysteriously -.5) ; not contrad since e-god != s-god, but conflicting worldview
-    (semantic-iff 'os-Heavenly-God 'os-God-Creates-Mysteriously .1)
+    (semantic-iff 'os-Heavenly-God 'os-God-Creates-Mysteriously .1) ; we don't make the analogous connection with earth-god; she has more detailed relationships
     ; KLUDGE: Why do I have to do the following explicitly? Shouldn't the analog stru do it?:
     (semantic-iff 'oe-God-Creates-Naturally 'oe-God-Creates-Human-From-Within .5)
     (semantic-iff 'oe-God-Nurtures 'oe-God-Creates-Human-From-Within .1)
@@ -211,15 +237,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun make-generic-person (name)
-    (make-person name 'folks '()
+(defun make-generic-person (name &optional (given '()))
+    (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@origin-propns)))
                    (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
                    ,@semantic-relations)
                  `(,@pragmatic-relations)
                  '()))
 
+(defun make-persons-one-unperceived (basename propns)
+  (mapc #'(lambda (propn)
+            (make-person-one-unperceived basename 
+                                         propn
+                                         (remove propn propns))) ; default eq test works: elements are from same list
+        propns))
+
+
+(defun make-person-one-unperceived (basename unperceived-propn perceived-propns)
+  (make-generic-person (simple-catname basename "-" 'wout "-" (last-element unperceived-propn))
+                       perceived-propns))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(make-generic-person 'p)
+(setf *do-converse* nil)
+(make-generic-person 'blind)
+(make-persons-one-unperceived 'hun hunting-propns)
 (init-pop)
+(print (get 'folks 'members))

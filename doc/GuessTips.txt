@@ -1,10 +1,65 @@
 GuessTips.txt: Tips for using GUESS with POPCO
 
 
-. popguess is a shell script for starting guess with extra POPCO python
+popguess is a shell script for starting guess with extra POPCO python
 extensions.
 
-. telguess<port#> is popguess waiting for a telnet connection from
+telguess<port#> is popguess waiting for a telnet connection from
 popco.
 
-. (write-person-graphs "path ending in /") 
+--------------------------------
+
+For the following Lisp commands, there may be some additional optional
+arguments not listed here.
+
+--------------------------------
+
+This next one is defined in popco-fmt-guessML-general.lisp:
+
+(write-person-graphs "path ending in /")
+This writes out graphml files for GUESS, for each person, in the listed
+directory.  Whether analogy networks are included depends on 
+*do-report-analogy-nets-to-guess*.
+
+
+--------------------------------
+
+The following commands are defined in popco-fmt-guessCmds.lisp.  
+
+(telguess path person) tries to start a guess process for a graphml
+file named (concatenate 'string path person-name *guess-file-extension*)
+
+(report-all) causes popco to want to connect with a guess process for
+each member of the population.  It simply sets
+*persons-reporting-to-guess* to contain all of the population's members.
+
+(telguesses path) tries to run telguess for each person in
+*persons-reporting-to-guess*.  
+
+Currently this will only handle a few persons, because I (Marshall) haven't
+figured out out how to pass parameters to the python scripts that I have
+GUESS loading.  Instead, we simply have s separate GUESS shell script
+with a separate python script for each different telnet port number.
+(A possible future kludge: Automatically edit the python scripts as needed.)
+
+[Despite a delay I inserted, sometimes this won't work if this is the
+first time that GUESS has been run since reboot.  The delay in loading
+all of the Java libs can cause Java or GUESS or Lisp to trip over
+itself, and you'll get a wierd error.  Try it again, and it should
+work.]
+
+Once you've done the preceding, you can run:
+        (start-reports-to-guess)
+or
+        (start-reports-to-guess persons)
+The GUESS processes should change to indicate that they are connected to POPCO.
+Then run
+        (popco)
+or
+        (popco-plus-t number)
+etc.
+
+Note: Whether information on analogy networks are communicated to guess
+processes depends on *do-report-analogy-nets-to-guess*.
+
+
