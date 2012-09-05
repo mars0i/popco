@@ -1,4 +1,4 @@
- ;parenting18coherence1.lisp
+; parenting18coherence1.lisp
 ; based originally on parenting18untilCollect5.lisp
 ;
 ; Goal:
@@ -72,12 +72,12 @@
 ; note setting of +max-weight+ in variables.lisp
 ;*************************************
 ; INITIAL SETTINGS
-;(setf *time-runs* nil)
-(setf *max-pop-ticks* 100)
-(setf *do-converse* nil)
-(setf *do-update-propn-nets* t)
-(setf *do-report-to-netlogo* nil)
-(setf *do-report-propns-to-csv* t)
+;(setf *time-runs* nil)   ; set below
+;(setf *max-pop-ticks* 0) ; set below
+(setf *do-converse* nil)             ; Whether to send utterances between persons
+(setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
+(setf *do-report-to-netlogo* nil)  ; Whether to create file for input to NetLogo 
+(setf *do-report-propns-to-csv* nil)
 (setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
@@ -245,37 +245,22 @@
                  `(,@pragmatic-relations)
                  '()))
 
-(defun make-originless-person (name &optional (given '()))
-    (make-person name 'folks given
-                 `((make-struc 'target 'problem '(start ()))
-                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
-                   ,@semantic-relations)
-                 `(,@pragmatic-relations)
-                 '()))
-
-(defun make-persons-one-unperceived (make-fn basename propns)
+(defun make-persons-one-unperceived (basename propns)
   (mapc #'(lambda (propn)
-            (make-person-one-unperceived make-fn
-                                         basename 
+            (make-person-one-unperceived basename 
                                          propn
                                          (remove propn propns))) ; default eq test works: elements are from same list
         propns))
 
 
-(defun make-person-one-unperceived (make-fn basename unperceived-propn perceived-propns)
-  (funcall make-fn (simple-catname basename "-" 'wout "-" (last-element unperceived-propn))
-                     perceived-propns))
+(defun make-person-one-unperceived (basename unperceived-propn perceived-propns)
+  (make-generic-person (simple-catname basename "-" 'wout "-" (last-element unperceived-propn))
+                       perceived-propns))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setf *do-converse* nil)
 (make-generic-person 'blind)
-(make-persons-one-unperceived #'make-generic-person    'deeph hunting-propns)  ; "deep hunter"
-(make-persons-one-unperceived #'make-originless-person 'shalh hunting-propns)  ; "shallow hunter"
+(make-persons-one-unperceived 'hun hunting-propns)
 (init-pop)
 (print (get 'folks 'members))
-
-(setf *max-pop-ticks* 100)
-(popco)
-
-
