@@ -1,5 +1,6 @@
- ;parenting18coherence1.lisp
-; based originally on parenting18untilCollect5.lisp
+;; parenting18coherence1a.lisp
+; this is parenting18coherence1.lisp with some experimental modifications
+; diff the two files to see the difference.
 ;
 ; Goals:
 ;
@@ -126,9 +127,9 @@
     (mysterious-process (os-God-Creates-Human) os-God-Creates-Mysteriously)
     ;; interaction:
     ;   punishment
-    (offends (human s-god) os-Human-Offends-God)
-    (harms (s-god human) os-God-Harms-Human) ; god sometimes punishes
-    (causes (os-Human-Offends-God os-God-Harms-Human) os-Offense-Causes-Punishment)
+;    (offends (human s-god) os-Human-Offends-God)
+;    (harms (s-god human) os-God-Harms-Human) ; god sometimes punishes
+;    (causes (os-Human-Offends-God os-God-Harms-Human) os-Offense-Causes-Punishment)
     ;   reward
     (supplicates (human s-god) os-Human-Supplicates)
     (helps (s-god human) os-God-Helps-Human)
@@ -164,9 +165,9 @@
     (mysterious-process (h-Game-Power-Source) h-Game-Power-Mysteriously) ; that game is source of man's power is mysterious
     ;; interaction:
     ; danger
-    (hunts-endangers (man game) h-Man-Endangers-Game) ; one aspect of hunting
-    (harms (game man) h-Game-Harms-Man)
-    (causes (h-Man-Endangers-Game h-Game-Harms-Man) h-Hunting-Is-Dangerous)
+;    (hunts-endangers (man game) h-Man-Endangers-Game) ; one aspect of hunting
+;    (harms (game man) h-Game-Harms-Man)
+;    (causes (h-Man-Endangers-Game h-Game-Harms-Man) h-Hunting-Is-Dangerous)
     ; reward
     (hunts-skillfully (man game) h-Skillful-Hunting) ; another aspect of hunting
     (helps (game man) h-Game-Provides)
@@ -290,7 +291,12 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 100)
-;(popco)
 
+; Change this for different experiments:
+(setf *persons-reporting-to-guess*
+      '(ha-wout-h-skillful-hunting ha-wout-h-hunting-rewards-skill))
 
+(telguesses "18/coh1a/an/0/")
+;(sleep 10)
+;(start-reports-to-guess)
+;(popco-plus-t 2)

@@ -13,3 +13,40 @@ What does the work wrt connections to the rest of the net, I think,
 is that (it appears that) on average, the more central nodes have
 slightly stronger negative connections to the pairs with which they
 should be incompatible.
+
+...................................................
+
+problem:
+in general taking one empirical propn out of the set of observations
+makes it *negative*.  I thought it would go positive.
+
+The problem is that there are lots of negative links to it and its
+analog, and no positive links.  some of those neg links are to neg
+prons (i.e. from the opposing analogs), but the net effect is
+negative.
+
+this happens even when you've got e.g. a trio of higher order propns
+which map to analogs, such as these:
+    (hunts-skillfully (man game) h-Skillful-Hunting) ; another aspect of hunting
+    (helps (game man) h-Game-Provides)
+    (causes (h-Skillful-Hunting h-Game-Provides) h-Hunting-Rewards-Skill)
+
+I thought that maybe the problem was that because there are actually two
+parallel trios in both source and target, this resulted in too many neg
+links--they compete with each other.  But I changed
+parenting18coherence1 into parenting18coherence1a: I commented out the
+competing trios.  And I get the same problem.
+
+It's possible that this has to do with how I'm weighting the negative
+links, which is somewhat arbitrary.  But I don't think that seems like
+a sensible response.
+
+maybe it's this?:
+If there's a successful analogy, shouldn't that very fact create
+coherence between the components of the analogy in one domain?  Should
+that make new inferential links?
+Intuitively I was expecting that.
+
+As it is, it looks as if positively linked nodes *only* come in
+pairs--there are no fuller networks of positive links--except where
+semantic specifications or competing analogies create a few more links.

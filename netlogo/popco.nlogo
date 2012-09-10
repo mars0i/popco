@@ -1073,8 +1073,8 @@ end
 GRAPHICS-WINDOW
 1628
 12
-2351
-758
+2278
+683
 150
 150
 2.12625
@@ -1218,7 +1218,7 @@ propositions-circle-radius
 propositions-circle-radius
 5
 50
-20
+17
 1
 1
 NIL
@@ -1233,7 +1233,7 @@ person-circle-radius
 person-circle-radius
 20
 200
-128
+126
 2
 1
 NIL
@@ -1265,7 +1265,7 @@ OUTPUT
 566
 1034
 724
-9
+7
 
 MONITOR
 1097

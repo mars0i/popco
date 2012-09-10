@@ -13,6 +13,11 @@
 
 (defvar *pop-tick-label* "tick") ; What each pop-tick is described as in Guess
 
+(defvar *guess-scripts-path* 
+  (concatenate 'string 
+               (sb-ext:posix-getenv "HOME")
+               "/docs/phil/software/cohere/mine/guess"))
+
 ; Notes on layouts:
 ;
 ; binPack() separates unconnected subgraphs which overlap on the screen,
@@ -55,14 +60,10 @@
 ;(defvar *guess-layout-commands* "radialLayout(SALIENT)~%binPackLayout()~%center()~%")
 (defvar *guess-layout-commands* "mdsLayout()~%radialLayout(SALIENT)~%binPackLayout()~%center()")
 
-(defvar *guess-scripts-path* 
-  (concatenate 'string 
-               (sb-ext:posix-getenv "HOME")
-               "/docs/phil/software/cohere/mine/guess"))
+(defvar *extra-meta-commands* "center()~%") ; Commands to send after same interval:
 
 (defvar *first-port* 2222)
 (defvar *extra-meta-interval* 10) ; Number of pop-ticks after which to apply extra commands; nil to ignore.
-(defvar *extra-meta-commands* "center()~%") ; Commands to send after same interval:
 (defvar *guess-file-extension* ".graphml")
 (defvar *output-file-extension* ".out")
 
