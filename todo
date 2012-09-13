@@ -1,3 +1,28 @@
+. experiments on influence of analogy on long-term persistence and
+  transmission. (Have I already done some of these, in effect?)
+  	[Well in the 7/2012 paper I had the perceived domains driving
+	the origin domains (with some cross-domain effects as well).
+	e.g. pegging the hunting propns raises the sky propns.
+	Note though that these experiments had no restrictions on
+	domain of discourse--i.e. propns were from all four domains.
+	So I haven't done what's described below.  But I can do it by
+	specifying converse-strucs in the make-person calls.]
+
+  .. Compare two populations.  In both, only target propns are uttered.
+     Maybe these are restricted to one domain.
+     In one, there is a corresponding analog for the propns.
+     In the other, there's not.
+     What's the difference?
+
+  .. Compare two populations.  In both, only target propns are
+     uttered, from two domains.
+     The pops differ as to which source analog they have.
+     If this changes what fixes in the target domain, it shows
+     the role of bg analogy, as opposed to innateness, in biasing
+     tran.
+
+  Now trying to do this in parenting18analogsAsBiases1.lisp.
+
 . cross-analogy coherence demonstration/experiment:
   See parenting18coherence1.lisp, etc.
 	Goal:

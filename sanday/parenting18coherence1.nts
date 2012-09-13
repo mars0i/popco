@@ -50,3 +50,36 @@ Intuitively I was expecting that.
 As it is, it looks as if positively linked nodes *only* come in
 pairs--there are no fuller networks of positive links--except where
 semantic specifications or competing analogies create a few more links.
+
+...................................................
+
+In the case in which I have two parallel trios in hunting propns which
+map the same analog in sky, I think I thought that maybe the two
+hunting trios would reinforce each other because each had positive
+links to the same analog.  Activation would flow between them via the
+other side.
+
+But it doesn't work this way because there are also negative links
+involved, and in particular, the two trios are competitors.  So if
+either one has much more activation, it's going to push the other one
+negative.  The avoid multiple mappings feature opposes such
+connections.
+
+On the other hand ...
+There *is* an analogy between hunters endangering animals and animals
+endangering hunters (there are many parallels, even when the animals
+are not predators of large primates).
+So the competition between the trios is partly an artifact of the
+two-domain structure (currently) required by popco/acme.
+
+Here is a possible kludge ...
+Suppose that you allowed different analog-pairs.  i.e. you pair domains,
+and you can do this more than once.  One quick way to kludge this would
+be to make multiple "persons" which are related e.g. by special
+conversational rules.  (This is roughly what personal environments are
+currently.)  And then you can e.g. do this:
+domainpair1: hunting vs hunted
+domainpair2: hunting vs sky
+And you make it so that information flows across via the common
+propns.
+Something like that.
