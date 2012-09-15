@@ -108,6 +108,7 @@
 (defvar earth-origin-propn-syms (mapcar #'last-element earth-origin-propns)) ; list of the propn names
 
 (defvar origin-propns (append generic-origin-propns sky-origin-propns earth-origin-propns))
+(defvar origin-propn-syms (mapcar #'last-element origin-propns)) ; list of the propn names
 
 
 ; Hunting involves emotional/metaphorical paradox [problematic for ACME]: 
@@ -150,6 +151,10 @@
     (nothing (nothing) p-Nothing) ; allows nothings in source and target to become related
    ))
 (defvar parenting-propn-syms (mapcar #'last-element parenting-propns)) ; list of the propn names
+
+
+(defvar lifestyle-propns (append parenting-propns hunting-propns))
+(defvar lifestyle-propn-syms (mapcar #'last-element lifestyle-propns)) ; list of the propn names
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -235,10 +240,19 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
-(make-sky-biased-lifestyle-talker 'john)
-(make-sky-biased-lifestyle-talker 'mary)
-(make-sky-biased-lifestyle-talker 'paul)
-(make-sky-biased-lifestyle-talker 'carla)
+; make a pop of people who only talk about lifestyle propns (any of them)
+; and whose origin propns are only sky propns, where one person is the only
+; initial perceiver (of all lifestyle propns) who then communicates them to
+; others.  I'm hoping this will allow the origin analogs to affect community
+; beliefs by in effect reducing the effect of perceptions by making them
+; filter from one person.  QUESTION: IS EFFECT OF UTTERANCE PARAMETER SET
+; OPTIMALLY?  REMEMBER THAT UTTERANCES IN EFFECT CREATE PERCEPTIONS.
+(make-sky-biased-lifestyle-talker 'temp-person)
+(n-persons-with-name 'temp-person 's 9) ; "s" for sky-based
+(rem-elt-from-property 'temp-person 'folks 'members)
+(make-sky-biased-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
+
+
 
 (init-pop)
 (print (get 'folks 'members))

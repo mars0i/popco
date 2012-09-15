@@ -29,7 +29,8 @@
 
 ; MAKE-PERSON sets up the input information for each person.
 ; GROUP is the consensus group to which the person belongs.
-; GIVEN lists the favored information - data for ECHO, goals
+; GIVEN lists the favored information - data for ECHO, goals 
+; [GIVEN propns are in full subj/pred message format--not just the propn name symbol]
 ; for DECO, observed for IMP ...
 ; and perceived for POPCO. [MA 11/2011]
 ; INPUT is the functions from ECHO etc. for creating a network
@@ -45,7 +46,7 @@
 ; If nil, then all of them.
 ; [To cause silence in a conversing population, list dummy struc name.]
 ; SUMMARY OF USUAL USAGE:
-; (make-person 'name-of-person *the-population* propns-to-be-perceived-initially
+; (make-person 'name-of-person *the-population* propns-to-be-perceived-initially  ; NOTE PROPNS ARE IN FULL SUBJ/PRED MESSAGE FORMAT
 ;              '((make-struc 'target 'problem '(start list-of-target-propns))
 ;                (make-struc 'source 'problem '(start list-of-source-propns))
 ;                semantic-specification-1
@@ -65,7 +66,7 @@
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
   (put person 'group group)
   (put group 'members (cons-if-new person (get group 'members))) ; changed push to cons-if-new  -MA 6/2011
-  (put person 'given-el given)
+  (put person 'given-el given) ; NOTE PROPNS ARE IN FULL SUBJ/PRED MESSAGE FORMAT
   ; (put person 'other-el other)
   (put person 'input initial-input)
   (when addl-input 
