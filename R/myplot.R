@@ -1,8 +1,8 @@
-# myplot.R
+#average myplot.R
 # Marshall Abrams
 # R plotting designed for POPCO Sanday simulations
 
-# THIS IS APPARENTLY THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
+# NOTES ON THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])
 #        2 
 # 0.1506642 
@@ -112,11 +112,11 @@ plotActivnsForDomainWithBox <- function(data, domain, boxright){
   }
 }
 
-plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "activation values for all propositions")}
+plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "per-person activation avg")}
 # plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.var, "var", ymin = 0)}
 # plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.sd, "sd", ymin = 0)}
 # old versions:
-plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
+plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "per-person activation stdev", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
 plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, "var", ymin = 0); print("Warning: Is rowVars defined correctly?");}
 
 #plotAvgsForDomain2 <- function(data, domain) {plotForDomain2(data, domain, rowMeans)}
