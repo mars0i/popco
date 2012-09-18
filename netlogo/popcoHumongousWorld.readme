@@ -1,0 +1,6 @@
+popcoHumongousWorld.nlogo uses a very large "world" i.e. the box the
+agents appear in.  You'll probably need to increase the Java heap size
+to do this.  e.g. I found the default 1024M to be too small, but 1536M
+large enough.  See
+http://ccl.northwestern.edu/netlogo/docs/faq.html#howbig for
+instructions for changing the heap size in different OSes.

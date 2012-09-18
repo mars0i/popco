@@ -23,7 +23,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-extensions [table uneof goo profiler]  ; hashtable/lookup table functions, and replacement for file-at-end?
+extensions [table uneof]  ; hashtable/lookup table functions, and replacement for file-at-end?
 
 ; convention: breeds are studly-capped
 breed [Persons Person]
@@ -242,13 +242,13 @@ to go
   ]
 end
 
-to profile
-  profiler:start         ;; start profiling
-  repeat 200 [ go ]       ;; run something you want to measure
-  profiler:stop          ;; stop profiling
-  print profiler:report  ;; view the results
-  profiler:reset         ;; clear the data
-end
+;to profile
+;  profiler:start         ;; start profiling
+;  repeat 200 [ go ]       ;; run something you want to measure
+;  profiler:stop          ;; stop profiling
+;  print profiler:report  ;; view the results
+;  profiler:reset         ;; clear the data
+;end
 
 to finish
   file-close-all

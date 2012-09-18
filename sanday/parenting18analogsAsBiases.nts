@@ -13,13 +13,20 @@ p-protochild-inside was among the low propns.  So maybe that's
 guaranteed (which would be kind of interesting but maybe not worth
 investigating).
 
+Changing from popsize of 10 to 100 does not produce the desired
+result, at least in one run with 1000 ticks.
+
+NOTE: Look at the agents in NetLogo.  Several of the lifestyle propns
+have *no* links to them.  This is more obvious initially before you
+start the run.  (I don't believe that new propn links are created that
+would be visible in NetLogo.)  Surprisingly, this is so for hunting as
+well as parenting propns.  So some propns are simply unaffected by the
+sky analog.  (Is this right?)
+
 things to try:
 
 see if the same kind of thing happens going the other way, i.e.
 making earth but not sky propns available.
-
-see whether having more individuals makes a difference, since the
-effect of the one perceiver might be dissapated.
 
 lower the degree of belief of perception.
 

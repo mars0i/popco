@@ -1,6 +1,8 @@
 ;; parenting18analogsAsBiases1b.lisp
-(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1b" (princ-to-string (random 10000))))
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
+
+; We use new output filenames for each session to preserve data:
+(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1b" (princ-to-string (random 100000))))
 
 ; Make a pop of people who only talk about lifestyle propns (any of them)
 ; and whose origin propns are only sky propns, where one person is the only
