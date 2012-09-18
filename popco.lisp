@@ -53,7 +53,7 @@
 
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
-(defvar *netlogo-output-name* "../data/popcoNetLogoData.txt") ; filename for file-based output to external UI program
+(defvar *netlogo-output-name* "../data/popcoNetLogoData.nlogdat") ; filename for file-based output to NetLogo
 (defvar *netlogo-outstream* nil)    ; stream for same
 (defvar *propns-csv-output-name* "../data/popcoPropnData.csv") ; file to write propn activn data in csv format
 (defvar *propns-csv-outstream* nil) ; stream for same
