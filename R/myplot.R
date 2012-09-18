@@ -210,8 +210,8 @@ loadNplotAvgs <- function(filename) {
 loadNplot <- function(filename) {
   data <- read.csv(filename)
   basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
-  plotFourDomainsSummary(data, basetitle)
   plotActivnsFourDomains(data, basetitle)
+  plotFourDomainsSummary(data, basetitle)
 }
   
 # to pop up plots for a lot of files at once, you can do something like this:
