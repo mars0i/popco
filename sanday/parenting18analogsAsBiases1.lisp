@@ -231,7 +231,7 @@
                    (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
                    ,@semantic-relations)
                  `(,@pragmatic-relations)
-                 '(target)))
+                 '(source)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Now run setup a population and popco from prompt or from a separate file.

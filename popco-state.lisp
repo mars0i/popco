@@ -3,11 +3,8 @@
 ;; May be distributed only with permission from the author.
 ;; Functions for storing and restoring the entire state of a population.
 
-
-
 ;; Note that we're using backquote in defuns rather than defmacros in some cases below.
 ;; The point is to construct a code list without evaluating it.
-
 
 ; Generate code that could restore a symbol's value and plist [can't handle symbol-functions]
 ; At present, few if any popco symbols have values--only plists--but can't hurt to add value-setting code.

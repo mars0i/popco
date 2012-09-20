@@ -1,5 +1,9 @@
 ;; parenting18analogsAsBiases1a.lisp
+<<<<<<< HEAD
+(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1a" (princ-to-string (random 100000))))
+=======
 (defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1a" (princ-to-string (random 10000))))
+>>>>>>> d4d2ca4c9e2f4fe8583edaf4da763a5ba9994bd7
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
 
 ; Make a pop of people who only talk about lifestyle propns (any of them)
@@ -13,7 +17,11 @@
 (load "sanday/parenting18analogsAsBiases1")
 
 (defvar *my-pop-size* 10)
+<<<<<<< HEAD
+(setf *netlogo-output-name* (concatenate 'string *basename* ".nlogdat")) ; file to write propn activn data in csv format
+=======
 (setf *netlogo-output-name* (concatenate 'string *basename* ".txt")) ; file to write propn activn data in csv format
+>>>>>>> d4d2ca4c9e2f4fe8583edaf4da763a5ba9994bd7
 (setf *propns-csv-output-name* (concatenate 'string *basename* ".csv")) ; file to write propn activn data in csv format
 (setf *random-state-file* (concatenate 'string *basename* ".lisp")) ; file to write propn activn data in csv format
 
