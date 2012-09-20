@@ -116,7 +116,11 @@ plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMean
 # plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.var, "var", ymin = 0)}
 # plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.sd, "sd", ymin = 0)}
 # old versions:
+<<<<<<< HEAD
 plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "per-person activation sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
+=======
+plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "per-person activation stdev", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
+>>>>>>> d4d2ca4c9e2f4fe8583edaf4da763a5ba9994bd7
 plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, "var", ymin = 0); print("Warning: Is rowVars defined correctly?");}
 
 #plotAvgsForDomain2 <- function(data, domain) {plotForDomain2(data, domain, rowMeans)}

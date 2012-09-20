@@ -12,9 +12,12 @@ seems.  However in three runs, in each case I think that
 p-protochild-inside was among the low propns.  So maybe that's
 guaranteed (which would be kind of interesting but maybe not worth
 investigating).
+<<<<<<< HEAD
 I do sometimes get a higher hunting average than parenting average,
 even if the variances are extremely high--i.e. I'm getting split
 high/low propns in both domains.
+=======
+>>>>>>> d4d2ca4c9e2f4fe8583edaf4da763a5ba9994bd7
 
 Changing from popsize of 10 to 100 does not produce the desired
 result, at least in one run with 1000 ticks.
@@ -26,6 +29,7 @@ would be visible in NetLogo.)  Surprisingly, this is so for hunting as
 well as parenting propns.  So some propns are simply unaffected by the
 sky analog.  (Is this right?)
 
+<<<<<<< HEAD
 DOING IT WITH EARTH ORIGIN AS THE BG ANALOG RATHER THAN SKY ORIGIN WORKS
 A LITTLE BETTER.  Quite well, it seems.  With N=10 I can get average
 parenting values to get near 1, while average hunting stays pretty near
@@ -56,6 +60,8 @@ slower.  Haven't timed it though.
 
 NEED TO DO MORE RUNS
 
+=======
+>>>>>>> d4d2ca4c9e2f4fe8583edaf4da763a5ba9994bd7
 things to try:
 
 see if the same kind of thing happens going the other way, i.e.
