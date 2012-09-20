@@ -1,5 +1,12 @@
 ;; UI FOR POPCO 2012
-;; For NetLogo 5
+;; For NetLogo 5.0.2 and up
+
+;; NOTE this version uses a very large "world" i.e. the box the agents appear in.
+;; You'll probably need to increase the Java heap size to do this.
+;; e.g. I found the default 1024M to be too small, but 1536M large enough.
+;; See http://ccl.northwestern.edu/netlogo/docs/faq.html#howbig
+;; for instructions for changing the heap size in different OSes.
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NOTE THIS VERSION FOR USE WITH HACKED VERSION OF NETLOGO IN WHICH ;;
 ;; eof() in DefaultFileManager.java has been modified by commenting  ;;
@@ -23,7 +30,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-extensions [table goo profiler]  ; hashtable/lookup table functions, and replacement for file-at-end?
+extensions [table]  ; hashtable/lookup table functions, and replacement for file-at-end?
 
 ; convention: breeds are studly-capped
 breed [Persons Person]
@@ -241,13 +248,13 @@ to go
   ]
 end
 
-to profile
-  profiler:start         ;; start profiling
-  repeat 200 [ go ]       ;; run something you want to measure
-  profiler:stop          ;; stop profiling
-  print profiler:report  ;; view the results
-  profiler:reset         ;; clear the data
-end
+;to profile
+;  profiler:start         ;; start profiling
+;  repeat 200 [ go ]       ;; run something you want to measure
+;  profiler:stop          ;; stop profiling
+;  print profiler:report  ;; view the results
+;  profiler:reset         ;; clear the data
+;end
 
 to finish
   file-close-all
@@ -1829,7 +1836,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 5.0.2
 @#$#@#$#@
 set layout? false
 setup repeat 175 [ go ]

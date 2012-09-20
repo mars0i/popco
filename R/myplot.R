@@ -1,8 +1,8 @@
-# myplot.R
+#average myplot.R
 # Marshall Abrams
 # R plotting designed for POPCO Sanday simulations
 
-# THIS IS APPARENTLY THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
+# NOTES ON THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])
 #        2 
 # 0.1506642 
@@ -112,11 +112,11 @@ plotActivnsForDomainWithBox <- function(data, domain, boxright){
   }
 }
 
-plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "activation values for all propositions")}
+plotAvgsForDomain <- function(data, domain) {plotForDomain(data, domain, rowMeans, "per-person activation avg")}
 # plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.var, "var", ymin = 0)}
 # plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, pop.sd, "sd", ymin = 0)}
 # old versions:
-plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
+plotSDsForDomain <- function(data, domain) {plotForDomain(data, domain, rowSDs, "per-person activation sd", ymin = 0); print("Warning: Is rowSDs defined correctly?");}
 plotVarsForDomain <- function(data, domain) {plotForDomain(data, domain, rowVars, "var", ymin = 0); print("Warning: Is rowVars defined correctly?");}
 
 #plotAvgsForDomain2 <- function(data, domain) {plotForDomain2(data, domain, rowMeans)}
@@ -210,8 +210,8 @@ loadNplotAvgs <- function(filename) {
 loadNplot <- function(filename) {
   data <- read.csv(filename)
   basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
-  plotFourDomainsSummary(data, basetitle)
   plotActivnsFourDomains(data, basetitle)
+  plotFourDomainsSummary(data, basetitle)
 }
   
 # to pop up plots for a lot of files at once, you can do something like this:

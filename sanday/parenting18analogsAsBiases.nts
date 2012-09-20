@@ -1,0 +1,71 @@
+parenting18analogsAsBiases.nts
+
+running parenting18analogsAsBiases1a.lisp (which uses
+parenting18analogsAsBiases1.lisp) repeatedly for 2000 ticks is producing
+different results randomly, although perhaps there are some limited
+commonalities.  What I want to happen is that the hunting propns go high
+in the non-perceiving persons, and the parenting go low, but in fact
+mostly they both go high, except that at least partially randomly there
+are a few low.  i.e. which ones are low changes from time to time.  Also
+you get some slightly low sky propns, but again that is random, it
+seems.  However in three runs, in each case I think that
+p-protochild-inside was among the low propns.  So maybe that's
+guaranteed (which would be kind of interesting but maybe not worth
+investigating).
+I do sometimes get a higher hunting average than parenting average,
+even if the variances are extremely high--i.e. I'm getting split
+high/low propns in both domains.
+
+Changing from popsize of 10 to 100 does not produce the desired
+result, at least in one run with 1000 ticks.
+
+NOTE: Look at the agents in NetLogo.  Several of the lifestyle propns
+have *no* links to them.  This is more obvious initially before you
+start the run.  (I don't believe that new propn links are created that
+would be visible in NetLogo.)  Surprisingly, this is so for hunting as
+well as parenting propns.  So some propns are simply unaffected by the
+sky analog.  (Is this right?)
+
+DOING IT WITH EARTH ORIGIN AS THE BG ANALOG RATHER THAN SKY ORIGIN WORKS
+A LITTLE BETTER.  Quite well, it seems.  With N=10 I can get average
+parenting values to get near 1, while average hunting stays pretty near
+zero, stabilizing between 1000 and 1500 (run
+parenting18analogsAsBiases1c48361).  There are still some beliefs that
+are going negative among the earth origins.  Don't know whether there's
+systamaticity to them.
+
+And the SECOND TIME I ran this it was even better (interestingly!).
+Parenting pegged at the perceptual value (near 1) with no variance, and
+hunting pegged at an average of zero (with SD near 1), despite one
+member of the 10-person pop continuing to perceive hunting propns.  This
+is great.
+BUT I'm going to have to do lots of runs.
+THIRD RUN also pegged parenting; pegged hunting a little above zero.
+Note there is interesting variation in fluctuations of hunting
+averages before they stabilize together.  I suspect that different
+propns are going high or low on each run.  Note that there *are* a lot
+of hunting propns going high, but others are going low, so the average
+is middling.
+
+And note that although I'm not getting the same effect with sky origin;
+there is a big *difference* between running with the different origin
+backgrounds.
+
+Interestingly, it feels as if using sky origin as the bg is a lot
+slower.  Haven't timed it though.
+
+NEED TO DO MORE RUNS
+
+things to try:
+
+see if the same kind of thing happens going the other way, i.e.
+making earth but not sky propns available.
+
+lower the degree of belief of perception.
+
+change relative strength of perception and analogy in some other ways,
+e.g. by lowering the amount of confidence that hearing an utterance
+gives.  
+
+Or e.g. add decay to memory--i.e. decay the connections to SALIENT, at
+least for the connections produced by utterances.
