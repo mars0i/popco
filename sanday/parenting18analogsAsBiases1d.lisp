@@ -33,4 +33,4 @@
 (print (get 'folks 'members))
 
 (setf *max-pop-ticks* 2000)
-(popco)
+(time (popco))
