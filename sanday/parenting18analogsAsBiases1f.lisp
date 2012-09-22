@@ -1,8 +1,8 @@
-;; parenting18analogsAsBiases1e.lisp
+;; parenting18analogsAsBiases1f.lisp
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
 
 ; We use new output filenames for each session to preserve data:
-(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1e" (princ-to-string (random 100000))))
+(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1f" (princ-to-string (random 100000))))
 (setf *netlogo-basename* *basename*)
 ; We have to construct the netlogo output file by hand below, because popco.lisp has already constructed its version.
 ; But we have to set *netlogo-basename* to what we want so that report-persons-just-at-t-for-netlogo,
@@ -18,7 +18,7 @@
 
 (load "sanday/parenting18analogsAsBiases1")
 
-(defvar *my-pop-size* 100)
+(defvar *my-pop-size* 10)
 (setf *netlogo-output-name* (concatenate 'string *basename* ".nlogdat")) ; file to write propn activn data in csv format
 (setf *propns-csv-output-name* (concatenate 'string *basename* ".csv")) ; file to write propn activn data in csv format
 (setf *random-state-file* (concatenate 'string *basename* ".lisp")) ; file to write propn activn data in csv format

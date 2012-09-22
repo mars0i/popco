@@ -53,8 +53,12 @@
 
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
-(defvar *netlogo-output-name* "../data/popcoNetLogoData.nlogdat") ; filename for file-based output to NetLogo
+(defvar *netlogo-basename* "../data/popcoNetLogoData")  
+(defvar *netlogo-extension* ".nlogdat")  
+(defvar *netlogo-output-name* (concatenate 'string *netlogo-basename* *netlogo-extension*)) ; main, ongoing NetLogo data file name
 (defvar *netlogo-outstream* nil)    ; stream for same
+(defvar *netlogo-snapshot-suffix* "AtTick") ; used in name of file for passing NetLogo pop state during a single tick
+
 (defvar *propns-csv-output-name* "../data/popcoPropnData.csv") ; file to write propn activn data in csv format
 (defvar *propns-csv-outstream* nil) ; stream for same
 
@@ -137,7 +141,7 @@
 ;; Specify cont-prev-session as non-nil to append to outfile; otherwise outfile will be deleted or renamed.
 
 (defun run-population (population &key cont-prev-sess)
-  (unwind-protect ; allows us to ensure that files will be closed
+  (unwind-protect ; allows us to ensure that files will be closed even if an error occurs
     (progn
       ; what's inside this progn is the real work we want done
 
@@ -167,7 +171,8 @@
 
 
       (do ()
-          ((time-to-stop) population) ; keep looping until (time-to-stop) returns true
+          ((time-to-stop) 
+           (do-final-reports population) population) ; keep looping until (time-to-stop) returns true
         (when *sleep-delay* (sleep *sleep-delay*))
         (run-population-once population)
         (when (and *write-person-graphs-at-pop-ticks* (= *pop-tick* (car *write-person-graphs-at-pop-ticks*)))
@@ -516,23 +521,31 @@
 ;; ARG: conversations/population pair produced by transmit-utterances.
 ;;      i.e. the conversations have added new-propn flags.
 ;; RETURNS: the population, unchanged
-(defun report-conversations (conversations-plus-and-pop)
+(defun report-conversations (conversations-plus-and-pop &optional (outstream *netlogo-outstream*))
   (when *do-report-to-netlogo* 
     (if *do-converse*
-      (princ (fmt-conversations-for-netlogo (car conversations-plus-and-pop)) *netlogo-outstream*)
-      (princ "[]" *netlogo-outstream*))
-    (terpri *netlogo-outstream*))
+      (princ (fmt-conversations-for-netlogo (car conversations-plus-and-pop)) outstream)
+      (princ "[]" outstream))
+    (terpri outstream))
   (cdr conversations-plus-and-pop))
 
 ;; REPORT-PERSONS-INITIALLY-FOR-x
 ;; Currently only do at the beginning, not eg GUESS, which I'm init'ing by hand outside of this code
-(defun report-persons-initially-for-netlogo (population)
-  (princ *netlogo-syntax-description* *netlogo-outstream*)
-  (report-propn-categories-to-netlogo)
-  (report-population-to-netlogo population))
+(defun report-persons-initially-for-netlogo (population &optional (outstream *netlogo-outstream*))
+  (princ *netlogo-syntax-description* outstream)
+  (report-propn-categories-to-netlogo outstream)
+  (report-population-to-netlogo population outstream))
 
 (defun report-persons-initially-for-csv (population)
   (report-pop-propns-csv-header-row population))
+
+(defun report-persons-just-at-t-for-netlogo (population &optional filename)
+  ; duplicate functionality of &optional--easier to read here:
+  (setf filename (or filename 
+                     (format nil "~A~A~A~A" *netlogo-basename* *netlogo-snapshot-suffix* *pop-tick* *netlogo-extension*)))
+  (format t "Creating NetLogo snapshot file ~S at tick ~S~%" filename *pop-tick*)
+  (with-open-file (outstream filename :direction :output :if-exists :rename :if-does-not-exist :create)
+    (report-persons-initially-for-netlogo population outstream)))
 
 ;; REPORT-PERSONS
 ;; ARG: a population
@@ -549,6 +562,10 @@
     (report-pop-propns-csv-activns-row population))
   (mark-persons-items-old population) ; since done reporting, no longer need to know what's new, so make it old
   population)
+
+(defun do-final-reports (population)
+  (when *do-report-to-netlogo*
+    (report-persons-just-at-t-for-netlogo population)))
 
 (defun set-status-message (msg)
   (setf *netlogo-status-message* msg))
@@ -567,20 +584,20 @@
   ; global:
   (update-guess-meta-for-persons persons))
 
-(defun report-propn-categories-to-netlogo ()
-  (princ (fmt-tree-for-netlogo *propn-category-prefixes*) *netlogo-outstream*)
-  (princ (fmt-tree-for-netlogo *propn-category-descriptions*) *netlogo-outstream*)
-  (terpri *netlogo-outstream*))
+(defun report-propn-categories-to-netlogo (&optional (outstream *netlogo-outstream*))
+  (princ (fmt-tree-for-netlogo *propn-category-prefixes*) outstream)
+  (princ (fmt-tree-for-netlogo *propn-category-descriptions*) outstream)
+  (terpri outstream))
 
 (defun report-status-to-netlogo ()
   (princ (format-netlogo-status-message) *netlogo-outstream*))
 
-(defun report-population-to-netlogo (population)
+(defun report-population-to-netlogo (population &optional (outstream *netlogo-outstream*))
     (princ 
       (fmt-tree-for-netlogo
         (mapcar #'fmt-person-for-netlogo (get population 'members)))
-      *netlogo-outstream*)
-    (terpri *netlogo-outstream*))
+      outstream)
+    (terpri outstream))
 
 (defun report-pop-propns-csv-header-row (population)
   (princ (fmt-pop-propn-labels-csv-row population) *propns-csv-outstream*)

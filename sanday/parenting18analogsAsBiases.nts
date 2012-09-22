@@ -1,5 +1,15 @@
 parenting18analogsAsBiases.nts
 
+What the files do:
+	parenting18analogsAsBiases1.lisp	main code for experiments
+The rest of these load the preceding file, specify parameters, and run the population:
+	parenting18analogsAsBiases1a.lisp	sky bias,   N=10,  *max-pop-ticks* = 100
+	parenting18analogsAsBiases1b.lisp	sky bias,   N=100, *max-pop-ticks* = 100
+	parenting18analogsAsBiases1c.lisp	earth bias, N=10,  *max-pop-ticks* = 500
+	parenting18analogsAsBiases1d.lisp	earth bias, N=100, *max-pop-ticks* = 2000
+	parenting18analogsAsBiases1e.lisp	earth bias, N=100, *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1f.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
+
 running parenting18analogsAsBiases1a.lisp (which uses
 parenting18analogsAsBiases1.lisp) repeatedly for 2000 ticks is producing
 different results randomly, although perhaps there are some limited
