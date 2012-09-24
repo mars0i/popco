@@ -1,5 +1,5 @@
 ;; parenting18analogsAsBiases1a.lisp
-(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1a" (princ-to-string (random 100000))))
+(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1a" *run-id*))
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
 
 ; Make a pop of people who only talk about lifestyle propns (any of them)

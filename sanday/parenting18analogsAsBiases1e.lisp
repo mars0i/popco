@@ -2,7 +2,7 @@
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
 
 ; We use new output filenames for each session to preserve data:
-(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1e" (princ-to-string (random 100000))))
+(defvar *basename* (concatenate 'string "../data/parenting18analogsAsBiases1e" *run-id*))
 (setf *netlogo-basename* *basename*)
 ; We have to construct the netlogo output file by hand below, because popco.lisp has already constructed its version.
 ; But we have to set *netlogo-basename* to what we want so that report-persons-just-at-t-for-netlogo,
