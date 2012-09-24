@@ -285,6 +285,9 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
+; Generate an ID string for this simulation run which is unique (with high probability):
+(defvar *run-id* (format nil "R~8,'0D" (random 100000000)))
+
 
 (proclaim '(type (float)
             min-activation max-activation output-threshold

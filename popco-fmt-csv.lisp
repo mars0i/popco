@@ -11,8 +11,28 @@
 ;; source vs. target, domains within source/target, etc.
 ;; Then each row will correspond to a different pop-tick, i.e. time.
 
+;; TOP LEVEL FUNCTIONS ARE:
+;; FMT-POP-PROPN-LABELS-CSV-ROW ; generates a header row as a string
+;;         note: This should be called first:
+;;         RECORD-POSS-PERSONAL-PROPNS-IN-POP 
+;; FMT-POP-PROPN-ACTIVNS-CSV-ROW  ; generates a data row as a string
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; header/label row:
+
+;; FMT-UNIT-LABEL-CSV 
+;; csv string for a unit/node name other than the last one
+(defun fmt-unit-label-csv (unit)
+  (format nil "~S," (symbol-name unit)))
+
+;; FMT-LAST-UNIT-LABEL-CSV 
+;; csv string for a unit/node name that's the last one
+(defun fmt-last-unit-label-csv (unit)
+  (format nil "~S" (symbol-name unit)))
+
+; These have to be defined after fmt-unit-label-csv, but before fmt-pop-propn-labels-csv-row:
+(defvar *pop-tick-label-csv* (fmt-unit-label-csv 'tick)) ; header label for column recording pop-ticks
+(defvar *run-id-label-csv* (fmt-unit-label-csv 'runid))  ; header label for column recording the model run id string
 
 ;; RECORD-POSS-PERSONAL-PROPNS-IN-POP 
 ;; NOTE: This should be called first before fmt-pop-propn-labels-csv-row or fmt-pop-propn-activns-csv-row.
@@ -28,20 +48,11 @@
     (when (null poss-propns)  ; guard against calling before possible propositions has been recorded
       (error "fmt-pop-propn-labels-csv-row: No propositions in population ~S's possible-personal-propositions property" population))
     (concatenate-tree                                     ; concatenate-tree in popco-fmt-utils.lisp
-      (mapcar-with-tail #'fmt-unit-label-csv              ; mapcar-with-tail in popco-utils.lisp
-                        #'fmt-last-unit-label-csv
-                        poss-propns))))
-
-;; FMT-UNIT-LABEL-CSV 
-;; csv string for a unit/node name other than the last one
-(defun fmt-unit-label-csv (unit)
-  (format nil "~S," (symbol-name unit)))
-
-;; FMT-LAST-UNIT-LABEL-CSV 
-;; csv string for a unit/node name that's the last one
-(defun fmt-last-unit-label-csv (unit)
-  (format nil "~S" (symbol-name unit)))
-
+      (cons *run-id-label-csv*
+            (cons *pop-tick-label-csv*
+                  (mapcar-with-tail #'fmt-unit-label-csv              ; mapcar-with-tail in popco-utils.lisp
+                                    #'fmt-last-unit-label-csv
+                                    poss-propns))))))
 ;; Note: All the appending, sorting, and duplicate-removing below is the kind of thing 
 ;; that's relatively expensive, but we only have to do it once at the beginning of
 ;; a simulation run, so it's not worth trying to make it more efficient.
@@ -89,9 +100,11 @@
     (when (null poss-propns)  ; guard against calling before possible propositions has been recorded
       (error "fmt-pop-propn-activns-csv-row: No propositions in population ~S's possible-personal-propositions property" population))
     (concatenate-tree                                     ; concatenate-tree in popco-fmt-utils.lisp
-      (mapcar-with-tail #'fmt-unit-activn-csv              ; mapcar-with-tail in popco-utils.lisp
-                        #'fmt-last-unit-activn-csv
-                        poss-propns))))
+      (cons (fmt-runid-csv *run-id*)
+            (cons (fmt-pop-tick-csv *pop-tick*)
+                  (mapcar-with-tail #'fmt-unit-activn-csv              ; mapcar-with-tail in popco-utils.lisp
+                                    #'fmt-last-unit-activn-csv
+                                    poss-propns))))))
 ; note that since POPCO currently has all units in the top-level namespace, we don't need to go inside persons to get the activations
 
 (defun fmt-unit-activn-csv (unit)
@@ -99,3 +112,9 @@
 
 (defun fmt-last-unit-activn-csv (unit)
   (format nil "~S" (fmt-activation unit)))  ; fmt-activation will return 0.0 if no such unit has been constructed
+
+(defun fmt-pop-tick-csv (tick)
+  (format nil "~S," tick))
+
+(defun fmt-runid-csv (runid)
+  (format nil "~S," runid))
