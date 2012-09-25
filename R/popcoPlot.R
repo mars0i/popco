@@ -1,6 +1,6 @@
-#average myplot.R
+#average popcoPlot.R
 # Marshall Abrams
-# R plotting designed for POPCO Sanday simulations
+# R plotting designed for POPCO simulations
 
 # NOTES ON THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])
@@ -22,6 +22,10 @@ mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
 
 # This is a transparent gray for shading part of a plot
 bgray <- rgb(190, 190, 190, alpha=80, maxColorValue=255) # alph 0 = fully transparent; 180 = opaque (?)
+
+nonPropnColnames <- c("RUNID", "TICK") # column names that don't rep personal propns
+nonPropnColnamesRegexp <- paste(nonPropnColnames, collapse="|")
+# NEED TO ADD "^(" and ")$" around this to force match of entire colname
 
 #####################################
 ## THE FUNCTIONS BELOW ...
@@ -59,7 +63,8 @@ findActivns <- function(data, person, domain, tick) {
 
 # extract the person names from the data
 extractPersons <- function(data) {
-  unique(sub("(.*)_.*", "\\1", colnames(data))) # in col names, subst the part before "_" for whole thing, eliminate duplicates:
+  cookedNames <- unique(sub("(.*)_.*", "\\1", colnames(data))) # in col names, subst the part before "_" for whole thing, eliminate duplicates:
+  grep(nonPropnColnamesRegexp, cookedNames, value=TRUE, invert=TRUE) # THIS ASSUMES NO PROPN NAMES CONTAIN THESE STRINGS NOT GOOD
 }
 
 # extract the proposition domains from the data
