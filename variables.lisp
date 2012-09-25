@@ -285,6 +285,17 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
+; Some Lisp's (e.g. SBCL) use the same random state every time, by
+; default, causing conversation sequences to be identical.
+; Get a seed from the operating system.
+; (In SBCL on OSX, this new seed to be the result of a pretty good random number
+; generator--see SBCL source file target-random.lisp and 'man urandom'):
+; NOTE: We might nevertheless restore an old random state from a file.  This variable
+; just determines whether we reinitialize the random state on load, rather than allowing
+; the possibility that the Lisp implementation will choose a fixed default.
+(when *use-new-random-state*
+  (setf *random-state* (make-random-state t)))
+
 ; Generate an ID string for this simulation run which is unique (with high probability):
 (defvar *run-id* (format nil "R~8,'0D" (random 100000000)))
 

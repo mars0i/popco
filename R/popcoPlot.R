@@ -201,14 +201,16 @@ plotFourDomainsSummary <- function(data, titl) {
 
 # quick and dirty load the file and plot the averages in each domain
 loadNplotAvgs <- function(filename) {
-  data <- read.csv(filename)
+  rawdata <- read.csv(filename)
+  data <- rawdata[3:length(rawdata)] # strip runid and tick columns - not needed here
   titl <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
   plotAvgsFourDomains(data, titl)
 }
 
 # quick and dirty load the file and plot the averages and sd's in each domain
 loadNplot <- function(filename) {
-  data <- read.csv(filename)
+  rawdata <- read.csv(filename)
+  data <- rawdata[3:length(rawdata)] # strip runid and tick columns - not needed here
   basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
   plotActivnsFourDomains(data, basetitle)
   plotFourDomainsSummary(data, basetitle)
@@ -216,19 +218,8 @@ loadNplot <- function(filename) {
 
 # quick and dirty load the file and plot the averages, sd's, and raw activns in each domain
 loadNplotSummary <- function(filename) {
-  data <- read.csv(filename)
+  rawdata <- read.csv(filename)
+  data <- rawdata[3:length(rawdata)] # strip runid and tick columns - not needed here
   basetitle <- sub("PropnData.csv", "", filename, fixed=TRUE) # construct title by extracting basename from filename
   plotFourDomainsSummary(data, basetitle)
 }
-  
-# to pop up plots for a lot of files at once, you can do something like this:
-# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }
-  
-# to pop up plots for a lot of files at once, you can do something like this:
-# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }
-  
-# to pop up plots for a lot of files at once, you can do something like this:
-# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }
-  
-# to pop up plots for a lot of files at once, you can do something like this:
-# for(i in 1:20){ loadNplotAvgs( paste0("e2sAddNeg0extra1500addl8flippedRun", i, "PropnData.csv") ) }

@@ -40,16 +40,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Some Lisp's (e.g. SBCL) use the same random state every time, by
-; default, causing conversation sequences to be identical.
-; Get a seed from the operating system.
-; (In SBCL on OSX, this new seed to be the result of a pretty good random number
-; generator--see SBCL source file target-random.lisp and 'man urandom'):
-; NOTE: We might nevertheless restore an old random state from a file.  This variable
-; just determines whether we reinitialize the random state on load, rather than allowing
-; the possibility that the Lisp implementation will choose a fixed default.
-(when *use-new-random-state*
-  (setf *random-state* (make-random-state t)))
+;; Call to MAKE-RANDOM-STATE now in variables.lisp, to precede setting *run-id*, which is used in other files.
 
 (defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
 
