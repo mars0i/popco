@@ -24,7 +24,7 @@ mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
 bgray <- rgb(190, 190, 190, alpha=80, maxColorValue=255) # alph 0 = fully transparent; 180 = opaque (?)
 
 nonPropnColnames <- c("RUNID", "TICK") # column names that don't rep personal propns
-nonPropnColnamesRegexp <- paste(nonPropnColnames, collapse="|")
+nonPropnColnamesRegexp <- paste0("^(", paste(nonPropnColnames, collapse="|"), ")$")
 # NEED TO ADD "^(" and ")$" around this to force match of entire colname
 
 #####################################
@@ -63,17 +63,20 @@ findActivns <- function(data, person, domain, tick) {
 
 # extract the person names from the data
 extractPersons <- function(data) {
-  cookedNames <- unique(sub("(.*)_.*", "\\1", colnames(data))) # in col names, subst the part before "_" for whole thing, eliminate duplicates:
-  grep(nonPropnColnamesRegexp, cookedNames, value=TRUE, invert=TRUE) # THIS ASSUMES NO PROPN NAMES CONTAIN THESE STRINGS NOT GOOD
+  personalPropnNames <- grep(nonPropnColnamesRegexp, colnames(data), value=TRUE, invert=TRUE) # first strip out the non-proposition, meta-info column names
+  unique(sub("(.*)_.*", "\\1", personalPropnNames))  # in remaining col names, subst the part BEFORE "_" for whole thing, eliminate duplicates:
 }
 
 # extract the proposition domains from the data
 extractDomains <- function(data) {
-  sub(".*_([^.]*)\\..*", "\\1", colnames(data))  # in col names, subst the part just after "_" for whole thing, eliminate duplicates
+  personalPropnNames <- grep(nonPropnColnamesRegexp, colnames(data), value=TRUE, invert=TRUE) # first strip out the non-proposition, meta-info column names
+  unique(sub(".*_([^.]*)\\..*", "\\1", personalPropnNames))  # in remaining col names, subst the part immediately AFTER "_" for whole thing, eliminate duplicates
 }
 
-extractPropns <- function(data) {
-  sub(".*_(.*)", "\\1", colnames(data))
+# extract the generic propn names from the data
+extractGenericPropns <- function(data) {
+  personalPropnNames <- grep(nonPropnColnamesRegexp, colnames(data), value=TRUE, invert=TRUE) # first strip out the non-proposition, meta-info column names
+  unique(sub(".*_(.*)", "\\1", personalPropnNames)) # strip off person name and "_"
 }
 
 # a standard dev fn that can be passed to plotForDomain
