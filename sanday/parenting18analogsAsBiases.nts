@@ -1,5 +1,38 @@
 parenting18analogsAsBiases.nts
 
+experiments on influence of analogy on long-term persistence and
+transmission. (Have I already done some of these, in effect?)
+  	[Well in the 7/2012 paper I had the perceived domains driving
+	the origin domains (with some cross-domain effects as well).
+	e.g. pegging the hunting propns raises the sky propns.
+	Note though that these experiments had no restrictions on
+	domain of discourse--i.e. propns were from all four domains.
+	So I haven't done what's described below.  But I can do it by
+	specifying converse-strucs in the make-person calls.]
+
+. Compare two populations.  In both, only target (source) propns are uttered.
+     Maybe these are restricted to one domain.
+     In one, there is a corresponding analog for the propns.
+     In the other, there's not.
+     What's the difference?
+
+. Compare two populations.  In both, only target (source) propns are
+     uttered, from two domains.
+     The pops differ as to which source (target) analog they have.
+     If this changes what fixes in the target domain, it shows
+     the role of bg analogy, as opposed to innateness, in biasing
+     tran.
+
+. Vary the percentage of individuals with the source analog.
+  Show that you can still get the effect with only some having the analog.
+
+. Introduce a few of the alternative source analog, too, and show that you can
+  get the effect.
+
+. Make the source analog present only intermittently.  i.e. take it out and
+  bring it back.
+
+
 What the files do:
 	parenting18analogsAsBiases1.lisp	main code for experiments
 The rest of these load the preceding file, specify parameters, and run the population:
