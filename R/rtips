@@ -25,3 +25,8 @@ for (i in 1:519){names<-colnames(tst); if (pmatch("CHRIS",names[i],nomatch=0)) {
    cat("\n")
  }
 
+
+To concatenate two data frames in the sense of adding their rows to make new df with the
+same columns but as many rows as both combined, use rbind(df1, df2, ...).
+
+I think cbind might do something similar for adding the second one as new columns, etc.
