@@ -1,10 +1,24 @@
 ## df2ra.R
 ## functions for creating arrays from dataframes containing POPCO data.
 
+nonPropnColnames <- c("RUNID", "TICK") # column names that don't rep personal propns
+nonPropnColnamesRegexp <- paste0("^(", paste(nonPropnColnames, collapse="|"), ")$")
+
 # functions for extracting meaningful labels
-colnames2propnames <- function(colnms) {unique(sub(".*_", "", colnms))}  # extract unique propn names from column names
-colnames2persnames <- function(colnms) {unique(sub("_.*", "", colnms))} # extract unique person names from column names
-colnames2domnames  <- function(colnms) {unique(sub(".*_([^.]*)\\..*", "\\1", colnms))} # extract domain names (propn prefixes) from column names
+
+colNames2propNames <- function(colnms) {grep(nonPropnColnamesRegexp, colnms, value=TRUE, invert=TRUE)} # strip non-proposition metadata column names
+
+persPropNames2genPropNames <- function(propnms) {unique(sub(".*_", "", propnms))}  # extract unique generic propn names from personal propn names
+
+persPropNames2persNames <- function(propnms) {unique(sub("_.*", "", propnms))} # extract unique person names from personal propn names
+
+genPropNames2domNames  <- function(propnms) {unique(sub("([^.]*)\\..*", "\\1", propnms))} # extract domain names (propn prefixes) from generic propn names
+
+persPropNames2domNames <- function(propnms) {genPropNames2domNames(persPropNames2genPropNames(propnms))} # extract domain names (propn prefixes) from personal propn names
+
+colNames2gPropNames <- function(colnms) {persPropNames2genPropNames(colNames2propNames(colnms))}  # extract unique generic propn names from column names
+colNames2persNames <- function(colnms) {persPropNames2persNames(colNames2propNames(colnms))} # extract unique person names from column names
+colNames2domNames  <- function(colnms) {persPropNames2domNames(colNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
 
 ##############################################################
 # df2ra
@@ -17,8 +31,8 @@ colnames2domnames  <- function(colnms) {unique(sub(".*_([^.]*)\\..*", "\\1", col
 df2ra <- function(df) {
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(df)
-  persnames = colnames2persnames(cols) # ; print(persnames)
-  propnames = colnames2propnames(cols) # ; print(propnames)
+  persnames = colNames2persNames(cols) # ; print(persnames)
+  propnames = colNames2gPropNames(cols) # ; print(propnames)
   nticks = nrow(df) # ; print(nticks)
   ticks = 1:nticks
   npersons = length(persnames)
