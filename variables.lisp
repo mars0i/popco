@@ -297,7 +297,7 @@
   (setf *random-state* (make-random-state t)))
 
 ; Generate an ID string for this simulation run which is unique (with high probability):
-(defvar *run-id* (format nil "R~9,'0D" (random 1000000000)))
+(defvar *run-id* (format nil "run~9,'0D" (random 1000000000)))
 
 
 (proclaim '(type (float)
