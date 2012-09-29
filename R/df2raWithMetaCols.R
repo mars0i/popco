@@ -8,14 +8,13 @@
 # Then you can do things like this, I think, to get the average across time for each propn in each person:
 # apply(ra, c(1,2), mean)
 # or this to get the average at each time for propositions within each person:
-# apply(ra, c(1,3), mean)
+# apply(ra, c(1,2), mean)
 
 ##############################################################
-# NOT CURRENTLY USED:
 # these definitions must be coordinated with each other and with POPCO
-# stripMetaCols <- function(dframe) {dframe[3:length(dframe)]} # return dataframe without the meta columns
-# metaColnames <- c("RUNID", "TICK") # column names that don't rep personal propns
-# metaColnamesRegexp <- paste0("^(", paste(metaColnames, collapse="|"), ")$") # regexp that will find the meta col names
+stripMetaCols <- function(dframe) {dframe[3:length(dframe)]} # return dataframe without the meta columns
+metaColnames <- c("RUNID", "TICK") # column names that don't rep personal propns
+metaColnamesRegexp <- paste0("^(", paste(metaColnames, collapse="|"), ")$") # regexp that will find the meta col names
 
 ##############################################################
 # functions for extracting meaningful labels
@@ -26,13 +25,14 @@ persPropNames2persNames <- function(propnms) {unique(sub("_.*", "", propnms))} #
 genPropNames2domNames  <- function(propnms) {unique(sub("([^.]*)\\..*", "\\1", propnms))} # extract domain names (propn prefixes) from generic propn names
 persPropNames2domNames <- function(propnms) {genPropNames2domNames(persPropNames2genPropNames(propnms))} # extract domain names (propn prefixes) from personal propn names
 
-# NOTE the following abstractions of the preceding definitions are not currently needed, but were, and maybe will be.
 # these can be used to extract the same information if the meta colnames are mixed in with the propn names
-# allColNames2propNames <- function(colnms) {grep(metaColnamesRegexp, colnms, value=TRUE, invert=TRUE)} # strip non-proposition metadata column names NOT CURRENTLY USED
-allColNames2propNames <- function(colnms) {colnms} # no-op; might be replaced later with something like the preceding
+allColNames2propNames <- function(colnms) {grep(metaColnamesRegexp, colnms, value=TRUE, invert=TRUE)} # strip non-proposition metadata column names
 allColNames2gPropNames <- function(colnms) {persPropNames2genPropNames(allColNames2propNames(colnms))}  # extract unique generic propn names from column names
 allColNames2persNames <- function(colnms) {persPropNames2persNames(allColNames2propNames(colnms))} # extract unique person names from column names
 allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
+
+##############################################################
+df2ra <- function(dframe) {strippedDf2ra(stripMetaCols(dframe))}
 
 ##############################################################
 # df2ra
@@ -43,10 +43,6 @@ allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2pr
 # going down the page, each matrix having person rows and propn cols.]
 #
 # This function assumes that the meta columns have already been stripped by stripMetaCols()
-
-# NOTE the following abstraction of the following definition is not currently needed, but was, and maybe will be.
-df2ra <- function(dframe) {strippedDf2ra(dframe)}
-# df2ra <- function(dframe) {strippedDf2ra(stripMetaCols(dframe))} NOT CURRENTLY USED
 
 strippedDf2ra <- function(dframe) {
   # extract desired dimensions and labels from the dataframe:
