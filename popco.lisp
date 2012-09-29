@@ -42,15 +42,15 @@
 
 ;; Call to MAKE-RANDOM-STATE now in variables.lisp, to precede setting *run-id*, which is used in other files.
 
-(defvar *random-state-file* "../data/popcoRandomState.lisp") ; we'll write code to restore this session's random state here
+(defvar *random-state-file* (format nil "../data/~A.lisp" *run-id*) ; we'll write code to restore this session's random state here
 
-(defvar *netlogo-basename* "../data/popcoNetLogoData")  
+(defvar *netlogo-basename* (format nil "../data/~A" *run-id*)  
 (defvar *netlogo-extension* ".nlogdat")  
-(defvar *netlogo-output-name* (concatenate 'string *netlogo-basename* *netlogo-extension*)) ; main, ongoing NetLogo data file name
+(defvar *netlogo-output-name* (format nil "~A~A" *netlogo-basename* *netlogo-extension*)) ; main, ongoing NetLogo data file name
 (defvar *netlogo-outstream* nil)    ; stream for same
-(defvar *netlogo-snapshot-suffix* "AtTick") ; used in name of file for passing NetLogo pop state during a single tick
+(defvar *netlogo-snapshot-suffix* "AtTick") ; used in name of file for passing NetLogo pop state during a single tick; see report-persons-just-at-t-for-netlogo.
 
-(defvar *propns-csv-output-name* "../data/popcoPropnData.csv") ; file to write propn activn data in csv format
+(defvar *propns-csv-output-name* (format nil "../data/~A.csv" *run-id*) ; file to write propn activn data in csv format
 (defvar *propns-csv-outstream* nil) ; stream for same
 
 ; SPECIAL is PT's all-purpose external-emphasis node, used to give extra activation

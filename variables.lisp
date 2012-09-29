@@ -285,7 +285,7 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
-; Some Lisp's (e.g. SBCL) use the same random state every time, by
+; Some Lisps (e.g. SBCL) use the same random state every time, by
 ; default, causing conversation sequences to be identical.
 ; Get a seed from the operating system.
 ; (In SBCL on OSX, this new seed to be the result of a pretty good random number
@@ -297,7 +297,7 @@
   (setf *random-state* (make-random-state t)))
 
 ; Generate an ID string for this simulation run which is unique (with high probability):
-(defvar *run-id* (format nil "R~8,'0D" (random 100000000)))
+(defvar *run-id* (format nil "R~9,'0D" (random 1000000000)))
 
 
 (proclaim '(type (float)
