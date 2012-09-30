@@ -34,6 +34,9 @@ allColNames2gPropNames <- function(colnms) {persPropNames2genPropNames(allColNam
 allColNames2persNames <- function(colnms) {persPropNames2persNames(allColNames2propNames(colnms))} # extract unique person names from column names
 allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
 
+stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or list of filenames, return vec of strings with ".csv" removed from end
+
+
 ##############################################################
 # df2ra
 # Function to create array with dims: person, propn, tick 
@@ -75,21 +78,22 @@ strippedDf2ra <- function(dframe) {
 # of run names of the runs which generated the data for those arrays,
 # return a 4-D array in which each element along the 4th dimension is
 # one of the original 3-D arrays, in order.
+# Note: It appears that the arguments can be vectors or lists.
 
-RAs2multirunRA <- function(raList, runList) {
-  numRAs = length(raList)
+RAs2multirunRA <- function(RAs, runIDs) {
+  numRAs = length(RAs)
 
   # error checking
-  if (numRAs != length(runList)) { stop("raList and runList have different lengths.") }
+  if (numRAs != length(runIDs)) { stop("RAs and runIDs have different lengths.") }
   # ideally we could also check that dimensions and dimnames are all same
 
-  rasInOneVec <- mapply(c, unlist(raList)) # squash all data from arrays into a single vector
+  rasInOneVec <- mapply(c, unlist(RAs)) # squash all data from arrays into a single vector
 
-  newDims <- c(dim(raList[[1]]), numRAs) # construct dimensions of output array - assumes all arrays same
-  newDimnames <- dimnames(raList[[1]]) # again, assuming all arrays are same
-  newDimnames[[4]] <- runList # extend list of lists of dimnames to include the run ids as names along 4th dimension
+  newDims <- c(dim(RAs[[1]]), numRAs) # construct dimensions of output array - assumes all arrays same
+  newDimnames <- dimnames(RAs[[1]]) # again, assuming all arrays are same
+  newDimnames[[4]] <- runIDs # extend list of lists of dimnames to include the run ids as names along 4th dimension
 
-  # construct a 4-D array containing each member of raList as one element along 4th dim:
+  # construct a 4-D array containing each member of RAs as one element along 4th dim:
   array(rasInOneVec, newDims, newDimnames)
 }
 
