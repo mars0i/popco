@@ -70,6 +70,30 @@ strippedDf2ra <- function(dframe) {
 }
 
 ##############################################################
+# RAs2multirunRA
+# Given a list of 3-D arrays of the kind produced by df2ra, and a list
+# of run names of the runs which generated the data for those arrays,
+# return a 4-D array in which each element along the 4th dimension is
+# one of the original 3-D arrays, in order.
+
+RAs2multirunRA <- function(raList, runList) {
+  numRAs = length(raList)
+
+  # error checking
+  if (numRAs != length(runList)) { stop("raList and runList have different lengths.") }
+  # ideally we could also check that dimensions and dimnames are all same
+
+  rasInOneVec <- mapply(c, unlist(raList)) # squash all data from arrays into a single vector
+
+  newDims <- c(dim(raList[[1]]), numRAs) # construct dimensions of output array - assumes all arrays same
+  newDimnames <- dimnames(raList[[1]]) # again, assuming all arrays are same
+  newDimnames[[4]] <- runList # extend list of lists of dimnames to include the run ids as names along 4th dimension
+
+  # construct a 4-D array containing each member of raList as one element along 4th dim:
+  array(rasInOneVec, newDims, newDimnames)
+}
+
+##############################################################
 # ra2domra
 # Extract an array corresponding to a domain of belief from
 # an array containing all beliefs.
