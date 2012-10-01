@@ -1,6 +1,6 @@
-#average myplot.R
+# plotDFs.R
 # Marshall Abrams
-# R plotting designed for POPCO Sanday simulations
+# R plotting from dataframes designed for POPCO Sanday simulations
 
 # NOTES ON THE RIGHT WAY TO GET THE VARIANCE OF A ROW:
 # rowVars(d75[2,])

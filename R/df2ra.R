@@ -16,8 +16,8 @@
 # Given a list or vector of filenames, return a list of dataframes, one for each input file.
 readcsvs <- function(csvs) { lapply(csvs, read.csv) }
 
-# Given a list or vector of filenames, return a list of arrays created by df2ra(), one for each input file.
-read2RAs <- function(csvs) { lapply(readcsvs(csvs), df2ra) }
+# Given a list or vector of filenames, return a list of arrays created by df2RA(), one for each input file.
+read2RAs <- function(csvs) { lapply(readcsvs(csvs), df2RA) }
 
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
 read2multirunRA <- function(csvs) { RAs2multirunRA(read2RAs(csvs), stripcsv(csvs)) }
@@ -49,7 +49,7 @@ allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2pr
 stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or list of filenames, return vec of strings with ".csv" removed from end
 
 ##############################################################
-# df2ra
+# df2RA
 # Function to create array with dims: person, propn, tick 
 # from popco dataframe created by read.csv.
 # i.e. for each tick, there's a personXpropn matrix.
@@ -59,10 +59,10 @@ stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or 
 # This function assumes that the meta columns have already been stripped by stripMetaCols()
 
 # NOTE the following abstraction of the following definition is not currently needed, but was, and maybe will be.
-df2ra <- function(dframe) {strippedDf2ra(dframe)}
-# df2ra <- function(dframe) {strippedDf2ra(stripMetaCols(dframe))} NOT CURRENTLY USED
+df2RA <- function(dframe) {strippedDf2RA(dframe)}
+# df2RA <- function(dframe) {strippedDf2RA(stripMetaCols(dframe))} NOT CURRENTLY USED
 
-strippedDf2ra <- function(dframe) {
+strippedDf2RA <- function(dframe) {
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
   persnames = persPropNames2persNames(cols) # ; print(persnames)
@@ -86,7 +86,7 @@ strippedDf2ra <- function(dframe) {
 
 ##############################################################
 # RAs2multirunRA
-# Given a list of 3-D arrays of the kind produced by df2ra, and a list
+# Given a list of 3-D arrays of the kind produced by df2RA, and a list
 # of run names of the runs which generated the data for those arrays,
 # return a 4-D array in which each element along the 4th dimension is
 # one of the original 3-D arrays, in order.
@@ -99,25 +99,25 @@ RAs2multirunRA <- function(RAs, runIDs) {
   if (numRAs != length(runIDs)) { stop("RAs and runIDs have different lengths.") }
   # ideally we could also check that dimensions and dimnames are all same
 
-  rasInOneVec <- mapply(c, unlist(RAs)) # squash all data from arrays into a single vector
+  RAsInOneVec <- mapply(c, unlist(RAs)) # squash all data from arrays into a single vector
 
   newDims <- c(dim(RAs[[1]]), numRAs) # construct dimensions of output array - assumes all arrays same
   newDimnames <- dimnames(RAs[[1]]) # again, assuming all arrays are same
   newDimnames[[4]] <- runIDs # extend list of lists of dimnames to include the run ids as names along 4th dimension
 
   # construct a 4-D array containing each member of RAs as one element along 4th dim:
-  array(rasInOneVec, newDims, newDimnames)
+  array(RAsInOneVec, newDims, newDimnames)
 }
 
 ##############################################################
-# ra2domRA
+# RA2domRA
 # Extract an array corresponding to a domain of belief from
 # an array containing all beliefs.
 # The second argument, dom, is a string for a POPCO proposition 
 # prefix representing a domain of belief.
 
 # for single run array
-ra2domRA <- function(ra, dom) {
+RA2domRA <- function(ra, dom) {
   ra[ , getDomainColnums(ra, dom) , ]  # return an array with only columns we want
 }
 
@@ -135,7 +135,7 @@ getDomainColnums <- function(ra, dom) {
 }
 
 ##############################################################
-# Some notes on how strippedDf2ra works: 
+# Some notes on how strippedDf2RA works: 
 # It seems odd to have to flip the dframe using t, and then flip the inner
 # matrices later using aperm, but that's the only way I've figured out
 # to do it.  It obviously could be done in one step, but it's easier to

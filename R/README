@@ -1,18 +1,40 @@
 RECENT:
 
-myplot.R was renamed to plotDFs.R .
+plotDFs.R:
+Formerly myplot.R
 It contains functions that popco averages, stddevs, and just raw
 activations, directly from dataframes.  (I wrote this stuff when I was
 just learning R.)
 
-popcoPlot.R was renamed to plotDFsWithMetaCols.R
+plotDFsWithMetaCols.R:
+Formerly popcoPlot.R
 This is a revision of myplot.R that I made when I had added two extra
 columns (pop-ticks, run-id) to my csv file output.  It's pretty much
 the same as plotDFs.R but works around the existence of the extra
 columns.  Subsequently I got rid of the extra columns, but something
 similar might come back some day.
 
+csvs2vec.sh:
+Shell script: Given a series of filenames on a single line in stdin,
+e.g. produced via
+	echo *.csv | csvs2vec.sh
+this script constructs the R command
+	csvs <- c("filename1","filename2",...,"filenameN")
+which can then be pasted into R.
 
+df2ra.R:
+Routines for loading csv files, converting to dataframes,
+converting the dataframes to 3-D arrays, converting a series
+of 3-D arrays to a 4-D array, extracting subarrays.  
+See file for details.
+
+df2raWithMetaCols.R:
+Old version of df2ra.R from the period in which pop-tick and run-id
+were extra columsn in the csv files.  Doesn't contain everything in
+the more recent versions.  Most of this code is still
+in df2ra.R, but commented out, as of 10/1/2012.
+
+..............................................
 OLD NOTES:
 myplot.R contains functions appropriate until 9/24,
 when I added pop-ticks and run-id columns to the csv file.
