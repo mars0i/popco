@@ -11,6 +11,18 @@
 # apply(ra, c(1,3), mean)
 
 ##############################################################
+# file read functions
+
+# Given a list or vector of filenames, return a list of dataframes, one for each input file.
+readcsvs <- function(csvs) { lapply(csvs, read.csv) }
+
+# Given a list or vector of filenames, return a list of arrays created by df2ra(), one for each input file.
+read2RAs <- function(csvs) { lapply(readcsvs(csvs), df2ra) }
+
+# Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
+read2multirunRA <- function(csvs) { RAs2multirunRA(read2RAs(csvs), stripcsv(csvs)) }
+
+##############################################################
 # NOT CURRENTLY USED:
 # these definitions must be coordinated with each other and with POPCO
 # stripMetaCols <- function(dframe) {dframe[3:length(dframe)]} # return dataframe without the meta columns
@@ -35,7 +47,6 @@ allColNames2persNames <- function(colnms) {persPropNames2persNames(allColNames2p
 allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
 
 stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or list of filenames, return vec of strings with ".csv" removed from end
-
 
 ##############################################################
 # df2ra
@@ -64,6 +75,7 @@ strippedDf2ra <- function(dframe) {
   # Create version of the array we want, but with the inner matrices
   # defined by first two dimensions flipped along the diagonal.  
   # Seems to be the only easy way to do it.
+  # See notes below for further explanation.
   flippedmats = array( t(dframe) ,     c(npropns,   npersons,  nticks) , 
                        dimnames=list(propnames, persnames, ticks) )
 
@@ -112,7 +124,7 @@ ra2domra <- function(ra, dom) {
 }
 
 ##############################################################
-# Some notes on how df2ra works:
+# Some notes on how strippedDf2ra works: 
 # It seems odd to have to flip the dframe using t, and then flip the inner
 # matrices later using aperm, but that's the only way I've figured out
 # to do it.  It obviously could be done in one step, but it's easier to
