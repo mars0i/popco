@@ -110,17 +110,28 @@ RAs2multirunRA <- function(RAs, runIDs) {
 }
 
 ##############################################################
-# ra2domra
+# ra2domRA
 # Extract an array corresponding to a domain of belief from
 # an array containing all beliefs.
 # The second argument, dom, is a string for a POPCO proposition 
 # prefix representing a domain of belief.
 
-ra2domra <- function(ra, dom) {
+# for single run array
+ra2domRA <- function(ra, dom) {
+  ra[ , getDomainColnums(ra, dom) , ]  # return an array with only columns we want
+}
+
+# for multi-run array
+multiRA2domRA <- function(ra, dom) {
+  ra[ , getDomainColnums(ra, dom) , , ]  # return an array with only columns we want
+}
+
+# Given an array and a domain string, returns the indexes
+# of colums withpropositions from that domain.
+getDomainColnums <- function(ra, dom) {
   propnames = dimnames(ra)[2][[1]] # get the proposition names from the ra
   regx = paste0("^", dom, ".")     # we'll search for this string
-  colnums = grep(regx, propnames)  # get indexes of columns we want
-  ra[ , colnums , ]  # return an array with only columns we want
+  grep(regx, propnames)  # get indexes of columns we want
 }
 
 ##############################################################
