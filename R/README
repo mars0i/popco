@@ -1,4 +1,21 @@
+RECENT:
+
+myplot.R was renamed to plotDFs.R .
+It contains functions that popco averages, stddevs, and just raw
+activations, directly from dataframes.  (I wrote this stuff when I was
+just learning R.)
+
+popcoPlot.R was renamed to plotDFsWithMetaCols.R
+This is a revision of myplot.R that I made when I had added two extra
+columns (pop-ticks, run-id) to my csv file output.  It's pretty much
+the same as plotDFs.R but works around the existence of the extra
+columns.  Subsequently I got rid of the extra columns, but something
+similar might come back some day.
+
+
+OLD NOTES:
 myplot.R contains functions appropriate until 9/24,
 when I added pop-ticks and run-id columns to the csv file.
-popcoPlot.R contains the successor routines for use after
-that.
+popcoPlot.R contains the successor routines for use after that.
+However, I subsequently got rid of those columns.  So
+myplot.R is probably the one needed.

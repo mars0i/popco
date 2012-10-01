@@ -23,3 +23,21 @@ plotFourDomainsV1 <- function(data, aggregFn, title.ignored) {
   screen( 6 )
   plotForDomain(data, "OS", aggregFn)
 }
+
+
+readcsvs(csvs) {
+  dframes <- list()
+
+  for (i in 1:length(csvs)) {
+    dframes[[i]] <- read.csv(csvs[i])
+  }
+
+  dframes
+}
+
+ra2domra <- function(ra, dom) {
+  propnames = dimnames(ra)[2][[1]] # get the proposition names from the ra
+  regx = paste0("^", dom, ".")     # we'll search for this string
+  colnums = grep(regx, propnames)  # get indexes of columns we want
+  ra[ , colnums , ]  # return an array with only columns we want
+}
