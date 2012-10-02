@@ -1,6 +1,18 @@
 ## df2ra.R
 ## functions for creating arrays from dataframes containing POPCO data.
 
+## EXAMPLE USAGE:
+# a <- read2multirunRA(csvs)   # defined below: create multi-run array
+# ah <- multiRA2domRA(a, "H")  # defined below: extract subarray for proposition domain H
+# ap <- multiRA2domRA(a, "P")
+# ah1500 <- ah[,,1500,]        # extract subarrays for timestep 1500
+# ap1500 <- ap[,,1500,]
+# ah1500means <- apply(ah1500, c(1,3), mean)  # get average activation for each person in each run
+# ap1500means <- apply(ap1500, c(1,3), mean)
+# ap1500means - ah1500means                   # crude display of difference between H and P activations
+# sum(ap1500means - ah1500means)              # even cruder check to see which is greater on average
+# ap1500means/ah1500means                     # ratios are also interesting
+
 # ?:
 # ya <- sapply(cs, read.csv)
 # df1 <- data.frame(t(matrix(unlist(ya[,1]), ncol=100, byrow=T)))
