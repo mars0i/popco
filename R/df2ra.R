@@ -17,7 +17,7 @@
 
 # EXTRACTION AND COMPARISON OF DOMAINS AT ONE TIME ACROSS RUNS:
 # ah <- multiRA2domRA(a, "H")  # defined below: extract subarray for proposition domain H
-# ap <- multiRA2domRA(a, "P")
+# ap <- multiRA2domRA(a, "P")  # note this function works only on 4D arrays, not lower-dimensional subarrays
 # ah1500 <- ah[,,1500,]        # extract subarrays for timestep 1500
 # ap1500 <- ap[,,1500,]
 # ah1500means <- apply(ah1500, c(1,3), mean)  # get average activation for each person in each run
