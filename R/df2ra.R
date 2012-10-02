@@ -3,6 +3,19 @@
 
 ## EXAMPLE USAGE:
 # a <- read2multirunRA(csvs)   # defined below: create multi-run array
+
+# SIMPLE PLOTTING FOR ONE RUN AND PERSON ACROSS TIME:
+# plot(1, type="n", ylim=c(-1,1), xlim=c(1,1500), ylab="activation", xlab="time")   # make empty plot w/ activation range (-1,1) and 1500 ticks
+# lines(a["S01", "P.WOMAN.CREATES.CHILD.FROM.WITHIN", ,"RUN043839485"], type="p", pch=".", col="blue") # dot-plot one propn in person SO1 in one run
+# lines(a["S01", "P.CHILD.CLOSE", ,"RUN043839485"], type="p", pch=".", col="red")                      # dot-plot another propn for same person and run
+# lines(apply(a["S01",,,"RUN043839485"], 2, mean), type="l")  # line-plot mean activn at each tick for that person, run
+   # notes on this instance of apply: 
+   # Subscripts fix the person and run, but let propn and tick vary.
+   # The result is a 2D array with dimensions propn, tick.
+   # Second arg to apply, i.e. index 2, says: for each tick, get the mean of whatever variation is still allowed.
+   # i.e. for each tick, take the mean of all propn activations at that tick.
+
+# EXTRACTION AND COMPARISON OF DOMAINS AT ONE TIME ACROSS RUNS:
 # ah <- multiRA2domRA(a, "H")  # defined below: extract subarray for proposition domain H
 # ap <- multiRA2domRA(a, "P")
 # ah1500 <- ah[,,1500,]        # extract subarrays for timestep 1500
@@ -12,15 +25,6 @@
 # ap1500means - ah1500means                   # crude display of difference between H and P activations
 # sum(ap1500means - ah1500means)              # even cruder check to see which is greater on average
 # ap1500means/ah1500means                     # ratios are also interesting
-
-# ?:
-# ya <- sapply(cs, read.csv)
-# df1 <- data.frame(t(matrix(unlist(ya[,1]), ncol=100, byrow=T)))
-
-# Then you can do things like this, I think, to get the average across time for each propn in each person:
-# apply(ra, c(1,2), mean)
-# or this to get the average at each time for propositions within each person:
-# apply(ra, c(1,3), mean)
 
 ##############################################################
 # file read functions
