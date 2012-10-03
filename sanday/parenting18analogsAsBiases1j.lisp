@@ -1,4 +1,4 @@
-;; parenting18analogsAsBiases1i.lisp
+;; parenting18analogsAsBiases1j.lisp
 ;; uses/applies code in parenting18analogsAsBiases1.lisp (q.v. for outline of purpose, etc.)
 
 ; We use new output filenames for each session to preserve data:
@@ -25,10 +25,10 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
-(make-earth-biased-lifestyle-talker 'temp-person)
+(make-sky-biased-lifestyle-talker 'temp-person)
 (n-persons-with-name 'temp-person 's (1- *my-pop-size*)) ; "s" for sky-based
 (rem-elt-from-property 'temp-person 'folks 'members)
-(make-earth-biased-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
+(make-sky-biased-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
 
 (init-pop)
 (print (get 'folks 'members))
