@@ -34,15 +34,16 @@ print("average of run variances for H:")
 print(mean(apply(ah1500m, c(2), var)))
 # If the check succeeds, giving small values, then you can just average all
 # of the persons in a run together (so maybe combine steps later):
-print("making per-run average vectors:")
+print("making per-run average vectors")
 ap1500mm <- apply(ap1500m, c(2), mean) # Since within a run, each person as about the same average activation,
 ah1500mm <- apply(ah1500m, c(2), mean) # we might as well just use the average across all persons in each run.
 # Note these are vectors, with length equal to the number of runs.
 
-print("making 2-column matrix for plotting:")
+print("making 2-column matrix for plotting")
 # now combine these into a two-column matrix for use by plot():
 both1500mm <- cbind(ah1500mm, ap1500mm)  # the first arg will be x, the second y
 
+print("plotting")
 plot(both1500mm, type="p", pch="o", ylim=c(-1,1), xlim=c(-1,1))
 lines(x=c(-1,1), y=c(-1,1), col="blue") # draw diagonal line indicating where equal P, H pairs would lie
 # However, this graph does not give a clear representation of how many points are piled up on each of the shared
