@@ -1,3 +1,7 @@
+# analogsAsBiases1.R
+# For processing output from parenting18analogsAsBiases1.lisp and
+# associated scripts, but:
+# NOTE NEED TO BE REVISED FOR POP SIZES OTHER THAN 10
 
 print("loading data into full multirun array...")
 csvs <- list.files(pattern="*.csv")
