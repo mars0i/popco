@@ -47,6 +47,8 @@ The rest of these load the preceding file, specify parameters, and run the popul
 		note: 1h is identical to 1g but doesn't override default output file names
 	parenting18analogsAsBiases1i.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
 	parenting18analogsAsBiases1j.lisp	sky bias,   N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1k.lisp	no origins, N=10,  *max-pop-ticks* = 1500
+	NOTE: PRECEDING LACKED generic-origin-propns, and should be re-run with that added i.e. make new main file parenting18analogsAsBiases2.lisp
 
 running parenting18analogsAsBiases1a.lisp (which uses
 parenting18analogsAsBiases1.lisp) repeatedly for 2000 ticks is producing
