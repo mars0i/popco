@@ -18,10 +18,10 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
-(make-originless-biased-lifestyle-talker 'temp-person)
+(make-originless-lifestyle-talker 'temp-person)
 (n-persons-with-name 'temp-person 's (1- *my-pop-size*)) ; "s" for sky-based
 (rem-elt-from-property 'temp-person 'folks 'members)
-(make-originless-biased-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
+(make-originless-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
 
 (init-pop)
 (print (get 'folks 'members))
