@@ -2,7 +2,10 @@
 # For processing output from parenting18analogsAsBiases2.lisp and
 # associated scripts.
 
-# NOTE: Assumes SP, the true believer/perceiver, is always the first person.
+source("~/popco/R/df2ra.R")
+
+# NOTE: Assumes AA, the "assured advocate", i.e. true
+# believer/perceiver, is always the first person.
 
 print("loading data into full multirun array...")
 csvs <- list.files(pattern="*.csv")
@@ -50,6 +53,7 @@ both1500mm <- cbind(ah1500mm, ap1500mm)  # the first arg will be x, the second y
 print("plotting")
 plot(both1500mm, type="p", pch="o", ylim=c(-1,1), xlim=c(-1,1))
 lines(x=c(-1,1), y=c(-1,1), col="blue") # draw diagonal line indicating where equal P, H pairs would lie
+lines(x=mean(ah1500), y=mean(ap1500), type="p", pch="x", col="red")
 # However, this graph does not give a clear representation of how many points are piled up on each of the shared
 # approximate values.
 # There are links to some 3-D graphs on the plot man page.

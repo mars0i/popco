@@ -9,10 +9,10 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
+(make-all-origin-lifestyle-talker 'aa lifestyle-propns)  ; "aa" for "assured advocate" [propns are alpha-sorted, so insures this person is 1st]
 (make-all-origin-lifestyle-talker 'temp-person)
-(n-persons-with-name 'temp-person 's (1- *my-pop-size*)) ; "s" for sky-based
+(n-persons-with-name 'temp-person 'p (1- *my-pop-size*)) ; "p" for person
 (rem-elt-from-property 'temp-person 'folks 'members)
-(make-all-origin-lifestyle-talker 'sp lifestyle-propns) ; "sp" for sky-based perceiver
 
 (init-pop)
 (print (get 'folks 'members))

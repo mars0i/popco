@@ -1,5 +1,26 @@
 parenting18analogsAsBiases.nts
 
+What the files do:
+	parenting18analogsAsBiases1.lisp	main code for experiments
+The rest of these load the preceding file, specify parameters, and run the population:
+	parenting18analogsAsBiases1a.lisp	sky bias,   N=10,  *max-pop-ticks* = 100
+	parenting18analogsAsBiases1b.lisp	sky bias,   N=100, *max-pop-ticks* = 100
+	parenting18analogsAsBiases1c.lisp	earth bias, N=10,  *max-pop-ticks* = 500
+	parenting18analogsAsBiases1d.lisp	earth bias, N=100, *max-pop-ticks* = 2000
+	parenting18analogsAsBiases1e.lisp	earth bias, N=100, *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1f.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1g.lisp	earth bias, N=10,  *max-pop-ticks* = 100
+	parenting18analogsAsBiases1h.lisp	earth bias, N=10,  *max-pop-ticks* = 100
+		note: 1h is identical to 1g but doesn't override default output file names
+	parenting18analogsAsBiases1i.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1j.lisp	sky bias,   N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases1k.lisp	no origins, N=10,  *max-pop-ticks* = 1500
+	NOTE: PRECEDING LACKED generic-origin-propns, and should be re-run with that added i.e. make new main file parenting18analogsAsBiases2.lisp
+        THE FOLLOWING INCLUDE generic-origin-propns:
+	parenting18analogsAsBiases2a.lisp	all origins, N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases2b.lisp	sky bias,    N=10,  *max-pop-ticks* = 1500
+	parenting18analogsAsBiases2c.lisp	earth bias,  N=10,  *max-pop-ticks* = 1500
+
 experiments on influence of analogy on long-term persistence and
 transmission. (Have I already done some of these, in effect?)
   	[Well in the 7/2012 paper I had the perceived domains driving
@@ -31,26 +52,6 @@ transmission. (Have I already done some of these, in effect?)
 
 . Make the source analog present only intermittently.  i.e. take it out and
   bring it back.
-
-
-What the files do:
-	parenting18analogsAsBiases1.lisp	main code for experiments
-The rest of these load the preceding file, specify parameters, and run the population:
-	parenting18analogsAsBiases1a.lisp	sky bias,   N=10,  *max-pop-ticks* = 100
-	parenting18analogsAsBiases1b.lisp	sky bias,   N=100, *max-pop-ticks* = 100
-	parenting18analogsAsBiases1c.lisp	earth bias, N=10,  *max-pop-ticks* = 500
-	parenting18analogsAsBiases1d.lisp	earth bias, N=100, *max-pop-ticks* = 2000
-	parenting18analogsAsBiases1e.lisp	earth bias, N=100, *max-pop-ticks* = 1500
-	parenting18analogsAsBiases1f.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
-	parenting18analogsAsBiases1g.lisp	earth bias, N=10,  *max-pop-ticks* = 100
-	parenting18analogsAsBiases1h.lisp	earth bias, N=10,  *max-pop-ticks* = 100
-		note: 1h is identical to 1g but doesn't override default output file names
-	parenting18analogsAsBiases1i.lisp	earth bias, N=10,  *max-pop-ticks* = 1500
-	parenting18analogsAsBiases1j.lisp	sky bias,   N=10,  *max-pop-ticks* = 1500
-	parenting18analogsAsBiases1k.lisp	no origins, N=10,  *max-pop-ticks* = 1500
-	NOTE: PRECEDING LACKED generic-origin-propns, and should be re-run with that added i.e. make new main file parenting18analogsAsBiases2.lisp
-        THE FOLLOWING INCLUDE generic-origin-propns:
-	parenting18analogsAsBiases2a.lisp	all origins, N=10,  *max-pop-ticks* = 1500
 
 running parenting18analogsAsBiases1a.lisp (which uses
 parenting18analogsAsBiases1.lisp) repeatedly for 2000 ticks is producing
