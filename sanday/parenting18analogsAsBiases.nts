@@ -21,6 +21,13 @@ The rest of these load the preceding file, specify parameters, and run the popul
 	parenting18analogsAsBiases2b.lisp	sky bias,    N=10,  *max-pop-ticks* = 1500
 	parenting18analogsAsBiases2c.lisp	earth bias,  N=10,  *max-pop-ticks* = 1500
 
+NOTES on some parenting18analogsAsBiases2 experiments:
+	note that b (sky-bias) has a case in which the parenting average is < 0 !
+	also note that b and a (neutral) have cases of hunting a bit < 0.
+	for c (earth-bias), the lowest hunting averages are zero, and the
+	lowest parenting average is above .25 .
+
+OVERVIEW:
 experiments on influence of analogy on long-term persistence and
 transmission. (Have I already done some of these, in effect?)
   	[Well in the 7/2012 paper I had the perceived domains driving
