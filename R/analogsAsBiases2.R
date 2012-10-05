@@ -52,25 +52,24 @@ mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
 # plot all of the H/P averages combinations as points precisely:
 plot1500 <- function () {scatter2domains(ah1500mm, ap1500mm)}
 
-addlScatter=.04
+pointSize <- 2
+addlScatter <- .04
+mainTitle <- "Population-wide average activations each run in two domains"
+subTitle  <- "Placement approximate: Points randomly shifted to make nearby points visible.\nRed x: average over all runs."
 
 # Same thing, but add some random extra scatter to pull apart nearly identical points:
-plot1500plus <- function () {
-  scatter2domains( ah1500mm + runif(ah1500mm, max=addlScatter), ap1500mm + runif(ap1500mm, max=addlScatter) )
+plot1500plus <- function (biasDesc) {
+  main <- paste(mainTitle, ",\nwith", biasDesc, "bias")
+  sub <- paste(subTitle, "\nNumber of propositions in hunting domain:", dim(ah1500)[2], "\nNumber of propositions in parenting domain:", dim(ap1500)[2])
+  scatter2domains( ah1500mm + runif(ah1500mm, max=addlScatter), ap1500mm + runif(ap1500mm, max=addlScatter), xlab="hunting", ylab="parenting", main)
 }
 
-pointSize <- 3
-
-scatter2domains <- function (dom1vals, dom2vals) {
+scatter2domains <- function (dom1vals, dom2vals, xlab="domain 1", ylab="domain 2", main=mainTitle, sub=subTitle) {
   npoints <- length(dom1vals)
   mycolors = rgb(runif(npoints),runif(npoints),runif(npoints))
   plot(x=dom1vals, y=dom2vals, type="p", pch=".", cex=pointSize, ylim=c(-1,1), xlim=c(-1,1), col=mycolors)
   lines(x=c(-1,1), y=c(-1,1), col="blue") # draw diagonal line indicating where equal P, H pairs would lie
   lines(x=mean(dom1vals), y=mean(dom2vals), type="p", pch="x", col="red")
 }
-# However, this graph does not give a clear representation of how many points are piled up on each of the shared
-# approximate values.
-# There are links to some 3-D graphs on the plot man page.
-# That will require binning, probably.
-# You could try something like this:
-# plot(both1500mm, type="p", pch=".", cex=4, ylim=c(-1,1), xlim=c(-1,1))
+
+plot1500plus(commandArgs(trailingOnly=TRUE)[1])
