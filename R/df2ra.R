@@ -101,7 +101,7 @@ df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
 
 ##############################################################
 # RAs2multirunRA
-# Given a list of 3-D arrays of the kind produced by df2RA, and a list
+# Given a list of 3-D arrays, each of the kind produced by df2RA, and a list
 # of run names of the runs which generated the data for those arrays,
 # return a 4-D array in which each element along the 4th dimension is
 # one of the original 3-D arrays, in order.
