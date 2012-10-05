@@ -71,20 +71,19 @@ stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or 
 # i.e. for each tick, there's a personXpropn matrix.
 # [When printed in R, what you'll see is a series of tick-indexed matrices
 # going down the page, each matrix having person rows and propn cols.]
-#
-# This function assumes that the meta columns have already been stripped by stripMetaCols()
+# Arguments:
+# dframe: a data frame to use as input data
+# firstTick: if passed, the first tick of the dataframe to include (defaults to 1)
+# lastTick: if passed, the last tick of the dataframe to include (defaults to the number of rows in the dataframe)
+# i.e. the returned RA will go from firstTick to lastTick, inclusive.
 
-# NOTE the following abstraction of the following definition is not currently needed, but was, and maybe will be.
-df2RA <- function(dframe) {strippedDf2RA(dframe)}
-# df2RA <- function(dframe) {strippedDf2RA(stripMetaCols(dframe))} NOT CURRENTLY USED
-
-strippedDf2RA <- function(dframe) {
+df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
   persnames = persPropNames2persNames(cols) # ; print(persnames)
   propnames = persPropNames2genPropNames(cols) # ; print(propnames)
-  nticks = nrow(dframe) # ; print(nticks)
-  ticks = 1:nticks
+  ticks = firstTick:lastTick
+  nticks = length(ticks)
   npersons = length(persnames)
   npropns = length(propnames)
 
@@ -92,7 +91,7 @@ strippedDf2RA <- function(dframe) {
   # defined by first two dimensions flipped along the diagonal.  
   # Seems to be the only easy way to do it.
   # See notes below for further explanation.
-  flippedmats = array( t(dframe) ,     c(npropns,   npersons,  nticks) , 
+  flippedmats = array( t(dframe[firstTick:lastTick,]) ,     c(npropns,   npersons,  nticks) , 
                        dimnames=list(propnames, persnames, ticks) )
 
   # Now return version with inner (i.e. first two) dimensions swapped,
