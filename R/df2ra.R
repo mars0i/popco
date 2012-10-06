@@ -130,7 +130,7 @@ RA2domRA <- function(ra, dom) {
 
 # for multi-run array
 multiRA2domRA <- function(ra, dom) {
-  ra[ , getDomainColnums(ra, dom) , , ]  # return an array with only columns we want
+  ra[ , getDomainColnums(ra, dom) , , , drop=FALSE]  # return an array with only columns we want, keeping all dims even if length=1
 }
 
 # Given an array and a domain string, returns the indexes
