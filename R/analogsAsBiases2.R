@@ -7,16 +7,17 @@ source("~/popco/R/df2ra.R")
 # NOTE: Assumes AA, the "assured advocate", i.e. true
 # believer/perceiver, is always the first person.
 
-print("Loading data into full multirun array...")
+#print("Loading data into full multirun array...")
+print("Loading data into multirun array containing only tick 1500...")
 csvs <- list.files(pattern="*.csv")
-print(system.time(a <- read2multirunRA(csvs)))
+print(system.time(a <- read2multirunRA(csvs, firstTick=1500)))
 # This has dimensions person, proposition, tick, run.
 
 print("Subsetting into P/H-at-tick-1500 arrays (and removing the first person, i.e. the True Believer)")
-#ap <- multiRA2domRA(a, "P")  # and for domain P
-#ah <- multiRA2domRA(a, "H")  # extract subarray for proposition domain H
-ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1],,1500,] # combine previous steps
-ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1],,1500,] # see preceding notes
+ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1],,,]
+ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1],,,]
+#ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1],,1500,] # combine previous steps
+#ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1],,1500,] # see preceding notes
 # NOTE: the "2:dim(a)[1]" says get all rows except the first, which is SP
 # These last matrices have dimensions person, proposition, run.
 

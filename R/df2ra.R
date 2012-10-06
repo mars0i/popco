@@ -3,18 +3,6 @@
 
 ## EXAMPLE USAGE:
 # a <- read2multirunRA(csvs)   # defined below: create multi-run array
-
-# SIMPLE PLOTTING FOR ONE RUN AND PERSON ACROSS TIME:
-# plot(1, type="n", ylim=c(-1,1), xlim=c(1,1500), ylab="activation", xlab="time")   # make empty plot w/ activation range (-1,1) and 1500 ticks
-# lines(a["S01", "P.WOMAN.CREATES.CHILD.FROM.WITHIN", ,"RUN043839485"], type="p", pch=".", col="blue") # dot-plot one propn in person SO1 in one run
-# lines(a["S01", "P.CHILD.CLOSE", ,"RUN043839485"], type="p", pch=".", col="red")                      # dot-plot another propn for same person and run
-# lines(apply(a["S01",,,"RUN043839485"], 2, mean), type="l")  # line-plot mean activn at each tick for that person, run
-   # notes on this instance of apply: 
-   # Subscripts fix the person and run, but let propn and tick vary.
-   # The result is a 2D array with dimensions propn, tick.
-   # Second arg to apply, i.e. index 2, says: for each tick, get the mean of whatever variation is still allowed.
-   # i.e. for each tick, take the mean of all propn activations at that tick.
-
 # EXTRACTION AND COMPARISON OF DOMAINS AT ONE TIME ACROSS RUNS:
 # ah <- multiRA2domRA(a, "H")  # defined below: extract subarray for proposition domain H
 # ap <- multiRA2domRA(a, "P")  # note this function works only on 4D arrays, not lower-dimensional subarrays
@@ -33,10 +21,14 @@
 readcsvs <- function(csvs) { lapply(csvs, read.csv) }
 
 # Given a list or vector of filenames, return a list of arrays created by df2RA(), one for each input file.
-read2RAs <- function(csvs) { lapply(readcsvs(csvs), df2RA) }
+read2RAs <- function(csvs, firstTick=1) {
+  lapply(readcsvs(csvs), df2RA, firstTick=firstTick)
+}
 
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
-read2multirunRA <- function(csvs) { RAs2multirunRA(read2RAs(csvs), stripcsv(csvs)) }
+read2multirunRA <- function(csvs, firstTick=1) {
+  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
+}
 
 ##############################################################
 # NOT CURRENTLY USED:
