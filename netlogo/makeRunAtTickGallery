@@ -1,0 +1,24 @@
+#!/bin/sh
+# Given filenames of single-tick NetLogo POPCO data files from different runs,
+# outputs on stdout a NetLogo POPCO data file which displays the single-tick
+# state from each run in turn.
+
+# NOTE assumes that population state is formatted on a single line,
+# the last line of the nlogdat file.  At present (10/2012) POPCO
+# running in SBCL format conversation lists onto several lines, but
+# population state lists are always formatted on a single line.
+
+# Use the first file as the source for the header lines:
+tail -2 $1
+
+# Now run through all the files, until getting the next filename generates an empty string:
+while [ -n "$1" ]; do
+	# This will send the run id to the NetLogo output window:
+	echo '["status:" "' ${1%AtTick*.nlogdat} '"]'
+	# Get the state from this run:
+	tail -1 $1
+	# Output an empty list of conversations to keep popco.nlogo happy:
+	echo '[]'
+	# get the next filename:
+	shift
+done
