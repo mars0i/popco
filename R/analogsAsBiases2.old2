@@ -29,15 +29,10 @@ print(system.time( a <- RAs2multirunRA( ras, stripcsv(csvs) ) ))
 
 rm(dfs) # clean up to save space
 rm(ras) # ditto
-# rm(a)
 
-print("Subsetting into P/H-at-tick-1500 arrays (and removing all True Believers)")
-ap1500 <- multiRA2domRA(a, "P")[grep("^AA", dimnames(a)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
-ah1500 <- multiRA2domRA(a, "H")[grep("^AA", dimnames(a)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
-# old version:
-#ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1], , , ]
-#ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1], , , ]
-
+print("Subsetting into P/H-at-tick-1500 arrays (and removing the first person, i.e. the True Believer)")
+ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1], , , ] # drop=F prevents losing a dimension
+ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1], , , ] #  when number of ticks used is 1
 #ap1500 <- multiRA2domRA(a, "P")[2:dim(a)[1],,1500,] # combine previous steps
 #ah1500 <- multiRA2domRA(a, "H")[2:dim(a)[1],,1500,] # see preceding notes
 # NOTE: the "2:dim(a)[1]" says get all rows except the first, which is SP
@@ -54,7 +49,6 @@ ap1500m <- apply(ap1500, c(1,3), mean) # for each person and run,
 ah1500m <- apply(ah1500, c(1,3), mean) # get average proposition activation
 # These matrices have dimensions person, run.
 
-# we use these briefly below:
 #rm(ap1500) # cleanup
 #rm(ah1500)
 
@@ -82,7 +76,7 @@ mycolors = rgb(runif(maxcolors),runif(maxcolors),runif(maxcolors))
 # plot all of the H/P averages combinations as points precisely:
 plot1500 <- function () {scatter2domains(ah1500mm, ap1500mm)}
 
-pointSize <- 3
+pointSize <- 2
 addlScatter <- .04
 mainTitle <- "Population-wide per-run average activations in two domains,\n"
 subTitle  <- "Points shifted to make nearby points visible. Red x = overall mean."

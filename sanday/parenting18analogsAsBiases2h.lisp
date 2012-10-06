@@ -2,8 +2,7 @@
 
 (load "sanday/parenting18analogsAsBiases2")
 
-; 11 instead of 10: There will be two true believers, leaving 9 followers, just as in parenting18analogsAsBiases2[a-f].lisp:
-(defvar *my-pop-size* 11)
+(defvar *number-of-followers* 10)
 
 ; don't move graph around in telguess:
 (setf *guess-layout-commands* "")
@@ -13,7 +12,7 @@
 (make-sky-biased-lifestyle-talker 'aaF lifestyle-propns)  ; "aa" for "assured advocate": NAYSAYER      [propns are alpha-sorted, so will sort before followers]
 (make-sky-biased-lifestyle-talker 'aaT lifestyle-propns)  ; "aa" for "assured advocate": TRUE BELIEVER [propns are alpha-sorted, so will sort before followers]
 (make-sky-biased-lifestyle-talker 'temp-person)
-(n-persons-with-name 'temp-person 'p (1- *my-pop-size*)) ; "p" for person
+(n-persons-with-name 'temp-person 'p (1- *number-of-followers*)) ; "p" for person
 (rem-elt-from-property 'temp-person 'folks 'members)
 
 (init-pop)
