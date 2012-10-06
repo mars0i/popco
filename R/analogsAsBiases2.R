@@ -97,4 +97,7 @@ scatter2domains <- function (dom1vals, dom2vals, xlab="domain 1", ylab="domain 2
   lines(x=mean(dom1vals), y=mean(dom2vals), type="p", pch="x", col="red")
 }
 
-#plot1500plus(commandArgs(trailingOnly=TRUE)[1])
+# if running in batch, automatically plot:
+if ( ! interactive() ) {
+  plot1500plus(commandArgs(trailingOnly=TRUE)[1])
+}
