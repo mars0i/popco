@@ -78,7 +78,7 @@ plot1500 <- function () {scatter2domains(ah1500mm, ap1500mm)}
 
 pointSize <- 2
 addlScatter <- .04
-mainTitle <- "Population-wide average activations in two domains,\n"
+mainTitle <- "Population-wide per-run average activations in two domains,\n"
 subTitle  <- "Points shifted to make nearby points visible. Red x = overall mean."
 
 # Same thing, but add some random extra scatter to pull apart nearly identical points:
