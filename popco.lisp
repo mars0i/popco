@@ -752,6 +752,7 @@
 ; setting activation to 1 by default.
 ; ARG: a generic proposition message, i.e. a full subject/predicate representation in list form.
 ; *THE-PERSON* MUST BE SET CORRECTLY.
+; ALSO SEE: perceived-negation
 (defun perceived (msg &optional (degree 1.0) (person *the-person*))
   (let* ((env (make-persons-env-sym person))
          (generic-propn (last-element msg))
@@ -799,8 +800,8 @@
 ; environment, setting its activation to -1.
 ; ARG: a proposition message, i.e. a full subject/predicate representation in list form.
 ; *THE-PERSON* MUST BE SET CORRECTLY.
-(defun perceived-negation (msg)
-  (perceived msg -1))
+(defun perceived-negation (msg &optional (person *the-person*))
+  (perceived msg -1 person))
 
 ; DROP SALIENCE
 ; make nothing salient for anyone:

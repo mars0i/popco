@@ -10,7 +10,7 @@
 ;*********************************************************************************
 ;; GET/PUT MACROS
 
-(defmacro activation (unit) `(get ,unit 'activation))
+(defmacro activation (unit) `(get ,unit 'activation)) ; note ACT is a function version of this
 (defmacro prop (unit) `(get ,unit 'prop))
 (defmacro original-activation (unit) `(get ,unit 'original-activation))
 (defmacro facilitates (unit) `(get ,unit 'facilitates))

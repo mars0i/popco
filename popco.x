@@ -91,3 +91,24 @@
     (and (> *max-pop-ticks* 0)
          (>= *pop-tick* *max-pop-ticks*))
     (user-says-stop)))
+
+; PERCEIVED-NEGATION
+; Perceive a propn.  Insert the proposition into a person's "external" 
+; environment, setting its activation to -1.
+; ARG: a proposition message, i.e. a full subject/predicate representation in list form.
+; OR: For convenience, this can now be passed a proposition name symbol
+; AND you can pass either a personal or generic proposition symbol
+; Note that PERCEIVED has none of this flexibility, nor should it, probably.
+; The idea is that while PERCEIVED is designed for use in internal code, PERCEIVED-NEGATION
+; is designed for interactive use.  But still:
+; THIS KLUDGINESS SHOULD BE CLEANED UP AT SOME POINT.
+; *THE-PERSON* MUST BE SET CORRECTLY.
+(defun perceived-negation (propn &optional (person *the-person*))
+  (cond ((consp propn)
+         (perceived msg -1 person))
+        ((symbolp propn)
+         (perceived 
+           (get (maybe-depersonalize-sym propn) 'message)
+           -1
+           person))
+        (t (error "perceived-negation: ~S is neither a symbol nor a list." propn))))

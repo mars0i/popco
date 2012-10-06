@@ -10,6 +10,11 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+; set the activation of a proposition to -1 * whatever it was
+(defun negate-propn (propn)
+  (setf (activation propn)
+        (* -1 (activation propn))))
+
 ; print to the console a person's constraints in space-delimited format
 (defun print-constraints-example1 (person)
   (mapc 
