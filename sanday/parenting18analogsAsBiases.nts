@@ -25,9 +25,10 @@ The rest of these load the preceding file, specify parameters, and run the popul
 	parenting18analogsAsBiases2d.lisp	all origins, N=10,  *max-pop-ticks* = 1500, naysayer, no true believer
 	parenting18analogsAsBiases2e.lisp	sky bias,    N=10,  *max-pop-ticks* = 1500, naysayer, no true believer
 	parenting18analogsAsBiases2f.lisp	earth bias,  N=10,  *max-pop-ticks* = 1500, naysayer, no true believer
-	parenting18analogsAsBiases2g.lisp	all origins, N=10,  *max-pop-ticks* = 1500, true believer and naysayer
-	parenting18analogsAsBiases2h.lisp	sky bias,    N=10,  *max-pop-ticks* = 1500, true believer and naysayer
-	parenting18analogsAsBiases2i.lisp	earth bias,  N=10,  *max-pop-ticks* = 1500, true believer and naysayer
+	parenting18analogsAsBiases2g.lisp	all origins, N=11,  *max-pop-ticks* = 1500, true believer and naysayer
+	parenting18analogsAsBiases2h.lisp	sky bias,    N=11,  *max-pop-ticks* = 1500, true believer and naysayer
+	parenting18analogsAsBiases2i.lisp	earth bias,  N=11,  *max-pop-ticks* = 1500, true believer and naysayer
+	parenting18analogsAsBiases2j.lisp	no origins,  N=11,  *max-pop-ticks* = 1500, true believer and naysayer
 
 NOTES on some parenting18analogsAsBiases2 experiments:
 	note that b (sky-bias) has a case in which the parenting average is < 0 !
