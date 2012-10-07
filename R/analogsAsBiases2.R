@@ -31,6 +31,8 @@ rm(dfs) # clean up to save space
 rm(ras) # ditto
 # rm(a)
 
+numPundits <- length(grep("^AA", dimnames(a)[[1]], invert=FALSE))
+
 print("Subsetting into P/H-at-tick-1500 arrays (and removing all True Believers)")
 ap1500 <- multiRA2domRA(a, "P")[grep("^AA", dimnames(a)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
 ah1500 <- multiRA2domRA(a, "H")[grep("^AA", dimnames(a)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
@@ -89,8 +91,10 @@ subTitle  <- "Points shifted to make nearby points visible. Red x = overall mean
 
 # Same thing, but add some random extra scatter to pull apart nearly identical points:
 plot1500plus <- function (biasDesc) {
-  main <- paste(mainTitle, length(ap1500mm), " runs with ", biasDesc, " bias", sep="")
-  sub <- paste(subTitle, "\nNumber of propositions in hunting domain:", dim(ah1500)[2], "\nNumber of propositions in parenting domain:", dim(ap1500)[2])
+  main <- paste(mainTitle, length(ap1500mm), " runs with ", biasDesc, " bias (", numPundits, " pundit", if(numPundits>1){"s"}, ")", sep="")
+  sub <- subTitle
+  # ends up below bottom of window/page:
+  #sub <- paste(subTitle, "\nNumber of propositions in hunting domain:", dim(ah1500)[2], "\nNumber of propositions in parenting domain:", dim(ap1500)[2])
   scatter2domains( ah1500mm + runif(ah1500mm, max=addlScatter), ap1500mm + runif(ap1500mm, max=addlScatter), xlab="hunting", ylab="parenting", main)
 }
 
