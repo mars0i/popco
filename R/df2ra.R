@@ -15,7 +15,12 @@
 # ap1500means/ah1500means                     # ratios are also interesting
 
 ##############################################################
+
+##############################################################
 # file read functions
+
+# Return list of all files *.csv in the current working directory.  (Use setwd() to change dir)
+getcsvnames <- function() {list.files(pattern="*.csv")}
 
 # Given a list or vector of filenames, return a list of dataframes, one for each input file.
 readcsvs <- function(csvs) { lapply(csvs, read.csv) }
@@ -29,6 +34,32 @@ read2RAs <- function(csvs, firstTick=1) {
 read2multirunRA <- function(csvs, firstTick=1) {
   RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
 }
+
+# run read2multirunRA in specified directory, returning to current directory when done:
+read2multirunRAfromDir <- function(datadir, csvs, firstTick=1) {
+  currdir <- getwd()
+  setwd(datadir)
+  read2multirunRA(csvs, firstTick)
+}
+
+
+
+# given a multi-run array and two propn domain name strings, 
+# REWRITE USING removePundits()
+multirunRA2domainRAs <- function(multiRA, dom1, dom2) {
+  numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
+  dom1RA <- multiRA2domRA(multiRA, dom1)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
+  dom2RA <- multiRA2domRA(multiRA, dom2)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
+  list(dom1RA, dom2RA, numPundits)
+}
+
+
+punditPrefix <- "AA"
+
+removePundits <- function(multiRA) {
+  # to fill in
+}
+
 
 ##############################################################
 # NOT CURRENTLY USED:
