@@ -88,26 +88,66 @@ pointSize <- 3
 addlScatter <- .04
 mainTitle <- "Population-wide per-run average activations in two domains,\n"
 subTitle  <- "Points shifted to make nearby points visible. Red x = overall mean."
+bgray <- rgb(190, 190, 190, alpha=80, maxColorValue=255) # a light background-ey gray
 
-# Same thing, but add some random extra scatter to pull apart nearly identical points:
+# Compute values at which averages would fall if all activns went
+# to either -1 or 1, for hunting (10 propns) or parenting (9 propns):
+parthsums <- c(10,8,6,4,2) # 10-0, 9-1, 8-2, etc.
+hsums <- c(parthsums, 0, -1 * sort(hsums)) # same but with 0, neg vals to
+partpsums <- c(9,7,5,3,1)  # 9-0, 8-1, 7-2, etc.
+psums <- c(partpsums, -1 * sort(partpsums)) # same but with negative vals too
+
+# Average values for all propns in a domain would then be an element 
+# in hsums or psums, divided by the number of propns in the domain:
+hfracts <- hsums/10
+pfracts <- psums/9
+# We can introduce lines on the graph at these values to show
+# where the averages would fall if activations all went to -1 or 1.
+
 plot1500plus <- function (biasDesc) {
   main <- paste(mainTitle, length(ap1500mm), " runs with ", biasDesc, " bias (", numPundits, " pundit", if(numPundits>1){"s"}, ")", sep="")
   sub <- subTitle
   # ends up below bottom of window/page:
   #sub <- paste(subTitle, "\nNumber of propositions in hunting domain:", dim(ah1500)[2], "\nNumber of propositions in parenting domain:", dim(ap1500)[2])
-  scatter2domains( ah1500mm + runif(ah1500mm, max=addlScatter), ap1500mm + runif(ap1500mm, max=addlScatter), xlab="hunting", ylab="parenting", main)
+  scatter2domains( ah1500mm, ap1500mm, xlab="hunting", ylab="parenting", main=main)
 }
 
-scatter2domains <- function (dom1vals, dom2vals, xlab="domain 1", ylab="domain 2", main=mainTitle, sub=subTitle) {
+scatter2domains <- function (dom1vals, dom2vals, xlab="domain 1", ylab="domain 2", main=mainTitle, sub=subTitle, runifmax=addlScatter) {
   npoints <- length(dom1vals)
   mycolors = rgb(runif(npoints),runif(npoints),runif(npoints))
   dev.new() # open new plot window, leave old ones open
-  plot(x=dom1vals, y=dom2vals, type="p", pch=".", cex=pointSize, ylim=c(-1,1), xlim=c(-1,1), col=mycolors, xlab=xlab, ylab=ylab, main=main, sub=sub, asp=1)
+
+  # plot the per-run mean activation for each domain:
+  plot(x=dom1vals+runif(dom1vals,max=runifmax),
+       y=dom2vals+runif(dom2vals,max=runifmax), 
+       type="p", pch=".", cex=pointSize, ylim=c(-1,1), xlim=c(-1,1), col=mycolors, xlab=xlab, ylab=ylab, main=main, sub=sub, asp=1)
+  lines(x=mean(dom1vals), y=mean(dom2vals), type="p", pch="x", col="red") # plot mean over all runs
+  abline(h=pfracts, v=hfracts, col=bgray) # draw light lines where per-run averages would be if activns were all -1 or 1
   lines(x=c(-1,1), y=c(-1,1), col="blue") # draw diagonal line indicating where equal P, H pairs would lie
-  lines(x=mean(dom1vals), y=mean(dom2vals), type="p", pch="x", col="red")
 }
+
 
 # if running in batch, automatically plot:
 if ( ! interactive() ) {
   plot1500plus(commandArgs(trailingOnly=TRUE)[1])
 }
+
+# old versions:
+# # Same thing, but add some random extra scatter to pull apart nearly identical points:
+# plot1500plus <- function (biasDesc) {
+#   main <- paste(mainTitle, length(ap1500mm), " runs with ", biasDesc, " bias (", numPundits, " pundit", if(numPundits>1){"s"}, ")", sep="")
+#   sub <- subTitle
+#   # ends up below bottom of window/page:
+#   #sub <- paste(subTitle, "\nNumber of propositions in hunting domain:", dim(ah1500)[2], "\nNumber of propositions in parenting domain:", dim(ap1500)[2])
+#   scatter2domains( ah1500mm + runif(ah1500mm, max=addlScatter), ap1500mm + runif(ap1500mm, max=addlScatter), xlab="hunting", ylab="parenting", main)
+# }
+# scatter2domains <- function (dom1vals, dom2vals, xlab="domain 1", ylab="domain 2", main=mainTitle, sub=subTitle) {
+#   npoints <- length(dom1vals)
+#   mycolors = rgb(runif(npoints),runif(npoints),runif(npoints))
+#   dev.new() # open new plot window, leave old ones open
+#   # plot the per-run mean activation for each domain:
+#   plot(x=dom1vals, y=dom2vals, type="p", pch=".", cex=pointSize, ylim=c(-1,1), xlim=c(-1,1), col=mycolors, xlab=xlab, ylab=ylab, main=main, sub=sub, asp=1)
+#   lines(x=mean(dom1vals), y=mean(dom2vals), type="p", pch="x", col="red") # plot mean over all runs
+#   abline(h=pfracts, v=hfracts, col=bgray) # draw light lines where per-run averages would be if activns were all -1 or 1
+#   lines(x=c(-1,1), y=c(-1,1), col="blue") # draw diagonal line indicating where equal P, H pairs would lie
+# }
