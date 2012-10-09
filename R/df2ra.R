@@ -22,8 +22,14 @@
 # Return list of all files *.csv in the current working directory.  (Use setwd() to change dir)
 getcsvnames <- function() {list.files(pattern="*.csv")}
 
+# Just a wrapper around read.csv to allow adding print statements, etc.
+readcsv <- function(csv) {
+  cat("Reading ", csv, ". ")
+  read.csv(csv)
+}
+
 # Given a list or vector of filenames, return a list of dataframes, one for each input file.
-readcsvs <- function(csvs) { lapply(csvs, read.csv) }
+readcsvs <- function(csvs) { lapply(csvs, readcsv) }
 
 # Given a list or vector of filenames, return a list of arrays created by df2RA(), one for each input file.
 read2RAs <- function(csvs, firstTick=1) {
@@ -36,28 +42,30 @@ read2multirunRA <- function(csvs, firstTick=1) {
 }
 
 # run read2multirunRA in specified directory, returning to current directory when done:
-read2multirunRAfromDir <- function(datadir, csvs, firstTick=1) {
+read2multirunRAfromDir <- function(datadir, firstTick=1) {
   currdir <- getwd()
   setwd(datadir)
-  read2multirunRA(csvs, firstTick)
-}
-
-
-
-# given a multi-run array and two propn domain name strings, 
-# REWRITE USING removePundits()
-multirunRA2domainRAs <- function(multiRA, dom1, dom2) {
-  numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
-  dom1RA <- multiRA2domRA(multiRA, dom1)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
-  dom2RA <- multiRA2domRA(multiRA, dom2)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
-  list(dom1RA, dom2RA, numPundits)
+  multiRA <- read2multirunRA(getcsvnames(), firstTick)
+  setwd(currdir)
+  multiRA
 }
 
 
 punditPrefix <- "AA"
 
-removePundits <- function(multiRA) {
-  # to fill in
+# given a multi-run array and two propn domain name strings, strip pundits and return a list containing domain-specific arrays and number of pundits
+multirunRA2domRAs <- function(multiRA, dom1, dom2) {
+  numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
+  dom1RA <- removePersons(multiRA2domRA(multiRA, dom1), punditPrefix)
+  dom2RA <- removePersons(multiRA2domRA(multiRA, dom2), punditPrefix)
+  #numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
+  #dom1RA <- multiRA2domRA(multiRA, dom1)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
+  #dom2RA <- multiRA2domRA(multiRA, dom2)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
+  list(dom1RA, dom2RA, numPundits)
+}
+
+removePersons <- function(multiRA, personPrefix) {
+  multiRA[grep(paste0("^", personPrefix), dimnames(multiRA)[[1]], invert=TRUE),,,]
 }
 
 
@@ -101,6 +109,7 @@ stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or 
 # i.e. the returned RA will go from firstTick to lastTick, inclusive.
 
 df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
+  print(paste0("converting dframe to array, using ticks", firstTick, " to ", lastTick))
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
   persnames = persPropNames2persNames(cols) # ; print(persnames)
