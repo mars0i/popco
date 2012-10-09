@@ -16,6 +16,8 @@
 
 ##############################################################
 
+punditPrefix <- "AA"
+
 ##############################################################
 # file read functions
 
@@ -50,18 +52,13 @@ read2multirunRAfromDir <- function(datadir, firstTick=1) {
   multiRA
 }
 
+getNumPundits <- function(multiRA) {
+  length(grep(paste0("^", punditPrefix), dimnames(multiRA)[[1]]))
+}
 
-punditPrefix <- "AA"
-
-# given a multi-run array and two propn domain name strings, strip pundits and return a list containing domain-specific arrays and number of pundits
-multirunRA2domRAs <- function(multiRA, dom1, dom2) {
-  numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
-  dom1RA <- removePersons(multiRA2domRA(multiRA, dom1), punditPrefix)
-  dom2RA <- removePersons(multiRA2domRA(multiRA, dom2), punditPrefix)
-  #numPundits <- length(grep("^AA", dimnames(multiRA)[[1]], invert=FALSE))
-  #dom1RA <- multiRA2domRA(multiRA, dom1)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # true believers are assumed named "AA"-something
-  #dom2RA <- multiRA2domRA(multiRA, dom2)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
-  list(dom1RA, dom2RA, numPundits)
+# given a multi-run array and propn domain name string, strip pundits and return a list containing domain-specific array
+multiRA2punditFreeDomRA <- function(multiRA, dom) {
+  removePersons(multiRA2domRA(multiRA, dom), punditPrefix)
 }
 
 removePersons <- function(multiRA, personPrefix) {

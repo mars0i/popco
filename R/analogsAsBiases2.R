@@ -6,6 +6,13 @@ firstTick <- 1500
 
 source("~/popco/R/df2ra.R")
 
+# TOWARD A NEW SCHEME:
+# REPLACE FIRST SEVERAL CALLS WITH SOMETHING LIKE THIS:
+# a2a <- read2multirunRAfromDir("parenting18analogsAsBiases2a", firstTick=1500)
+# a2aP1500 <- multiRA2punditFreeDomRA(a2a, "P")
+# a2aH1500 <- multiRA2punditFreeDomRA(a2a, "H")
+# numPundits <- getNumPundits(a2a)
+
 # NOTE: Assumes AA, the "assured advocate", i.e. true
 # believer/perceiver, is always the first person.
 
