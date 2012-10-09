@@ -26,7 +26,7 @@ getcsvnames <- function() {list.files(pattern="*.csv")}
 
 # Just a wrapper around read.csv to allow adding print statements, etc.
 readcsv <- function(csv) {
-  cat("Reading ", csv, ". ")
+  cat("Reading ", csv, ". ", sep="")
   read.csv(csv)
 }
 
