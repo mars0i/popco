@@ -26,7 +26,7 @@ getcsvnames <- function() {list.files(pattern="*.csv")}
 
 # Just a wrapper around read.csv to allow adding print statements, etc.
 readcsv <- function(csv) {
-  cat("Reading ", csv, ". ", sep="")
+  cat(csv)
   read.csv(csv)
 }
 
@@ -35,7 +35,17 @@ readcsvs <- function(csvs) { lapply(csvs, readcsv) }
 
 # Given a list or vector of filenames, return a list of arrays created by df2RA(), one for each input file.
 read2RAs <- function(csvs, firstTick=1) {
-  lapply(readcsvs(csvs), df2RA, firstTick=firstTick)
+  dfs2RAs(readcsvs(csvs), firstTick=firstTick)
+}
+
+dfs2RAs <- function(dframes, firstTick=1) {
+  lapply(dframes, df2RA, firstTick=firstTick)
+}
+
+dfs2multirunRA <- function(dframes, firstTick=1) {
+  RAs <- dfs2RAs(dframes, firstTick=firstTick)
+  print("done converting dataframes to arrays")
+  RAs2multirunRA(RAs, stripcsv(getcsvnames()))
 }
 
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
@@ -65,6 +75,14 @@ removePersons <- function(multiRA, personPrefix) {
   multiRA[grep(paste0("^", personPrefix), dimnames(multiRA)[[1]], invert=TRUE),,,]
 }
 
+
+domRA2personMeanMat <- function(domRA) { apply(domRA, c(1,3), mean) }
+
+personMeanMat2runMeanVec <- function(pMeanMat) { apply(pMeanMat, c(2), mean) }
+
+domRA2runMeanVec <- function(domRA) {
+  personMeanMat2runMeanVec(domRA2personMeanMat(domRA))
+}
 
 ##############################################################
 # NOT CURRENTLY USED:
@@ -106,7 +124,7 @@ stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or 
 # i.e. the returned RA will go from firstTick to lastTick, inclusive.
 
 df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
-  print(paste0("converting dframe to array, using ticks", firstTick, " to ", lastTick))
+  print(paste0("converting dframe to array, using ticks ", firstTick, " to ", lastTick))
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
   persnames = persPropNames2persNames(cols) # ; print(persnames)
@@ -137,6 +155,7 @@ df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
 # Note: It appears that the arguments can be vectors or lists.
 
 RAs2multirunRA <- function(RAs, runIDs) {
+  print("converting arrays to mulitrun array")
   numRAs = length(RAs)
 
   # error checking

@@ -5,6 +5,14 @@ library("mypkg")
 
 -------------------------------------------------
 
+> ph <- histogram(cut(pmm, 7))
+> ph <- histogram(cut(pmm, 5))
+> hh <- histogram(cut(hmm, 7))
+> plot(hh, split=c(1,1,1,2))
+> plot(ph, split=c(1,2,1,2), newpage=F)
+
+-------------------------------------------------
+
 ?"["
 for help on syntax of indexing.  (There's more to it than you think!)
 
