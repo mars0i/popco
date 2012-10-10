@@ -24,9 +24,17 @@ punditPrefix <- "AA"
 # Return list of all files *.csv in the current working directory.  (Use setwd() to change dir)
 getcsvnames <- function() {list.files(pattern="*.csv")}
 
+getcsvnamesInDir <- function(datadir) {
+  currdir <- getwd()
+  setwd(datadir)
+  csvs <- getcsvnames()
+  setwd(currdir)
+  csvs
+}
+
 # Just a wrapper around read.csv to allow adding print statements, etc.
 readcsv <- function(csv) {
-  cat("Reading ", csv, ". ", sep="")
+  cat(csv, sep=" ")
   read.csv(csv)
 }
 
@@ -50,6 +58,15 @@ read2multirunRAfromDir <- function(datadir, firstTick=1) {
   multiRA <- read2multirunRA(getcsvnames(), firstTick)
   setwd(currdir)
   multiRA
+}
+
+# run read2multirunRA in specified directory, returning to current directory when done:
+read2dfsFromDir <- function(datadir) {
+  currdir <- getwd()
+  setwd(datadir)
+  dfs <- readcsvs(getcsvnames())
+  setwd(currdir)
+  dfs
 }
 
 getNumPundits <- function(multiRA) {
