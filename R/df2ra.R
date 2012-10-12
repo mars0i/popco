@@ -27,7 +27,11 @@ spread <- function(x){abs( max(x) - min(x) )}
 # persons greater than tolerance (where disagreement is measured by spread(), i.e. by distance
 # between max and min activations across persons for a proposition):
 findRunsWithDisagreement <- function(domMultiRA, tolerance) {
-  dimnames(domMultiRA)[[3]][apply(apply(domMultiRA,c(2,3), spread) > tolerance, c(2), any)]
+  spreads <- apply(domMultiRA, c(2,3), spread) 
+  spreadsGTtolerance <- spreads > 1
+  disagreeableRunPositions <- apply(spreadsGTtolerance, c(2), any)
+  runNames <- dimnames(domMultiRA)[[3]]
+  runNames[disagreeableRunPositions]
 }
 
 ##############################################################
@@ -101,7 +105,7 @@ multiRA2punditFreeDomRA <- function(multiRA, dom) {
 }
 
 removePersons <- function(multiRA, personPrefix) {
-  multiRA[grep(paste0("^", personPrefix), dimnames(multiRA)[[1]], invert=TRUE),,,]
+  multiRA[grep(paste0("^", personPrefix), dimnames(multiRA)[[1]], invert=TRUE),,, , drop=FALSE]
 }
 
 
