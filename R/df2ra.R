@@ -23,15 +23,18 @@ punditPrefix <- "AA"
 spread <- function(x){abs( max(x) - min(x) )}
 
 # Given a domain-specific subset of a multirun array e.g. produced by multiRA2punditFreeDomRA(),
+# i.e. with dimensions person, proposition, tick, run (even if there is only one tick),
 # return a vector of names of runs which have at least proposition with disagreement between
 # persons greater than tolerance (where disagreement is measured by spread(), i.e. by distance
-# between max and min activations across persons for a proposition):
-findRunsWithDisagreement <- function(domMultiRA, tolerance) {
-  spreads <- apply(domMultiRA, c(2,3), spread) 
-  spreadsGTtolerance <- spreads > 1
-  disagreeableRunPositions <- apply(spreadsGTtolerance, c(2), any)
-  runNames <- dimnames(domMultiRA)[[3]]
-  runNames[disagreeableRunPositions]
+# between max and min activations across persons for a proposition).
+# NOTE tickIndex is relative to length of domMultiRA, if numeric.  e.g. if domMultiRA has
+# only one tick, originally tick 1500, then tickIndex should be 1, or the string "1500".
+findRunsWithDisagreement <- function(domMultiRA, tolerance, tickIndex=1) {
+  spreads <- apply(domMultiRA[,,tickIndex, , drop=F], c(2,4), spread)  # return 2D array of spreads at tickIndex for each propn in each run
+  spreadsGTtolerance <- spreads > tolerance  # change preceding array into propn X run array of T/F's, TRUE iff a given spread is > tolerance
+  disagreeableRunPositions <- apply(spreadsGTtolerance, c(2), any) # return vector containing, for each run, TRUE iff some propn in run had spread > tolerance
+  runNames <- dimnames(domMultiRA)[[4]]
+  runNames[disagreeableRunPositions]   # return names of runs which had some propn with spread > tolerance
 }
 
 ##############################################################
