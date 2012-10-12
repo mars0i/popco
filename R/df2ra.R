@@ -18,6 +18,18 @@
 
 punditPrefix <- "AA"
 
+# return absolute difference between max and min values
+# (useful for finding sets of persons who differ significantly on a particular proposition)
+spread <- function(x){abs( max(x) - min(x) )}
+
+# Given a domain-specific subset of a multirun array e.g. produced by multiRA2punditFreeDomRA(),
+# return a vector of names of runs which have at least proposition with disagreement between
+# persons greater than tolerance (where disagreement is measured by spread(), i.e. by distance
+# between max and min activations across persons for a proposition):
+findRunsWithDisagreement <- function(domMultiRA, tolerance) {
+  dimnames(domMultiRA)[[3]][apply(apply(domMultiRA,c(2,3), spread) > tolerance, c(2), any)]
+}
+
 ##############################################################
 # file read functions
 
