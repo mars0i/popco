@@ -27,3 +27,7 @@ multirunRA2domRAs <- function(multiRA, dom1, dom2) {
   #dom2RA <- multiRA2domRA(multiRA, dom2)[grep("^AA", dimnames(multiRA)[[1]], invert=TRUE), , , ] # i.e. "assured advocates"
   list(dom1RA, dom2RA, numPundits)
 }
+
+findRunsWithDisagreement <- function(domMultiRA, tolerance) {
+  dimnames(domMultiRA)[[3]][apply(apply(domMultiRA,c(2,3), spread) > tolerance, c(2), any)]
+}
