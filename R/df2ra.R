@@ -37,6 +37,10 @@ findRunsWithDisagreement <- function(domMultiRA, tolerance, tickIndex=1) {
   runNames[disagreeableRunPositions]   # return names of runs which had some propn with spread > tolerance
 }
 
+# side-effecting increment operators
+inc <- function(i){ eval.parent(substitute(i <- i + 1)); i } # inc then return, like like ++i
+postinc <- function(i){ old = i; eval.parent(substitute(i <- i + 1)); old} # increment and return old val, like i++
+
 ##############################################################
 # file read functions
 
