@@ -167,8 +167,8 @@ df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
   print(paste0("converting dframe to array, using ticks ", firstTick, " to ", lastTick))
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
-  persnames = persPropNames2persNames(cols) # ; print(persnames)
-  propnames = persPropNames2genPropNames(cols) # ; print(propnames)
+  persnames = persPropNames2persNames(cols)     # ; print(persnames)
+  propnames = persPropNames2genPropNames(cols)  # ; print(propnames)
   ticks = firstTick:lastTick
   nticks = length(ticks)
   npersons = length(persnames)
@@ -178,8 +178,8 @@ df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
   # defined by first two dimensions flipped along the diagonal.  
   # Seems to be the only easy way to do it.
   # See notes below for further explanation.
-  flippedmats = array( t(dframe[firstTick:lastTick,]) ,     c(npropns,   npersons,  nticks) , 
-                       dimnames=list(propnames, persnames, ticks) )
+  flippedmats = array( t(dframe[firstTick:lastTick,]) ,  c(npropns,   npersons,  nticks) , 
+                       dimnames=list(propositions=propnames, persons=persnames, ticks=ticks) )
 
   # Now return version with inner (i.e. first two) dimensions swapped,
   # so that the resulting array is what we want:
