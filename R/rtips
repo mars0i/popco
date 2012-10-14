@@ -1,5 +1,16 @@
 R tips:
 
+
+-------------------------------------------------
+
+ dim(ra)
+[1]   11   29 4500
+> yo <- array(ra, c(11*4500,29), dimnames=list(persons=rep(dimnames(ra)$persons,4500),propositions=dimnames(ra)$propositions))
+> dim(yo)
+[1] 49500    29
+
+-------------------------------------------------
+
 install.packages("mypkg", dependencies=TRUE)
 library("mypkg")
 
