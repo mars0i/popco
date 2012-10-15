@@ -18,6 +18,17 @@
 
 punditPrefix <- "AA"
 
+# utility to add top-level dimension names to a multi-RA if didn't do it already:
+addTopDimNamesToMultiRA <- function(RA) {
+  dimns <- dimnames(RA)
+  persnames <- dimns[[1]]
+  propnames <- dimns[[2]]
+  ticknames <- dimns[[3]]
+  runnames  <- dimns[[4]]
+  dimnames(RA) <- list(persons=persnames, propositions=propnames, ticks=ticknames, runs=runnames)
+  RA
+}
+
 # return absolute difference between max and min values
 # (useful for finding sets of persons who differ significantly on a particular proposition)
 spread <- function(x){abs( max(x) - min(x) )}
