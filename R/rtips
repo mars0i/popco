@@ -1,6 +1,20 @@
 R tips:
 
 
+----------------------------------------------------------------------
+Plotting activations with lattice graphics and as.data.frame.table:
+
+library(lattice)
+
+# plot mean activations with separate box for each non-pundit person in one run:
+xyplot(Freq ~ ticks | persons, as.data.frame.table(apply(mra2j[3:11,,,1], c(1,3), mean)), type="l")  # the run dimension gets dropped
+
+# plot mean activations for with separate box for each non-pundit person in each of two runs:
+xyplot(Freq ~ ticks | persons+runs, as.data.frame.table(apply(mra2j[3:11,,,1:2], c(1,3,4), mean)), type="l")
+
+# plot activation of one proposition with separate box for each non-pundit person in each of three runs:
+xyplot(Freq ~ ticks | persons+runs, as.data.frame.table(mra2j[3:11,"H.GAME.POWER.MYSTERIOUSLY",,1:3]), type="l")
+
 -------------------------------------------------
 
  dim(ra)
