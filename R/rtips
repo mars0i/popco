@@ -6,6 +6,8 @@ Plotting activations with lattice graphics and as.data.frame.table:
 
 library(lattice)
 
+show.settings()
+
 # plot mean activations with separate box for each non-pundit person in one run:
 xyplot(Freq ~ ticks | persons, as.data.frame.table(apply(mra2j[3:11,,,1], c(1,3), mean)), type="l")  # the run dimension gets dropped
 
@@ -14,6 +16,13 @@ xyplot(Freq ~ ticks | persons+runs, as.data.frame.table(apply(mra2j[3:11,,,1:2],
 
 # plot activation of one proposition with separate box for each non-pundit person in each of three runs:
 xyplot(Freq ~ ticks | persons+runs, as.data.frame.table(mra2j[3:11,"H.GAME.POWER.MYSTERIOUSLY",,1:3]), type="l")
+
+# two runs, two boxes, overlayed persons for one propn:
+> xyplot(Freq ~ tick | run, groups=person, data=as.data.frame.table(mra2h[3:11,"H.GAME.POWER.MYSTERIOUSLY",,1:2]), type="l")
+
+> xyplot(Freq ~ tick | person+run, groups=proposition, data=as.data.frame.table(mra2h[3:6,1:10,,1:2]), type="l", auto.key=list(columns=3, title="propositions:", cex=.8, space="bottom"), abbreviate=T, scales=list(x=list(at=c(1,seq(500,1500,by=500)))), between=list(x=c(.5,.5),y=c(.5)), alternating=3, main="hunting activations")
+
+> xyplot(Freq ~ tick | person+run, groups=proposition, data=as.data.frame.table(mra2h[3:6,21:29,,1:2]), type="l", auto.key=list(columns=3, title="propositions:", cex=.8, space="bottom"), abbreviate=T, scales=list(x=list(at=c(1,seq(500,1500,by=500)))), between=list(x=c(.5,.5),y=c(.5)), alternating=3, main="parenting activations")
 
 -------------------------------------------------
 
