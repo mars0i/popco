@@ -24,6 +24,51 @@ xyplot(Freq ~ ticks | persons+runs, as.data.frame.table(mra2j[3:11,"H.GAME.POWER
 
 > xyplot(Freq ~ tick | person+run, groups=proposition, data=as.data.frame.table(mra2h[3:6,21:29,,1:2]), type="l", auto.key=list(columns=3, title="propositions:", cex=.8, space="bottom"), abbreviate=T, scales=list(x=list(at=c(1,seq(500,1500,by=500)))), between=list(x=c(.5,.5),y=c(.5)), alternating=3, main="parenting activations")
 
+
+# labels everywhere, dots rather than lines:
+> xyplot(Freq ~ tick | person+run, groups=proposition, 
++        data=as.data.frame.table(mra2h[3:6,1:10,,1:2]),
++        type="p", pch=".",
++        auto.key=list(columns=3, 
++                      title="propositions:", 
++ 		              cex=.8, 
++ 		              space="bottom"), 
++        scales=list( alternating=3, x=list( at=c(1,seq(500,1500,by=500)) ) ),
++        between=list( x=c(1.25,1.25),
++                      y=c(.5) ),
++        ylab="activation", 
++        main="hunting activations")
+
+# labels alternating, dots rather than lines:
+> xyplot(Freq ~ tick | person+run, groups=proposition, 
++        data=as.data.frame.table(mra2h[3:6,1:10,,1:2]),
++        type="p", pch=".",
++        auto.key=list(columns=3, 
++                      title="propositions:", 
++ 		              cex=.8, 
++ 		              space="bottom"), 
++        scales=list( x=list( at=c(1,seq(500,1500,by=500)) ) ),
++        between=list( x=c(1.5,1.5),
++                      y=c(.5) ),
++        ylab="activation", 
++        main="hunting activations")
+
+# two runs, all 9 nonpundits, in good layout, with smaller strip labels:
+xyplot(Freq ~ tick | person+run, groups=proposition, 
+       data=as.data.frame.table(mra2h[3:11,1:10,,1:2]),  # all nonpundits, all hunting propns, 2 runs
+       type="l", pch=".",          # pch doesn't matter for "l" (lines), but does for "p" (points)
+       auto.key=list(columns=3, 
+                     title="propositions:", 
+ 		            cex=.5, 
+ 		            space="bottom"), 
+        scales=list( x=list( at=c(1,seq(500,1500,by=500)) ) ),  # control ticks
+        between=list( x=c(1.25,1.25),  # add space to avoid label overlap between boxes
+                      y=c(.5) ),
+        ylab="activation", 
+        main="hunting activations", 
+        layout=c(6,3),                # layout of boxes
+        par.strip.text=list(cex=.6))  # shrink font in strips
+
 -------------------------------------------------
 
  dim(ra)
