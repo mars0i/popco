@@ -69,6 +69,10 @@ xyplot(Freq ~ tick | person+run, groups=proposition,
         layout=c(6,3),                # layout of boxes
         par.strip.text=list(cex=.6))  # shrink font in strips
 
+Try adding 
+	as.table=T
+to sort from upper left to lower right
+
 -------------------------------------------------
 
  dim(ra)
