@@ -1,5 +1,18 @@
 R tips:
 
+----------------------------------------------------------------------
+
+mh <- multiRA2meanDF(mra2h, "H", "P", firstTick=1500)
+mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
+
+# base graphics overlay two datasets:
+plot(P ~ H,  data=mi, xlim=c(-1,1), ylim=c(-1,1), type="p", pch=".", col="red")
+lines(P ~ H, data=mh, xlim=c(-1,1), ylim=c(-1,1), type="p", pch=".", col="blue")
+
+# lattice versions:
+m <- rbind(cbind(mi, bias="sky"), cbind(mh, bias="sky"))
+xyplot(P ~ H | bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", type="p", cex=.3)
+xyplot(P ~ H, groups=bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", type="p", cex=.3)
 
 ----------------------------------------------------------------------
 Plotting activations with lattice graphics and as.data.frame.table:
@@ -72,6 +85,32 @@ xyplot(Freq ~ tick | person+run, groups=proposition,
 Try adding 
 	as.table=T
 to sort from upper left to lower right
+
+
+# replace the default colors (which cycle after about four or five):
+
+mycols <- c("purple", "red","darkblue", "green", "turquoise",
+            "navyblue", "sienna1",  "darkgreen", "brown", "magenta", "gray50",
+            "chocolate3", "salmon4")
+
+yo <- xyplot(Freq ~ tick | person+run, groups=proposition, 
+       data=as.data.frame.table(mra2i[3:11,1:10,,1:2]),
+       type="l", pch=".",
+       auto.key=list(columns=3, 
+                     title="propositions:", 
+		            cex=.5, 
+ 	              space="bottom"), 
+        scales=list( x=list( at=c(1,seq(500,1500,by=500)) ) ),
+        between=list( x=c(1.25,1.25),
+                      y=c(.5) ),
+        ylab="activation", 
+	main="hunting activations", 
+	layout=c(6,3), 
+	as.table=T,
+	par.strip.text=list(cex=.6), 
+	par.settings=simpleTheme(col=mycols))  
+	# you could just say col=mycols alone, but then it won't
+	# be applied to the legend.  The par.settings stuff deals with that.
 
 -------------------------------------------------
 

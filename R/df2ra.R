@@ -135,6 +135,17 @@ domRA2runMeanVec <- function(domRA) {
   personMeanMat2runMeanVec(domRA2personMeanMat(domRA))
 }
 
+# Produce a dataframe of mean activations in two domains
+# Example of typical usage: 
+#   mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
+# which would produce a two-column dataframe of per-run means for hunting and parenting
+multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiRA)[3]) {
+  df <- data.frame(apply(multiRA2punditFreeDomRA(multiRA[,,firstTick:lastTick,,drop=F], dom1), 4, mean),
+                   apply(multiRA2punditFreeDomRA(multiRA[,,firstTick:lastTick,,drop=F], dom2), 4, mean))
+  names(df) <- c(dom1, dom2)
+  df
+}
+
 ##############################################################
 # NOT CURRENTLY USED:
 # these definitions must be coordinated with each other and with POPCO
