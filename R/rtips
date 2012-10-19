@@ -86,8 +86,31 @@ Try adding
 	as.table=T
 to sort from upper left to lower right
 
+# refined version which shifts some tick labels left so the 1500 doesn't extend over the next plot:
+xyplot(Freq ~ tick | person+run, groups=proposition, 
+       data=as.data.frame.table(mra2i[3:11,1:10,,1:2]),  
+       type="l", pch=".",          
+       auto.key=list(columns=3, 
+                     title="propositions:", 
+ 		            cex=.5, 
+ 		            space="bottom"), 
+        scales=list( x=list(labels=c(1,500,"1000 ","1500    "),
+	             at=c(1,seq(500,1500,by=500))) ),  
+        between=list( x=c(.5, .5),  
+                      y=c(.5) ),
+        ylab="activation", 
+        main="hunting activations", 
+        layout=c(6,3),                
+        par.strip.text=list(cex=.6),
+	as.table=T)
 
-# replace the default colors (which cycle after about four or five):
+# extend the default groups colors:
+
+mycolors <- c(trellis.par.get("superpose.symbol")$col, "navyblue", "orange", "purple", "gray75")
+trellis.par.set(superpose.symbol = list(col = mycolors))
+
+
+# replace the default colors in the xyplot call (which cycle after about four or five):
 
 mycols <- c("purple", "red","darkblue", "green", "turquoise",
             "navyblue", "sienna1",  "darkgreen", "brown", "magenta", "gray50",
