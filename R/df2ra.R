@@ -18,6 +18,8 @@
 
 punditPrefix <- "AA"
 
+addJitter <- function(trellobj=trellis.last.object()) {update(trellobj, jitter.x=T, jitter.y=T, amount=.03)}
+
 # utility to add top-level dimension names to a multi-RA if didn't do it already:
 addTopDimNamesToMultiRA <- function(RA) {
   dimns <- dimnames(RA)

@@ -1,6 +1,31 @@
 R tips:
 
 ----------------------------------------------------------------------
+The x coords for hunting propns are at approx:
+xseq <- seq(from=-9, to=9, by=2*.9)/10
+where 9 = 9 * 1
+
+The y coords for parenting propns are at approx:
+yseq <- seq(from=-8.1, to=8.1, by=2*.9)/9
+where 8.1 = 9 * .9
+
+i.e. where there are N propns, and activations max out at .9,
+the possible averages are multiples of 2*.9 divided by N.
+
+And the plot is:
+
+xyplot(P~H|bias, groups=rawsum, data=TheDataSource, xlim=c(-1,1), ylim=c(-1,1),
+       auto.key=T, aspect="iso", scales=list(cex=.5,
+       x=list(at=hunting.seq),y=list(at=parenting.seq)), type=c("p"),
+       abline=c(list(v=hunting.seq, h=parenting.seq),
+       trellis.par.get("reference.line"), list(a=0,b=1)), alpha=.7, cex=.5)
+
+You can add jitter with addJitter() from df2ra.R, which just calls
+update() on the plot, with some additional jitter parameters.
+
+
+
+----------------------------------------------------------------------
 
 mh <- multiRA2meanDF(mra2h, "H", "P", firstTick=1500)
 mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
@@ -40,14 +65,7 @@ v=seq(from=-1,to=1,by=2/10)),trellis.par.get("reference.line"),list(a=0,b=1)))
 
 # This version also adds jitter ('amount' is the key), as well as 
 # alpha to make circles semi-transparent, and shrinks circle size with 'cex':
-xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans,
-xlim=c(-1,1), ylim=c(-1,1), auto.key=T, aspect="iso",
-scales=list(x=list(at=seq(from=-1,to=1,by=2/10),
-labels=fractions(seq(from=-1,to=1,by=2/10))),y=list(at=seq(from=-1,to=1,by=2/9),
-labels=fractions(seq(from=-1,to=1,by=2/9)), alternating=3 )),
-type=c("p"), abline=c(list(h=seq(from=-1,to=1,by=2/9),
-v=seq(from=-1,to=1,by=2/10)),trellis.par.get("reference.line"),list(a=0,b=1)),
-jitter.x=T, jitter.y=T, amount=.03, alpha=.7, cex=.5)
+xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans, xlim=c(-1,1), ylim=c(-1,1), auto.key=T, aspect="iso", scales=list(x=list(at=seq(from=-1,to=1,by=2/10), labels=fractions(seq(from=-1,to=1,by=2/10))),y=list(at=seq(from=-1,to=1,by=2/9), labels=fractions(seq(from=-1,to=1,by=2/9)), alternating=3 )), type=c("p"), abline=c(list(h=seq(from=-1,to=1,by=2/9), v=seq(from=-1,to=1,by=2/10)),trellis.par.get("reference.line"),list(a=0,b=1)), jitter.x=T, jitter.y=T, amount=.03, alpha=.7, cex=.5)
 
 ----------------------------------------------------------------------
 Plotting activations with lattice graphics and as.data.frame.table:
