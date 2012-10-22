@@ -14,6 +14,41 @@ m <- rbind(cbind(mi, bias="sky"), cbind(mh, bias="sky"))
 xyplot(P ~ H | bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", type="p", cex=.3)
 xyplot(P ~ H, groups=bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", type="p", cex=.3)
 
+# add mean to each plot using the new rawsum (i.e. raw vs. summary) column,
+# change ticks to theoretical values that should be converged on, and
+# add a grid more or less by hand at those tick marks, plus a diagonal:
+xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans, xlim=c(-1,1), ylim=c(-1,1), 
+       auto.key=list(space="left"), aspect="iso", 
+       scales=list(x=list(at=seq(from=-1,to=1,by=2/10)), y=list(at=seq(from=-1,to=1,by=2/9))), 
+       type=c("p"), 
+       abline=c(list(h=seq(from=-1,to=1,by=2/9), v=seq(from=-1,to=1,by=2/10)), # grid at theoretical convergence values
+                list(a=0,b=1),  # diagonal line
+                trellis.par.get("reference.line")))  # make lines light gray
+
+note: in abline() and its derivatives:
+h, v are horizontal and vertical coordinates for horizontal and vertical lines.
+a and b are y-intercept and slope, respectively, for other lines.
+
+# This version has fractions as tick labels:
+xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans,
+xlim=c(-1,1), ylim=c(-1,1), auto.key=list(space="left"), aspect="iso",
+scales=list(x=list(at=seq(from=-1,to=1,by=2/10),
+labels=fractions(seq(from=-1,to=1,by=2/10))),y=list(at=seq(from=-1,to=1,by=2/9),
+labels=fractions(seq(from=-1,to=1,by=2/9)), alternating=3 )),
+type=c("p"), abline=c(list(h=seq(from=-1,to=1,by=2/9),
+v=seq(from=-1,to=1,by=2/10)),trellis.par.get("reference.line"),list(a=0,b=1)))
+
+# This version also adds jitter ('amount' is the key), as well as 
+# alpha to make circles semi-transparent, and shrinks circle size with 'cex':
+xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans,
+xlim=c(-1,1), ylim=c(-1,1), auto.key=T, aspect="iso",
+scales=list(x=list(at=seq(from=-1,to=1,by=2/10),
+labels=fractions(seq(from=-1,to=1,by=2/10))),y=list(at=seq(from=-1,to=1,by=2/9),
+labels=fractions(seq(from=-1,to=1,by=2/9)), alternating=3 )),
+type=c("p"), abline=c(list(h=seq(from=-1,to=1,by=2/9),
+v=seq(from=-1,to=1,by=2/10)),trellis.par.get("reference.line"),list(a=0,b=1)),
+jitter.x=T, jitter.y=T, amount=.03, alpha=.7, cex=.5)
+
 ----------------------------------------------------------------------
 Plotting activations with lattice graphics and as.data.frame.table:
 
