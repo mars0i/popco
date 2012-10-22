@@ -1,0 +1,46 @@
+Why is it that in the tick 1500 run-mean hunting X parenting plots, outer
+clusters are shifted in toward the mode/mean, rather than lying on the theoretical
+mean point?
+
+The reason is probably this:
+
+The proposition activations don't usually converge to 1, or .99.  They
+converge to around .9.  The extremal run means are the result of having
+many propositions that are all positive or all negative--i.e. that are
+near .9 or near -.9 .  So the average of all of those activations will
+be substantially less than the number of propositions, even if all of
+the proposition activations are positive (negative).
+
+For the intermediate run means, though, there are several propositions
+at .9, and several at -.9 .  The 1 - .9 and -1 + -.9 gaps tend to
+counterbalance each other, so these run means tend to lie close to the
+theoretical run mean you'd get if all activations were 1 and -1.
+
+
+No, this doesn't make sense.  What I just described is to multiply
+both top and bottom of each fraction by .9, which generates exactly
+the same fractions.
+
+
+OK, this is it.  Matches up excellently with the plot points:
+
+The x coords for hunting propns are at approx:
+xseq <- seq(from=-9, to=9, by=2*.9)/10
+where 9 = 9 * 1
+
+The y coords for parenting propns are at approx:
+yseq <- seq(from=-8.1, to=8.1, by=2*.9)/9
+where 8.1 = 9 * .9
+
+i.e. where there are N propns, and activations max out at .9,
+the possible averages are multiples of 2*.9 divided by N.
+
+And the plot is:
+
+xyplot(P~H|bias, groups=rawsum, data=TheDataSource, xlim=c(-1,1), ylim=c(-1,1),
+       auto.key=T, aspect="iso", scales=list(cex=.5,
+       x=list(at=hunting.seq),y=list(at=parenting.seq)), type=c("p"),
+       abline=c(list(v=hunting.seq, h=parenting.seq),
+       trellis.par.get("reference.line"), list(a=0,b=1)), alpha=.7, cex=.5)
+
+
