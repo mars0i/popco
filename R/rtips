@@ -20,6 +20,13 @@ xyplot(P~H|bias, groups=rawsum, data=TheDataSource, xlim=c(-1,1), ylim=c(-1,1),
        abline=c(list(v=hunting.seq, h=parenting.seq),
        trellis.par.get("reference.line"), list(a=0,b=1)), alpha=.7, cex=.5)
 
+Add pch=(1,3) or 4, or 9 or 10 or 19 to give the mean a different
+character.  See ?pch for more options.
+
+pch=21 gives those cool filled circles in an early chapter of the
+Lattice book.
+pch=c(21,23) does the same but uses a filled diamond for the mean.
+
 You can add jitter with addJitter() from df2ra.R, which just calls
 update() on the plot, with some additional jitter parameters.
 
