@@ -1,6 +1,15 @@
 R tips:
 
 ----------------------------------------------------------------------
+
+# this seems to work where two = one of my run mean at tick data frames:
+
+plot(histogram( ~ cut(two$P, seq(from=-1, to=1, by=1.8/9)) | bias, data=two)
+plot(histogram( ~ cut(two$H, seq(from=-1, to=1, by=1.8/10)) | bias, data=two)
+
+# need to check that it's right (and refine labels, etc.)
+
+----------------------------------------------------------------------
 The x coords for hunting propns are at approx:
 xseq <- seq(from=-9, to=9, by=2*.9)/10
 where 9 = 9 * 1
