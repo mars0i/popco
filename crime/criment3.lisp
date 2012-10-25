@@ -10,11 +10,12 @@
 
     ; We have to list connections between infection and harm explicitly for each person/thing
     ;  since ACME doesn't have universal quantification or proper pattern matching:
+    ; These first two should maybe be dropped--not needed, and may distract ACME:
+    (harmed (prev-infected-elt) v-hp)
+    (cause (v-ip v-hp) v-cihp)
+    ; These next two definitely should be retained:
     (harmed (at-risk-elt) v-ha)
     (cause (v-ia v-ha) v-ciha)
-    ; These two should probably be dropped--not needed, and may distract ACME:
-    (harmed (prev-infected-elt) v-hp)
-    (cause (v-ic v-hp) v-cihp)
 
     (spread-from-to (prev-infected-elt at-risk-elt) v-sca) ; infection spreads from the previously infected to the at-risk
     (cause (v-sca v-ia) v-sca->ia) ; transmission from infected to uninfected causes infection
@@ -41,10 +42,40 @@
                                     ; i.e. given the modeling simplification that there is only one at-risk indiv.
    ))
 
-(defvar virus-goal-propns
+; Question: How *is* crime like a virus?  What are the analogs of
+; infection, people, cells, etc.  In the case of viruses, the virus is the
+; essentially harming element, and it is transmitted from the harmed to
+; the not yet harmed.  In the case of crime, being a criminal is
+; transmitted, but crime harms the non-criminals more than criminals
+; [according to common ways of thinking, at least, and contrary to Socrates' view].
+
+; On the other hand, it's not clear that the intuition that criminality spreads
+; from one individual to another is that clear.  I guess it is reflected in some
+; of the preventative measures that people entertain.  But I feel that a lot
+; of virusey thinking about crime is vague.
+
+(defvar crime-propns
   '(
-     ; something capturing preventing harm to as many people as possible
+    ; these next few parallel the first few in virus-propns; see comments there.
+
+    (is-criminal (prev-criminal) c-cp)
+    (is-criminal (at-risk-pers) c-ca)
+    (not-criminal (at-risk-pers) c-na)
+
+    (harmed (prev-criminal) c-hp)
+    (cause (c-cp c-hp) c-cchp)
+    (harmed (at-risk-pers) c-ha)
+    (cause (c-ca c-ha) c-ccha)
+
+    ; TODO:
+    ; ADD SPREAD/PREVENTION PROPNS
+    ; ADD ADDL PROPNS ABOUT HARMING INNOCENT PEOPLE
+
+    ; THEN DO BEAST AND BEASTLY-CRIME
+
    ))
+
+
 
 (defvar beast-propns
   '(
