@@ -2,7 +2,31 @@ R tips:
 
 ----------------------------------------------------------------------
 
+# 10/25/2012 I renamed hunting/parenting.seq to hunting/parenting.foci
+# These are lists of points where run means tend to cluster--to converge to.
+
+# Then I created new lists called hunting/parenting.intervals.  These
+# define the bins, more or less by simply shifting the foci half the
+# distance between them.  The bin intervals are created from the foci
+# using a new function foci2intervals in df2ra.R.  The intervals can then
+# be used in histograms using the breaks parameter to define the bins as follows.
+# Note that I exclude the rows which record means, and just use the 'raw' data:
+
+histogram( ~ P | bias, data=one[one$rawsum=="raw",], breaks=parenting.intervals, layout=c(2,2))
+
+histogram( ~ H | bias, data=one[one$rawsum=="raw",], breaks=parenting.intervals, layout=c(2,2))
+
+# To see the bins in xyplot, replace *.foci (formerly *.seq) with *.intervals:
+xyplot(P~H|bias, groups=rawsum, data=one, xlim=c(-1,1), ylim=c(-1,1),
+        aspect="iso", layout=c(2,2), scales=list(cex=.5,
+        x=list(at=hunting.intervals),y=list(at=parenting.intervals), rot=45), type=c("p"),
+        abline=c(list(v=hunting.intervals, h=parenting.intervals),
+        trellis.par.get("reference.line"), list(a=0,b=1)), alpha=.7, cex=.4, pch=c(21,23))
+
+----------------------------------------------------------------------
+
 # this seems to work where two = one of my run mean at tick data frames:
+# SEE ABOVE FOR BETTER METHODS
 
 plot(histogram( ~ cut(two$P, seq(from=-1, to=1, by=1.8/9)) | bias, data=two)
 plot(histogram( ~ cut(two$H, seq(from=-1, to=1, by=1.8/10)) | bias, data=two)

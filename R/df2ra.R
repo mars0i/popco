@@ -18,7 +18,13 @@
 
 punditPrefix <- "AA"
 
-addJitter <- function(trellobj=trellis.last.object()) {update(trellobj, jitter.x=T, jitter.y=T, amount=.03)}
+# This function can be used to create buckets into which activation avgs can be sorted e.g. for a histogram.
+# Given a vector of evenly-spaced "foci"--points to which activation averages will usually 
+# converge--return a vector of points shifted half the distance between two foci, with
+# -1 and 1 added at the ends instead of whatever close point the shift would create.
+foci2intervals <- function(foci){ c(-1, (foci - (foci[2]-foci[1])/2)[-1], 1) }
+
+addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
 
 # utility to add top-level dimension names to a multi-RA if didn't do it already:
 addTopDimNamesToMultiRA <- function(RA) {
