@@ -1,3 +1,12 @@
+
+; Notational conventions:
+; v-: virus
+; c-: crime
+; b-: beast
+; X->Y: X causes Y to occur, where X and Y are propositions
+; X->-Y: X prevents Y from occuring, where X and Y are propositions
+
+
 ; The main difference between disease and criminality is that although
 ; criminality spreads, harming the new criminals, its main harmful effects
 ; are on non-criminals.  Disease can have a similar effect, in that some
@@ -13,8 +22,8 @@
 (defvar virus-propns
   '(
     (is-infected (prev-infected-elt) v-ip) ; the existence of a previously infected element is assumed
+    (not-infected (at-risk-elt) v-na)  ; at risk element is not infected
     (is-infected (at-risk-elt) v-ia)   ; at-risk person/thing is infected
-    ;(not-infected (at-risk-elt) v-na)  ; at risk element is not infected
 
     (harmed (at-risk-elt) v-ha)        ; note we have no quantificatiion or true pattern matching
     (cause (v-ia v-ha) v-ciha)
@@ -25,16 +34,21 @@
     (spread-from-to (prev-infected-elt at-risk-elt) v-spa) ; infection spreads from the previously infected to the at-risk
     (cause (v-spa v-ia) v-spa->ia) ; transmission from infected to uninfected causes infection
 
-; I HAVE NOTHING SO FAR THAT SAYS THAT PREVENTION OPPOSES INFECTION:
+    ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
-    (innoculate (at-risk-elt) v-iu)   ; innoculating the at-risk prevents spread to new individuals (or something with cells?)
-    (prevent (v-iu v-spa) v-iu->-spa) ; innoculation of uninfected prevents further infection
+    (innoculate (at-risk-elt) v-ia)   ; innoculating the at-risk prevents spread to new individuals (or something with cells?)
+    (prevent (v-ia v-spa) v-ia->-spa) ; innoculation of uninfected prevents further infection
+    (cause (v-ia->-spa v-na) v-iaspa->na) ; preventing spread of infection causes [preserves] lack of infection in the at-risk
 
-    ; Next two pairs structurally identical. Maybe drop one.
+    ; Next two triplets are structurally identical. Maybe drop one.
+
     (quarantine (prev-infected-elt) v-qp) ; previously infected is quarantined (or cells sequestered, I suppose)
     (prevent (v-qp v-spa) v-qp->-spa) ; quarantining the infected prevents spread to new individuals 
+    (cause (v-qp->-spa  v-na) v-qpspa->na)
+
     (treat (prev-infected-elt) v-tp)  ; treatment of the infected to remove disease prevents later spread
-    (prevent (v-tp v-spa) v-qp->-spa) ; treatment of infected prevents further infection
+    (prevent (v-tp v-spa) v-tp->-spa) ; treatment of infected prevents further infection
+    (cause (v-tp->-spa v-na) v-tpspa->na)
     ; [We elide the step in which the infected becomes uninfected, which would require time-indexing.]
    ))
 
@@ -60,8 +74,8 @@
 (defvar crime-propns
   '(
     (is-criminal (prev-criminal-pers) c-cp)
-    (is-criminal (at-risk-pers) c-ca)
     (not-criminal (at-risk-pers) c-na)
+    (is-criminal (at-risk-pers) c-ca)
 
     (harmed (at-risk-pers) c-ha)
     (cause (c-ca c-ha) c-ccha)         ; becoming a criminal has bad consequences for the individual
@@ -72,15 +86,21 @@
     (spread-from-to (prev-criminal-pers at-risk-pers) c-spa)
     (cause (c-spa c-ia) c-sca->ia) ; 
 
-    (support (at-risk-pers) v-iu)
-    (prevent (v-iu v-spa) v-qc->-spa)
+    ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
-    ; Next two pairs structurally identical. Maybe drop one.
-    (imprison (prev-criminal-pers) c-ip)
-    (prevent (v-qc v-spa) v-qc->-spa)
-    (reform (prev-criminal-pers) v-tp)
-    (prevent (v-tc v-spa) v-qc->-spa)
+    (support (at-risk-elt) c-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
+    (prevent (c-sa c-spa) c-sa->-spa)
+    (cause (c-sa->-spa c-na) c-saspa->na)
 
+    ; Next two triplets are structurally identical. Maybe drop one.
+
+    (imprison (prec-infected-elt) c-ip)
+    (prevent (c-ip c-spa) c-ip->-spa)
+    (cause (c-ip->-spa  c-na) c-ipspa->na)
+
+    (reform (prec-infected-elt) c-rp) ; reform includes social support, education, etc. to criminals
+    (prevent (c-rp c-spa) c-rp->-spa)
+    (cause (c-rp->-spa c-na) c-rpspa->na)
 
     ; TODO:
     ; ADD ADDL PROPNS ABOUT HARMING INNOCENT PEOPLE
