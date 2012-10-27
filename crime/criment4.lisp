@@ -1,10 +1,14 @@
 
 ; Notational conventions:
 ; v-: virus
-; c-: crime
+; cv-: virus-ey crime
+; cb-: beast-ey crime
 ; b-: beast
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
+
+(setf *propn-category-prefixes* '("CV" "CB" "V" "B"))
+(setf *propn-category-descriptions* '("virus-like crime propns" "beast-like crime propns" "virus propns" "beast propns")
 
 
 ; The main difference between disease and criminality is that although
@@ -18,6 +22,22 @@
 ; this effect sometimes).  Note that vampirism is like a virus with the
 ; side-effects on innocents of crime.  Drug addiction and sometimes
 ; alcoholism are similar, sometimes.
+
+; Also note that imprisoning criminals does not get rid of all crime,
+; since at the very least the crime for which the criminal was
+; convicted occured.  The same is true of reform of criminals.
+; (On the other hand, imprisonment serves not only to take the criminal
+; off the street, but also to deter other crimes.)
+
+; Whereas support to prevent individuals from committing crimes could
+; in principle get rid of all crime, just as innoculation and other
+; preventative measures could in principle get rid of all infections.
+
+; Note that there's also a well-known effect of imprisoning causing
+; more criminality after a prisoner is released.
+
+; NOTE THESE ARE SIMPLY BASED ON MY INTUITIONS (philosophy/linguistics style)
+; AND REALLY OUGHT TO COME FROM DATA.
 
 (defvar virus-propns
   '(
@@ -73,38 +93,45 @@
 
 (defvar crime-propns
   '(
-    (is-criminal (prev-criminal-pers) c-cp)
-    (not-criminal (at-risk-pers) c-na)
-    (is-criminal (at-risk-pers) c-ca)
+    (is-criminal (prev-criminal-pers) cv-cp) ; person who's already committing crimes
+    (not-criminal (at-risk-pers) cv-na)      ; person at risk of turning to crime
+    (is-criminal (at-risk-pers) cv-ca)
+    (not-criminal (no-risk-pers) cv-nn)   ; person not at risk of turning to crime
 
-    (harmed (at-risk-pers) c-ha)
-    (cause (c-ca c-ha) c-ccha)         ; becoming a criminal has bad consequences for the individual
+    (harmed (at-risk-pers) cv-ha)
+    (cause (cv-ca cv-ha) cv-ccha)         ; becoming a criminal has bad consequences for the individual
 
-    (harmed (prev-criminal-pers) c-hp)
-    (cause (c-cp c-hp) c-cchp)         ; being a criminal has bad consequences for the criminal
+    (harmed (prev-criminal-pers) cv-hp)
+    (cause (cv-cp cv-hp) cv-cchp)         ; being a criminal has bad consequences for the criminal
 
-    (spread-from-to (prev-criminal-pers at-risk-pers) c-spa)
-    (cause (c-spa c-ia) c-sca->ia) ; 
+    (spread-from-to (prev-criminal-pers at-risk-pers) cv-spa)
+    (cause (cv-spa cv-ia) cv-sca->ia) ; 
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
-    (support (at-risk-elt) c-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
-    (prevent (c-sa c-spa) c-sa->-spa)
-    (cause (c-sa->-spa c-na) c-saspa->na)
+    (support (at-risk-elt) cv-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
+    (prevent (cv-sa cv-spa) cv-sa->-spa)
+    (cause (cv-sa->-spa cv-na) cv-saspa->na)
 
     ; Next two triplets are structurally identical. Maybe drop one.
 
-    (imprison (prec-infected-elt) c-ip)
-    (prevent (c-ip c-spa) c-ip->-spa)
-    (cause (c-ip->-spa  c-na) c-ipspa->na)
+    (imprison (prev-criminal-pers) cv-ip)
+    (prevent (cv-ip cv-spa) cv-ip->-spa)
+    (cause (cv-ip->-spa  cv-na) cv-ipspa->na) ; imprisoning prevents crime
 
-    (reform (prec-infected-elt) c-rp) ; reform includes social support, education, etc. to criminals
-    (prevent (c-rp c-spa) c-rp->-spa)
-    (cause (c-rp->-spa c-na) c-rpspa->na)
+    (reform (prev-criminal-pers) cv-rp) ; reform includes social support, education, etc. to criminals
+    (prevent (cv-rp cv-spa) cv-rp->-spa)
+    (cause (cv-rp->-spa cv-na) cv-rpspa->na)
+
+    ; In addition to criminals being harmed by being criminals,
+    ; non-criminals are harmed by criminals [not analogous to virus]:
+
+    (harmed (no-risk-pers) cv-hn)
+    (cause (cv-cp cv-hn) cv-cp->hn) ; existing criminals harm those not at risk
+    (cause (cv-ca cv-hn) cv-ca->hn) ; at-risk persons do too, if they turn to crime
 
     ; TODO:
-    ; ADD ADDL PROPNS ABOUT HARMING INNOCENT PEOPLE
-    ; THEN DO BEAST AND BEASTLY-CRIME
+    ; THEN DO BEASTLY-CRIME
 
    ))
 
@@ -112,12 +139,50 @@
 
 (defvar beast-propns
   '(
+
+    ; These are stolen from the Sanday simulations:
+
     ; danger
-    (hunts-endangers (people beast) h-Person-Endangers-Beast)
-    (harms (beast people) h-Beast-Harms-Person)
-    (causes (h-Person-Endangers-Beast h-Beast-Harms-Person) h-Hunting-Is-Dangerous)
+    (hunts-endangers (people beast) b-Person-Endangers-Beast)
+    (harms (beast people) b-Beast-Harms-Person)
+    (causes (b-Person-Endangers-Beast b-Beast-Harms-Person) b-Hunting-Is-Dangerous)
 
     ;; social location:
-    (distant-agent (beast people) h-Beast-Distant)
+    (distant-agent (beast people) b-Beast-Distant)
    ))
 
+
+; Note that I'm reversing source vs target wrt the sanday simulations:
+
+(defun make-test-person (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start (,@virus-propns)))
+                   ,@virus-semantic-relations)
+                 '()
+                 '(target)))
+
+
+; leave these at defaults:
+; *propn-excit-weight* *propn-inhib-weight* *trust* *perceived-excit*
+;(setf *time-runs* nil)
+(setf *do-converse* nil)
+(setf *do-update-propn-nets* t)
+(setf *do-report-to-netlogo* nil)
+(setf *do-report-propns-to-csv* t)
+(setf *do-report-analogy-nets-to-guess* t)
+(setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
+(setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
+
+
+;; first clear everything out
+(mapcar #'clear-plists (get 'folks 'members))
+(clear-person-nets 'folks)
+(setf *the-population* 'folks)
+
+(make-test-person 'andy)
+
+(print (get 'folks 'members))
+
+;(setf *max-pop-ticks* 100)
+(init-pop)
