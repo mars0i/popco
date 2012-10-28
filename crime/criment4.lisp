@@ -7,8 +7,8 @@
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
 
-(setf *propn-category-prefixes* '("CV" "CB" "V" "B"))
-(setf *propn-category-descriptions* '("virus-like crime propns" "beast-like crime propns" "virus propns" "beast propns")
+(setf *propn-category-prefixes* '("V" "B" "CV" "CB"))
+(setf *propn-category-descriptions* '("virus propns" "beast propns" "virus-like crime propns" "beast-like crime propns"))
 
 
 ; The main difference between disease and criminality is that although
@@ -56,8 +56,8 @@
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
-    (innoculate (at-risk-elt) v-ia)   ; innoculating the at-risk prevents spread to new individuals (or something with cells?)
-    (prevent (v-ia v-spa) v-ia->-spa) ; innoculation of uninfected prevents further infection
+    (innoculate (at-risk-elt) v-ica)   ; innoculating the at-risk prevents spread to new individuals (or something with cells?)
+    (prevent (v-ica v-spa) v-ia->-spa) ; innoculation of uninfected prevents further infection
     (cause (v-ia->-spa v-na) v-iaspa->na) ; preventing spread of infection causes [preserves] lack of infection in the at-risk
 
     ; Next two triplets are structurally identical. Maybe drop one.
@@ -105,7 +105,7 @@
     (cause (cv-cp cv-hp) cv-cchp)         ; being a criminal has bad consequences for the criminal
 
     (spread-from-to (prev-criminal-pers at-risk-pers) cv-spa)
-    (cause (cv-spa cv-ia) cv-sca->ia) ; 
+    (cause (cv-spa cv-ca) cv-sca->ca) ; 
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
@@ -168,7 +168,7 @@
 ;(setf *time-runs* nil)
 (setf *do-converse* nil)
 (setf *do-update-propn-nets* t)
-(setf *do-report-to-netlogo* nil)
+(setf *do-report-to-netlogo* t)
 (setf *do-report-propns-to-csv* t)
 (setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
@@ -180,9 +180,10 @@
 (clear-person-nets 'folks)
 (setf *the-population* 'folks)
 
-(make-test-person 'andy)
+(make-test-person 'andy crime-propns)
 
 (print (get 'folks 'members))
 
-;(setf *max-pop-ticks* 100)
+(setf *max-pop-ticks* 200)
 (init-pop)
+

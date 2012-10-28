@@ -2,6 +2,28 @@ R tips:
 
 ----------------------------------------------------------------------
 
+# 3-D barchart/histogram:
+cloud(freq ~ P * H | bias, data=freqdf[freqdf$freq>0,], 
+    panel.3d.cloud = panel.3dbars,    # makes it a barchart/histogram
+    screen = list(z = -40, x = -55),  # viewing angle
+    zoom = 1,                         # fill up entire display region
+    col.facet = "turquoise", 
+    xbase = 0.6, ybase = 0.6,         # add space between columns
+    aspect = c(1.5, 0.75), 
+    panel.aspect = 0.75, 
+    zlab=NULL)                        # no z label
+
+# 3-D verticle line chart using groups to put it all on one chart:
+cloud(freq ~ P * H, groups=bias, data=freqdf[freqdf$freq>0,], 
+    type="h", 
+    screen = list(z = -15, x = -60), 
+    zoom = 1, 
+    aspect = c(1.5, 0.75), 
+    panel.aspect = 0.75, 
+    zlab=NULL)
+
+----------------------------------------------------------------------
+
 # 10/25/2012 I renamed hunting/parenting.seq to hunting/parenting.foci
 # These are lists of points where run means tend to cluster--to converge to.
 

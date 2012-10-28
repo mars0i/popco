@@ -26,6 +26,31 @@ foci2intervals <- function(foci){ c(-1, (foci - (foci[2]-foci[1])/2)[-1], 1) }
 
 addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
 
+# given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
+# produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
+DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
+  # add cut intervals to the internal copy of the input df:
+  aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
+  aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
+  biases <- levels(aDF$bias)
+  # I don't know how to do this without a loop:
+  freqDF <- NULL
+  for (i in length(biases)) {
+    freqDF <- rbind(freqDF, DF2freqDF.component(biases[i], aDf, dom1, dom2))
+  }
+  freqDF
+}
+
+# helper function
+DF2freqDF.component <- function(bias, aDF, dom1, dom2) {
+  freqDF <- as.data.frame(table(aDF[aDF[[bias]]==bias,]$dom1, aDF[aDF[[bias]]==bias,]$dom2))  # DOESNT WORK
+  freqDF$bias <- bias
+}
+
+# model for the preceding
+# function(bi){tab <- table(one[one$bias==bi,]$Hcut, one[one$bias==bi,]$Pcut)}
+# function(bi){mydf <- as.data.frame(yo(bi)); mydf$bias <- bi; mydf}
+
 # utility to add top-level dimension names to a multi-RA if didn't do it already:
 addTopDimNamesToMultiRA <- function(RA) {
   dimns <- dimnames(RA)

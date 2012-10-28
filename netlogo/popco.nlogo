@@ -1217,7 +1217,7 @@ SLIDER
 propositions-circle-radius
 propositions-circle-radius
 5
-50
+100
 17
 1
 1
