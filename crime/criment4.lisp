@@ -10,6 +10,17 @@
 (setf *propn-category-prefixes* '("V" "B" "CV" "CB"))
 (setf *propn-category-descriptions* '("virus propns" "beast propns" "virus-like crime propns" "beast-like crime propns"))
 
+; Question: How *is* crime like a virus?  What are the analogs of
+; infection, people, cells, etc.  In the case of viruses, the virus is the
+; essentially harming element, and it is transmitted from the harmed to
+; the not yet harmed.  In the case of crime, being a criminal is
+; transmitted, but crime harms the non-criminals more than criminals
+; [according to common ways of thinking, at least, and contrary to Socrates' view].
+
+; On the other hand, it's not clear that the intuition that criminality spreads
+; from one individual to another is that clear.  I guess it is reflected in some
+; of the preventative measures that people entertain.  But I feel that a lot
+; of virusey thinking about crime is vague.
 
 ; The main difference between disease and criminality is that although
 ; criminality spreads, harming the new criminals, its main harmful effects
@@ -38,6 +49,13 @@
 
 ; NOTE THESE ARE SIMPLY BASED ON MY INTUITIONS (philosophy/linguistics style)
 ; AND REALLY OUGHT TO COME FROM DATA.
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Note we call the things that get infected "elts", i.e. elements,
+; since they could either be people or cells or something like that.
+; Also see note about naming person objects the same elsewhere in this file.
 
 (defvar virus-propns
   '(
@@ -75,21 +93,8 @@
 (defvar virus-semantic-relations
   '(
     (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
-    (semantic-iff 'v-ia 'v-na -1.0) ; infecting and preventing infection are inconsistent [but is -1 too strong?]
-                                    ; i.e. given the modeling simplification that there is only one at-risk indiv.
+    (semantic-iff 'v-ia 'v-na -1.0) ; at-risk-pers being infected and being uninfected are inconsistent [-1 too strong?]
    ))
-
-; Question: How *is* crime like a virus?  What are the analogs of
-; infection, people, cells, etc.  In the case of viruses, the virus is the
-; essentially harming element, and it is transmitted from the harmed to
-; the not yet harmed.  In the case of crime, being a criminal is
-; transmitted, but crime harms the non-criminals more than criminals
-; [according to common ways of thinking, at least, and contrary to Socrates' view].
-
-; On the other hand, it's not clear that the intuition that criminality spreads
-; from one individual to another is that clear.  I guess it is reflected in some
-; of the preventative measures that people entertain.  But I feel that a lot
-; of virusey thinking about crime is vague.
 
 (defvar crime-propns
   '(
@@ -104,6 +109,7 @@
     (harmed (prev-criminal-pers) cv-hp)
     (cause (cv-cp cv-hp) cv-cchp)         ; being a criminal has bad consequences for the criminal
 
+    ; SHOULND'T THIS BE A CAUSE PROPOSITION?
     (spread-from-to (prev-criminal-pers at-risk-pers) cv-spa)
     (cause (cv-spa cv-ca) cv-sca->ca) ; 
 
@@ -136,19 +142,33 @@
    ))
 
 
+; Note:
+; It's desirable (required?) to give different names to person objects
+; here and in crime-propns.  Even though they're persons, they're not
+; really the same persons playing a role in a crime scenario and in 
+; a beast scenario.  They can/should get identified by the analogizing
+; process, but the process can do that.
+; So rather than calling what's attacked an at-risk-pers (like people
+; who might become criminals) or a no-risk-pers (like those who are
+; harmed by crime), we use another term for potential beast victims.
 
 (defvar beast-propns
   '(
+    (beastly (beast) b-bb)     ; we need a beast property to go with the object
+    (harmed (person) b-hp)
+    (cause (b-bb b-hp) b-bb->hp) ; beasts harm persons [PARALLELS END OF cv SECTION]
+    ;(attacks (beast person) b-abp) ; IF THIS SHOULDN'T IT PARALLEL CRIME: victimize
+    ;(cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
 
-    ; These are stolen from the Sanday simulations:
+    (kill (person beast) b-kpb)
+    (prevent (b-kpb b-bb->hp) b-kpb->-bb->hp)
+    (capture (person beast) b-cpb)
 
-    ; danger
-    (hunts-endangers (people beast) b-Person-Endangers-Beast)
-    (harms (beast people) b-Beast-Harms-Person)
-    (causes (b-Person-Endangers-Beast b-Beast-Harms-Person) b-Hunting-Is-Dangerous)
-
-    ;; social location:
-    (distant-agent (beast people) b-Beast-Distant)
+    ; The following are borrowed from the Sanday simulations:
+    ;(hunts-endangers (people beast) b-Person-Endangers-Beast)
+    ;(harms (beast people) b-Beast-Harms-Person)
+    ;(causes (b-Person-Endangers-Beast b-Beast-Harms-Person) b-Hunting-Is-Dangerous)
+    ;(distant-agent (beast people) b-Beast-Distant)
    ))
 
 
