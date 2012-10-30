@@ -22,6 +22,10 @@ cloud(freq ~ P * H, groups=bias, data=freqdf[freqdf$freq>0,],
     panel.aspect = 0.75, 
     zlab=NULL)
 
+# 3rd dimension represented by color and size:
+levelplot(sqrt(Freq) ~ P * H | bias, freqdf, shrink = c(0.7, 1), aspect="iso")
+levelplot(sqrt(Freq) ~ P * H | bias, freqdf[freqdf$Freq>0,], shrink = c(0.7, 1), aspect="iso")
+
 ----------------------------------------------------------------------
 
 # 10/25/2012 I renamed hunting/parenting.seq to hunting/parenting.foci

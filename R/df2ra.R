@@ -30,21 +30,37 @@ addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trello
 # produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
 DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
   # add cut intervals to the internal copy of the input df:
-  aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
-  aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
-  biases <- levels(aDF$bias)
+  cookedDF <- DF2freqDF.prepare.aDF(aDF, dom1, dom2, dom1intervals, dom2intervals)
+  #aDF <- aDF[aDF$rawsum=="raw",] # strip out means, etc.
+  #aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
+  #aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
+  biases <- levels(cookedDF$bias)
   # I don't know how to do this without a loop:
   freqDF <- NULL
-  for (i in length(biases)) {
-    freqDF <- rbind(freqDF, DF2freqDF.component(biases[i], aDf, dom1, dom2))
+  for (i in 1:length(biases)) {
+    freqDF <- rbind(freqDF, DF2freqDF.component(biases[i], cookedDF, dom1, dom2))
   }
+  names(freqDF) <- c(dom1, dom2, "Freq", "bias")
   freqDF
+}
+
+DF2freqDF.prepare.aDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
+  # add cut intervals to the internal copy of the input df:
+  aDF <- aDF[aDF$rawsum=="raw",] # strip out means, etc.
+  aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
+  aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
+  aDF
 }
 
 # helper function
 DF2freqDF.component <- function(bias, aDF, dom1, dom2) {
-  freqDF <- as.data.frame(table(aDF[aDF[[bias]]==bias,]$dom1, aDF[aDF[[bias]]==bias,]$dom2))  # DOESNT WORK
+  biasrows <- aDF$bias==bias
+  aDFbiasrows <- aDF[biasrows, , drop=F]
+  dom1rows <- aDFbiasrows[["cut1"]]
+  dom2rows <- aDFbiasrows[["cut2"]]
+  freqDF <- as.data.frame(table(dom1rows, dom2rows))
   freqDF$bias <- bias
+  freqDF
 }
 
 # model for the preceding
