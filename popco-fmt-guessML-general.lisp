@@ -17,10 +17,11 @@
 ;; particular color/shape/etc. scheme, whereas code in this file is generic.
 
 
-; string that will replace the "=" in ACME map unit names when converting unit names for GUESS:
-(defvar *guess-map-string* "_maps_")
-; list of characters corresponding to same string:
-(defvar *guess-map-string-chars* (coerce *guess-map-string* 'list))
+
+(defvar *guess-map-string* "_maps_") ; string that will replace the "=" in ACME map unit names when converting unit names for GUESS:
+(defvar *guess-map-string-chars* (coerce *guess-map-string* 'list)) ; list of characters corresponding to same string:
+(defvar *guess-gt-string* "gt")
+(defvar *guess-gt-string-chars* (coerce *guess-gt-string* 'list))
 
 ; PERSONAL-SYM-TO-GUESS-NODENAME 
 ; Convert a POPCO personal sym to a string suitable for use as a node name
@@ -44,9 +45,10 @@
 (defun generic-sym-to-guess-nodename (sym)
   (coerce 
     (flatten
-      (substitute *guess-map-string-chars* #\=
-                  (substitute #\_ #\- 
-                              (coerce (symbol-name sym) 'list))))
+      (substitute *guess-gt-string-chars* #\>
+                  (substitute *guess-map-string-chars* #\=
+                              (substitute #\_ #\- 
+                                          (coerce (symbol-name sym) 'list)))))
     'string))
 
 ;; PERSONAL-SYMS-TO-GUESS-MAP-NODENAME 

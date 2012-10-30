@@ -1,4 +1,8 @@
 
+
+; QUESTION: SHOULD CAUSAL AND PREVENTATIVE CRIME PROPNS BE PERCEIVED?
+; OR ONLY THE SIMPLE CRIME PROPNS?
+
 ; Notational conventions:
 ; v-: virus
 ; c-: crime
