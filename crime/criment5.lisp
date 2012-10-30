@@ -8,6 +8,14 @@
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
 
+; To distinguish persons in the beast propositions and persons in the crime propositions,
+; I'm calling them bpersons and cpersons, but treating their initial character
+; as "p" when constructing abbreviated proposition names.  I don't think there
+; would be any problem if there is the same object name in two domains, but
+; it's clearer to give them different names.  I don't do the same
+; thing in the virus propositions because there I call the things "elements",
+; or rather "elts", since they could be e.g. cells rather than persons.
+
 (setf *propn-category-prefixes* '("V" "B" "CV" "CB"))
 (setf *propn-category-descriptions* '("virus propns" "beast propns" "virus-like crime propns" "beast-like crime propns"))
 
@@ -100,63 +108,70 @@
   '(
     (similar 'is-infected 'not-infected (* -1 *ident-weight*))
     ; do we need this next one given preceding?:
-    ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-pers being infected and being uninfected are inconsistent [-1 too strong?]
+    ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
 
 (defvar crime-propns
   '(
-    (is-criminal (prev-criminal-pers) cv-cp) ; person who's already committing crimes
-    (not-criminal (at-risk-pers) cv-na)      ; person at risk of turning to crime
-    (is-criminal (at-risk-pers) cv-ca)
+    (is-criminal (prev-criminal-cperson) cv-cp) ; person who's already committing crimes
+    (not-criminal (at-risk-cperson) cv-na)      ; person at risk of turning to crime
+    (is-criminal (at-risk-cperson) cv-ca)
 
-    (harmed (at-risk-pers) cv-ha)
+    (harmed (at-risk-cperson) cv-ha)
     (cause (cv-ca cv-ha) cv-ca->hp)         ; becoming a criminal has bad consequences for the individual
 
-    (harmed (prev-criminal-pers) cv-hp)
+    (harmed (prev-criminal-cperson) cv-hp)
     (cause (cv-cp cv-hp) cv-cp->hp)         ; being a criminal has bad consequences for the criminal
 
-    (recruit (prev-criminal-pers at-risk-pers) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
+    (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
     (cause (cv-rpa cv-ca) cv-sca->ca) ; 
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
 
-    (support (at-risk-elt) cv-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
+    (support (at-risk-cperson) cv-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
     (prevent (cv-sa cv-rpa) cv-sa->-rpa)
     (cause (cv-sa->-rpa cv-na) cv-sarpa->na)
 
     ; Next two triplets are structurally identical. Maybe drop one.
 
-    (imprison (prev-criminal-pers) cv-ip)
+    (imprison (prev-criminal-cperson) cv-ip)
     (prevent (cv-ip cv-rpa) cv-ip->-rpa)
     (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; imprisoning prevents crime
 
-    (reform (prev-criminal-pers) cv-rp) ; reform includes social support, education, etc. to criminals
+    (reform (prev-criminal-cperson) cv-rp) ; reform includes social support, education, etc. to criminals
     (prevent (cv-rp cv-rpa) cv-rp->-rpa)
     (cause (cv-rp->-rpa cv-na) cv-rprpa->na)
 
     ; In addition to criminals being harmed by being criminals,
     ; non-criminals are harmed by criminals [not analogous to virus]:
+    ; I'm calling the next group "cb-" because in theory they should map with
+    ; beast propns but not virus propns: virus propns only harm by making the
+    ; harmed into carriers [like leading a non-criminal into crime], whereas
+    ; beasts harm anyone; they don't turn victims into beasts.
+    ; QUESTION: Should I codify this last point in propositions?
 
-    (not-criminal (no-risk-pers) c-nn)   ; person not at risk of turning to crime
-    (victimize (prev-criminal-pers no-risk-pers) cv-vpn)
-    (harmed (no-risk-pers) c-hn)
-    (cause (cv-vpn cv-hn) c-vpn->hn) ; existing criminals harm those not at risk
-    ;; NEED SIMILAR PROPNS FOR AT-RISK, BUT ONLY IF CRIMINALIZED
+    (not-criminal (cperson) cb-np)   ; person not at risk of turning to crime
+    (victimize (prev-criminal-cperson cperson) cb-vpp)
+    (harmed (cperson) cb-hcp) ; hp already in use as a name
+    (cause (cb-vpp cv-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     ; old versions:
-    ;(cause (cv-cp cv-hn) c-cp->hn) ; existing criminals harm those not at risk
-    ;;(cause (cv-ca cv-hn) c-ca->hn) ; at-risk persons do too, if they turn to crime
+    ;(cause (cv-cp cv-hcp) cb-cp->hcp) ; existing criminals harm those not at risk
+    ;(cause (cv-ca cv-hcp) cb-ca->hcp) ; at-risk persons do too, if they turn to crime
 
-    ; TODO:
-    ; THEN DO BEASTLY-CRIME
+    (capture (prev-criminal) cb-cpc) ; cp is already used as name for crime propn
+    (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
+    ;(kill (prev-criminal) cb-kp)
+    ;(prevent (cb-kp cb-vpp) cb-kp->-vpp)
 
+    (aggressive (prev-criminal) cb-ap)
    ))
 
 (defvar crime-semantic-relations
   '(
     (similar 'is-criminal 'not-criminal (* -1 *ident-weight*))
     ; do we need this next one given preceding?:
-    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-pers being infected and being uninfected are inconsistent [-1 too strong?]
+    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
 
@@ -166,54 +181,28 @@
 ; really the same persons playing a role in a crime scenario and in 
 ; a beast scenario.  They can/should get identified by the analogizing
 ; process, but the process can do that.
-; So rather than calling what's attacked an at-risk-pers (like people
-; who might become criminals) or a no-risk-pers (like those who are
+; So rather than calling what's attacked an at-risk-cperson (like people
+; who might become criminals) or a cperson (like those who are
 ; harmed by crime), we use another term for potential beast victims.
 
 (defvar beast-propns
   '(
-    (beastly (beast) b-bb)     ; we need a beast property to go with the object
+    (beastly (beast) b-bb)  ; supposed to match: (is-criminal (prev-criminal-cperson) cv-cp)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    (human (person) b-pp)
-    (attacks (beast person) b-abp) ; IF THIS SHOULDN'T IT PARALLEL CRIME: victimize
-    (harmed (person) b-hp)
+    (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
+    (attacks (beast bperson) b-abp)
+    (harmed (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
     ; simple version:
     ;(cause (b-bb b-hp) b-bb->hp) ; beasts harm persons
 
-    (kill (person beast) b-kpb)
-    (prevent (b-kpb b-bb->hp) b-kpb->-bb->hp)
-    (capture (person beast) b-cpb)
+
+    (capture (beast) b-cpb)
+    (prevent (b-cpb b-abp) b-cpb->-abp)
+    ;(kill (beast) b-kb)
+    ;(prevent (b-kb b-abp) b-kp->-abp)
+
+    (aggressive (beast) b-ab)
 
     ; The following are borrowed from the Sanday simulations:
     ;(hunts-endangers (people beast) b-Person-Endangers-Beast)
@@ -227,17 +216,29 @@
   '(
     (similar 'beastly 'human (* -.5 *ident-weight*))
     ; do we need this next one given preceding?:
-    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-pers being infected and being uninfected are inconsistent [-1 too strong?]
+    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Note that I'm reversing source vs target wrt the sanday simulations:
 
-(defun make-test-person (name &optional (given '()))
+(defun make-test-virus-person (name &optional (given '()))
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@virus-propns)))
+                   ,@general-semantic-relations
+                   ,@crime-semantic-relations
                    ,@virus-semantic-relations)
+                 '()
+                 '(target)))
+
+(defun make-test-beast-person (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start (,@beast-propns)))
+                   ,@general-semantic-relations
+                   ,@crime-semantic-relations
+                   ,@beast-semantic-relations)
                  '()
                  '(target)))
 
@@ -260,7 +261,8 @@
 (clear-person-nets 'folks)
 (setf *the-population* 'folks)
 
-(make-test-person 'andy crime-propns)
+(make-test-virus-person 'val crime-propns)
+(make-test-beast-person 'bea crime-propns)
 
 (print (get 'folks 'members))
 
