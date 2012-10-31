@@ -5,6 +5,10 @@
 #
 # CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
 # mra <- read2multirunRA(csvs)   # defined below: create multi-run array
+# SAME THING BUT PASS DIRECTORY NAME INSTEAD:
+# read2dfsFromDir(datadir)
+# SAME THING BUT SKIP FIRST N TICKS:
+# read2multirunRAfromDir(datadir, firstTick=1)
 #
 # CHECK WHETHER BETWEEN-PERSON ACTIVATIONS HAVE CONVERGED (return names of runs with non-convergent propns):
 # findRunsWithDisagreement(mra, tolerance, tickIndex=1)
@@ -296,7 +300,8 @@ RAs2multirunRA <- function(RAs, runIDs) {
   newDimnames[[4]] <- runIDs # extend list of lists of dimnames to include the run ids as names along 4th dimension
 
   # construct a 4-D array containing each member of RAs as one element along 4th dim:
-  array(RAsInOneVec, newDims, newDimnames)
+  newRA <- array(RAsInOneVec, newDims, newDimnames)
+  addTopDimNamesToMultiRA(newRA) # returns a modified array
 }
 
 ##############################################################
