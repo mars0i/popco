@@ -2,10 +2,29 @@
 ## functions for creating arrays from dataframes containing POPCO data.
 
 ## EXAMPLE USAGE:
-# a <- read2multirunRA(csvs)   # defined below: create multi-run array
-# EXTRACTION AND COMPARISON OF DOMAINS AT ONE TIME ACROSS RUNS:
-# ah <- multiRA2domRA(a, "H")  # defined below: extract subarray for proposition domain H
-# ap <- multiRA2domRA(a, "P")  # note this function works only on 4D arrays, not lower-dimensional subarrays
+#
+# CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
+# mra <- read2multirunRA(csvs)   # defined below: create multi-run array
+#
+# CHECK WHETHER BETWEEN-PERSON ACTIVATIONS HAVE CONVERGED (return names of runs with non-convergent propns):
+# findRunsWithDisagreement(mra, tolerance, tickIndex=1)
+# 
+# DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE): 
+# df <- multiRA2meanDF(mra, "H", "P", firstTick=1500)
+#
+# EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
+# xseq <- seq(from=-9, to=9, by=2*.9)/10     # for 10 propns in a domain, max is 10*.9, min 10*-.9
+# yseq <- seq(from=-8.1, to=8.1, by=2*.9)/9  # increments between foci are 2*.9
+#
+# CREATE INTERVALS WITH FOCI AT THEIR MIDPOINTS, FOR BINNING RUN MEANS:
+# intervals <- foci2intervals(foci)
+#
+# DATAFRAME WITH FREQUENCIES IN BINNED RUN MEANS:
+# fdf <- DF2freqDF(df, dom1, dom2, dom1intervals, dom2intervals)
+#
+# EXTRACTION AND COMPARISON OF DOMAINS AT ONE TIME ACROSS RUNS (ARRAYS):
+# ah <- multiRA2domRA(mra, "H")  # defined below: extract subarray for proposition domain H
+# ap <- multiRA2domRA(mra, "P")  # note this function works only on 4D arrays, not lower-dimensional subarrays
 # ah1500 <- ah[,,1500,]        # extract subarrays for timestep 1500
 # ap1500 <- ap[,,1500,]
 # ah1500means <- apply(ah1500, c(1,3), mean)  # get average activation for each person in each run
@@ -44,6 +63,7 @@ DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
   freqDF
 }
 
+# DF2freqDF helper function
 DF2freqDF.prepare.aDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
   # add cut intervals to the internal copy of the input df:
   aDF <- aDF[aDF$rawsum=="raw",] # strip out means, etc.
@@ -52,7 +72,7 @@ DF2freqDF.prepare.aDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals)
   aDF
 }
 
-# helper function
+# DF2freqDF helper function
 DF2freqDF.component <- function(bias, aDF, dom1, dom2) {
   biasrows <- aDF$bias==bias
   aDFbiasrows <- aDF[biasrows, , drop=F]
@@ -62,10 +82,6 @@ DF2freqDF.component <- function(bias, aDF, dom1, dom2) {
   freqDF$bias <- bias
   freqDF
 }
-
-# model for the preceding
-# function(bi){tab <- table(one[one$bias==bi,]$Hcut, one[one$bias==bi,]$Pcut)}
-# function(bi){mydf <- as.data.frame(yo(bi)); mydf$bias <- bi; mydf}
 
 # utility to add top-level dimension names to a multi-RA if didn't do it already:
 addTopDimNamesToMultiRA <- function(RA) {
