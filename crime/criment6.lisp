@@ -249,9 +249,10 @@
 (defun make-beast-bias-crime-talker (name &optional (given '()))
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
-                   (make-struc 'source 'problem '(start (,@virus-propns ,@beast-propns)))
+                   (make-struc 'source 'problem '(start (,@beast-propns)))
                    ,@general-semantic-relations
                    ,@crime-semantic-relations
+                   ,@virus-semantic-relations
                    ,@beast-semantic-relations)
                  '()
                  '(target)))
@@ -259,10 +260,9 @@
 (defun make-both-bias-crime-talker (name &optional (given '()))
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
-                   (make-struc 'source 'problem '(start (,@beast-propns)))
+                   (make-struc 'source 'problem '(start (,@virus-propns ,@beast-propns)))
                    ,@general-semantic-relations
                    ,@crime-semantic-relations
-                   ,@virus-semantic-relations
                    ,@beast-semantic-relations)
                  '()
                  '(target)))

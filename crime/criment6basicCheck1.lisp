@@ -7,10 +7,6 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* NIL)
 
-SOMETHING IS WRONG WITH THE VIRUS-PROPNS (ONLY THEM)
-SOMETHING IS WRONG WITH THE VIRUS-PROPNS (ONLY THEM)
-SOMETHING IS WRONG WITH THE VIRUS-PROPNS (ONLY THEM)
-
 ; *do-converse* is set off, so the fact that these persons are
 ; allowed to talk about crime will have no effect:
 (make-both-bias-crime-talker 'Vicky viral-crime-propns)
@@ -25,7 +21,7 @@ SOMETHING IS WRONG WITH THE VIRUS-PROPNS (ONLY THEM)
 
 (print (get 'folks 'members))
 
-;(init-pop)
+(init-pop)
 
 ; crude low-level method to cause to *disbelieve* all formerly perceived propositions.
 ; note this has to happen after init-pop.
@@ -35,4 +31,4 @@ SOMETHING IS WRONG WITH THE VIRUS-PROPNS (ONLY THEM)
 (mapc #'negate-propn (get 'nay-Virgil 'all-propositions))
 
 (setf *max-pop-ticks* 50)
-;(popco)
+(popco)
