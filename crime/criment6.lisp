@@ -115,8 +115,7 @@
     ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
-
-(defvar crime-propns
+(defvar viral-crime-propns
   '(
     (is-criminal (prev-criminal-cperson) cv-cp) ; person who's already committing crimes
     (not-criminal (at-risk-cperson) cv-na)      ; person at risk of turning to crime
@@ -146,7 +145,10 @@
     (reform (prev-criminal-cperson) cv-rp) ; reform includes social support, education, etc. to criminals
     (prevent (cv-rp cv-rpa) cv-rp->-rpa)
     (cause (cv-rp->-rpa cv-na) cv-rprpa->na)
+   ))
 
+(defvar beastly-crime-propns
+  '(
     ; In addition to criminals being harmed by being criminals,
     ; non-criminals are harmed by criminals [not analogous to virus]:
     ; I'm calling the next group "cb-" because in theory they should map with
@@ -171,13 +173,14 @@
     (aggressive (prev-criminal) cb-ap)
    ))
 
+(defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
+
 (defvar crime-semantic-relations
   '(
     (similar 'is-criminal 'not-criminal (* -1 *ident-weight*))
     ; do we need this next one given preceding?:
     ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
-
 
 ; Note:
 ; It's desirable (required?) to give different names to person objects
@@ -214,7 +217,6 @@
     ;(causes (b-Person-Endangers-Beast b-Beast-Harms-Person) b-Hunting-Is-Dangerous)
     ;(distant-agent (beast people) b-Beast-Distant)
    ))
-
 
 (defvar beast-semantic-relations
   '(
@@ -270,7 +272,7 @@
 ; leave these at defaults:
 ; *propn-excit-weight* *propn-inhib-weight* *trust* *perceived-excit*
 ;(setf *time-runs* nil)
-(setf *do-converse* t)
+;(setf *do-converse* t)  ; set this in particular model files
 (setf *do-update-propn-nets* t)
 (setf *do-report-to-netlogo* t)
 (setf *do-report-propns-to-csv* t)
@@ -282,4 +284,3 @@
 (mapcar #'clear-plists (get 'folks 'members))
 (clear-person-nets 'folks)
 (setf *the-population* 'folks)
-
