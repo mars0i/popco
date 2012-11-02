@@ -36,3 +36,11 @@ Maybe the problem is just that I'm naming b-bb with a "b-".
 
 In becky, b-abp->hp isn't getting mapped to beastly crime.
 
+running
+        barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), pch=21,
+                panel = function(...){panel.barchart(...); panel.abline(v=c(-.5,.5), col="gray")})
+clearly shows that things are generally working, but:
+        becky: b-abp->hp is negative
+
+
+

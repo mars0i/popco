@@ -1,6 +1,26 @@
 R tips:
 
 ----------------------------------------------------------------------
+# Useful barchart representation of all activations, conditioned on person, at a tick, in a run
+# This makes it easy to see whether activations are crossing between domains in the expected way.
+
+# notes:
+# indexing the 4-D array by tick and run produces a 2-D matrix.
+# barchart knows how to use matrices directly.
+# it assumes that you want to use the first dimension as the basic
+#  index, so I transpose the matrix with t() to graph activations by proposition.
+
+barchart(t(mra[,,tickno,runno]), groups=person, scales=list(cex=.5), xlim=c(-1,1), pch=21)
+
+# apparently there's no abline option for barchart, so if you want to add reference lines
+#  (here at -.5 and .5), you need a panel function.  This can be done without much understanding,
+#  it turns out:
+barchart(t(mra[,,tickno,runno]), groups=person, scales=list(cex=.5), xlim=c(-1,1), pch=21,
+         panel = function(...){panel.barchart(...); panel.abline(v=c(-.5,.5), col="gray")})
+
+
+
+----------------------------------------------------------------------
 
 # 3-D barchart/histogram:
 cloud(freq ~ P * H | bias, data=freqdf[freqdf$freq>0,], 
