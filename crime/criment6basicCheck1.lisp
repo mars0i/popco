@@ -30,5 +30,5 @@
 ;(mapc #'negate-propn (get 'nay-Bea-env 'all-propositions))
 ;(mapc #'negate-propn (get 'nay-Virgil-env 'all-propositions))
 
-(setf *max-pop-ticks* 50)
+(setf *max-pop-ticks* 100)
 (popco)
