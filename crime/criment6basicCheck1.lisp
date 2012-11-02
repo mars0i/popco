@@ -14,10 +14,10 @@
 (make-both-bias-crime-talker 'Bea beast-propns)
 (make-both-bias-crime-talker 'Virgil virus-propns)
 
-(make-both-bias-crime-talker 'nay-Vicky viral-crime-propns)
-(make-both-bias-crime-talker 'nay-Becky beastly-crime-propns)
-(make-both-bias-crime-talker 'nay-Bea beast-propns)
-(make-both-bias-crime-talker 'nay-Virgil virus-propns)
+;(make-both-bias-crime-talker 'nay-Vicky viral-crime-propns)
+;(make-both-bias-crime-talker 'nay-Becky beastly-crime-propns)
+;(make-both-bias-crime-talker 'nay-Bea beast-propns)
+;(make-both-bias-crime-talker 'nay-Virgil virus-propns)
 
 (print (get 'folks 'members))
 
@@ -25,10 +25,10 @@
 
 ; crude low-level method to cause to *disbelieve* all formerly perceived propositions.
 ; note this has to happen after init-pop.
-(mapc #'negate-propn (get 'nay-Vicky 'all-propositions))
-(mapc #'negate-propn (get 'nay-Becky 'all-propositions))
-(mapc #'negate-propn (get 'nay-Bea 'all-propositions))
-(mapc #'negate-propn (get 'nay-Virgil 'all-propositions))
+;(mapc #'negate-propn (get 'nay-Vicky-env 'all-propositions))
+;(mapc #'negate-propn (get 'nay-Becky-env 'all-propositions))
+;(mapc #'negate-propn (get 'nay-Bea-env 'all-propositions))
+;(mapc #'negate-propn (get 'nay-Virgil-env 'all-propositions))
 
 (setf *max-pop-ticks* 50)
 (popco)

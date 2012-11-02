@@ -1,0 +1,38 @@
+mostly criment6 is working as expected.
+
+Note that setting up indivs with only negative perceptions and no
+conversation doesn't really do anything.  The negative propns won't
+affect other propns in the same indiv without conversation.
+
+some anomalies:
+
+b-abp is getting a light-weight mapping to cv-rpa
+i.e. 
+        recruiting in cv-rpa is playing the role of attacking in b-abp
+        prev-criminal-cperson is playing the role of beast
+        at-risk-ceperson is playing the role of bperson
+
+which actually makes sense!
+criminals are prey on innocents, turning them into criminals
+This was done without any explicit semantic relations btw.
+
+Also there's a lightweight mapping between v-ipa and cb-vpp,
+i.e. being a victim of crime is a partly like being infected.
+
+I could suppress these side-effects with semantic specs, but maybe I
+shouldn't.  Or maybe add semantic specs to create additional links that
+will lead to indirect supression due to competitions.
+
+There's a similar effect, though in the opposite direction, in Becky.
+
+
+
+b-bb is getting going negative in Becky, but becky is perceived beastly crime,
+so b-bb ought to be high.  It's not getting any positive links.
+Well there's actually nothing in beastly-crime that it should map to.
+If anything, it ought to map to cv-cp, which isn't in the intended
+domain, but why isn't it mapping there?
+Maybe the problem is just that I'm naming b-bb with a "b-".
+
+In becky, b-abp->hp isn't getting mapped to beastly crime.
+

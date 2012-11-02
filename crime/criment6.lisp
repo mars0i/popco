@@ -20,8 +20,8 @@
 ; thing in the virus propositions because there I call the things "elements",
 ; or rather "elts", since they could be e.g. cells rather than persons.
 
-(setf *propn-category-prefixes* '("V" "B" "CV" "CB"))
-(setf *propn-category-descriptions* '("virus propns" "beast propns" "virus-like crime propns" "beast-like crime propns"))
+(setf *propn-category-prefixes* '("CV" "CB" "V" "B"))
+(setf *propn-category-descriptions* '("virus-like crime propns" "beast-like crime propns" "virus propns" "beast propns")) ; these should match
 
 ; Question: How *is* crime like a virus?  What are the analogs of
 ; infection, people, cells, etc.  In the case of viruses, the virus is the
@@ -110,7 +110,7 @@
 
 (defvar virus-semantic-relations
   '(
-    (similar 'is-infected 'not-infected (* -1 *ident-weight*))
+    (similar 'is-infected 'not-infected (* -1 *ident-weight*)) ; WONT DO ANYTHING NOT CROSS-DOMAIN
     ; do we need this next one given preceding?:
     ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
@@ -220,7 +220,7 @@
 
 (defvar beast-semantic-relations
   '(
-    (similar 'beastly 'human (* -.5 *ident-weight*))
+    (similar 'beastly 'human (* -.5 *ident-weight*)) ; WON'T DO ANYTHING: NOT CROSS-DOMAIN
     ; do we need this next one given preceding?:
     ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
