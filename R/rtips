@@ -18,6 +18,14 @@ barchart(t(mra[,,tickno,runno]), groups=person, scales=list(cex=.5), xlim=c(-1,1
 barchart(t(mra[,,tickno,runno]), groups=person, scales=list(cex=.5), xlim=c(-1,1), pch=21,
          panel = function(...){panel.barchart(...); panel.abline(v=c(-.5,.5), col="gray")})
 
+# this version gives a different color for each proposition domain:
+criment6cols <- c(rep("blue", 8), rep("darkgreen", 7), rep("red", 18), rep("darkorange", 18))
+# where those numbers of replications match the order of domains and number of propns in each
+barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), 
+         panel = function(y, ...){             # make y explicit so code can refer to it
+           panel.barchart(y=y, col=criment6cols[y], ...); # pass y again, but also index into vector to get color
+           panel.abline(v=c(-.5,.5), col="gray")
+         })
 
 
 ----------------------------------------------------------------------
