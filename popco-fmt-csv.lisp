@@ -20,6 +20,8 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; header/label row:
 
+;; TODO: NEED TO USE COOK-SYM-NAMES-FOR-OTHERS IN THE NEXT TWO FUNCTIONS
+
 ;; FMT-UNIT-LABEL-CSV 
 ;; csv string for a unit/node name other than the last one
 (defun fmt-unit-label-csv (unit)
