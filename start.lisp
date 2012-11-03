@@ -33,6 +33,11 @@
 
 (print "Modifications, additional code for POPCO copyright (c) Marshall Abrams 2012.")
 
+(load "~/quicklisp/setup.lisp")
+(ql:quickload "cl-ppcre")  ; perl-compatible regular expressions used in popco-fmt-utils.lisp
+;(use-package 'cl-ppcre) ; for regex-replace
+; Maybe personal-to-generic-sym, etc. should be rewritten using this now.
+
 ;Lisp code for initializing global variables.  
 ;(print "Loading global variables.")
 (myload "variables") 

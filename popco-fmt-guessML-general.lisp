@@ -16,12 +16,10 @@
 ;; Those files output GRAPHML code that represents POPCO data using a 
 ;; particular color/shape/etc. scheme, whereas code in this file is generic.
 
-
-
-(defvar *guess-map-string* "_maps_") ; string that will replace the "=" in ACME map unit names when converting unit names for GUESS:
-(defvar *guess-map-string-chars* (coerce *guess-map-string* 'list)) ; list of characters corresponding to same string:
-(defvar *guess-gt-string* "gt")
-(defvar *guess-gt-string-chars* (coerce *guess-gt-string* 'list))
+(defvar *deprecated-guess-map-string* "_maps_") ; string that will replace the "=" in ACME map unit names when converting unit names for GUESS:
+(defvar *deprecated-guess-map-string-chars* (coerce *deprecated-guess-map-string* 'list)) ; list of characters corresponding to same string:
+(defvar *deprecated-guess-gt-string* "gt")
+(defvar *deprecated-guess-gt-string-chars* (coerce *deprecated-guess-gt-string* 'list))
 
 ; PERSONAL-SYM-TO-GUESS-NODENAME 
 ; Convert a POPCO personal sym to a string suitable for use as a node name
@@ -43,13 +41,20 @@
 ; this function doesn't need to be efficient as long as GUESS files are only
 ; created on an ad-hoc basis.]
 (defun generic-sym-to-guess-nodename (sym)
+  (cook-sym-name-for-others (symbol-name sym)))
+
+; old version of preceding
+(defun deprecated-generic-sym-to-guess-nodename (sym)
   (coerce 
     (flatten
-      (substitute *guess-gt-string-chars* #\>
-                  (substitute *guess-map-string-chars* #\=
+      (substitute *deprecated-guess-gt-string-chars* #\>
+                  (substitute *deprecated-guess-map-string-chars* #\=
                               (substitute #\_ #\- 
-                                          (coerce (symbol-name sym) 'list)))))
+                                          (coerce 
+                                            (symbol-name sym)
+                                            'list)))))
     'string))
+
 
 ;; PERSONAL-SYMS-TO-GUESS-MAP-NODENAME 
 ;; Given two Lisp symbols which should normally be proposition nodes,
