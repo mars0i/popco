@@ -46,7 +46,7 @@ panel.grid(h=0, ...)
 
 # and this is used below to draw horizontal lines between domains:
 skosh=.45 # adjust position between bars
-criment6divs=c(7+skosh,7+7+skosh,7+7+18+skosh) # position between domains
+criment6divs=c(7,7+7,7+7+18)+skosh # position between domains
 
 # this draws vertical grid lines and lines between domains, with domain-specific colors:
 barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), 
