@@ -19,14 +19,51 @@ barchart(t(mra[,,tickno,runno]), groups=person, scales=list(cex=.5), xlim=c(-1,1
          panel = function(...){panel.barchart(...); panel.abline(v=c(-.5,.5), col="gray")})
 
 # this version gives a different color for each proposition domain:
-criment6cols <- c(rep("blue", 8), rep("darkgreen", 7), rep("red", 18), rep("darkorange", 18))
+criment6cols <- c(rep("blue", 7), rep("darkgreen", 7), rep("red", 18), rep("darkorange", 18))
 # where those numbers of replications match the order of domains and number of propns in each
 barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), 
          panel = function(y, ...){             # make y explicit so code can refer to it
            panel.barchart(y=y, col=criment6cols[y], ...); # pass y again, but also index into vector to get color
            panel.abline(v=c(-.5,.5), col="gray")
          })
+# an alternative to 
+panel.abline(v=c(-.5,.5), col="gray")
+# is
+panel.abline(v=seq(-1,1,.25), col="gray")
+# or
+panel.grid(...) 
+# which also adds horizontal lines, or
+panel.grid(h=0, ...) 
+# which doesn't.
+# And if you put the panel.grid/abline call before the panel.barchart call,
+# the grid lines won't break the bars.  Not sure which is better.
 
+# BIG TIP:
+# I haven't found this documented anywhere:
+# In a barchart in the default orientation, the scale along the vertical
+# (i.e. categorical) axis goes to from 0 to 100.  This can be used in the
+# h argument to panel.abline.
+
+# and this is used below to draw horizontal lines between domains:
+skosh=.45 # adjust position between bars
+criment6divs=c(7+skosh,7+7+skosh,7+7+18+skosh) # position between domains
+
+# this draws vertical grid lines and lines between domains, with domain-specific colors:
+barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), 
+         panel = function(y, ...){
+            panel.abline(v=c(-.5,.5), h=criment6divs, col="gray");
+            panel.barchart(y=y, col=criment6cols[y], border="transparent", ...)})
+
+# This does the same thing but treats the horizontal and vertical lines differently
+# by calling panel.abline() twice [is there a simpler way?]:
+trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray, which is lighter than "gray"
+barchart(t(mra[,,50,]), groups=person, 
+         xlim=c(-1,1), 
+         scales=list(cex=.5, y = list(alternating = 3)), 
+         panel = function(y, ...){
+           panel.abline(v=c(-.5,.5), lty=3, col=trellgray);
+           panel.abline(h=criment6divs, lty=2, col="gray");
+           panel.barchart(y=y, col=criment6cols[y], border="transparent", ...)})
 
 ----------------------------------------------------------------------
 

@@ -117,6 +117,7 @@
 
 (defvar viral-crime-propns
   '(
+    ; THIS ONE WAS SUPPOSED TO MAP TO b-bb TOO, but it doesn't and adding a duplicate of it with a new name doesn't help:
     (is-criminal (prev-criminal-cperson) cv-cp) ; person who's already committing crimes
     (not-criminal (at-risk-cperson) cv-na)      ; person at risk of turning to crime
     (is-criminal (at-risk-cperson) cv-ca)
@@ -147,20 +148,21 @@
     (cause (cv-rp->-rpa cv-na) cv-rprpa->na)
    ))
 
+; In addition to criminals being harmed by being criminals,
+; non-criminals are harmed by criminals [not analogous to virus]:
+; I'm calling the next group "cb-" because in theory they should map with
+; beast propns but not virus propns: virus propns only harm by making the
+; harmed into carriers [like leading a non-criminal into crime], whereas
+; beasts harm anyone; they don't turn victims into beasts.
+; QUESTION: Should I codify this last point in propositions?
 (defvar beastly-crime-propns
   '(
-    ; In addition to criminals being harmed by being criminals,
-    ; non-criminals are harmed by criminals [not analogous to virus]:
-    ; I'm calling the next group "cb-" because in theory they should map with
-    ; beast propns but not virus propns: virus propns only harm by making the
-    ; harmed into carriers [like leading a non-criminal into crime], whereas
-    ; beasts harm anyone; they don't turn victims into beasts.
-    ; QUESTION: Should I codify this last point in propositions?
+
 
     (not-criminal (cperson) cb-np)   ; person not at risk of turning to crime
     (victimize (prev-criminal-cperson cperson) cb-vpp)
     (harmed (cperson) cb-hcp) ; hp already in use as a name
-    (cause (cb-vpp cv-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
+    (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     ; old versions:
     ;(cause (cv-cp cv-hcp) cb-cp->hcp) ; existing criminals harm those not at risk
     ;(cause (cv-ca cv-hcp) cb-ca->hcp) ; at-risk persons do too, if they turn to crime
@@ -194,7 +196,9 @@
 
 (defvar beast-propns
   '(
-    (beastly (beast) b-bb)  ; supposed to match: (is-criminal (prev-criminal-cperson) cv-cp)
+   ; this wasn't mapping properly, and was going negative when it was
+   ; intended to be pushed positive.  not needed for anything else:
+   ; (beastly (beast) b-bb)  ; supposed to match: (is-criminal (prev-criminal-cperson) cv-cp)
 
     (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
     (attacks (beast bperson) b-abp)
