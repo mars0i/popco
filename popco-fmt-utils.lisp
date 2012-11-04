@@ -32,8 +32,8 @@
       strings
       (apply #'concatenate (cons 'string strings))))) ; can break in Lisps with max arg list size
 
-; CL doesn't have a string-replace, so we'll use regexps, even though that's more than needed.
-; format a popco symbol name string (e.g. a propn name) so that it's more
+; CL doesn't have a string-replace, so we'll use regexps, even though it's more than needed.
+; Format a popco symbol name string (e.g. a propn name) so that it's more
 ; likely to be acceptable to non-lisp programs such as R and GUESS:
 (defun cook-sym-name-for-others (sym-name)
   (regex-substitute-all "-" *minus-string-for-others*

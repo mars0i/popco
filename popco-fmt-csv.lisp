@@ -22,15 +22,18 @@
 
 ;; TODO: NEED TO USE COOK-SYM-NAMES-FOR-OTHERS IN THE NEXT TWO FUNCTIONS
 
+(defmacro fmt-bare-unit-label-csv (unit)
+  `(format nil "~S" (symbol-name ,unit)))
+
 ;; FMT-UNIT-LABEL-CSV 
 ;; csv string for a unit/node name other than the last one
 (defun fmt-unit-label-csv (unit)
-  (format nil "~S," (symbol-name unit)))
+  (format nil "~A," (fmt-bare-unit-label-csv unit)))
 
 ;; FMT-LAST-UNIT-LABEL-CSV 
 ;; csv string for a unit/node name that's the last one
 (defun fmt-last-unit-label-csv (unit)
-  (format nil "~S" (symbol-name unit)))
+  (fmt-bare-unit-label-csv unit))
 
 ; These have to be defined after fmt-unit-label-csv, but before fmt-pop-propn-labels-csv-row:
 ;(defvar *pop-tick-label-csv* (fmt-unit-label-csv 'tick)) ; header label for column recording pop-ticks
