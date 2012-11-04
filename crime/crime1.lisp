@@ -2,8 +2,8 @@
 ;; First official version of Thibodeau/Boroditsky-inspired
 ;; crime is a virus/beast analogies.
 ;; First version of crime1.lisp was identical to last version of 
-;; criment6.lisp.  See that file for comments and discussion of
-;; choices below.
+;; criment6.lisp.  See that file, criment6.nts for comments and 
+;; discussion of choices below.  See also criment6.pdf.
 
 ; QUESTION: SHOULD CAUSAL AND PREVENTATIVE CRIME PROPNS BE PERCEIVED?
 ; OR ONLY THE SIMPLE CRIME PROPNS?
