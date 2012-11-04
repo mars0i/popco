@@ -24,23 +24,27 @@ shouldn't.  Or maybe add semantic specs to create additional links that
 will lead to indirect supression due to competitions.
 
 There's a similar effect, though in the opposite direction, in Becky.
-
-
-
+......................................................................
+THIS IS A BUG WHICH HAS BEEN FIXED AS OF 11/3/2012 (there was a typo):
 b-bb is getting going negative in Becky, but becky is perceived beastly crime,
 so b-bb ought to be high.  It's not getting any positive links.
 Well there's actually nothing in beastly-crime that it should map to.
 If anything, it ought to map to cv-cp, which isn't in the intended
 domain, but why isn't it mapping there?
 Maybe the problem is just that I'm naming b-bb with a "b-".
-
 In becky, b-abp->hp isn't getting mapped to beastly crime.
-
 running
         barchart(t(mra[,,50,]), groups=person, scales=list(cex=.5), xlim=c(-1,1), pch=21,
                 panel = function(...){panel.barchart(...); panel.abline(v=c(-.5,.5), col="gray")})
 clearly shows that things are generally working, but:
         becky: b-abp->hp is negative
+......................................................................
 
+---------------------------------------
+remaining activation anomalies after 11/3 bugfix:
 
+b-abp, cv-vpp are going high in vicky/virgil [see above]
+v-ipa and cv-rpa are going high in bea/becky [see above]
+I THINK I'LL LEAVE THESE BE SEE ABOVE
 
+A bunch have zero activation in bea/becky, but that seems ok.
