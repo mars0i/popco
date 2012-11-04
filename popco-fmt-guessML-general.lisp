@@ -41,7 +41,7 @@
 ; this function doesn't need to be efficient as long as GUESS files are only
 ; created on an ad-hoc basis.]
 (defun generic-sym-to-guess-nodename (sym)
-  (cook-sym-name-for-others (symbol-name sym)))
+  (normalize-sym-name-for-others (symbol-name sym)))
 
 ; old version of preceding
 (defun deprecated-generic-sym-to-guess-nodename (sym)

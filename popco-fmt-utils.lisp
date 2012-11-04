@@ -35,7 +35,8 @@
 ; CL doesn't have a string-replace, so we'll use regexps, even though it's more than needed.
 ; Format a popco symbol name string (e.g. a propn name) so that it's more
 ; likely to be acceptable to non-lisp programs such as R and GUESS:
-(defun cook-sym-name-for-others (sym-name)
+; ARGUMENT SYM-NAME SHOULD BE A STRING AS PRODUCED BY SYMBOL-NAME OR (FORMAT "~A" SYM).
+(defun normalize-sym-name-for-others (sym-name)
   (regex-substitute-all "-" *minus-string-for-others*
     (regex-substitute "=" *map-string-for-others*
       (regex-substitute-all "->" *cause-string-for-others*    ; -all needed for map nodes

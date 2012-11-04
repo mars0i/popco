@@ -23,7 +23,7 @@
 ;; TODO: NEED TO USE COOK-SYM-NAMES-FOR-OTHERS IN THE NEXT TWO FUNCTIONS
 
 (defmacro fmt-bare-unit-label-csv (unit)
-  `(format nil "~S" (symbol-name ,unit)))
+  `(format nil "~S" (normalize-sym-name-for-others (symbol-name ,unit))))
 
 ;; FMT-UNIT-LABEL-CSV 
 ;; csv string for a unit/node name other than the last one

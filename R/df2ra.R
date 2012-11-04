@@ -149,6 +149,7 @@ read2RAs <- function(csvs, firstTick=1) {
   dfs2RAs(readcsvs(csvs), firstTick=firstTick)
 }
 
+# NAME CONVERSION BUG INSIDE HERE 11/4/2012:
 dfs2RAs <- function(dframes, firstTick=1) {
   lapply(dframes, df2RA, firstTick=firstTick)
 }
