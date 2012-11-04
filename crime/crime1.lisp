@@ -1,4 +1,9 @@
-
+;; crime1.lisp
+;; First official version of Thibodeau/Boroditsky-inspired
+;; crime is a virus/beast analogies.
+;; First version of crime1.lisp was identical to last version of 
+;; criment6.lisp.  See that file for comments and discussion of
+;; choices below.
 
 ; QUESTION: SHOULD CAUSAL AND PREVENTATIVE CRIME PROPNS BE PERCEIVED?
 ; OR ONLY THE SIMPLE CRIME PROPNS?
@@ -22,47 +27,6 @@
 
 (setf *propn-category-prefixes* '("CV" "CB" "V" "B"))
 (setf *propn-category-descriptions* '("virus-like crime propns" "beast-like crime propns" "virus propns" "beast propns")) ; these should match
-
-; Question: How *is* crime like a virus?  What are the analogs of
-; infection, people, cells, etc.  In the case of viruses, the virus is the
-; essentially harming element, and it is transmitted from the harmed to
-; the not yet harmed.  In the case of crime, being a criminal is
-; transmitted, but crime harms the non-criminals more than criminals
-; [according to common ways of thinking, at least, and contrary to Socrates' view].
-
-; On the other hand, it's not clear that the intuition that criminality spreads
-; from one individual to another is that clear.  I guess it is reflected in some
-; of the preventative measures that people entertain.  But I feel that a lot
-; of virusey thinking about crime is vague.
-
-; The main difference between disease and criminality is that although
-; criminality spreads, harming the new criminals, its main harmful effects
-; are on non-criminals.  Disease can have a similar effect, in that some
-; of those infected might not pass it on; they are like innocent vicitms
-; of crime.  But that's less common and less central than in the crime
-; case, and the negative effects fall heavier on crime victims than
-; criminals, whereas typically non-transmitted infections are not worse
-; than the transmitted ones (although variation in virulence can create
-; this effect sometimes).  Note that vampirism is like a virus with the
-; side-effects on innocents of crime.  Drug addiction and sometimes
-; alcoholism are similar, sometimes.
-
-; Also note that imprisoning criminals does not get rid of all crime,
-; since at the very least the crime for which the criminal was
-; convicted occured.  The same is true of reform of criminals.
-; (On the other hand, imprisonment serves not only to take the criminal
-; off the street, but also to deter other crimes.)
-
-; Whereas support to prevent individuals from committing crimes could
-; in principle get rid of all crime, just as innoculation and other
-; preventative measures could in principle get rid of all infections.
-
-; Note that there's also a well-known effect of imprisoning causing
-; more criminality after a prisoner is released.
-
-; NOTE THESE ARE SIMPLY BASED ON MY INTUITIONS (philosophy/linguistics style)
-; AND REALLY OUGHT TO COME FROM DATA.
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -148,13 +112,6 @@
     (cause (cv-rp->-rpa cv-na) cv-rprpa->na)
    ))
 
-; In addition to criminals being harmed by being criminals,
-; non-criminals are harmed by criminals [not analogous to virus]:
-; I'm calling the next group "cb-" because in theory they should map with
-; beast propns but not virus propns: virus propns only harm by making the
-; harmed into carriers [like leading a non-criminal into crime], whereas
-; beasts harm anyone; they don't turn victims into beasts.
-; QUESTION: Should I codify this last point in propositions?
 (defvar beastly-crime-propns
   '(
 
@@ -167,12 +124,12 @@
     ;(cause (cv-cp cv-hcp) cb-cp->hcp) ; existing criminals harm those not at risk
     ;(cause (cv-ca cv-hcp) cb-ca->hcp) ; at-risk persons do too, if they turn to crime
 
-    (capture (prev-criminal) cb-cpc) ; cp is already used as name for crime propn
+    (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
     ;(kill (prev-criminal) cb-kp)
     ;(prevent (cb-kp cb-vpp) cb-kp->-vpp)
 
-    (aggressive (prev-criminal-cperson) cb-ap)
+    (aggressive (prev-criminal) cb-ap)
    ))
 
 (defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
