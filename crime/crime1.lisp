@@ -158,7 +158,7 @@
    ; (beastly (beast) b-bb)  ; supposed to match: (is-criminal (prev-criminal-cperson) cv-cp)
 
     (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
-    (attacks (beast bperson) b-abp)
+    (attack (beast bperson) b-abp)
     (harmed (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
     ; simple version:
