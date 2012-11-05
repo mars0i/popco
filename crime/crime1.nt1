@@ -1,0 +1,23 @@
+crime1.nt1
+Summary/discussion of an issue first described in criment6.nts
+
+intended mapping:
+    (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa)
+    (infect (prev-infected-elt at-risk-elt) v-ipa)
+the latter is also lightly mapping:
+    (victimize (prev-criminal-cperson cperson) cb-vpp)
+
+intended mapping:
+    (victimize (prev-criminal-cperson cperson) cb-vpp)
+    (attack (beast bperson) b-abp)
+the latter is also lightly mapping:
+    (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa)
+
+There are appropriate negative links in the acme network, but they
+don't overcome the positive inputs to the undesirable map nodes.
+The biggest input seems to be prevent=prevent, which occurs
+because all four propositions occur as arguments of H-O propns
+using PREVENT.
+
+Adding the two commented out propns in beast propns and beastly-crime
+propns doesn't make a significant difference.

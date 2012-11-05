@@ -51,7 +51,7 @@
     (harmed (prev-infected-elt) v-hp)  ; drop? introduces noise?
     (cause (v-ip v-hp) v-ci->hp)         ; drop? introduces noise?
 
-    (infect (prev-infected-elt at-risk-elt) v-ipa) ; infection spreads from the previously infected to the at-risk
+    (INFECT (PREV-INFECTED-ELT AT-RISK-ELT) V-IPA) ; infection spreads from the previously infected to the at-risk
     (cause (v-ipa v-ia) v-ipa->ia) ; transmission from infected to uninfected causes infection
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
@@ -81,7 +81,6 @@
 
 (defvar viral-crime-propns
   '(
-    ; THIS ONE WAS SUPPOSED TO MAP TO b-bb TOO, but it doesn't and adding a duplicate of it with a new name doesn't help:
     (is-criminal (prev-criminal-cperson) cv-cp) ; person who's already committing crimes
     (not-criminal (at-risk-cperson) cv-na)      ; person at risk of turning to crime
     (is-criminal (at-risk-cperson) cv-ca)
@@ -92,7 +91,7 @@
     (harmed (prev-criminal-cperson) cv-hp)
     (cause (cv-cp cv-hp) cv-cp->hp)         ; being a criminal has bad consequences for the criminal
 
-    (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
+    (RECRUIT (PREV-CRIMINAL-CPERSON AT-RISK-CPERSON) CV-RPA) ; criminals recruit, teach, are role models for, cause indirectly new criminals
     (cause (cv-rpa cv-ca) cv-sca->ca) ; 
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
@@ -114,10 +113,8 @@
 
 (defvar beastly-crime-propns
   '(
-
-
     (not-criminal (cperson) cb-np)   ; person not at risk of turning to crime
-    (victimize (prev-criminal-cperson cperson) cb-vpp)
+    (VICTIMIZE (PREV-CRIMINAL-CPERSON CPERSON) CB-VPP)
     (harmed (cperson) cb-hcp) ; hp already in use as a name
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     ; old versions:
@@ -126,8 +123,9 @@
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
+    ; adding these doesn't make much difference:
     ;(kill (prev-criminal) cb-kp)
-    ;(prevent (cb-kp cb-vpp) cb-kp->-vpp)
+    ;(prevent (cb-kp cb-vpp) cb-kb->-vpp)
 
     (aggressive (prev-criminal) cb-ap)
    ))
@@ -153,12 +151,8 @@
 
 (defvar beast-propns
   '(
-   ; this wasn't mapping properly, and was going negative when it was
-   ; intended to be pushed positive.  not needed for anything else:
-   ; (beastly (beast) b-bb)  ; supposed to match: (is-criminal (prev-criminal-cperson) cv-cp)
-
     (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
-    (attack (beast bperson) b-abp)
+    (ATTACK (BEAST BPERSON) B-ABP)
     (harmed (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
     ; simple version:
@@ -167,16 +161,11 @@
 
     (capture (beast) b-cpb)
     (prevent (b-cpb b-abp) b-cpb->-abp)
+    ; adding these doesn't make much difference:
     ;(kill (beast) b-kb)
     ;(prevent (b-kb b-abp) b-kp->-abp)
 
     (aggressive (beast) b-ab)
-
-    ; The following are borrowed from the Sanday simulations:
-    ;(hunts-endangers (people beast) b-Person-Endangers-Beast)
-    ;(harms (beast people) b-Beast-Harms-Person)
-    ;(causes (b-Person-Endangers-Beast b-Beast-Harms-Person) b-Hunting-Is-Dangerous)
-    ;(distant-agent (beast people) b-Beast-Distant)
    ))
 
 (defvar beast-semantic-relations

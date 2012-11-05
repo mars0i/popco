@@ -43,8 +43,8 @@ clearly shows that things are generally working, but:
 ---------------------------------------
 remaining activation anomalies after 11/3 bugfix:
 
-b-abp, cv-vpp are going high in vicky/virgil [see above]
-v-ipa and cv-rpa are going high in bea/becky [see above]
+b-abp, cb-vpp are going high in vicky/virgil [see above]
+cv-rpa and v-ipa are going high in bea/becky [see above]
 I THINK I'LL LEAVE THESE BE SEE ABOVE
 
 A bunch have zero activation in bea/becky, but that seems ok.
