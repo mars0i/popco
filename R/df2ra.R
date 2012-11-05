@@ -227,7 +227,7 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiR
 # functions for extracting meaningful labels
 
 # these extract various parts of proposition names
-persPropNames2genPropNames <- function(propnms) {unique(sub(".*_", "", propnms))}  # extract unique generic propn names from personal propn names
+persPropNames2genPropNames <- function(propnms) {unique(sub("[^_]*_", "", propnms))}  # extract unique generic propn names from personal propn names
 persPropNames2persNames <- function(propnms) {unique(sub("_.*", "", propnms))} # extract unique person names from personal propn names
 genPropNames2domNames  <- function(propnms) {unique(sub("([^.]*)\\..*", "\\1", propnms))} # extract domain names (propn prefixes) from generic propn names
 persPropNames2domNames <- function(propnms) {genPropNames2domNames(persPropNames2genPropNames(propnms))} # extract domain names (propn prefixes) from personal propn names
