@@ -3,9 +3,9 @@
 ;; May be distributed only with permission from the author.
 ;; Data-formatting functions
 
-(defvar *cause-string-for-others* "_cs_")
-(defvar *prevent-string-for-others* "_pv_")
-(defvar *map-string-for-others* "_mp_") ; string that will replace the "=" in ACME map unit names 
+(defvar *cause-string-for-others* "_c_")
+(defvar *prevent-string-for-others* "_p_")
+(defvar *map-string-for-others* "_m_") ; string that will replace the "=" in ACME map unit names 
 (defvar *minus-string-for-others* "_") ; string that will replace "-" in ACME unit names
 
 ; cl-ppcre:regex-replace's syntax makes multiple embedded calls of it hard to read;

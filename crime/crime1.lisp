@@ -46,10 +46,10 @@
     (is-infected (at-risk-elt) v-ia)   ; at-risk person/thing is infected
 
     (harmed (at-risk-elt) v-ha)        ; note we have no quantificatiion or true pattern matching
-    (cause (v-ia v-ha) v-ciha)
+    (cause (v-ia v-ha) v-ci->ha)
 
     (harmed (prev-infected-elt) v-hp)  ; drop? introduces noise?
-    (cause (v-ip v-hp) v-cihp)         ; drop? introduces noise?
+    (cause (v-ip v-hp) v-ci->hp)         ; drop? introduces noise?
 
     (infect (prev-infected-elt at-risk-elt) v-ipa) ; infection spreads from the previously infected to the at-risk
     (cause (v-ipa v-ia) v-ipa->ia) ; transmission from infected to uninfected causes infection
