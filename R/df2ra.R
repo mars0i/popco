@@ -227,18 +227,24 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiR
 # functions for extracting meaningful labels
 
 # these extract various parts of proposition names
+componentBeforeFirstUnderscore <- function(propnms) {unique(sub("_.*", "", propnms))} # extract unique person names from personal propn names
 persPropNames2genPropNames <- function(propnms) {unique(sub("[^_]*_", "", propnms))}  # extract unique generic propn names from personal propn names
-persPropNames2persNames <- function(propnms) {unique(sub("_.*", "", propnms))} # extract unique person names from personal propn names
-genPropNames2domNames  <- function(propnms) {unique(sub("([^.]*)\\..*", "\\1", propnms))} # extract domain names (propn prefixes) from generic propn names
-persPropNames2domNames <- function(propnms) {genPropNames2domNames(persPropNames2genPropNames(propnms))} # extract domain names (propn prefixes) from personal propn names
+persPropNames2persNames <- function(propnms) {componentBeforeFirstUnderscore(propnms)} # extract unique person names from personal propn names
+genPropNames2domNames <- function(propnms) {componentBeforeFirstUnderscore(propnms)} # extract unique domain names from generic propn names
+
+countPropsInDomain <- function(dom, propnms=c()) {length(grep(paste0("^", dom, "_"), propnms))}
+
+# OBSOLETE - written for pre-Nov2012 csv formatting, in which R replaced dashes with dots, rather than Lisp replace dashes with underscores:
+#genPropNames2domNames  <- function(propnms) {unique(sub("([^.]*)\\..*", "\\1", propnms))} # extract domain names (propn prefixes) from generic propn names
+#persPropNames2domNames <- function(propnms) {genPropNames2domNames(persPropNames2genPropNames(propnms))} # extract domain names (propn prefixes) from personal propn names
 
 # NOTE the following abstractions of the preceding definitions are not currently needed, but were, and maybe will be.
 # these can be used to extract the same information if the meta colnames are mixed in with the propn names
 # allColNames2propNames <- function(colnms) {grep(metaColnamesRegexp, colnms, value=TRUE, invert=TRUE)} # strip non-proposition metadata column names NOT CURRENTLY USED
-allColNames2propNames <- function(colnms) {colnms} # no-op; might be replaced later with something like the preceding
-allColNames2gPropNames <- function(colnms) {persPropNames2genPropNames(allColNames2propNames(colnms))}  # extract unique generic propn names from column names
-allColNames2persNames <- function(colnms) {persPropNames2persNames(allColNames2propNames(colnms))} # extract unique person names from column names
-allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
+#allColNames2propNames <- function(colnms) {colnms} # no-op; might be replaced later with something like the preceding
+#allColNames2gPropNames <- function(colnms) {persPropNames2genPropNames(allColNames2propNames(colnms))}  # extract unique generic propn names from column names
+#allColNames2persNames <- function(colnms) {persPropNames2persNames(allColNames2propNames(colnms))} # extract unique person names from column names
+#allColNames2domNames  <- function(colnms) {persPropNames2domNames(allColNames2propNames(colnms))} # extract domain names (propn prefixes) from column names
 
 stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or list of filenames, return vec of strings with ".csv" removed from end
 
