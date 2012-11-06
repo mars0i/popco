@@ -8,7 +8,7 @@
 (setf *do-converse* NIL)
 
 ;(setf *propn-excit-weight* .2L0) ; traditional value from sanday sims: .2L0
-;(setf *propn-inhib-weight* .05L0) ; default value from sanday sims: -.025L0, i.e. 1/8 of .2
+;(setf *propn-inhib-weight* -.01) ; default value from sanday sims: -.025L0, i.e. 1/8 of .2
 
 (print-parameters)
 

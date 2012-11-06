@@ -62,8 +62,10 @@ Especially in the latter case, this seems reasonable.
 7. Increase the weight of negative propositional links relative to
 positive ones.  This ratio was set arbitrarily for the sanday
 models.
-Well, changing *propn-inhib-weight* from .025 to .05 didn't work.
-It made *all* propns go positive or zero under all conditions.
+Well, increasing absolute *propn-inhib-weight* from -.025 to -.05, -.10,
+-.2 (i.e. equal to excit weight) did not get rid of the problematic
+activations, but did mess up some appropriate activations, sending them
+negative.  Nor did changing from -.025 to -.010 .
 
 Note: I think the structural relationships do distinguish the
 cases as far as is possible given that I'm not really modeling the
