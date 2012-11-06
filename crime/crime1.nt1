@@ -19,5 +19,53 @@ The biggest input seems to be prevent=prevent, which occurs
 because all four propositions occur as arguments of H-O propns
 using PREVENT.
 
-Adding the two commented out propns in beast propns and beastly-crime
-propns doesn't make a significant difference.
+In each case, the proposition appears as the first arg of a cause propn,
+with the second arg being a unary propn (there are some lacks of
+parallel beyond that point wrt to the predicate in the unary propn).
+
+In each case, the proposition appears as the second arg of at
+least one prevent propn, where the first arg is a unary propn.
+The virus-like propns differ from the beast-like propns in that 
+beastlike have only one prevent propn, whereas the viruslike have three.
+
+So there really is a lot of affinity of the inappropriately mapped
+propns at the level of structure.  Despite their semantic
+difference.
+
+
+POSSIBLE RESPONSES:
+
+1. Do nothing.  There is a similarity, and this captures it.
+But: should there be this much of an effect?  seems not.
+
+2. Adding the pairs of commented out propns in beast propns and beastly-crime
+propns doesn't make a significant difference:
+    ;(kill (prev-criminal) cb-kp)
+    ;(prevent (cb-kp cb-vpp) cb-kb->-vpp)
+    ;(kill (beast) b-kb)
+    ;(prevent (b-kb b-abp) b-kp->-abp)
+
+3. Use two different PREVENT predicates.
+This is a very artificial kludge.
+
+4. Similar idea, but swap argument order.  e.g. create passive
+voice versions of the predicates.
+
+5. Add negative soft iffs.  After all, they really are different.
+
+6. Add negative semantic links between 
+        infect, victimize
+and between
+        attack, recruit
+Especially in the latter case, this seems reasonable.
+
+7. Increase the weight of negative propositional links relative to
+positive ones.  This ratio was set arbitrarily for the sanday
+models.
+Well, changing *propn-inhib-weight* from .025 to .05 didn't work.
+It made *all* propns go positive or zero under all conditions.
+
+Note: I think the structural relationships do distinguish the
+cases as far as is possible given that I'm not really modeling the
+transitivity of infection and recruitment.  The effect of the
+distinctions just isn't enough.

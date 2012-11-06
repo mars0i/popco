@@ -49,8 +49,7 @@
 (defvar *default-activ* .01L0 "Default activation of units.")
 (defvar *excit-weight* .04L0 "Weight of excitatory links--for traditional COHERE networks.")
 (defvar *inhib-weight* -.06L0 "Weight of inhibitory links--for traditional COHERE networks.")
-(defvar *propn-excit-weight* .2L0 "Weight of excitatory links for POPCO proposition-inference networks.")
-(defvar *propn-inhib-weight* -.025L0 "Weight of inhibitory links for POPCO proposition-inference networks.") ; NOTE: This may need to be adjusted wrt proportion of neg to pos links
+; See also: *propn-<excit|inhib>-weight* in the POPCO section.
 (defvar *simpl-impact* 1L0 "Impact of complexity of structure on coherence.")
 (defvar *goal-excit* .04L0 "Default weight of links from special unit to basic goals.")
 (defvar *weak-incohere-impact* .2L0 "Impact of incohering subgoals.")
@@ -240,6 +239,9 @@
 
 ; POPCO-SPECIFIC VARIABLES:
 
+(defvar *propn-excit-weight* .2L0 "Weight of excitatory links for POPCO proposition-inference networks.")
+(defvar *propn-inhib-weight* -.025L0 "Weight of inhibitory links for POPCO proposition-inference networks.") ; NOTE: This may need to be adjusted wrt proportion of neg to pos links
+
 (defvar *use-new-random-state* t) ; set to nil to use whatever seed the Lisp implementation provides by default
 
 (defvar *perceived-excit* .5) ; default link weight to salient for propositions perceived as true in env
@@ -288,7 +290,7 @@
 ; Some Lisps (e.g. SBCL) use the same random state every time, by
 ; default, causing conversation sequences to be identical.
 ; Get a seed from the operating system.
-; (In SBCL on OSX, this new seed to be the result of a pretty good random number
+; (In SBCL on OSX, this new seed seems to be the result of a pretty good random number
 ; generator--see SBCL source file target-random.lisp and 'man urandom'):
 ; NOTE: We might nevertheless restore an old random state from a file.  This variable
 ; just determines whether we reinitialize the random state on load, rather than allowing

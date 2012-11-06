@@ -7,6 +7,11 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* NIL)
 
+;(setf *propn-excit-weight* .2L0) ; traditional value from sanday sims: .2L0
+;(setf *propn-inhib-weight* .05L0) ; default value from sanday sims: -.025L0, i.e. 1/8 of .2
+
+(print-parameters)
+
 ; *do-converse* is set off, so the fact that these persons are
 ; allowed to talk about crime will have no effect:
 (make-both-bias-crime-talker 'Vicky viral-crime-propns)
