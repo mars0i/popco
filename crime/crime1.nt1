@@ -62,13 +62,7 @@ Especially in the latter case, this seems reasonable.
 e.g.:
     (similar 'infect 'victimize (* -.5 *ident-weight*))
     (similar 'attack 'recruit   (* -.5 *ident-weight*))
-Doing this has *no* effect on the problematic propns.
-It does lower many other activations 
-[i.e. lowering positive activns or making neg activns more extreme]
-BUT THIS HAS NO EFFECT, shockingly.  Even with (* -1 *ident-weight*). !
-There is no difference in the barchart depending on whether I use -.5 or -1.
-WAIT THERE'S SOMETHING WRONG
-I'M GETTING NO EFFECT AT ALL
+DOING THIS HAS *NO* EFFECT AT ALL.
 
 7. Increase the weight of negative propositional links relative to
 positive ones.  This ratio was set arbitrarily for the sanday
