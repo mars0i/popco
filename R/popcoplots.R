@@ -12,17 +12,14 @@ library(lattice)
 
 # this version assumes 4 domains
 activnsAtTickBarchart <- function(mra, tick, run=1) {
-  skosh=.45 # pushes inter-domain lines up a bit
+  divadj <- .50 # pushes inter-domain lines up a bit
   trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray - lighter than "gray"
 
   # extract propositions and domain info from data array, and prepare param lists for barchart:
   propnms <- dimnames(mra)$proposition
   domnms <- genPropNames2domNames(propnms) # get a vector of all domains to which these propns are assigned
   domsizes <- unlist(lapply(domnms, countPropsInDomain, propnms=propnms))  # count how many propns in each domain
-  first1size <- domsizes[1]
-  first2sizes <- first1size+domsizes[2]
-  first3sizes <- first2sizes+domsizes[3]
-  domdivs=c(first1size, first2sizes, first3sizes)+skosh
+  domdivs <- cumsum(domsizes[-length(domsizes)])+divadj  # cumulative sums excluding last element
   domcols <- c(rep("blue", domsizes[1]), rep("darkgreen", domsizes[2]), rep("red", domsizes[3]), rep("darkorange", domsizes[4]))
 
   barchart(t(mra[,,tick,run]), groups=person, 
