@@ -13,7 +13,7 @@ library(lattice)
 # this version assumes 4 domains
 activnsAtTickBarchart <- function(mra, tick, run=1) {
   divadj <- .50 # pushes inter-domain lines up a bit
-  trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray - lighter than "gray"
+  # trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray - lighter than "gray"
 
   # extract propositions and domain info from data array, and prepare param lists for barchart:
   propnms <- dimnames(mra)$proposition
@@ -28,7 +28,7 @@ activnsAtTickBarchart <- function(mra, tick, run=1) {
 	   xlab="activation",
 	   layout=c(4,1),
            panel = function(y, ...){
-             panel.abline(v=c(-.5,.5), lty=3, col=trellgray);
+             panel.abline(v=c(-.5,.5), lty=3, col="gray");
              panel.abline(h=domdivs, lty=2, col="gray");
              panel.barchart(y=y, col=domcols[y], border="transparent", ...)})
 }

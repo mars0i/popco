@@ -44,6 +44,7 @@ propns doesn't make a significant difference:
     ;(prevent (cb-kp cb-vpp) cb-kb->-vpp)
     ;(kill (beast) b-kb)
     ;(prevent (b-kb b-abp) b-kp->-abp)
+i.e. DOESN'T HELP
 
 3. Use two different PREVENT predicates.
 This is a very artificial kludge.
@@ -58,6 +59,16 @@ voice versions of the predicates.
 and between
         attack, recruit
 Especially in the latter case, this seems reasonable.
+e.g.:
+    (similar 'infect 'victimize (* -.5 *ident-weight*))
+    (similar 'attack 'recruit   (* -.5 *ident-weight*))
+Doing this has *no* effect on the problematic propns.
+It does lower many other activations 
+[i.e. lowering positive activns or making neg activns more extreme]
+BUT THIS HAS NO EFFECT, shockingly.  Even with (* -1 *ident-weight*). !
+There is no difference in the barchart depending on whether I use -.5 or -1.
+WAIT THERE'S SOMETHING WRONG
+I'M GETTING NO EFFECT AT ALL
 
 7. Increase the weight of negative propositional links relative to
 positive ones.  This ratio was set arbitrarily for the sanday
@@ -66,6 +77,13 @@ Well, increasing absolute *propn-inhib-weight* from -.025 to -.05, -.10,
 -.2 (i.e. equal to excit weight) did not get rid of the problematic
 activations, but did mess up some appropriate activations, sending them
 negative.  Nor did changing from -.025 to -.010 .
+i.e. DOESN'T HELP
+
+8. Add these:
+    (semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
+    (semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
+I don't know why this would help [it didn't], but they make some sense.
+i.e. DOESN'T HELP
 
 Note: I think the structural relationships do distinguish the
 cases as far as is possible given that I'm not really modeling the

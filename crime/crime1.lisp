@@ -30,9 +30,20 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar general-semantic-relations
+(defvar semantic-relations
   '(
     (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
+
+    ;(similar 'infect 'victimize (* -1 *ident-weight*))
+    ;(similar 'attack 'recruit   (* -1 *ident-weight*))
+
+    ; These won't do anything because they don't cross analog structures:
+    ;(similar 'is-criminal 'not-criminal (* -1 *ident-weight*))
+    ;(similar 'is-infected 'not-infected (* -1 *ident-weight*)) ; WONT DO ANYTHING NOT CROSS-DOMAIN
+
+    ; But these can work in their stead:
+    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
+    ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
 ; Note we call the things that get infected "elts", i.e. elements,
@@ -70,13 +81,6 @@
     (prevent (v-tp v-ipa) v-tp->-spa) ; treatment of infected prevents further infection
     (cause (v-tp->-spa v-na) v-tpspa->na)
     ; [We elide the step in which the infected becomes uninfected, which would require time-indexing.]
-   ))
-
-(defvar virus-semantic-relations
-  '(
-    (similar 'is-infected 'not-infected (* -1 *ident-weight*)) ; WONT DO ANYTHING NOT CROSS-DOMAIN
-    ; do we need this next one given preceding?:
-    ;(semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
    ))
 
 (defvar viral-crime-propns
@@ -132,13 +136,6 @@
 
 (defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
 
-(defvar crime-semantic-relations
-  '(
-    (similar 'is-criminal 'not-criminal (* -1 *ident-weight*))
-    ; do we need this next one given preceding?:
-    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
-   ))
-
 ; Note:
 ; It's desirable (required?) to give different names to person objects
 ; here and in crime-propns.  Even though they're persons, they're not
@@ -168,13 +165,6 @@
     (aggressive (beast) b-ab)
    ))
 
-(defvar beast-semantic-relations
-  '(
-    (similar 'beastly 'human (* -.5 *ident-weight*)) ; WON'T DO ANYTHING: NOT CROSS-DOMAIN
-    ; do we need this next one given preceding?:
-    ;(semantic-iff 'cv-ca 'cv-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
-   ))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Note that I'm reversing source vs target wrt the sanday simulations:
 
@@ -182,7 +172,7 @@
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start ()))
-                   ,@general-semantic-relations)
+                   ,@semantic-relations)
                  '()
                  '(target)))
 
@@ -190,9 +180,7 @@
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@virus-propns)))
-                   ,@general-semantic-relations
-                   ,@crime-semantic-relations
-                   ,@virus-semantic-relations)
+                   ,@semantic-relations)
                  '()
                  '(target)))
 
@@ -200,10 +188,7 @@
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@beast-propns)))
-                   ,@general-semantic-relations
-                   ,@crime-semantic-relations
-                   ,@virus-semantic-relations
-                   ,@beast-semantic-relations)
+                   ,@semantic-relations)
                  '()
                  '(target)))
 
@@ -211,9 +196,7 @@
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@virus-propns ,@beast-propns)))
-                   ,@general-semantic-relations
-                   ,@crime-semantic-relations
-                   ,@beast-semantic-relations)
+                   ,@semantic-relations)
                  '()
                  '(target)))
 
