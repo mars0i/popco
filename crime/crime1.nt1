@@ -85,6 +85,10 @@ i.e. DOESN'T HELP
 
 9. Add additional predicates and propositions that distinguish the
 inappropriate pairs.
+Just adding these doesn't help:
+(PREVENT (CB-CPC CB-HCP) CB-CPC->-HCP) ; snap the transitive pointers
+(PREVENT (B-CPB B-HP) B-CPB->-HP) ; snap the transitive pointers
+
 
 Note: I think the structural relationships do distinguish the
 cases as far as is possible given that I'm not really modeling the
