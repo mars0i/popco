@@ -127,8 +127,8 @@
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
+    ; adding any of these doesn't make much difference:
     ;(PREVENT (CB-CPC CB-HCP) CB-CPC->-HCP) ; snap the transitive pointers
-    ; adding these doesn't make much difference:
     ;(kill (prev-criminal) cb-kp)
     ;(prevent (cb-kp cb-vpp) cb-kb->-vpp)
 
@@ -159,8 +159,8 @@
 
     (capture (beast) b-cpb)
     (prevent (b-cpb b-abp) b-cpb->-abp)
+    ; adding any of these doesn't make much difference:
     ;(PREVENT (B-CPB B-HP) B-CPB->-HP) ; snap the transitive pointers
-    ; adding these doesn't make much difference:
     ;(kill (beast) b-kb)
     ;(prevent (b-kb b-abp) b-kp->-abp)
 

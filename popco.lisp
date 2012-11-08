@@ -140,8 +140,9 @@
 
       ; If user doesn't request continue prev session, store current random seed/state into a file that can recreate it later:
       (unless cont-prev-sess
-        (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
-          (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*)))
+        (let ((*print-pretty* nil)) ; avoid padding with spaces--reduces file size by an order of magnitude in SBCL
+          (with-open-file (random-state-file-stream *random-state-file* :direction :output :if-exists :rename :if-does-not-exist :create)
+            (format random-state-file-stream "(format t \"~%Restoring previous random state from file.~%\")~%(setf *random-state* ~S)" *random-state*))))
 
       ; Now open files to record data as we go, if user specifies that we should.
       ; Whether we open the files for appending or for recreating depends on whether cont-prev-sess was specified as t, or is nil.
