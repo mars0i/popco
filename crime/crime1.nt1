@@ -63,6 +63,10 @@ e.g.:
     (similar 'infect 'victimize (* -.5 *ident-weight*))
     (similar 'attack 'recruit   (* -.5 *ident-weight*))
 DOING THIS HAS *NO* EFFECT AT ALL.
+Well it has an initial effect, but it washes out quickly.
+By tick 100, the numbers are identical.  The transition 
+happens at tick 61.  If the weights are changed to -1, the
+transition to identity occurs at tick 55.
 
 7. Increase the weight of negative propositional links relative to
 positive ones.  This ratio was set arbitrarily for the sanday
@@ -78,6 +82,9 @@ i.e. DOESN'T HELP
     (semantic-iff 'v-ia 'v-na -1.0) ; at-risk-cperson being infected and being uninfected are inconsistent [-1 too strong?]
 I don't know why this would help [it didn't], but they make some sense.
 i.e. DOESN'T HELP
+
+9. Add additional predicates and propositions that distinguish the
+inappropriate pairs.
 
 Note: I think the structural relationships do distinguish the
 cases as far as is possible given that I'm not really modeling the
