@@ -56,10 +56,10 @@
     (not-infected (at-risk-elt) v-na)  ; at risk element is not infected
     (is-infected (at-risk-elt) v-ia)   ; at-risk person/thing is infected
 
-    (harmed (at-risk-elt) v-ha)        ; note we have no quantificatiion or true pattern matching
+    (harms (at-risk-elt) v-ha)        ; note we have no quantificatiion or true pattern matching
     (cause (v-ia v-ha) v-ci->ha)
 
-    (harmed (prev-infected-elt) v-hp)  ; drop? introduces noise?
+    (harms (prev-infected-elt) v-hp)  ; drop? introduces noise?
     (cause (v-ip v-hp) v-ci->hp)         ; drop? introduces noise?
 
     (INFECT (PREV-INFECTED-ELT AT-RISK-ELT) V-IPA) ; infection spreads from the previously infected to the at-risk
@@ -89,10 +89,10 @@
     (not-criminal (at-risk-cperson) cv-na)      ; person at risk of turning to crime
     (is-criminal (at-risk-cperson) cv-ca)
 
-    (harmed (at-risk-cperson) cv-ha)
+    (harms (at-risk-cperson) cv-ha)
     (cause (cv-ca cv-ha) cv-ca->hp)         ; becoming a criminal has bad consequences for the individual
 
-    (harmed (prev-criminal-cperson) cv-hp)
+    (harms (prev-criminal-cperson) cv-hp)
     (cause (cv-cp cv-hp) cv-cp->hp)         ; being a criminal has bad consequences for the criminal
 
     (RECRUIT (PREV-CRIMINAL-CPERSON AT-RISK-CPERSON) CV-RPA) ; criminals recruit, teach, are role models for, cause indirectly new criminals
@@ -119,11 +119,11 @@
   '(
     (not-criminal (cperson) cb-np)   ; person not at risk of turning to crime
     (VICTIMIZE (PREV-CRIMINAL-CPERSON CPERSON) CB-VPP)
-    (harmed (cperson) cb-hcp) ; hp already in use as a name
+    (harms (cperson) cb-hcp) ; hp already in use as a name
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
-    ; old versions:
-    ;(cause (cv-cp cv-hcp) cb-cp->hcp) ; existing criminals harm those not at risk
-    ;(cause (cv-ca cv-hcp) cb-ca->hcp) ; at-risk persons do too, if they turn to crime
+    ; added 11/8/12:
+    (helps (prev-criminal-cperson) cb-hp)
+    (cause (cb-vpp cb-hp) b-vpp->hp) ; criminals benefit from attacking--e.g get money
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
@@ -132,7 +132,7 @@
     ;(kill (prev-criminal) cb-kp)
     ;(prevent (cb-kp cb-vpp) cb-kb->-vpp)
 
-    (aggressive (prev-criminal) cb-ap)
+    (aggressive (prev-criminal-cperson) cb-ap)
    ))
 
 (defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
@@ -151,10 +151,11 @@
   '(
     (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
     (ATTACK (BEAST BPERSON) B-ABP)
-    (harmed (bperson) b-hp)
+    (harms (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
-    ; simple version:
-    ;(cause (b-bb b-hp) b-bb->hp) ; beasts harm persons
+    ; added 11/8/12:
+    (helps (beast) b-hb)
+    (cause (b-abp b-hb) b-abp->hb) ; beasts benefit from attacking--e.g get food
 
 
     (capture (beast) b-cpb)

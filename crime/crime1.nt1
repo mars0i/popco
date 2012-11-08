@@ -13,6 +13,22 @@ intended mapping:
 the latter is also lightly mapping:
     (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa)
 
+
+SUMMARY:
+
+numbers are weights from prevent=prevent:
+
+                      .2
+	cb-vpp	<- intended -> b-abp
+	  A                      A
+	  |                      |
+   .3 unintended             unintended  .3
+	  |                      |
+	  V                      V
+	v-ipa	<- intended -> cb-rpa
+	              .5
+
+
 There are appropriate negative links in the acme network, but they
 don't overcome the positive inputs to the undesirable map nodes.
 The biggest input seems to be prevent=prevent, which occurs
@@ -88,6 +104,27 @@ inappropriate pairs.
 Just adding these doesn't help:
 (PREVENT (CB-CPC CB-HCP) CB-CPC->-HCP) ; snap the transitive pointers
 (PREVENT (B-CPB B-HP) B-CPB->-HP) ; snap the transitive pointers
+
+10. I think what I should do is to change the arity of arguments to
+PREVENT statements so that the members of intended pairs have the same
+arity but not members of unintended pairs.  If this is unnatural, it's
+kind of like imposing the passive voice, etc.  Ah, this isn't natural.
+
+11. One thing that does work is to comment out all three of the triplets
+of propositions that make usse of the relevant propns in v and cv.  This
+leaves precious little of the virus analogy--but it still works!  And
+it's kind of artificial, again.  The trick is that there are
+beast-prevention propns but not virus-prevention propns.
+The opposite strategy works, too, taking out the
+capture and prevent propns in b and cb.
+
+12. I tried adding these to b, cb:
+    (helps (prev-criminal-cperson) cb-hp)
+    (cause (cb-vpp cb-hp) b-vpp->hp) ; criminals benefit from attacking--e.g get money
+    (helps (beast) b-hb)
+    (cause (b-abp b-hb) b-abp->hb) ; beasts benefit from attacking--e.g get food
+These would differentiate virus from beast sensibly.  It doesn't help the problem
+ta issue here, but I'm leaving them in since they make sense.
 
 
 Note: I think the structural relationships do distinguish the
