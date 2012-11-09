@@ -1,4 +1,4 @@
-# crime1basicCheck1.R
+# popcoplots.R
 
 # First CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
 # mra <- read2multirunRA(csvs) 

@@ -18,15 +18,15 @@ SUMMARY:
 
 numbers are weights from prevent=prevent:
 
-                      .2
-	cb-vpp	<- intended -> b-abp
-	  A                      A
-	  |                      |
-   .3 unintended             unintended  .3
-	  |                      |
-	  V                      V
-	v-ipa	<- intended -> cb-rpa
-	              .5
+                               .2
+victimize      cb-vpp	<- intended -> b-abp            attack
+               	  A                      A
+        	  |                      |
+           .3 unintended             unintended  .3
+        	  |                      |
+        	  V                      V
+infect  	v-ipa	<- intended -> cb-rpa           recruit
+        	              .5
 
 
 There are appropriate negative links in the acme network, but they
@@ -125,6 +125,11 @@ capture and prevent propns in b and cb.
     (cause (b-abp b-hb) b-abp->hb) ; beasts benefit from attacking--e.g get food
 These would differentiate virus from beast sensibly.  It doesn't help the problem
 ta issue here, but I'm leaving them in since they make sense.
+
+THERES A BUG SEMANTIC IFFS ARE GETTING OVERWRITTEN
+THERES A BUG SEMANTIC IFFS ARE GETTING OVERWRITTEN
+
+13. Consider adding a third person to virus and viral-crime.
 
 
 Note: I think the structural relationships do distinguish the

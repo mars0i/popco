@@ -878,11 +878,14 @@
   (when (and (unit? unit1)
              (unit? unit2))
     (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
+    ;(format t "about to call (raw-symlink ~S ~S ~S)~%" unit1 unit2 weight)
     (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
 
 ; APPLY-RAW-MAKE-SYMLINK-IF-UNITS
 ; Abbreviation for (apply #'raw-make-symlink-if-units lis) where lis is a list of arguments.
 (defun apply-raw-make-symlink-if-units (unit1-unit2-weight-list)
+  ;(format t "~%apply-raw-make-symlink-if-units ~S ...~%" unit1-unit2-weight-list) ; DEBUG
+  ;(format t "~S: ~S, ~S: ~S~%" (car unit1-unit2-weight-list) (unit? (car unit1-unit2-weight-list)) (cadr unit1-unit2-weight-list) (unit? (cadr unit1-unit2-weight-list)))
   (apply #'raw-make-symlink-if-units unit1-unit2-weight-list))
 
 

@@ -1,6 +1,5 @@
-;; crime1.lisp
-;; First official version of Thibodeau/Boroditsky-inspired
-;; crime is a virus/beast analogies.
+;; crime2.lisp
+;; Thibodeau/Boroditsky-inspired crime is a virus/beast analogies.
 ;; First version of crime1.lisp was identical to last version of 
 ;; criment6.lisp.  See that file, criment6.nts for comments and 
 ;; discussion of choices below.  See also criment6.pdf.
@@ -33,9 +32,14 @@
 (defvar semantic-relations
   '(
     (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
+    ; it's not getting mapped, anywa, so this isn't doing anything
 
-    ;(similar 'infect 'victimize (* -1 *ident-weight*))
-    ;(similar 'attack 'recruit   (* -1 *ident-weight*))
+    ; THESE ARE GETTING CREATED AND THEN ERASED AFTER A TICK OR TWO:
+    (semantic-iff 'cb-vpp 'v-ipa -1)
+    (semantic-iff 'cv-rpa 'b-abp -1)
+
+    ;(similar 'infect 'victimize (* -.5 *ident-weight*))
+    ;(similar 'attack 'recruit   (* -.5 *ident-weight*))
 
     ; These won't do anything because they don't cross analog structures:
     ;(similar 'is-criminal 'not-criminal (* -1 *ident-weight*))
@@ -121,6 +125,9 @@
     (VICTIMIZE (PREV-CRIMINAL-CPERSON CPERSON) CB-VPP)
     (harms (cperson) cb-hcp) ; hp already in use as a name
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
+    ; added 11/8/12:
+    (helps (prev-criminal-cperson) cb-hp)
+    (cause (cb-vpp cb-hp) b-vpp->hp) ; criminals benefit from attacking--e.g get money
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
@@ -150,6 +157,9 @@
     (ATTACK (BEAST BPERSON) B-ABP)
     (harms (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
+    ; added 11/8/12:
+    (helps (beast) b-hb)
+    (cause (b-abp b-hb) b-abp->hb) ; beasts benefit from attacking--e.g get food
 
 
     (capture (beast) b-cpb)
