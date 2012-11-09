@@ -126,8 +126,30 @@ capture and prevent propns in b and cb.
 These would differentiate virus from beast sensibly.  It doesn't help the problem
 ta issue here, but I'm leaving them in since they make sense.
 
-THERES A BUG SEMANTIC IFFS ARE GETTING OVERWRITTEN
-THERES A BUG SEMANTIC IFFS ARE GETTING OVERWRITTEN
+THERE'S A BUG SEMANTIC IFFS ARE GETTING OVERWRITTEN.  OK, in current
+code, up until early Nov 2012, semantic-iffs are recorded during
+init-pop by create-net.  But create-net is run only by init-pop--never
+later.  The invocation of semantic-iffs--i.e. actual creation of the
+links--is performed in create-nets--i.e. at initialization--and during
+conversation when an utterance causes a new proposition to be acquired.
+Semantic iffs never affect the network at any other time.  Which makes
+sense as long as semantic iffs create links which are not later created
+some other way.  The actual effect on the network is ultimately done by
+raw-make-symlink in network.lisp.  This calls make-link, which does add
+weight if there's an existing link, rather than clobbering the old link.
+So the fact that my semantic-iffs are getting clobbered very quickly
+during popco runs suggests the bug is really somewhere else.  The
+semantic-iff links are getting clobbered rather than being summed into,
+it appears.  If there's summing going on, it shouldn't be necessary to
+reinvoke the semantic-iffs after they're initially created (or initially
+added to whatever's already created by upate-proposition-net in
+create-net).
+
+I'M NOT SURE HOW FAR BACK THIS PROBLEM GOES.  Did it originate from
+when I added personal environments?  It doesn't involve environments,
+but still maybe that led to the change.  Was it there from the start?
+DID IT AFFECT THE SIMULATIONS REPORTED IN the "Moderate Role" MS??
+
 
 13. Consider adding a third person to virus and viral-crime.
 

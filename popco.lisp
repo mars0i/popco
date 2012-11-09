@@ -2,10 +2,12 @@
 ;; Copyright (c) 2012 by Marshall Abrams
 ;; May be distributed only with permission from the author.
 
-;; This is toplevel code for POPCO: Population Coherence Dynamics
-;; by Marshall Abrams, but most of the guts of POPCO, in other files, are by Paul Thagard and his collaborators on COHERE.
-;; I've modified PT's files to allow persons to maintain separate nets, and added and modified various functions.
-;; v1.1, fall 2011
+;; This is toplevel code for POPCO: Population Coherence Dynamics by Marshall Abrams
+;; Many parts of POPCO, in other files, are by Paul Thagard and his collaborators on COHERE,
+;; with extensive modifications in many areas.
+;; e.g. I've modified PT's files to allow persons to maintain separate nets, and added and modified various functions.
+;; -MA
+;; v1.2, fall 2012
 
 ;; TO USE
 ;; First load:
@@ -32,7 +34,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VARIABLES TO CONTROL OVERALL OPERATION OF POPCO
 
-(setf *max-pop-ticks* 30) ; max number of pop-tick iterations; 0 for infinite
+(setf *max-pop-ticks* 30) ; max number of pop-tick iterations
 
 (setf *max-times* 5) ; defined in variables-personal.lisp. Here means how many cycles of net-settling allowed per pop-tick.
 
@@ -831,6 +833,9 @@
 
 ; SEMANTIC-IFF
 ; This makes semantic-iff an abbreviation for generic-semantic-iff by setting its function-value to be the same function:
+; Calls to semantic-iff are normally listed as part of the initial-input argument to make-person,
+; and are then eval'ed in function create-net, thereby storing info about the semantic iff in the 
+; person for later use.
 (setf (symbol-function 'semantic-iff) #'generic-semantic-iff)
 
 ; PERSONAL-SEMANTIC-IFF

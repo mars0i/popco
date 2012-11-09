@@ -1,6 +1,17 @@
 #!/bin/sh
-if [ -n "$1" ]; then
-        sbcl --load ~/popco/start --load "$@"
-else
-        sbcl --load ~/popco/start
-fi
+# Runs POPCO with lisp filename arguments passed to SBCL to be loaded
+
+loadargs=''
+
+# While there are remaining command line arguments which end in ".lisp",
+# (i.e. such that stripping off ".lisp" does not produce a different string)
+# take arguments off the command line and store them in loadargs, each
+# preceded by "--load" in order to tell sbcl what to do with the filenames.
+# Remaining args will be left in $@, and accessible in SBCL via *posix-argv*.
+while [ "$1" != "${1%.lisp}" ]; do
+	loadargs="$loadargs --load $1"
+	shift
+done
+
+set -x
+sbcl --load ~/popco/start $loadargs "$@"
