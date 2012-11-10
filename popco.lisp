@@ -450,6 +450,11 @@
 ;;       - a degree of trust: number between 0 and 1 to weight the propn's transmitted credence;
 ;;         see utterance-influence to see what this really means.
 ;; RETURNS: The new-flag: t if the proposition is a new addition to listener's analog struc, nil if not
+; [NOTE: update-proposition-net *may* simply reinvoke a semantic-iff that was created here in receive-utterance
+; because a new proposition suddenly made it applicable, which might then immediately get clobbered 
+; in update-proposition-net before it could be used.  However, some of the semantic-iffs created here will not correspond
+; to the map-unit-influenced ones we deal with there.  So it's simpler to create all semantic-iffs
+; relevant to a new proposition here, even if a few of them might get recreated moments later over there.]
 (defun receive-utterance (generic-propn generic-struc listener trust)
   (setf *the-person* listener)
   (let* ((personal-propn (generic-to-personal-sym generic-propn))
@@ -485,9 +490,15 @@
 (defun invoke-semantic-iffs-for-propn (personal-propn person)
   ;(format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
   (mapc #'apply-raw-make-symlink-if-units
-        (find-semantic-iffs (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs is in popco-utils.lisp
+        (find-semantic-iffs-by-unit (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs-by-unit is in popco-utils.lisp
 
+(defun invoke-semantic-iffs-for-propn-map-units (propn-map-units person)
+  (mapc #'apply-raw-make-symlink-if-units
+        (find-semantic-iffs-in-unit-pairs (get person 'semantic-iffs)            ; find-semantic-iffs-in-unit-pairs in popco-utils.lisp
+                                          (mapcar #'concerns propn-map-units))))
 
+(defun concerns (map-unit)
+  (get map-unit 'concerns))
 
 ;;-----------------------------------------------------
 ;; SETTLE-NETS
@@ -707,11 +718,23 @@
   (mapc #'update-proposition-net (get population 'members))
   population)
 
-; make/update proposition links from proposition-map-units
+; Make/update proposition links from proposition-map-units, then reinvoke 
+; relevant semantic-iffs, since they get clobbered when we update links from map units.
+; [NOTE that when we update a proposition link from a map unit, we *want* to forget the
+;  weight set from map units on previous iteractions.  It no longer matters.  But we *do*
+;  want to remember past semantic-iff; they should be summed in.  The present strategy is
+;  simply to go get the specification of the semantic-iff again and reapply it.]
+; [Also NOTE: That *may* simply reinvoke a semantic-iff that was created in receive-utterance
+; because a new proposition suddenly made it applicable, but then immediately gets clobbered 
+; here before it can be used.  However, some of the semantic-iffs created there will not correspond
+; to the map-unit-influenced ones we deal with here.  So it's simpler to create all semantic-iffs
+; relevant to a new proposition there, even if a few of them might get recreated moments later here.]
 (defun update-proposition-net (person)
   (when *do-update-propn-nets*
     (setf *the-person* person) ; [redund if called from create-net]
-    (mapc #'update-assoc-from-unit (get *the-person* 'propn-map-units)))) ; from acme-infer.lisp
+    (let ((propn-map-units (get *the-person* 'propn-map-units)))
+      (mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
+      (invoke-semantic-iffs-for-propn-map-units propn-map-units person))))
 
 ; OLD CODE FORMERLY IN UPDATE-NET:
     ; old two-analog version of the constraint-map calls:

@@ -1,3 +1,13 @@
+
+
+------------------------------------------
+NEED TO TRY TO MAKE MORE EFFICIENT BY STOPPING SETTLING OF ANALOGY NET WHEN
+THERE ARE NO NEW PROPNS AND IT'S ALREADY SETTLED.
+One place to look is receive-utterance, which unsets the listener's settled?
+property whenever an utterance is received.
+Or is this irrelevant because COHERE gives persons an asymptoted-units property?
+------------------------------------------
+
 . experiments on influence of analogy on long-term persistence and
   transmission. (Have I already done some of these, in effect?)
   	[Well in the 7/2012 paper I had the perceived domains driving

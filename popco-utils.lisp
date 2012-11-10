@@ -375,6 +375,8 @@
 
 ; CONSTRAINT-HAS-END
 ; Analogy constraint specifications here have the structure (unit1 unit2 . weight).
+; Note this function does exactly the same thing as semantic-iff-has-end, but it doesn't
+; hurt to keep them separate for the sake of future modifications.
 (defun constraint-has-end (unit constraint)
   (or (eq unit (first constraint))
       (eq unit (second constraint))))
@@ -384,15 +386,49 @@
 ; Return true if one end of the sem-iff is unit, false otherwise.
 ; Specific whether the unit was the first ("zeroth") or second ("first") by using 0 or 1,
 ; respectively, as true.
-(defun semantic-iff-has-end (unit semantic-iff)
-  (or (eq unit (first semantic-iff))
-      (eq unit (second semantic-iff))))
+; Note this function does exactly the same thing as constraint-has-end, but it doesn't
+; hurt to keep them separate for the sake of future modifications.
+(defun semantic-iff-has-end (unit1 semantic-iff)
+  (or (eq unit1 (first semantic-iff))
+      (eq unit1 (second semantic-iff))))
 
-; FIND-SEMANTIC-IFFS
-; order of arguments designed to allow later extension with searching also by optional second end unit
-(defun find-semantic-iffs (semantic-iffs unit1)
+; SEMANTIC-IFF-HAS-ENDS
+; Tests whether semantic-iff has two specific propositions.
+; See comments on semantic-iff-has-end for more info.
+(defun semantic-iff-has-ends (unit1 unit2 semantic-iff)
+  (or (and (eq unit1 (first semantic-iff))
+           (eq unit2 (second semantic-iff)))
+      (and (eq unit2 (first semantic-iff))
+           (eq unit1 (second semantic-iff)))))
+
+; FIND-SEMANTIC-IFFS-BY-UNIT
+(defun find-semantic-iffs-by-unit (semantic-iffs unit1)
   (remove-if-not #'(lambda (sem-iff) (semantic-iff-has-end unit1 sem-iff)) 
                  semantic-iffs))
+
+; FIND-SEMANTIC-IFFS-BY-UNITS
+(defun find-semantic-iffs-by-units (semantic-iffs unit1 unit2)
+  (remove-if-not #'(lambda (sem-iff) (semantic-iff-has-ends unit1 unit2 sem-iff)) 
+                 semantic-iffs))
+
+; FIND-SEMANTIC-IFFS-IN-UNIT-PAIRS
+; search through a set of pairs of possible link-ends (e.g. the concerns properties of map-units)
+; for semantic-iffs that match them.  Note this iterates through the unit pairs once, but
+; for each pair, iterates through the semantic-iffs.  Maybe this is more efficient since there
+; will usually be few semantic-iffs, but many unit-pairs.
+; [ISN'T THERE A SIMPLER WAY?]
+(defun find-semantic-iffs-in-unit-pairs (semantic-iffs unit-pairs)
+  (apply #'append (find-semantic-iffs-in-unit-pairs-aux semantic-iffs unit-pairs)))
+
+(defun find-semantic-iffs-in-unit-pairs-aux (semantic-iffs unit-pairs)
+  (if (null unit-pairs)
+    nil
+    (let* ((unit-pair (car unit-pairs))
+           (sem-iff (find-semantic-iffs-by-units semantic-iffs (first unit-pair) (second unit-pair))))
+      (if sem-iff
+        (cons sem-iff (find-semantic-iffs-in-unit-pairs-aux semantic-iffs (cdr unit-pairs)))
+        (find-semantic-iffs-in-unit-pairs-aux semantic-iffs (cdr unit-pairs))))))
+
 
 ; GET-OTHER-END
 ; Given a unit and a constraint or semantic-iff specification, returns

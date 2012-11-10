@@ -11,3 +11,19 @@
         (let ((to-move (elt to-choose-from (random (length to-choose-from)))))
           (setf chosen (cons to-move chosen))
           (setf to-choose-from (remove to-move to-choose-from)))))))
+
+(defun find-semantic-iffs-in-unit-pairs (semantic-iffs unit-pairs)
+  (mapcar #'(lambda (unit-pair)
+              (find-semantic-iffs-by-units semantic-iffs 
+                                           (first unit-pair) 
+                                           (second unit-pair)))
+          unit-pairs))
+;; ALSO NOT RIGHT
+(defun find-semantic-iffs-in-unit-pairs-aux (semantic-iffs unit-pairs)
+  (if (null unit-pairs)
+    nil
+    (let* ((unit-pair (car unit-pairs))
+           (sem-iff (find-semantic-iffs-by-units semantic-iffs (first unit-pair) (second unit-pair))))
+      (if sem-iff
+        (cons sem-iff (find-semantic-iffs-in-unit-pairs-aux semantic-iffs (cdr unit-pairs)))
+        (find-semantic-iffs-in-unit-pairs semantic-iffs-aux (cdr unit-pairs))))))
