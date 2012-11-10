@@ -497,9 +497,6 @@
         (find-semantic-iffs-in-unit-pairs (get person 'semantic-iffs)            ; find-semantic-iffs-in-unit-pairs in popco-utils.lisp
                                           (mapcar #'concerns propn-map-units))))
 
-(defun concerns (map-unit)
-  (get map-unit 'concerns))
-
 ;;-----------------------------------------------------
 ;; SETTLE-NETS
 
@@ -735,20 +732,6 @@
     (let ((propn-map-units (get *the-person* 'propn-map-units)))
       (mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
       (invoke-semantic-iffs-for-propn-map-units propn-map-units person))))
-
-; OLD CODE FORMERLY IN UPDATE-NET:
-    ; old two-analog version of the constraint-map calls:
-    ; (constraint-map (generic-to-personal-sym 'target)
-    ;                 (generic-to-personal-sym 'source))
-
-    ; The following code used to appear in update-analogy-net after the double mapc ... constraint-map ... form,
-    ;  near the end of update-analogy-net, but it's only needed on demand, not in every pop-tick.
-    ; [Taking it out makes a big difference in abcl--shaves off 1/3 of the time in one test--but doesn't
-    ;  seem to matter for sbcl or ccl--Maybe they were compiling it away since nothing used it?]
-    ;(setf *weight-of-all-constraints* (sum-constraints)) ; only used in coh-score; maybe delete
-    ;(setf (get *the-person* 'all-constraints) 
-    ;      (list-constraints (get *the-person* 'all-units))) ; useful to have record of constraints in person
-
 
 ; RECORD-CONSTRAINTS
 ; Sometimes useful to have list of constraints stored with each

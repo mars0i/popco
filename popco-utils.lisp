@@ -10,6 +10,9 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+(defun concerns (map-unit)
+  (get map-unit 'concerns))
+
 ; set the activation of a proposition to -1 * whatever it was
 (defun negate-propn (propn)
   (setf (activation propn)
