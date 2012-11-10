@@ -35,8 +35,8 @@
     ; it's not getting mapped, anywa, so this isn't doing anything
 
     ; THESE ARE GETTING CREATED AND THEN ERASED AFTER A TICK OR TWO:
-    (semantic-iff 'cb-vpp 'v-ipa -.5)
-    (semantic-iff 'cv-rpa 'b-abp -.5)
+    (semantic-iff 'cb-vpp 'v-ipa -.1)
+    (semantic-iff 'cv-rpa 'b-abp -.1)
 
     ;(similar 'infect 'victimize (* -.5 *ident-weight*))
     ;(similar 'attack 'recruit   (* -.5 *ident-weight*))
