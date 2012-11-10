@@ -143,12 +143,33 @@ semantic-iff links are getting clobbered rather than being summed into,
 it appears.  If there's summing going on, it shouldn't be necessary to
 reinvoke the semantic-iffs after they're initially created (or initially
 added to whatever's already created by upate-proposition-net in
-create-net).
+create-net).  So maybe it's from the updating of proposition links based
+on the map node activations.  Yes.  The problem is that the update is
+ultimately done by set-symlink-weight in network.lisp, which doesn't
+sum---it just overwrites.  But note that normally, *that's what we
+want*.  We *don't* want to sum into whatever the map node determined as
+proposition link weight last time.  We just want to set the weight.  But
+that means that semantic-iffs get clobbered whenever they parallel
+potential mappings.  Hmm.  One solution would be to reapply the semantic-iffs
+each time, after this.  But maybe we need to undo them first (!), because
+the semantic-iffs will sum.  Well aren't I redoing the perceptual links
+each time?  Am I?  Maybe everything about proposition links just
+needs to be redone each time.  Drop all the links and remake them.
+Oh, wait.  The perceptual links aren't proposition-proposition links.  They're
+links to SALIENT.  So don't worry about those.  But what about conversation-generated
+links.  Don't lose those.  They're not getting recreated each time right now,
+and we'd have to store them to recreate them, because the past conversation
+interactions are lost--the existing weight is the only record of them.
+Dunno--maybe I'm going to have to go to a dual record of proposition link weights.
+So that the map-node generated part can be re-clobbered each time, and the
+other influences can be remembered and summed back in.
 
 I'M NOT SURE HOW FAR BACK THIS PROBLEM GOES.  Did it originate from
 when I added personal environments?  It doesn't involve environments,
 but still maybe that led to the change.  Was it there from the start?
 DID IT AFFECT THE SIMULATIONS REPORTED IN the "Moderate Role" MS??
+Well, SET-SYMLINK-WEIGHT was added 11/2011, apparently.  So that
+WAS DEFINITELY GOING ON IN JULY 2012.  OY.
 
 
 13. Consider adding a third person to virus and viral-crime.
