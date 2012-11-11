@@ -126,3 +126,20 @@
     ;(setf (get *the-person* 'all-constraints) 
     ;      (list-constraints (get *the-person* 'all-units))) ; useful to have record of constraints in person
 
+
+; RAW-MAKE-SYMLINK-IF-UNITS
+;; Make symlink if the two units to be linked are suitable--if they
+;; have activation values.  Silently returns nil if not.
+(defun record-raw-make-symlink-if-units (unit1 unit2 weight)
+  (when (and (unit? unit1)
+             (unit? unit2))
+    (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
+    ;(format t "about to call (raw-symlink ~S ~S ~S)~%" unit1 unit2 weight)
+    (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
+
+; APPLY-RAW-MAKE-SYMLINK-IF-UNITS
+(defun apply-record-raw-make-symlink-if-units (unit1-unit2-weight-list)
+  ;(format t "~%apply-record-raw-make-symlink-if-units ~S ...~%" unit1-unit2-weight-list) ; DEBUG
+  ;(format t "~S: ~S, ~S: ~S~%" (car unit1-unit2-weight-list) (unit? (car unit1-unit2-weight-list)) (cadr unit1-unit2-weight-list) (unit? (cadr unit1-unit2-weight-list)))
+  (apply #'record-raw-make-symlink-if-units unit1-unit2-weight-list))
+

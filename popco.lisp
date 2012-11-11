@@ -466,7 +466,7 @@
       (add-to-struc personal-struc 'start (list (get generic-propn 'message))) ; this does nothing but set fields (also calls note-unit, but that's overrident in next line)
       (init-propn personal-propn *propn-init-activ*)
       (mark-propn-unit-newly-added personal-propn *the-person*)
-      (invoke-semantic-iffs-for-propn personal-propn *the-person*))
+      (invoke-record-semantic-iffs-for-propn personal-propn *the-person*))
     (update-salient-link personal-propn (utterance-influence generic-propn trust))
     is-new-thought))
 
@@ -485,13 +485,17 @@
     (mark-constraint-newly-added propn 'salient weight *the-person*)) ; record that we're making a new constraint, so popco can tell gui if desired
   (raw-make-symlink 'salient propn weight)) ; note this just calls make-link, which merely adds in weight if the link exists
 
-;; INVOKE-SEMANTIC-IFFS
+;; INVOKE-SEMANTIC-IFFS-FOR-PROPN
+;; NOTE: Causes semantic-iffs to be recorded as newly-added-constraints.
 ;; NOTE might need to add a max and min weight specification if these are summing with other iff sources such as analogical relationships.
-(defun invoke-semantic-iffs-for-propn (personal-propn person)
+(defun invoke-record-semantic-iffs-for-propn (personal-propn person)
+  (setf *the-person* person)
   ;(format t "invoking semantic-iffs ~S~%" (find-semantic-iffs (get person 'semantic-iffs) personal-propn)) ; DEBUG
-  (mapc #'apply-raw-make-symlink-if-units
+  (mapc #'apply-record-raw-make-symlink-if-units
         (find-semantic-iffs-by-unit (get person 'semantic-iffs) personal-propn)))  ; note: find-semantic-iffs-by-unit is in popco-utils.lisp
 
+;; INVOKE-SEMANTIC-IFFS-FOR-PROPN-MAP-UNITS
+;; NOTE: Does *not* cause semantic-iffs to be recorded as newly-added-constraints.
 (defun invoke-semantic-iffs-for-propn-map-units (propn-map-units person)
   (mapc #'apply-raw-make-symlink-if-units
         (find-semantic-iffs-in-unit-pairs (get person 'semantic-iffs)            ; find-semantic-iffs-in-unit-pairs in popco-utils.lisp
@@ -648,7 +652,7 @@
   (mapc #'perceived (get person 'given-el)) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (update-analogy-net person) ; create and record the net from what's been stored in person, analog strucs, propns
   (update-proposition-net person) ; initialize proposition net [won't reflect code in next lines, but needed so make-symlinks there have something to attach to]
-  (mapc #'apply-raw-make-symlink-if-units (get person 'semantic-iffs))
+  (mapc #'apply-record-raw-make-symlink-if-units (get person 'semantic-iffs))
   (mapc #'eval (get person 'addl-input))) ; [PROBABLY BUGGY--SHOULDN'T IT RUN IN LATER TICKS, TOO?] additional code, such as pragmatics directives, that needs to run after the main net is created
 
 ;;-----------------------------------------------------
@@ -888,18 +892,20 @@
 (defun raw-make-symlink-if-units (unit1 unit2 weight)
   (when (and (unit? unit1)
              (unit? unit2))
-    (mark-constraint-newly-added unit1 unit2 weight *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
-    ;(format t "about to call (raw-symlink ~S ~S ~S)~%" unit1 unit2 weight)
     (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
 
 ; APPLY-RAW-MAKE-SYMLINK-IF-UNITS
-; Abbreviation for (apply #'raw-make-symlink-if-units lis) where lis is a list of arguments.
 (defun apply-raw-make-symlink-if-units (unit1-unit2-weight-list)
-  ;(format t "~%apply-raw-make-symlink-if-units ~S ...~%" unit1-unit2-weight-list) ; DEBUG
-  ;(format t "~S: ~S, ~S: ~S~%" (car unit1-unit2-weight-list) (unit? (car unit1-unit2-weight-list)) (cadr unit1-unit2-weight-list) (unit? (cadr unit1-unit2-weight-list)))
   (apply #'raw-make-symlink-if-units unit1-unit2-weight-list))
 
-
+; APPLY-RECORD-RAW-MAKE-SYMLINK-IF-UNITS
+; NOTE: *THE-PERSON* MUST BE SET CORRECTLY.
+(defun apply-record-raw-make-symlink-if-units (u1u2w)
+  (mark-constraint-newly-added (first u1u2w)  ; unit1
+                               (second u1u2w) ; unit2
+                               (third u1u2w)  ; weight
+                               *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
+  (apply-raw-make-symlink-if-units u1u2w)) 
 
 ;;-----------------------------------------------------
 ;; BIRTHS-AND-DEATHS
