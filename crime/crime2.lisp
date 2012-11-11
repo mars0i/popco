@@ -127,7 +127,7 @@
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     ; added 11/8/12:
     (helps (prev-criminal-cperson) cb-hp)
-    (cause (cb-vpp cb-hp) b-vpp->hp) ; criminals benefit from attacking--e.g get money
+    (cause (cb-vpp cb-hp) cb-vpp->hp) ; criminals benefit from attacking--e.g get money
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
