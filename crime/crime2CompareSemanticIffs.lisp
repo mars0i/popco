@@ -39,11 +39,6 @@
                  '()
                  '(target)))
 
-; don't move graph around in telguess:
-(setf *guess-layout-commands* "")
-(setf *extra-meta-commands* "")
-(setf *do-converse* NIL)
-
 ;(setf *propn-excit-weight* .2L0) ; traditional value from sanday sims: .2L0
 ;(setf *propn-inhib-weight* -.01) ; default value from sanday sims: -.025L0, i.e. 1/8 of .2
 
@@ -51,11 +46,11 @@
 
 ;; Comment in/out persons wanted:
 
-;(make-both-bias-crime-talker 'Vicky viral-crime-propns)
-;(make-no-iff-both-bias-crime-talker 'Vicky-noiff viral-crime-propns)
+(make-both-bias-crime-talker 'Vicky viral-crime-propns)
+(make-no-iff-both-bias-crime-talker 'Vicky-noiff viral-crime-propns)
 
-(make-both-bias-crime-talker 'Becky beastly-crime-propns)
-(make-no-iff-both-bias-crime-talker 'Becky-noiff beastly-crime-propns)
+;(make-both-bias-crime-talker 'Becky beastly-crime-propns)
+;(make-no-iff-both-bias-crime-talker 'Becky-noiff beastly-crime-propns)
 
 ;(make-both-bias-crime-talker 'Bea beast-propns)
 ;(make-no-iff-both-bias-crime-talker 'Bea-noiff beast-propns)
@@ -67,12 +62,15 @@
 
 (init-pop)
 
-; crude low-level method to cause to *disbelieve* all formerly perceived propositions.
-; note this has to happen after init-pop.
-;(mapc #'negate-propn (get 'nay-Vicky-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Becky-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Bea-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Virgil-env 'all-propositions))
+; don't move graph around in telguess:
+(setf *guess-layout-commands* "")
+(setf *extra-meta-commands* "")
+
+(setf *do-converse* NIL)
+(setf *do-update-propn-nets* t)
+(setf *do-report-to-netlogo* nil)
+(setf *do-report-propns-to-csv* t)
+(setf *do-report-analogy-nets-to-guess* nil)
 
 (setf *max-pop-ticks* 1)
 ;(popco)

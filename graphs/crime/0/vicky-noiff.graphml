@@ -986,9 +986,9 @@
 		</edge>
 		<edge source="CB_VPP" target="V_IPA">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">1.9800000298023224</data>
-		        <data key="guess-edge-weight">-0.19800000298023224</data>
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
 			<data key="guess-edge-weight-source">CB_VPP_m_V_IPA</data>
 		</edge>
 		<edge source="CB_NP" target="B_AB">
@@ -1525,9 +1525,9 @@
 		</edge>
 		<edge source="CV_RPA" target="B_ABP">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">1.9800000298023224</data>
-		        <data key="guess-edge-weight">-0.19800000298023224</data>
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.02</data>
+		        <data key="guess-edge-weight">0.002</data>
 			<data key="guess-edge-weight-source">CV_RPA_m_B_ABP</data>
 		</edge>
 		<edge source="CV_RPA" target="V_IPA">
