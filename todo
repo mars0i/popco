@@ -1,73 +1,50 @@
+------------------------------------------
+BUGS
 
+. UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
+  New nodes in analogy net appear but don't get linked.
+  Is the is-new-link stuff broken??  Or what?
+
+. POSSIBLE BUG when conversations introduce new predicates, at least:
+  Question: Shouldn't semantic relations be reinvoked later if the
+  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
+  to a map node.  But if the map node doesn't exist initially, these
+  special links won't get created; currently (4/2012) they are only
+  created by create-net by the line
+  	(mapc #'eval (get person 'input))
+  This also might have to be reinvoked:
+  	(mapc #'eval (get person 'addl-input))
+  Or maybe they should always exist in everyone?
+  this is at least an issue with specifying direct symlinks on units.
+
+. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
+  the nodes that result from conversation?)
+
+. in parenting14l mless-parent, I get completely disconnected
+  proposition nodes (OK) yet some of them change activations, getting
+  significantly positive, or a little negative.  Oh, wait, I think
+  that's because there are unrepresented things in GUESS do to
+  conversation which isn't yet reflected graphically.  OK.
+. Bug in newly-added edges?: They don't have all of the informative
+  fields that old edges have?  Possibly add code to assign that stuff.
 
 ------------------------------------------
-NEED TO TRY TO MAKE MORE EFFICIENT BY STOPPING SETTLING OF ANALOGY NET WHEN
-THERE ARE NO NEW PROPNS AND IT'S ALREADY SETTLED.
-One place to look is receive-utterance, which unsets the listener's settled?
-property whenever an utterance is received.
-Or is this irrelevant because COHERE gives persons an asymptoted-units property?
+EFFICIENCY
+
 ------------------------------------------
+ENHANCEMENTS
 
-. experiments on influence of analogy on long-term persistence and
-  transmission. (Have I already done some of these, in effect?)
-  	[Well in the 7/2012 paper I had the perceived domains driving
-	the origin domains (with some cross-domain effects as well).
-	e.g. pegging the hunting propns raises the sky propns.
-	Note though that these experiments had no restrictions on
-	domain of discourse--i.e. propns were from all four domains.
-	So I haven't done what's described below.  But I can do it by
-	specifying converse-strucs in the make-person calls.]
+. IN-PROGRESS: Make procedure to record state of pop at each generation.
+  (What about during net settling iterations within generations?)
+  Consider extending NetLogo data output procedures to be able
+  to read from this data and convert to NetLogo data.
 
-  .. Compare two populations.  In both, only target propns are uttered.
-     Maybe these are restricted to one domain.
-     In one, there is a corresponding analog for the propns.
-     In the other, there's not.
-     What's the difference?
-
-  .. Compare two populations.  In both, only target propns are
-     uttered, from two domains.
-     The pops differ as to which source analog they have.
-     If this changes what fixes in the target domain, it shows
-     the role of bg analogy, as opposed to innateness, in biasing
-     tran.
-
-  Now trying to do this in parenting18analogsAsBiases1.lisp.
-
-. cross-analogy coherence demonstration/experiment:
-  See parenting18coherence1.lisp, etc.
-	Goal:
-
-	Show that coherence due to background analogy can work against
-	believing a propn that otherwise would be consistent with other beliefs.
-	i.e. let salience or conversation emphasize s1-sn, those create emphasis
-	on t1-tm due to analogy, and this fact makes it hard to disbelieve s(n+1),
-	despite that otherwise that would work.
-
-	Strategy:
-	
-	Give each individual all of the propns.
-	
-	Make most source propns in one domain (parenting or hunting) salient for
-	one individual, either by making them directly perceived, or by making
-	the perceived for others, and then letting conversation emphasize these
-	propns.
-	
-	Make one proposition in the same domain disbelieved, either through
-	direct perception or conversation, as before.
-	
-	Choose this last proposition so that:
-	
-	It has no or few positive links to propns in its own (source) domain.
-	
-	It maps to propns which do have significant positive links to others in
-	the analog (target) domain.
-	
-	Show that activation flows from the emphasized source propns through the
-	analogical connections to the target propns, and back to the chosen
-	source propn.
-	
-	Show that this propn will not go as negative as it would otherwise, and
-	maybe even can be maintained as positive.
+. Still want to figure out how to pass a telnet port to a single
+  script, or enter it in GUESS or something.  (GUESS doesn't seem to be
+  set up for passing parameters to scripts.)  It certainly ought to be
+  possible to run the telnet server from a menu, but that hasn't worked
+  yet.  Also need to figure out how to close and reopent telnet
+  connections.
 
 . notes on natural selection
 
@@ -105,36 +82,30 @@ Or is this irrelevant because COHERE gives persons an asymptoted-units property?
 		... Giving birth decrements positive points.
 		... Maybe other things decrement points.
 
-
-. TRY RUNNING analogy1_2source.lisp FOR NEW BUG(?).
-PARTLY FIXED AS OF 7/13/12, BUT NEEDS FURTHER TESTING.
-Seems to hang during conversation.  Maybe the env's are included?
-
-	BUG AS OF 5/27/12 because PERCEIVED in popco.lisp always puts
-	propns in an env's source struc, even when they are from the
-	target struc.  This causes target propns to then be transmitted
-	into the source struc, mixing target propns in the person's
-	source struc.  This causes mappings from a propn to itself,
-	which is not allowed.
-	WORKAROUND: Do not perceive target propns.  This is OK for
-	Sanday models.
+  .. old notes re environmental states:
+	Maybe let each person have a pointer to *an* environment.  Or
+	have envs have pointers to people.  However, allow possibility
+	that later the pointer can be changed by actions.  Also later
+	allow changing the environment that's pointed to.  (This can
+	allow grid-movement as in NetLogo.  Though at that point maybe
+	it would be easiest to break the MVC wall and give NetLogo a
+	central role.) But you still need the pointers, so that
+	different indivs can share the same env, and be affected by how
+	each other updates it.  Later can also add rules that make env
+	update itself.  Though maybe do that with special persons.  No
+	wait--I think I'm treating envs as persons anyway.  However, the
+	thing about an env is that it has special conversation rules.
+	e.g.  maybe it *always* talks to those "in" it.  Also, envs will
+	have their own special rules for responding to person's
+	"utterances" (niche-constructive actions).
 
 . "Goals": restricts mapping to category start vs goals
 
-. Write fortress propns
-
-. Construct a real convergence statement
-
+. How does problem solving/filling in work?  Can I use that?  Is it hopelessly
+  complicated and broken??
 . Analogical transfer:
 	- kludge it by including the propn
 	- holyoak novick melz
-
-. How does problem solving/filling in work?  Can I use that?  Is it hopelessly
-  complicated and broken??
-
-. UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
-  New nodes in analogy net appear but don't get linked.
-  Is the is-new-link stuff broken??  Or what?
 
 . Consider ways to make analogy weaker or more intermittent relative
   to conversation.
@@ -145,106 +116,27 @@ Seems to hang during conversation.  Maybe the env's are included?
   .. Maybe I *need* drifty noise added so that "what everybody says"
   isn't *so* overwhelming.  e.g. it would be nice to make the analogical
   relationships weaker, but then they'd be overwhelmed by previous
-  history.  This also provides a way of "forgetting": If there's nothing
+  history.  THIS ALSO PROVIDES A WAY OF "FORGETTING": If there's nothing
   telling you you gotta believe this, then it eventually fluctuates
   randomly.
   SEE additional notes below about issues concerning forgetting.
 
-..............................................................
-LISP:
-
-. Can I solve the possible problem of having analogs mixed in source
-  and target, by going further with the e-god/s-god strategy and making
-  sure that I don't share predicates or objects between analog clusters
-  within the same struc?  Note that there are *no* mappings
-  within-struc, so there is no semantic reason that e.g. you can't have
-  two cause predicates.  It's a kludge, but I think it would serve to
-  make the sets of propns independent and not have mixing between them.
-  (or can I have multiple source and target analogs, which is cleaner
-  maybe, but maybe less realism-ey?)
-  The general idea is that the reason that there's a problem that
-  prevented gathering from working (?) is that it's more or less
-  syntax only that's doing the work.  What semantical help there is,
-  is pretty weak.  So you have to enhance the semantics a bit with
-  naming conventions.
-
-. Need routine to thoroughly and safely clear the system so that I can manage multiple runs
-  using Lisp code rather than restarting sbcl and having to manage it
-  from shell code.  Not sure if these are sufficient.
-        (mapcar #'clear-plists (get 'folks 'members))
-        (clear-person-nets 'folks)
-  What's needed is:
-        1. Clear plists recursively starting from *the-population*, and symbol values
-           if there are any (I don't think there are).
-        2. Set all globals back to defaults.  Note that at present, not all are in
-           variables.lisp, so I can't just reload that file.
-        3. Make sure that random-state is managed properly and saved properly.
-  Possibly write code to clear out everything.  Maybe walk plists
-  and possibly symbol values, clearing them out.
-  Question: Can I get random-state in the middle of a Lisp session and
-  be able to use it properly in a brand new Lisp session?
-  notes on what needs to be stored to recreate a population state:
-	*pop-tick*
-	symbols and plists of:
-		all persons in pop's members
-		all units in each person's all-units
-		all structures in each person's all-structures
-	I think that's it.
-
-. BUG: The function SIMILAR? checks whether the predicate pair is listed in
-  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
-  IS ACTUALLY A BUG because it means that all persons are sharing
-  predicate similarities, and overriding variants.  *similiar* should be
-  a field of the person rather than a global.  Or the similarities could
-  be personalized.  But then everyone has to through a long list of
-  similarities.  [This is OK if all of the persons *do* share
-  similarities.]
-
-. POSSIBLE BUG when conversations introduce new predicates, at least:
-  Question: Shouldn't semantic relations be reinvoked later if the
-  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
-  to a map node.  But if the map node doesn't exist initially, these
-  special links won't get created; currently (4/2012) they are only
-  created by create-net by the line
-  	(mapc #'eval (get person 'input))
-  This also might have to be reinvoked:
-  	(mapc #'eval (get person 'addl-input))
-  Or maybe they should always exist in everyone?
-  this is at least an issue with specifying direct symlinks on units.
-
-. On forgetting:
+. RE FORGETTING:
   Question: Should people forget what has negative degree of belief,
   or low absolute value of degree of belief.  Seems like both are
   relevant.  Yet negative degrees of belief are positive degrees of
   belief in negations.
 
-. SMALL BUG: Calling n-persons-with-name twice with the same name
-  seems to cause an error when popco is run.
-
-. By specifying different salience for different individuals, you could
-  have the adamant override the lukewarm
-
-. Make procedure to store record state of pop at each generation.
-  (What about during net settling iterations within generations?)
-  Consider extending NetLogo data output procedures to be able
-  to read from this data and convert to NetLogo data.
-
-. Currently, remove-constraint and remove-all-constraints in acme.lisp
-  record the newly-deleted constraints in a single property of the person.
-  This works with GUESS even when I'm not displyaing the analogy net
-  because GUESS is not unhappy with attempts to delete nonexistent edges.
-  However, in the future I may need to split up the newly deleted constraints
-  into analogy and proposition network constraints for some other external
-  display program.
-
-. Currently, I have no standard functions for removing and temporarily
+. RE FORGETTING:
+  Currently, I have no standard functions for removing and temporarily
   recording deleted units.  This will be necessary e.g. if I implement
   forgetting (see below), or maybe for some experiments, if I want
   to be able to update GUESS with the deletions.  I'll probably want to
   keep separate newly-deleted lists for the proposition and analogy
   networks.
- 
-. Notes on allowing "forgetting" (removal) of propositions:
+
+. RE FORGETTING:
+  Notes on allowing "forgetting" (removal) of propositions:
 You also have to remove the propn map nodes, and predicate and object map
 nodes *if* there are no remaining proposition mappings that involve those
 predicates and objects.  Something like that.  This sounds
@@ -280,6 +172,167 @@ I just have to do two-way unlinking.
 	    everything's got links to what is linked to it.
 
 
+..............................................................
+EFFICIENCY:
+
+1. NEED TO TRY TO MAKE MORE EFFICIENT BY STOPPING SETTLING OF ANALOGY NET WHEN
+THERE ARE NO NEW PROPNS AND IT'S ALREADY SETTLED.
+One place to look is receive-utterance, which unsets the listener's settled?
+property whenever an utterance is received.
+Or is this irrelevant because COHERE gives persons an asymptoted-units property?
+
+. As of 4/22/2012, update-guess-edges-for-person in
+popco-fmt-guessCmds.lisp calls guess-send-cmd on new proposition links
+twice, once because they're in 'newly-added-constraints, and once because in
+'all-propositions.  Maybe it would even save time to do a
+set-difference or test each time to make sure a link isn't new.
+
+. QUESTION: IF THERE ARE NO NEW PROPNS ADDED, THEN DON'T NON-SALIENCE
+PROPN LINKS STAY THE SAME?  IN THAT CASE, COULDN'T I JUST SKIP
+SETTLING THE ANALOGY NETWORK ONCE IT'S SETTLED?
+
+. CL's adjoin seems to do part of what PT's pushnew does.  Should I
+use adjoin?
+
+. associate-ana calls associate which calls note-unit, but currently
+  this is getting called only on units (propositions) which have
+  already been note-united.  The net effect is to do nothing, but in
+  the process note-unit calls pushnew on all-units, which does a
+  search through the entire list of units, so that it can push the
+  noted unit into the list iff it's not there.  So this is an
+  unnecessary search on a pretty long list that's happening pretty
+  often.
+
+. Links into special nodes cause them to be updated temporarily?  That's a waste,
+  expecially if there are lots of links.
+
+. receive-utterance currently (4/7/12) contains an unconditional call to
+    (setf (get listener 'settled?) nil)
+  If t, this means that the person's network isn't settled, saving time.
+  This used to be conditional on an utterance introducing a new proposition,
+  thus adding new connections to the network.  But now I'm allowing any proposition
+  to modify the weights on SALIENT links in the proposition network, so we have
+  to be willing to settle every time.  However, if the proposition isn't new,
+  the analogy network hasn't changed, so it's unfortunate to have to settle it.
+  Better if the two networks were settled separately, so that I could settle
+  the proposition network without also running through every unit in the
+  analogy network.
+
+. The call to add-struc and make-propns on each generation as a result of
+  conversation can probably be made more efficient.
+
+. I'm concerned that make-hyp-unit fires on a bunch of message pairs on
+  *every* generation.  It doesn't actually do anything after the initial
+  setup, unless there is conversation adding new propositions.  However,
+  do I really want to do the deep isomorphism test every time unnecessarily?
+  i.e. if I replace or conditionally replace surface-isomporhic-arglists.
+  However, the solution is *not* just to check whether the propn-map-node
+  already exists in propn-map-units, because make-obj-unit can create these
+  units *without* creating corresponding map units for their predicates and arguments.
+  It seems that you actually do need to test whether map nodes of each of the
+  categories exists, each time, because each might have gotten created earlier
+  without all others having been created.
+
+  I suppose I could at least condition on whether conversation is allowed.
+  Or maybe have a flag in each person that says that I have a new proposition.
+  That would help some.
+  Or:
+  SUPPOSE I ONLY CALL MAKE-HYP-UNIT WHEN AT LEAST ONE ARGUMENT IS THE MESSAGE
+  OF A NEW PROPOSITION.
+
+  Note though that there will be other propositions involved, too.  You're
+  looking for potential mappings.  So if the new propn is in a target,
+  you have to look at all propositions in the source, potentially (for each source
+  analog), and vice versa if the new propn is in a source: try to pair with
+  each propn in the target.  But you're adding it to the same net.
+  And the difficulty is that PT's code is designed to operate on messages
+  stored in structures, and it doesn't get out the messages until several
+  wrapper functions down.  So I have to make sure that I do anything that
+  the wrappers do that I want done, or make a temporary structure, or something
+  and pass it in at the higher level, or something.
+
+  MAYBE RUN SOME SPEED TESTS ON DEEP ISOMORPHISM AND SEE IF IT'S REALLY
+  MUCH SLOWER.
+
+  I also want to at least conditionally add isomorphism tests to make-obj-unit
+  for proposition arguments.
+
+..............................................................
+LONG-TERM ENHANCEMENTS AND BUGS:
+
+. BUG: GUESS: I seem to be losing the informative rollover functionality in edges 
+  sometimes.
+
+. BUG: Sometimes GUESS errors out (and stops Lisp, eventually) if you
+  run dynamic updating too long.  Index out of bounds.  Question: Does
+  this happen without node/edge adds?  Question: Is there some GUESS
+  operation that would prevent this?  Presumably it's a memory leak or
+  involves exceeding some bound.
+
+. See Overview Needs list below.
+
+. BUG OK for now:
+  The function SIMILAR? checks whether the predicate pair is listed in
+  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
+  IS ACTUALLY A BUG because it means that all persons are sharing
+  predicate similarities, and overriding variants.  *similiar* should be
+  a field of the person rather than a global.  Or the similarities could
+  be personalized.  But then everyone has to through a long list of
+  similarities.  [This is OK if all of the persons *do* share
+  similarities.]
+
+. SMALL BUG: Calling n-persons-with-name twice with the same name
+  seems to cause an error when popco is run.
+
+. BUG OK for now:
+  Currently, remove-constraint and remove-all-constraints in acme.lisp
+  record the newly-deleted constraints in a single property of the person.
+  This works with GUESS even when I'm not displyaing the analogy net
+  because GUESS is not unhappy with attempts to delete nonexistent edges.
+  However, in the future I may need to split up the newly deleted constraints
+  into analogy and proposition network constraints for some other external
+  display program.
+
+. ENHANCEMENT:
+  Need routine to thoroughly and safely clear the system so that I can manage multiple runs
+  using Lisp code rather than restarting sbcl and having to manage it
+  from shell code.  Not sure if these are sufficient.
+        (mapcar #'clear-plists (get 'folks 'members))
+        (clear-person-nets 'folks)
+  What's needed is:
+        1. Clear plists recursively starting from *the-population*, and symbol values
+           if there are any (I don't think there are).
+        2. Set all globals back to defaults.  Note that at present, not all are in
+           variables.lisp, so I can't just reload that file.
+        3. Make sure that random-state is managed properly and saved properly.
+  Possibly write code to clear out everything.  Maybe walk plists
+  and possibly symbol values, clearing them out.
+  Question: Can I get random-state in the middle of a Lisp session and
+  be able to use it properly in a brand new Lisp session?
+  notes on what needs to be stored to recreate a population state:
+	*pop-tick*
+	symbols and plists of:
+		all persons in pop's members
+		all units in each person's all-units
+		all structures in each person's all-structures
+	I think that's it.
+
+. ENHANCEMENT
+  Can I solve the possible problem of having analogs mixed in source
+  and target, by going further with the e-god/s-god strategy and making
+  sure that I don't share predicates or objects between analog clusters
+  within the same struc?  Note that there are *no* mappings
+  within-struc, so there is no semantic reason that e.g. you can't have
+  two cause predicates.  It's a kludge, but I think it would serve to
+  make the sets of propns independent and not have mixing between them.
+  (or can I have multiple source and target analogs, which is cleaner
+  maybe, but maybe less realism-ey?)
+  The general idea is that the reason that there's a problem that
+  prevented gathering from working (?) is that it's more or less
+  syntax only that's doing the work.  What semantical help there is,
+  is pretty weak.  So you have to enhance the semantics a bit with
+  naming conventions.
+
 . THIS IS FIXED, but consider modifying make-sym-link to use the
   new unlinked? function.
   old:
@@ -294,13 +347,8 @@ I just have to do two-way unlinking.
 	and guess will complain (or maybe bomb) because the node
 	already exists.
 
-..............................................................
-re GUESS
-
-. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
-  the nodes that result from conversation?)
-
-. The first time after boot you run telguesses with multiple persons,
+. BUG OK:
+  The first time after boot you run telguesses with multiple persons,
   it fails on all but one of the GUESS instances.  After that it's fine.
   I think that it starts the processes too close in time to each other,
   and there's a moment when one instance has started loading Java,
@@ -308,54 +356,19 @@ re GUESS
   by saying it's not.  The error you get suggests this interpretation.
   I don't know that it's worth adding a delay.
 
-. in parenting14l mless-parent, I get completely disconnected
-  proposition nodes (OK) yet some of them change activations, getting
-  significantly positive, or a little negative.  Oh, wait, I think
-  that's because there are unrepresented things in GUESS do to
-  conversation which isn't yet reflected graphically.  OK.
-
-. TODO: Reorganize the code in popco-fmt-guessCmds.lisp and revise
+. CLEANUP: Reorganize the code in popco-fmt-guessCmds.lisp and revise
 report-persons-to-guess in popco.lisp so that I can
 mapc through persons all at once, instead of individually for each
 kind of communication to guess.  (?)
 
-. Consider coloring nodes by category, specifying colors in Lisp,
+. ENHANCEMENT: Consider coloring nodes by category, specifying colors in Lisp,
   so that it's obvious which categories are going positive and negative.
   I also don't think white/black is the best choice for propositions,
   since they are a primary focus.
 
-. Make menu item that sets/unsets labelvisible.
+. GUESS ENHANCE: Make menu item that sets/unsets labelvisible.
   [You have to use a trick query to refer to all nodes.
   e.g. (activation<>100).labelvisible=true]
-
-. Still want to figure out how to pass a telnet port to a single
-  script, or enter it in GUESS or something.  (GUESS doesn't seem to be
-  set up for passing parameters to scripts.)  It certainly ought to be
-  possible to run the telnet server from a menu, but that hasn't worked
-  yet.  Also need to figure out how to close and reopent telnet
-  connections.
-
-. Bug in newly-added edges?: They don't have all of the informative
-  fields that old edges have?  Possibly add code to assign that stuff.
-
-. I seem to be losing the informative rollover functionality in edges sometimes.
-
-. Sometimes GUESS errors out (and stops Lisp, eventually) if you run dynamic
-  updating too long.  Index out of bounds.
-  Question: Does this happen without node/edge adds?
-  Question: Is there some GUESS operation that would prevent this?
-  Presumably it's a memory leak or involves exceeding some bound.
-
-. See Overview Needs list.
-
-. btw isomLayout() with binPack() is pretty nice, if slow, but isn't on the menu.  
-
-. tips:
-	remove(node2==SALIENT)
-	remove(OE_NOTHING-P_NOTHING)
-	remove([OE_NOTHING-P_NOTHING,P_NOTHING-P_CHILD_ALIVE])
-	note removing an edge that doesn't exist seems unproblematic.
-
 
 ..............................................................
 OVERVIEW NEEDS - NOT URGENT
@@ -450,107 +463,6 @@ activations).
 . Integrate with ABCL??
   ABCL's R/E now can be called from NetLogo.
 
-
-
-..............................................................
-EXPERIMENT VARIATIONS:
-
-. Let origin stories filter into society from one or two sources.
-. Let effects of parent, or hunting, salience filter in from few sources.
-. Let effects of both filter in from few sources.  See variation in
-  pops wrt how patterns end up.
-. Do the preceding iteratively to produce cumulative evolution.
-. Here's something that would be nice with cumulative stuff:
-  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
-  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
-  there is a context for them, let them become significant.
-. Take stabilized pop and flip salience, or change salience in a few
-  gradually, or drop saliences and make a small subset with opposite
-  salience (as in parenting14k.nts).
-. Question: Can conversation can create links that don't correspond
-  to map nodes?  Or only that aren't reflected in the colored
-  triangles.
-
-
-..............................................................
-EFFICIENCY:
-
-. As of 4/22/2012, update-guess-edges-for-person in
-popco-fmt-guessCmds.lisp calls guess-send-cmd on new proposition links
-twice, once because they're in 'newly-added-constraints, and once because in
-'all-propositions.  Maybe it would even save time to do a
-set-difference or test each time to make sure a link isn't new.
-
-. QUESTION: IF THERE ARE NO NEW PROPNS ADDED, THEN DON'T NON-SALIENCE
-PROPN LINKS STAY THE SAME?  IN THAT CASE, COULDN'T I JUST SKIP
-SETTLING THE ANALOGY NETWORK ONCE IT'S SETTLED?
-
-. CL's adjoin seems to do part of what PT's pushnew does.  Should I
-use adjoin?
-
-. associate-ana calls associate which calls note-unit, but currently
-  this is getting called only on units (propositions) which have
-  already been note-united.  The net effect is to do nothing, but in
-  the process note-unit calls pushnew on all-units, which does a
-  search through the entire list of units, so that it can push the
-  noted unit into the list iff it's not there.  So this is an
-  unnecessary search on a pretty long list that's happening pretty
-  often.
-
-. Links into special nodes cause them to be updated temporarily?  That's a waste,
-  expecially if there are lots of links.
-
-. receive-utterance currently (4/7/12) contains an unconditional call to
-    (setf (get listener 'settled?) nil)
-  If t, this means that the person's network isn't settled, saving time.
-  This used to be conditional on an utterance introducing a new proposition,
-  thus adding new connections to the network.  But now I'm allowing any proposition
-  to modify the weights on SALIENT links in the proposition network, so we have
-  to be willing to settle every time.  However, if the proposition isn't new,
-  the analogy network hasn't changed, so it's unfortunate to have to settle it.
-  Better if the two networks were settled separately, so that I could settle
-  the proposition network without also running through every unit in the
-  analogy network.
-
-. The call to add-struc and make-propns on each generation as a result of
-  conversation can probably be made more efficient.
-
-. I'm concerned that make-hyp-unit fires on a bunch of message pairs on
-  *every* generation.  It doesn't actually do anything after the initial
-  setup, unless there is conversation adding new propositions.  However,
-  do I really want to do the deep isomorphism test every time unnecessarily?
-  i.e. if I replace or conditionally replace surface-isomporhic-arglists.
-  However, the solution is *not* just to check whether the propn-map-node
-  already exists in propn-map-units, because make-obj-unit can create these
-  units *without* creating corresponding map units for their predicates and arguments.
-  It seems that you actually do need to test whether map nodes of each of the
-  categories exists, each time, because each might have gotten created earlier
-  without all others having been created.
-
-  I suppose I could at least condition on whether conversation is allowed.
-  Or maybe have a flag in each person that says that I have a new proposition.
-  That would help some.
-  Or:
-  SUPPOSE I ONLY CALL MAKE-HYP-UNIT WHEN AT LEAST ONE ARGUMENT IS THE MESSAGE
-  OF A NEW PROPOSITION.
-
-  Note though that there will be other propositions involved, too.  You're
-  looking for potential mappings.  So if the new propn is in a target,
-  you have to look at all propositions in the source, potentially (for each source
-  analog), and vice versa if the new propn is in a source: try to pair with
-  each propn in the target.  But you're adding it to the same net.
-  And the difficulty is that PT's code is designed to operate on messages
-  stored in structures, and it doesn't get out the messages until several
-  wrapper functions down.  So I have to make sure that I do anything that
-  the wrappers do that I want done, or make a temporary structure, or something
-  and pass it in at the higher level, or something.
-
-  MAYBE RUN SOME SPEED TESTS ON DEEP ISOMORPHISM AND SEE IF IT'S REALLY
-  MUCH SLOWER.
-
-  I also want to at least conditionally add isomorphism tests to make-obj-unit
-  for proposition arguments.
-
 ..............................................................
 MORE LISP SIDE:
 
@@ -577,20 +489,3 @@ MORE LISP SIDE:
   break old functionality.  This has maybe gone too far.  It might be
   best to split apart the two call trees, or rewrite in some way so as
   to preserve flexibility in a more natural way.
-
-. re environmental states:
-	Maybe let each person have a pointer to *an* environment.  Or
-	have envs have pointers to people.  However, allow possibility
-	that later the pointer can be changed by actions.  Also later
-	allow changing the environment that's pointed to.  (This can
-	allow grid-movement as in NetLogo.  Though at that point maybe
-	it would be easiest to break the MVC wall and give NetLogo a
-	central role.) But you still need the pointers, so that
-	different indivs can share the same env, and be affected by how
-	each other updates it.  Later can also add rules that make env
-	update itself.  Though maybe do that with special persons.  No
-	wait--I think I'm treating envs as persons anyway.  However, the
-	thing about an env is that it has special conversation rules.
-	e.g.  maybe it *always* talks to those "in" it.  Also, envs will
-	have their own special rules for responding to person's
-	"utterances" (niche-constructive actions).
