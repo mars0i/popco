@@ -29,9 +29,6 @@ BUGS
   fields that old edges have?  Possibly add code to assign that stuff.
 
 ------------------------------------------
-EFFICIENCY
-
-------------------------------------------
 ENHANCEMENTS
 
 . IN-PROGRESS: Make procedure to record state of pop at each generation.
@@ -180,6 +177,26 @@ THERE ARE NO NEW PROPNS AND IT'S ALREADY SETTLED.
 One place to look is receive-utterance, which unsets the listener's settled?
 property whenever an utterance is received.
 Or is this irrelevant because COHERE gives persons an asymptoted-units property?
+NOTES:
+the easy clean way to distinguish the propn and analogy nets would be
+  to treat them as if in different persons.  but that's a lot of work.
+run-hyp-net() in network.lisp is main settling loop.
+it looks complicated, but most of it is just optional reporting.
+there is a test for settled? in the loop termination test at the top.
+there's a mapc update-unit-activn-gross a few lines below that.
+  maybe distinguish the two networks there.
+  i.e. in the do's variable inits, don't get person 'all-units; 
+  instead just get the units in two variables, and then map
+  the grossberg rule separately, but test whether each is settled
+  using new variables I guess.  Maybe the unitary settled? will be
+  obsolete.
+note also the line toward the end of run-hyp-net that mapc's
+ fix-activation over units.  This moves the new-activation 
+ into activation, and adds the unit to asymptoted units if
+ it's barely changed.  If the unit is not added to asymptoted units,
+ then settled? will be set to nil.  So that's another place to deal
+ with.
+
 
 . As of 4/22/2012, update-guess-edges-for-person in
 popco-fmt-guessCmds.lisp calls guess-send-cmd on new proposition links
