@@ -33,19 +33,3 @@ activnsAtTickBarchart <- function(mra, tick, run=1, main=paste("tick", tick)) {
              panel.abline(h=domdivs, lty=2, col="gray");
              panel.barchart(y=y, col=domcols[y], border="transparent", ...)})
 }
-
-# old version that requires specifying domain sizes by hand:
-#activnsAtTickBarchart <- function(mra, tick, dom1Npropns, dom2Npropns, dom3Npropns, dom4Npropns, run=1) {
-#  skosh=.45
-#  domdivs=c(dom1Npropns,dom1Npropns+dom2Npropns,dom1Npropns+dom2Npropns+dom3Npropns)+skosh
-#  domcols <- c(rep("blue", dom1Npropns), rep("darkgreen", dom2Npropns), rep("red", dom3Npropns), rep("darkorange", dom4Npropns))
-#  trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray - lighter than "gray"
-#  barchart(t(mra[,,tick,run]), groups=person, 
-#           xlim=c(-1,1), 
-#           scales=list(cex=.5, y = list(alternating = 3)), 
-#	   layout=c(4,1),
-#           panel = function(y, ...){
-#             panel.abline(v=c(-.5,.5), lty=3, col=trellgray);
-#             panel.abline(h=domdivs, lty=2, col="gray");
-#             panel.barchart(y=y, col=domcols[y], border="transparent", ...)})
-#}
