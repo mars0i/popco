@@ -46,14 +46,14 @@
 
 ;; Comment in/out persons wanted:
 
-(make-both-bias-crime-talker 'Vicky viral-crime-propns)
-(make-no-iff-both-bias-crime-talker 'Vicky-noiff viral-crime-propns)
+;(make-both-bias-crime-talker 'Vicky viral-crime-propns)
+;(make-no-iff-both-bias-crime-talker 'Vicky-noiff viral-crime-propns)
 
 ;(make-both-bias-crime-talker 'Becky beastly-crime-propns)
 ;(make-no-iff-both-bias-crime-talker 'Becky-noiff beastly-crime-propns)
 
-;(make-both-bias-crime-talker 'Bea beast-propns)
-;(make-no-iff-both-bias-crime-talker 'Bea-noiff beast-propns)
+(make-both-bias-crime-talker 'Bea beast-propns)
+(make-no-iff-both-bias-crime-talker 'Bea-noiff beast-propns)
 
 ;(make-both-bias-crime-talker 'Virgil virus-propns)
 ;(make-no-iff-both-bias-crime-talker 'Virgil-noiff virus-propns)
