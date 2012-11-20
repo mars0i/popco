@@ -12,14 +12,14 @@
 
 (setf *do-converse* NIL)
 
-(make-no-bias-crime-talker 'nancy crime-propns)
-(make-no-bias-crime-talker 'nona)
-(make-beast-bias-crime-talker 'becky crime-propns)
-(make-beast-bias-crime-talker 'bea)
-(make-virus-bias-crime-talker 'vicky crime-propns)
-(make-virus-bias-crime-talker 'vern)
+;(make-no-bias-crime-talker 'nancy crime-propns)
+;(make-no-bias-crime-talker 'nona)
+;(make-beast-bias-crime-talker 'becky crime-propns)
+;(make-beast-bias-crime-talker 'bea)
+;(make-virus-bias-crime-talker 'vicky crime-propns)
+;(make-virus-bias-crime-talker 'vern)
 (make-both-bias-crime-talker 'booker crime-propns)
-(make-both-bias-crime-talker 'bob)
+;(make-both-bias-crime-talker 'bob)
 
 (init-pop)
 (print (get 'folks 'members))
