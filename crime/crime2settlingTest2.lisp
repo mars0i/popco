@@ -1,5 +1,9 @@
 (load "crime/crime2")
 
+; rename csv output file so it's easy to see what branch it's from
+(defvar *gitbranch* "master")
+(setf *propns-csv-output-name* (format nil "~A/~A~A.lisp" *data-dir* *run-id* *gitbranch*))
+
 ;(defvar *my-pop-size* 5)
 
 ; don't move graph around in telguess:
