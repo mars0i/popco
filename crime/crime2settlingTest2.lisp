@@ -28,6 +28,6 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 50)
+(setf *max-pop-ticks* 500)
 ;(setf *asymptote* .1L0)
 (popco)
