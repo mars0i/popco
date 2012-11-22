@@ -510,6 +510,7 @@
 ;; RETURNS: the same population, but after each person's network has settled
 ;;          for *max-times* cycles
 (defun settle-nets (population)
+  (format t "~%~S ~S ~S" (get 'becky 'settled? 'analogy-net-settled? 'propn-net-settled?)) ; DEBUG
   (mapc #'settle-net (get population 'members))
   population)
 
