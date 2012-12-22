@@ -160,8 +160,8 @@
 
 (defun settle-person-net (person units-property settled-property)
   (unless (get person settled-property)
-    (cond ((<= *pop-tick* *min-pop-ticks-to-settle*)                   ; early on, we don't check for settling--just get started [CHANGE FOR BIRTH/REPRODUCTION]
-           ;(format t "under *min-pop-ticks-to-settle*~%") ; DEBUG
+    (cond ((or (not *min-pop-ticks-to-settle*) (<= *pop-tick* *min-pop-ticks-to-settle*))                   ; early on, we don't check for settling--just get started [CHANGE FOR BIRTH/REPRODUCTION]
+           ;(format t "I'm not going to settle! (*min-pop-ticks-to-settle* = ~S)~%" *min-pop-ticks-to-settle*) ; DEBUG
            (settle-n-iters (get person units-property) *max-times*))
           (t 
             ;(format t "at least *min-pop-ticks-to-settle*. settled-property = ~S~%" (get person settled-property)) ; DEBUG
