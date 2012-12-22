@@ -2,7 +2,13 @@
 
 (load "crime/crime2")
 
-(defvar *my-pop-size* 10)
+(SETF *DO-REPORT-TO-NETLOGO* NIL)
+
+; rename csv output file so it's easy to see what branch it's from
+(defvar *gitbranch* (read-line (process-output (run-program "thisbranch" '() :search t :output :stream :wait nil))))
+(setf *propns-csv-output-name* (format nil "~A/~A~A.csv" *data-dir* *run-id* *gitbranch*))
+
+(defvar *my-pop-size* 20)
 
 ; don't move graph around in telguess:
 (setf *guess-layout-commands* "")
@@ -19,3 +25,5 @@
 
 (setf *max-pop-ticks* 5000)
 (popco)
+(format t "git branch = ~S.  csv file = ~S~%" *gitbranch* *propns-csv-output-name*)
+(quit)

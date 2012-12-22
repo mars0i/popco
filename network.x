@@ -89,3 +89,31 @@
   (if +max-weight+ 
     `(min +max-weight+ (+ ,addl-weight ,old-weight))
     `(+ ,addl-weight ,old-weight)))
+
+
+    (if *grossberg?* ; use Grossberg's updating rule.
+      (mapc #'update-unit-activn-gross units)  ; 11/2011 changed mapcar to mapc -MA
+      ; else use Rumelhart & McClelland rule:
+      (mapc #'update-unit-activn               ; 11/2011 changed mapcar to mapc -MA
+            (set-difference units (get *the-person* 'evaluation-units))))
+
+; like OR, but a function to which a list of booleans can be passed
+(defun list-or (lis)
+  (if (null lis)
+    nil
+    (or (car lis)
+        (list-or (cdr lis)))))
+
+(defun settle-person-analogy-net (person)
+  (unless (get person 'analogy-net-settled?)
+    (setf (get person 'analogy-net-settled?) 
+          (and
+            (settle-net (get person 'all-map-units))
+            (>= *pop-tick* *min-pop-ticks-settling*))))) ; don't allow settled? too early [NEEDS REVISION WHEN REPRODUCTION IS IMPLEMENTED]
+
+(defun settle-person-propn-net (person)
+  (unless (get person 'propn-net-settled?)
+    (setf (get person 'propn-net-settled?) 
+          (and
+            (settle-net (get person 'all-propositions))
+            (>= *pop-tick* *min-pop-ticks-settling*))))) ; don't allow settled? too early [NEEDS REVISION WHEN REPRODUCTION IS IMPLEMENTED]

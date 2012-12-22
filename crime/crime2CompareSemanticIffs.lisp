@@ -52,8 +52,8 @@
 ;(make-both-bias-crime-talker 'Becky beastly-crime-propns)
 ;(make-no-iff-both-bias-crime-talker 'Becky-noiff beastly-crime-propns)
 
-(make-both-bias-crime-talker 'Bea beast-propns)
-(make-no-iff-both-bias-crime-talker 'Bea-noiff beast-propns)
+;(make-both-bias-crime-talker 'Bea beast-propns)
+;(make-no-iff-both-bias-crime-talker 'Bea-noiff beast-propns)
 
 ;(make-both-bias-crime-talker 'Virgil virus-propns)
 ;(make-no-iff-both-bias-crime-talker 'Virgil-noiff virus-propns)
@@ -66,11 +66,13 @@
 (setf *guess-layout-commands* "")
 (setf *extra-meta-commands* "")
 
-(setf *do-converse* NIL)
+;(setf *do-converse* NIL)
+(setf *do-converse* t)
+
 (setf *do-update-propn-nets* t)
 (setf *do-report-to-netlogo* nil)
 (setf *do-report-propns-to-csv* t)
 (setf *do-report-analogy-nets-to-guess* nil)
 
-(setf *max-pop-ticks* 1)
+(setf *max-pop-ticks* 100)
 ;(popco)

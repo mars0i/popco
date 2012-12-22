@@ -68,6 +68,8 @@
   (setf *all-basic-goals* nil)
   (setf *contradictions* nil)
   (setf (get *the-person* 'settled?) nil)
+  (setf (get *the-person* 'propn-net-settled?) nil)
+  (setf (get *the-person* 'analogy-net-settled?) nil)
   (mapcar #'clear-struc (get *the-person* 'all-structures)) ; for ACME
   (setf (get *the-person* 'all-units) nil)
   (setf (get *the-person* 'all-valence-units) nil) ; for HOTCO
@@ -156,121 +158,121 @@
 ; * FUNCTIONS FOR RUNNING THE NETWORK *
 ; ***************************************
 
-; RUN-EXP is the top-level function. It is called from the data file,
-; usually as the last command. It sets the activation of the special unit,
-; settles the network (by calling RUN-HYP-NET), and prints out the results.
-; *THE-PERSON* MUST BE SET PROPERLY
-(defun run-exp ()
-  (print-si "Running COHERE connectionist algorithm.")
-  (setf (activation 'special) *special-activation*)
-  (my-print " *****")
-  (run-hyp-net)
-  (unless *silent-run?*
-    (print-propns)))
+(defun settle-person-net (person units-property settled-property)
+  (unless (get person settled-property)
+    (cond ((<= *pop-tick* *min-pop-ticks-to-settle*)                   ; early on, we don't check for settling--just get started [CHANGE FOR BIRTH/REPRODUCTION]
+           ;(format t "under *min-pop-ticks-to-settle*~%") ; DEBUG
+           (settle-n-iters (get person units-property) *max-times*))
+          (t 
+            ;(format t "at least *min-pop-ticks-to-settle*. settled-property = ~S~%" (get person settled-property)) ; DEBUG
+            (setf (get person settled-property)                     ; later, we check to whether the network settled, to avoid unnecessary settling
+                   (settle-up-to-n-iters (get person units-property) *max-times*))))))
 
-; RUN-HYP-NET is the main loop used for settling the network. For each
-; cycle it updates the activations of the units, checks for assymptoted
-; units, and prints out useful information on it's status.
-; *THE-PERSON* MUST BE SET PROPERLY
-(defun run-hyp-net ()
-  ; (unless *silent-run?* (print-values))
-  (setf *testnum* (gensym "test"))
-  (do ((timestep 1 (+ 1 timestep))
-       (units (get *the-person* 'all-units))
-       (old-asymptoted nil))
-    ( (or *stop-run?*
-          (and *stop-settled?* (get *the-person* 'settled?)) ; network has settled
-          (> timestep *max-times*))
-     (and (print-run 'verbose)
-          ;(cond (*silent-run?* (princ '".") (finish-output)))
-          )) ; Abbreviated. -MA 7/2011
-    (if *grossberg?* ; use Grossberg's updating rule.
-      (mapc #'update-unit-activn-gross units)  ; 11/2011 changed mapcar to mapc -MA
-      ; else use Rumelhart & McClelland rule:
-      (mapc #'update-unit-activn               ; 11/2011 changed mapcar to mapc -MA
-            (set-difference units (get *the-person* 'evaluation-units))))
-    ; note 6-23-2000 - remove evaluation units to prevent
-    ; duplicate their updating [MA: I think this has to do with HOTCO]
-    (update-valences) ; used by HOTCO - does evaluation units too
-    ;*** BEGINNING of lines in which 'new-activation may be different from 'activation
-    (when *report-activn-change*                      ; Optionally report total of |activation-new-activation|. Added 1/2012. -MA
-      (let* ((changed-units (set-difference units (get *the-person* 'asymptoted-units)))
-             (num-changed (length changed-units)))
-        (format t "~S: ~S units with change above *asymptote*, avg change = ~,4f~%" *the-person* num-changed 
-                (/ (sum-activn-changes changed-units) num-changed))
-        ;(format t "~S~%" (mapcar #'abs-activn-change changed-units)) ; list the changed units
-       ))
-    (when (and *watched-nodes* (find *the-person* *watched-persons*)) ; if there are watched [generic-name] nodes, and we're watching this person
-      (terpri)
-      (mapc #'print-activation (mapcar #'generic-to-personal-sym *watched-nodes*)))
-    (setf (get *the-person* 'settled?) t) ; has network reached asymptote? [fix-activation, called below, may undo this]
-    ; this turns nil if unit not asymptoted.
-    (setf old-asymptoted (get *the-person* 'asymptoted-units))
-    (setf (get *the-person* 'asymptoted-units) nil)
-    ;*** END of lines in which 'new-activation may be different from 'activation
-    (mapc #'fix-activation units) ; 1/2012 changed mapcar to mapc -MA  [note can change value of 'settled?]
-    (fix-valences) ; used by HOTCO
-    (unless *silent-run?*
-      (mapcar #'announce-asymptote
-              (set-difference (get *the-person* 'asymptoted-units) old-asymptoted)))
-    (if (and *stop-settled?* (get *the-person* 'settled?) (not *silent-run?*))
-      (my-print '"Network has settled by cycle " (get *the-person* 'total-times) "."))
-    ;(if (member timestep *when-to-print*) (print-propns))
-    ; for graphics:
-    ;(if *use-actgraph* (show-act))
-    ; (if *trace-list* (update-trace)) ;?????????
-    (setf (get *the-person* 'total-times) (+ (get *the-person* 'total-times) 1)))) ; total-activn-change = float if *report-total-activn-change*, else nil. added 1/2012 -MA
+(defun settle-n-iters (units iters)
+  ;(format t "settle-n-iters: iter = ") ; DEBUG
+  (dotimes (i iters)
+    ;(format t "~S " i) ; DEBUG
+    (mapc #'update-unit-activn-gross units)
+    (mapc #'fix-activn units)))
+
+; do-less tail-recursive version seems clearer than do loop version below
+(defun settle-up-to-n-iters (units remaining-iters)
+  ;(format t "settle-up-to-n-iters: remaining-iters = ~S~%" remaining-iters) ; DEBUG
+  (mapc #'update-unit-activn-gross units)
+  (let ((settled (every #'identity (mapcar #'fix-activn units))))  ; EVERY #'IDENTITY means "and". [Can't apply AND; it's a macro.]
+    (if (or settled (= remaining-iters 1))
+      settled
+      (settle-up-to-n-iters units (1- remaining-iters)))))
+
+; CL's do makes the loop version harder to read
+;(defun settle-up-to-n-iters (units iters)
+;  (let ((settled))
+;    (do ((i 0 (1+ i)))              ; iteration var
+;        ((or settled (>= i iters))) ; termination test, ignoring return value.
+;      ; body of loop:
+;      (mapc #'update-unit-activn-gross units)
+;      (setf settled (every #'identity                     ; like "apply #'and", but and is a macro, so you can't apply it
+;                           (mapcar #'fix-activn units)))) ; network is settled if every unit reports [almost] no change
+;    settled))
+
+; let-less recursive version is harder to understand:
+;(defun settle-up-to-n-iters (units iters)
+;  (settle-up-to-n-iters units iters nil))
+;(defun settle-up-to-n-iters-aux (units iters settled)
+;  (cond ((or settled (= iters 0)) settled)  ; use = not <= so it breaks by infinite looping if we use negative iter
+;        (t
+;          (mapc #'update-unit-activn-gross units)
+;          (settle-up-to-n-iters-aux units 
+;                                    (1- iters)
+;                                    (every #'identity (mapcar #'fix-activn units))))))
 
 
+;; OBSOLETED BY FUNCTIONS ABOVE
+;; SETTLE-NET
+;; 11/2012 replacement for run-hyp-net
+;; NOTE only able to do Grossberg settling at present
+;; NOTE the test for prior settling should be done at higher level--this function should
+;; not even be called on a network if it has settled.
+;; Has no HOTCO code, but that can be added later on the model of run-hyp-net if desired.
+;; RETURNS t or nil depending on whether the net containing units has settled
+;(defun settle-net (units)
+;  (do ((settled nil) ; will be updated inside loop
+;       (timestep 1 (1+ timestep)))
+;      ; loop termination test and return:
+;      ((or (> timestep *max-times*)
+;           (and 
+;             settled  ; we don't allow settled status to short-circuit number of ticks when still in initial pop-ticks -- need to get things rolling
+;             (> *pop-tick* *min-pop-ticks-to-settle*)) ; NEEDS REVISION WHEN REPRODUCTION IS IMPLEMENTED
+;           ) ; if settled or sufficient iterations
+;       settled) ; return value of settled from the do loop
+;    ;(format t " pop-tick: ~S, total-times: ~S, loop step: ~S~%" *pop-tick* (get *the-person* 'total-times) timestep)
+;    (mapc #'update-unit-activn-gross units)
+;    (setf settled 
+;          (every #'identity                      ; like "apply #'and", but and is a macro, so you can't apply it
+;                 (mapcar #'fix-activn units))))) ; network is settled if every unit reports [almost] no change
+
+;; FIX-ACTIVN
+;; Shifts new-activation into activation, now that we've updated all of the new-activations
+;; based on what was in the old activations.  Also tests whether activation has stopped
+;; changing and returns t if it has, nil otherwise.
+;; NOTE no longer recording asymptoted units.
+;; [Replacement for fix-activation, formerly called by run-hyp-net 11/2012]
+(defun fix-activn (unit)
+  (let ((asymptoted (< (abs (- (new-activation unit) (activation unit)))
+                       *asymptote*)))
+    (setf (activation unit) (new-activation unit))
+    asymptoted))
 
 
-
+; MCLELLAN/RUMELHART SETTLING FUNCTION. NOT CURRENTLY USED BY POPCO, BUT WORTH KEEPING AROUND
 ; UPDATE-UNIT-ACTIVN updates the activation of a unit based on the
 ; links it has.
-(defun update-unit-activn (unit)
-  (declare (ftype (function (&rest float) float) min max + * -)
-           (ftype (function (float float) symbol) >))
-  (let ((net-input-value (net-input unit)))
-    (declare (type (float) net-input-value))
-    (setf (new-activation unit)
-          (min *max-activation*
-               (max *min-activation*
-                    (+ (* (activation unit) (- 1.0 *decay-amount*))
-                       (if (> net-input-value 0.0)
-                           (* net-input-value
-                              (- *max-activation* (activation unit))
-                              )
-                         ; else:
-                         (* net-input-value
-                            (- (activation unit) *min-activation*)))))))))
-
-
+;(defun update-unit-activn (unit)
+;  (declare (ftype (function (&rest float) float) min max + * -)
+;           (ftype (function (float float) symbol) >))
+;  (let ((net-input-value (net-input unit)))
+;    (declare (type (float) net-input-value))
+;    (setf (new-activation unit)
+;          (min *max-activation*
+;               (max *min-activation*
+;                    (+ (* (activation unit) (- 1.0 *decay-amount*))
+;                       (if (> net-input-value 0.0)
+;                           (* net-input-value
+;                              (- *max-activation* (activation unit))
+;                              )
+;                         ; else:
+;                         (* net-input-value
+;                            (- (activation unit) *min-activation*)))))))))
 ; NET-INPUT is the weighted sum of output from all input units.
-(defun net-input (unit)
-  (declare (ftype (function (&rest float) float) max + *))
-  (do ((links (links-from unit) (cdr links))
-       (result 0.0))
-      ((null links) result)
-    (declare (type (float) result))
-    (setf result (+ (* (float (cdar links))
-                       (max *output-threshold* (activation (caar links))))
-                    result))))
-
-
-; FIX-ACTIVATION records the new activation and notes if the unit
-; has reached asymptote.
-(defun fix-activation (unit)
-  (cond ((and *stop-settled?*
-              (< (abs (- (new-activation unit)
-                         (activation unit)))
-                 *asymptote*)
-              (>= (get *the-person* 'total-times) *min-settle*))
-         (setf (get *the-person* 'asymptoted-units)
-               (cons unit (get *the-person* 'asymptoted-units))))
-        (t (setf (get *the-person* 'settled?) nil)))
-  ; (my-print "Unit: " unit ", difference: " (- (new-activation unit) (activation unit)))
-  (setf (activation unit) (new-activation unit)))
-
+;(defun net-input (unit)
+;  (declare (ftype (function (&rest float) float) max + *))
+;  (do ((links (links-from unit) (cdr links))
+;       (result 0.0))
+;      ((null links) result)
+;    (declare (type (float) result))
+;    (setf result (+ (* (float (cdar links))
+;                       (max *output-threshold* (activation (caar links))))
+;                    result))))
 
 
 ; ANNOUNCE-ASYMPTOTE informs the user of any units recently asymptoted.

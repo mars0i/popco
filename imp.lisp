@@ -85,6 +85,7 @@
   (my-print "Forming impression of " person)
   ;
   ; (graph (get *the-person* 'all-units))
+  (ERROR "FUNCTION IMP-RUN IS OBSOLETE.") ; MA 11/2012
   (run-exp)
   (store-results person)
   )

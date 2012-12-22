@@ -38,7 +38,8 @@
 
 (setf *max-times* 5) ; defined in variables-personal.lisp. Here means how many cycles of net-settling allowed per pop-tick.
 
-(setf *pop-tick* 0) ; number/time of the tick currently being processed
+(setf *pop-tick* 0) ; number/time of the tick currently being processed.  
+; Note this gets incremented before anything happens, so the first tick is actually = 1.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -128,6 +129,7 @@
 ;; MAIN LOOP
 ;; RUN-POPULATION
 ;; Main loop through ticks/time, with inner loop through persons
+;; Most of the complication is to allow variation in how the data is reported.
 ;; Loosely inspired by Thagard's consensus functions in consensus.lisp.
 ;; ARGS:
 ;; Population is a Lisp symbol with a list of persons in its members field--
@@ -186,7 +188,7 @@
 
 
 ;; RUN-POPULATION-ONCE
-;; Guts of the main loop.
+;; Guts of THE MAIN LOOP.
 ;; Logic that's not obvious from structure of the code:
 ;; - Though main loop has functional form, it modifies population along the way.
 ;; - There might be one or more agents who represent the
@@ -195,7 +197,7 @@
 ;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
 
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
-  (incf *pop-tick*)
+  (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
   (update-proposition-nets                       ; update proposition network links based on activations of proposition-map-units [pop->pop]
     (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
       (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
@@ -295,13 +297,6 @@
            (randomized-members (randomize pop-members))
            (subpop1-members (butlast randomized-members half-size)) ; If pop-size is odd, we left out the member in the middle of the randomized list.
            (subpop2-members (nthcdr half-size randomized-members))) ; That's OK; s/he'll just have to wait until next time.
-      ;(unless *silent-run?*
-      ;  (format t "pop-members: ~s~%" pop-members)
-      ;  (format t "pop-size: ~s~%" pop-size)
-      ;  (format t "half-size: ~s~%" half-size)
-      ;  (format t "randomized-members: ~s~%" randomized-members)
-      ;  (format t "subpop1-members: ~s~%" subpop1-members)
-      ;  (format t "subpop2-members: ~s~%" subpop2-members))
       (cons
         (mapcar #'list subpop1-members subpop2-members) ; list of pairs
         population))))
@@ -324,7 +319,7 @@
 ;;       listeners ought to get a chance to converse with each other.
 (defun choose-utterances (conversers-and-pop)
   (cons 
-    (mapcar-when #'choose-utterance (car conversers-and-pop))
+    (mapcar-when #'choose-utterance (car conversers-and-pop))   ; mapcar-when in popco-utils.lisp
     (cdr conversers-and-pop)))
 
 ; CHOOSE-UTTERANCE
@@ -422,7 +417,7 @@
 ;;            to indicate it's a new addition to the listener, 
 ;;            or nil consed on to indicate it's not
 (defun transmit-utterance (conversation)
-  ;(format t "transmitting utterance: ~S~%" conversation) ; DEBUG
+  ;(when (< *trust* 1.0) (format t " transmitting utterance: ~S ~S~%" conversation (activation (car conversation)))) ; DEBUG [trust test is kludge to exclude env-generated propns]
   (let ((speaker (speaker-of-conv conversation)))
     (setf *the-person* speaker)
     (let* ((listener (listener-of-conv conversation))
@@ -460,14 +455,17 @@
   (let* ((personal-propn (generic-to-personal-sym generic-propn))
          (personal-struc (generic-to-personal-sym generic-struc))
          (is-new-thought (if (member personal-propn (get personal-struc 'propositions)) nil t))) ; the IF converts TRUE to T per se
-    (setf (get listener 'settled?) nil) ; analogy net is unsettled by new propn, but propn net is unsettled by any utterance
+    ;(when (< trust 1.0) (format t " ~S received utterance ~S~%" listener generic-propn)) ; DEBUG [trust test is kludge to exclude env-generated propns]
+    ;(setf (get listener 'settled?) nil)  ; obsolete - useful only for comparisons with old code
     (when is-new-thought 
-      ;(format t "new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
+      ;(format t " new thought: ~S added to ~S~%" personal-propn personal-struc) ; DEBUG
       (add-to-struc personal-struc 'start (list (get generic-propn 'message))) ; this does nothing but set fields (also calls note-unit, but that's overrident in next line)
       (init-propn personal-propn *propn-init-activ*)
       (mark-propn-unit-newly-added personal-propn *the-person*)
-      (invoke-record-semantic-iffs-for-propn personal-propn *the-person*))
+      (invoke-record-semantic-iffs-for-propn personal-propn *the-person*)
+      (SETF (GET LISTENER 'ANALOGY-NET-SETTLED?) NIL)) ; analogy net unsettled only by new thoughts, which add to the net
     (update-salient-link personal-propn (utterance-influence generic-propn trust))
+    (SETF (GET LISTENER 'PROPN-NET-SETTLED?) NIL) ; updating salient link unsettles the propn net
     is-new-thought))
 
 ;; UTTERANCE-INFLUENCE
@@ -481,6 +479,7 @@
 ; We need raw-make-symlink for this purpose because we want to sum 
 ; whether negative or positive; make-symlink won't sum into negative links.
 (defun update-salient-link (propn weight)
+  ;(format t "update-salient-link for propn ~S with weight ~S~%" propn weight) ; DEBUG
   (when (unlinked? propn 'salient) ; if this link doesn't exist
     (mark-constraint-newly-added propn 'salient weight *the-person*)) ; record that we're making a new constraint, so popco can tell gui if desired
   (raw-make-symlink 'salient propn weight)) ; note this just calls make-link, which merely adds in weight if the link exists
@@ -510,13 +509,32 @@
 ;; RETURNS: the same population, but after each person's network has settled
 ;;          for *max-times* cycles
 (defun settle-nets (population)
-  ;(format t "~%~S ~S ~S~%" (get 'becky 'settled?) (get 'becky 'analogy-net-settled?) (get 'becky 'propn-net-settled?)) ; DEBUG
-  (mapc #'settle-net (get population 'members))
+  (let ((members (get population 'members)))
+    (mapc #'settle-person-propn-net members)
+    (mapc #'settle-person-analogy-net members)
+    (mapc #'update-settled-properties members)) ; force propn net to be unsettled if analogy net is [do *not* move in between prev lines]
   population)
 
-(defun settle-net (person)
-  (setf *the-person* person)
-  (run-hyp-net)) ; settle the network until asymptote or *max-times* cycles or interrupted
+(defun settle-person-analogy-net (person)
+  ;(format t "~%~S settle-person-ANALOGY-net:~%" person) ; DEBUG
+  (settle-person-net person 'all-map-units 'analogy-net-settled?)) ; see network.lisp
+
+(defun settle-person-propn-net (person)
+  ;(format t "~%~S settle-person-PROPN-net:~%" person) ; DEBUG
+  (settle-person-net person 'all-propositions 'propn-net-settled?)) ; see network.lisp
+
+; If analogy net is unsettled, then it could change weights in propn net,
+; so force propn net to be unsettled, even if had settled on the previous pop-tick:
+(defun update-settled-properties (person)
+  ;(format t "update-settled-properties: person = ~S, analogy-net-settled = ~S, propn-net-settled = ~S ... " person (get person 'analogy-net-settled?) (get person 'propn-net-settled?)) ; DEBUG
+  (unless (get person 'analogy-net-settled?)
+    (setf (get person 'propn-net-settled?) nil)))
+
+;; this might go away in the future if we stop using 'settled?
+;(defun update-settled (person)
+;  (setf (get person 'settled?)
+;        (and (get person 'analogy-net-settled?)
+;             (get person 'propn-net-settled?))))
 
 ;;;;;;;; FUNCTIONS FOR COMMUNICATION WITH EXTERNAL APPLICATIONS ;;;;;;;;
 
@@ -798,17 +816,6 @@
 (defun personal-struc-of-propn (personal-propn)
   (caar (get personal-propn 'belongs-to)))
 
-;; OLD VERSION:
-;(defun perceived (msg &optional (degree 1.0))
-;  (let* ((env (make-persons-env-sym *the-person*))
-;         (struc (generic-to-personal-sym 'source env)))
-;    (unless (get *the-person* 'env)           ; give the person its environment if doesn't exist
-;      (setf (get *the-person* 'env) env)
-;      (push struc (get env 'all-structures)))
-;    (make-propn struc 'ignored msg env)
-;    (init-propn (generic-to-personal-sym (last-element msg) env)
-;                degree env)))
-
 ; PERCEIVED-NEGATION
 ; Perceive a propn.  Insert the proposition into a person's "external" 
 ; environment, setting its activation to -1.
@@ -981,6 +988,8 @@
   (setf (get *the-person* 'number-units) nil) ;"association list of numbers and unit names"
   (setf (get *the-person* 'total-units)  0); "length of (get *the-person* 'all-units)"
   (setf (get *the-person* 'settled?) nil); "Network has settled."
+  (setf (get *the-person* 'propn-net-settled?) nil)    ; separate settling? properties for the two person networks
+  (setf (get *the-person* 'analogy-net-settled?) nil)
   (setf (get *the-person* 'all-structures) nil)
   (setf (get *the-person* 'all-concepts) nil)
   (setf (get *the-person* 'all-objects) nil)

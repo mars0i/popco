@@ -33,7 +33,7 @@
 
 (print "Modifications, additional code for POPCO copyright (c) Marshall Abrams 2012.")
 
-(load "~/quicklisp/setup.lisp")
+(load "~/quicklisp/setup")
 (ql:quickload "cl-ppcre")  ; perl-compatible regular expressions used in popco-fmt-utils.lisp
 ;(use-package 'cl-ppcre) ; for regex-replace
 ; Maybe personal-to-generic-sym, etc. should be rewritten using this now.
@@ -132,7 +132,7 @@
 
 (setq *asymptote* .0001)
 (load "HT1989params")
-(format t "Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog retrieval by constraint satisfaction'.~%~%")
+(format t "Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.~%~%")
 
 ;(print-parameters)
 

@@ -1,6 +1,6 @@
 ; HT1989params.lisp
 ; Settings for emulation within POPCO of results in H&T's 1989 
-; "Analog retrieval as constraint satisfaction"
+; "Analog mapping by constraint satisfaction"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Parameters specified by H&T 1989 "Analog retrieval as constraint satisfaction"
@@ -18,6 +18,7 @@
 (gross-on) ; p. 313
 ; Specifies that we use Grossberg's network updating algorithm rather than
 ; McClellan and Rumelhart's.  (gross-off) turns sets this variable to nil.
+; 12/2012: THIS IS NOW IGNORED--WE USE GROSSBERG NO MATTER WHAT.
 
 ; *output-threshold*
 (output 0.0L0)

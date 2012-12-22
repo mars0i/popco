@@ -66,7 +66,7 @@
     (harms (prev-infected-elt) v-hp)  ; drop? introduces noise?
     (cause (v-ip v-hp) v-ci->hp)         ; drop? introduces noise?
 
-    (INFECT (PREV-INFECTED-ELT AT-RISK-ELT) V-IPA) ; infection spreads from the previously infected to the at-risk
+    (infect (prev-infected-elt at-risk-elt) v-ipa) ; infection spreads from the previously infected to the at-risk
     (cause (v-ipa v-ia) v-ipa->ia) ; transmission from infected to uninfected causes infection
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
@@ -99,7 +99,7 @@
     (harms (prev-criminal-cperson) cv-hp)
     (cause (cv-cp cv-hp) cv-cp->hp)         ; being a criminal has bad consequences for the criminal
 
-    (RECRUIT (PREV-CRIMINAL-CPERSON AT-RISK-CPERSON) CV-RPA) ; criminals recruit, teach, are role models for, cause indirectly new criminals
+    (recruit (prev-criminal-cperson at-risk-cperson) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
     (cause (cv-rpa cv-ca) cv-sca->ca) ; 
 
     ; The following triplets are a bit awkward and convoluted because we don't have time indexing:
@@ -122,7 +122,7 @@
 (defvar beastly-crime-propns
   '(
     (not-criminal (cperson) cb-np)   ; person not at risk of turning to crime
-    (VICTIMIZE (PREV-CRIMINAL-CPERSON CPERSON) CB-VPP)
+    (victimize (prev-criminal-cperson cperson) cb-vpp)
     (harms (cperson) cb-hcp) ; hp already in use as a name
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     ; added 11/8/12:
@@ -153,8 +153,8 @@
 
 (defvar beast-propns
   '(
-    (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) c-np)
-    (ATTACK (BEAST BPERSON) B-ABP)
+    (human (bperson) b-pp)   ; supposed to match: (not-criminal (cperson) cb-np)
+    (attack (beast bperson) b-abp)
     (harms (bperson) b-hp)
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
     ; added 11/8/12:
@@ -206,6 +206,48 @@
                    ,@semantic-relations)
                  '()
                  '(target)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun make-virus-bias-all-talker (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start (,@virus-propns)))
+                   ,@semantic-relations)
+                 '()
+                 '()))
+
+(defun make-beast-bias-all-talker (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start (,@beast-propns)))
+                   ,@semantic-relations)
+                 '()
+                 '()))
+
+(defun make-both-bias-all-talker (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start (,@virus-propns ,@beast-propns)))
+                   ,@semantic-relations)
+                 '()
+                 '()))
+
+(defun make-no-bias-all-talker (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start (,@crime-propns)))
+                   (make-struc 'source 'problem '(start ()))
+                   ,@semantic-relations)
+                 '()
+                 '()))
+
+(defun make-naive-all-talker (name &optional (given '()))
+    (make-person name 'folks given
+                 `((make-struc 'target 'problem '(start ()))
+                   (make-struc 'source 'problem '(start ()))
+                   ,@semantic-relations)
+                 '()
+                 '()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

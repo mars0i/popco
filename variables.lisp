@@ -73,7 +73,7 @@
 ; (setf (get *the-person* 'settled?) nil); "Network has settled.") ; now in initialize-person-properties in popco.lisp
 (defvar *stop-run?* nil "Use grossberg's rule for network.")  ; text has to be wrong -M.A.  2011
 (defvar *tversky?* nil "Use altered form when activation is negative.")
-(defvar *grossberg?* nil "Alternative activation function.")
+(defvar *grossberg?* nil "Alternative activation function.") ; OBSOLETE in sepsettle and subsequent branches 11/15/2012
 (defvar *testnum* 1)
 (defvar *verbose* t)
 (defvar *max-times* 300 "maximum number of cycles of updating")
@@ -273,6 +273,7 @@
 (defvar *sleep-delay* nil) ; if non-nil, gives number of seconds to pause between pop-ticks
 (defvar *max-pop-ticks* 50) ; max number of pop-tick iterations; 0 for infinite
 (defvar *pop-tick* 0)
+(defvar *min-pop-ticks-to-settle* 5) ; number of initial pop ticks in which we don't allow networks to stop settling
 (defvar *persons-reporting-to-guess* '()) ; persons whose data we want to send to GUESS
 (defvar *write-person-graphs-at-pop-ticks* '()) ; if pop-tick equals this, then call write-person-graphs using a tick-named directory under *person-graph-basename*.
 (defvar *person-graphs-basename* ".")
@@ -300,7 +301,6 @@
 
 ; Generate an ID string for this simulation run which is unique (with high probability):
 (defvar *run-id* (format nil "RUN~9,'0D" (random 1000000000)))
-
 
 (proclaim '(type (float)
             min-activation max-activation output-threshold

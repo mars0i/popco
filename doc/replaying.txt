@@ -1,0 +1,10 @@
+To replay a run from the start:
+
+Suppose you ran popco like this:
+	popco mymodelscript.lisp
+and it generated, as one of its output files
+	../data/RUN123456789.lisp
+This file contains Lisp code to reset the random state (seed)
+to what it was on run that generated it.  So to replay the run:
+	popco ../data/RUN123456789.lisp mymodelscript.lisp
+That's it.

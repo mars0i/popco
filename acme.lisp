@@ -607,6 +607,7 @@
                   (put new-conc-unit 'concerns (list personal-conc1 personal-conc2))
                   ; note creation of unit:
                   (note-unit new-conc-unit)
+                  (pushnew new-conc-unit (get *the-person* 'all-map-units))
                   (setf result (cons new-conc-unit result))
                   ; calculate semantic similarity of concepts
                   ;(format t "conc1: ~S; conc2: ~S~%" conc1 conc2)
@@ -631,6 +632,7 @@
                   (note-unit new-propn-unit)
                   (mark-map-unit-newly-added new-propn-unit *the-person*) ; MA 4/2012 replaces old pushnew line
                   (pushnew new-propn-unit (get *the-person* 'propn-map-units)) ; added by MA 11/2011 [so won't have to search through all-units when updating propn-propn links]
+                  (pushnew new-propn-unit (get *the-person* 'all-map-units))
                   (record-hypothesis personal-propn1 new-propn-unit)
                   (record-hypothesis personal-propn2 new-propn-unit)
                   (setf result (cons new-propn-unit result))))  ; This is never used? -MA 6/2011
@@ -1112,6 +1114,7 @@
            (put new-unit 'concerns
                 (list new-obj1 new-obj2))
            (note-unit new-unit) ; sets initial activation and records in 'all-units
+           (push new-unit (get *the-person* 'all-map-units))
            (mark-map-unit-newly-added new-unit *the-person*) ; MA 4/2012 replaces old pushnew line
            (when (and (propn? new-obj1) (propn? new-obj2))
              (pushnew new-unit (get *the-person* 'propn-map-units))) ; added by MA 3/30/12 [if a propn map unit is created here, make-hyp-unit won't try to create it later]

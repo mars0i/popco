@@ -1,5 +1,79 @@
 R tips:
 
+# This
+mra_g2 <- which(abs(mras[,,,54]-mras[,,,55])>.2, arr.ind=T)
+# gives a matrix of indexes at which runs mras[,,,54] and 55 differ by
+# absolute value more than .2 .  The row names are person names, but that
+# information is already present in column 1, while cols 2 and 3 are
+# propn and tick indexes, respectively.  And this:
+dimnames(mda_g2) <- list(1:dim(mda_g2)[1], c("person", "proposition", "tick"))
+# renames the columns to something sensible, while renaming rows to arbitrary numerical indexes.
+
+# You can view the resulting data in R.app with data.entry(mra_g2)
+
+----------------------------------------------------------------------
+
+# Suppose you've done things to create an array, and you've got the 
+# the names of each index into dimnames.  However, you're missing the
+# top-level category names for the indexes.  i.e. the elements in each
+# dimension have a name, but the dimensions don't have names.  
+# abind (from library abind) has this effect, at least by default.
+# Here is a way to put the dimension names back. (There might be a simpler way.)
+
+dimnames(mrax) <- 
+ list(person=dimnames(mrax)[[1]], 
+      proposition=dimnames(mrax)[[2]], 
+      tick=dimnames(mrax)[[3]], 
+      run=dimnames(mrax)[[4]])
+
+----------------------------------------------------------------------
+
+# Here's how I merged two multi-run arrays, mra which contained three
+# runs for each random seed, and mraN which contained an additional
+# run for the same random seeds:
+
+# Merge the data, preserving the leaf-level dimname values:
+mra.new <- abind(
+	mraN[,,,1, drop=F],
+	mrax[,,,1:3],
+	mraN[,,,2, drop=F],
+	mrax[,,,4:6],
+	mraN[,,,3, drop=F],
+	mrax[,,,7:9],
+	mraN[,,,4, drop=F],
+	mrax[,,,10:12],
+	mraN[,,,5, drop=F],
+	mrax[,,,13:15],
+	mraN[,,,6, drop=F],
+	mrax[,,,16:18],
+	mraN[,,,7, drop=F],
+	mrax[,,,19:21],
+	mraN[,,,8, drop=F],
+	mrax[,,,22:24],
+	mraN[,,,9, drop=F],
+	mrax[,,,25:27],
+	mraN[,,,10, drop=F],
+	mrax[,,,28:30],
+	mraN[,,,11, drop=F],
+	mrax[,,,31:33]
+)
+
+# abind preserves leaf-level dimname values (the run names,
+# proposition names, person names, tick number strings), but
+# loses the top-level dimname category names ("person", "proposition",
+# "tick", "run).  These names have to be created.  Here's a way to do it:
+dimnames(mra.new) <- list(
+	person=dimnames(mra.new)[[1]], 
+	proposition=dimnames(mra.new)[[2]], 
+	tick=dimnames(mra.new)[[3]], 
+	run=dimnames(mra.new)[[4]]
+)
+
+----------------------------------------------------------------------
+
+# to find the indexes of the max value of an array:
+which(ra==max(ra), arr.ind=T)
+
 ----------------------------------------------------------------------
 # Useful barchart representation of all activations, conditioned on person, at a tick, in a run
 # This makes it easy to see whether activations are crossing between domains in the expected way.
@@ -435,8 +509,15 @@ The documentation says:
 MARGIN	a vector giving the subscripts which the function will be applied over.
 
 I would say:
-Margin is the number of the dimension, or a vec of dimensions,
-which are *not* averaged over.  
+For example, if the function is mean(), then:
+MARGIN is the number of the dimension, or a vec of dimensions,
+which are *not* averaged over.  i.e. margin is what you *don't*
+apply the function over, in my way of thinking.
+
+In other words, MARGIN is the dimension(s) such that for EACH element in
+it, you will get a value of the function, where the function is applied
+to each thing that has that element as an index.
+
 e.g.:
 > yo <- matrix(1:12, nrow=3, ncol=4)
 > yo
@@ -474,6 +555,7 @@ e.g.:
 [2,]    5   17
 [3,]    8   20
 [4,]   11   23
+
 That gives the average over row indexed elements for each combination of
 indexes in dimensions 2 (cols) and 3 (2D matrices).  Note though that
 the results are flipped diagonally from what I'd expect: The first

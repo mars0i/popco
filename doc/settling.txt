@@ -1,0 +1,96 @@
+How do the networks settle?
+Marshall Abrams 12/2012
+
+Overview: In each pop-tick, each person's analogy network and
+proposition network go through an internal settling process separately:
+activation values are updated.  There is code to prevent unecessary
+updating: When a network has stopped changing significantly (it has
+"settled"), there's no reason to keep updating activations unless
+something happens that could cause them to change.
+
+History: Previous to 12/2012, the master branch called settle-nets which
+mapc'ed settle-net over persons, which in turn called run-hyp-net.  The
+latter is the main settling loop from Thagard's code, with several
+modifications by me.  It had gotten very complicated from years of
+accretions, and that made it hard to settle the analogy and proposition
+networks separately.  I wanted to do that because I thought it would be
+more efficient.  run-hyp-net would stop settling the network in a person
+when it stopped changing.  But since this test was performed on the
+combined analogy+proposition network, run-hyp-net kept settling both of
+them if either was still unsettled.  The new code replaces run-hyp-net
+with a simpler, easier to understand set of functins, getting rid of
+functionality that POPCO has never used.  (It can be added back later if
+wanted.)  The new code is designed to allow separate settling and
+cessation of settling of the two networks in each person.  In initial
+tests, this is only slightly more efficent than the old version using
+run-hyp-net (2% to 10%), but since the code is clearer, and the tests to
+avoid unnecessary settling aren't too complicated at present, I'm
+sticking with the revised code.  (Note however that either version
+with checking for settling in some way is much faster than not 
+checking for settling--e.g. 11 minutes vs. 15 minutes.)
+
+Overview of settling (see code for details):
+
+settle-nets is called in the top-level loop.  This ends up in effect
+mapc'ing settle-person-net through the population twice, once for each
+of the two networks in each person.
+
+settle-person-net retrieves the units for the network specified by this
+function's argument, and then calls either settle-n-iters if we have not
+yet reached *min-pop-ticks-to-settle*, or settle-up-to-n-iters if we
+have.  
+
+settle-n-iters and settle-up-to-n-iters differ in that the second, but
+not the first, checks on each iteration whether the network has settled,
+and stops the iterations if so.
+
+(*min-pop-ticks-to-settle* is a replacement for the old *min-settle*
+used by run-hyp-net.  Both specify a burn-in period in which we should
+not allow the system to decide that a network has settled.  This period
+was usually 25 iterations for *min-settle*, and 5 pop-ticks with 5
+iterations each, for *min-pop-ticks-to-settle*.  i.e.  they have the
+same effect.)
+
+In each case update-unit-activn-gross is mapc'ed through the units, and
+then fix-activn is.  The former is Thagard's original function,
+essentially.  It records new activations for each unit based on the
+activations of those to which it's linked.  The new activations don't
+immediately replace the old, because the activation is supposed to be
+done in parallel.  After all updating of new-activation is done,
+fix-activn is called to replace the old activation with the new.
+fix-activn also checks whether new activation is significantly
+different.  This function is modeled on Thagard's fix-activation.
+
+
+How do networks become settled or unsettled?
+
+
+Note there is information flow:
+
+	Within each network.
+
+	From the analogy network to the proposition network, via
+	  adjustment of link weights.
+
+	From environments to the proposition network.  
+	
+	Between one person's proposition network and another person's,
+	  via conversation.
+
+	Between one person's proposition network, and another's
+	  analogy network IF the proposition is new to the recipient.
+
+	  The reason that this is case of information flow from
+	  proposition network to analogy network, is that whether a
+	  proposition is uttered depends on its activation in the
+	  proposition network.
+
+	  Note that this is the ONLY way that there is information flow
+	  from the proposition networks to the analogy networks.
+
+	  For example, if all persons start with the same collection of
+	  propositions, then there will never be information flow from
+	  proposition networks to analogy networks.  All analogy networks
+	  should then have identical structures and identical
+	  activations at every pop-tick, no matter what happens with
+	  proposition networks.

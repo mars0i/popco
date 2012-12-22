@@ -79,12 +79,12 @@
   (concatenate-tree (fmt-tree-for-netlogo-aux tree))) ; concatenate-tree in popco-fmt-utils.lisp
 
 ;; old version of preceding, replaced when I abstracted out concatenate-tree
-(defun fmt-tree-for-netlogo (tree)
-  (let ((netlogo-strings 
-          (flatten (fmt-tree-for-netlogo-aux tree)))) ; flatten is in popco-utils.lisp
-    (if (atom netlogo-strings)
-      netlogo-strings
-      (apply #'concatenate (cons 'string netlogo-strings)))))
+;(defun fmt-tree-for-netlogo (tree)
+;  (let ((netlogo-strings 
+;          (flatten (fmt-tree-for-netlogo-aux tree)))) ; flatten is in popco-utils.lisp
+;    (if (atom netlogo-strings)
+;      netlogo-strings
+;      (apply #'concatenate (cons 'string netlogo-strings)))))
 
 ; Rather than just substituting square brackets for parens, we need a more rococo strategy
 ; when the list we're formatting can contain empty lists, which Lisp will print as "NIL" not "()".

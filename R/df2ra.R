@@ -142,7 +142,7 @@ readcsv <- function(csv) {
 }
 
 # Given a list or vector of filenames, return a list of dataframes, one for each input file.
-readcsvs <- function(csvs) { lapply(csvs, readcsv) }
+readcsvs <- function(csvs) { dfs <- lapply(csvs, readcsv) ; cat("\n"); dfs}
 
 # Given a list or vector of filenames, return a list of arrays created by df2RA(), one for each input file.
 read2RAs <- function(csvs, firstTick=1) {
