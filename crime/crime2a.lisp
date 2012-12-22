@@ -25,5 +25,5 @@
 
 (setf *max-pop-ticks* 5000)
 (popco)
-(format t "git branch = ~S.  csv file = ~S~%" *gitbranch* *propns-csv-output-name*)
+(format t "git branch = ~S.  csv file = ~S.  *min-pop-ticks-to-settle* = ~S~%" *gitbranch* *propns-csv-output-name* *min-pop-ticks-to-settle*)
 (quit)
