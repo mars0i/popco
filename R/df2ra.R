@@ -149,7 +149,6 @@ read2RAs <- function(csvs, firstTick=1) {
   dfs2RAs(readcsvs(csvs), firstTick=firstTick)
 }
 
-# NAME CONVERSION BUG INSIDE HERE 11/4/2012:
 dfs2RAs <- function(dframes, firstTick=1) {
   lapply(dframes, df2RA, firstTick=firstTick)
 }
@@ -160,23 +159,26 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
   RAs2multirunRA(RAs, stripcsv(getcsvnames()))
 }
 
+# read2multirunRA
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
+# csvs: csv file names to process
+# The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
+# firstTick: starting tick to keep in data
+# perLoad: number of csv files to process at one time
 read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
-  lencsvs <- length(csvs)
   mra <- NULL
 
-  for ( i in 1:ceiling(lencsvs/perLoad) )  {
-      start <- (i-1)*perLoad + 1
-      end   <- min(start + perLoad - 1, lencsvs)
-      #print(start:end)
-      theseRuns <- RAs2multirunRA( read2RAs(csvs[start:end], firstTick=firstTick), stripcsv(csvs[start:end]) )
-      at("abind-ing sub-array ", i, " to main array\n")
-      ra <- abind(mra, theseRuns)
+  for (i in seq(1, length(csvs), perLoad)) {
+    runidxs <- i:(i+perLoad-1)  # -1 because we want the seq *up to* but not including next i
+    cat("abind-ing run(s) ", runidxs, " to main array\n")
+    mra <- abind( mra, 
+                 RAs2multirunRA(read2RAs(csvs[runidxs], firstTick=firstTick),
+		                stripcsv(csvs[runidxs])) )
   }
   mra
 }
 
-# old, working (but memory hog) version:
+# old, working (memory hog) version of read2multirunRA:
 #read2multirunRA <- function(csvs, firstTick=1) {
 #  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
 #}

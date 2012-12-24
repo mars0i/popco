@@ -1,4 +1,21 @@
 
+# Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
+# earlier experiment
+#read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
+#  lencsvs <- length(csvs)
+#  mra <- NULL
+#
+#  for ( i in 1:ceiling(lencsvs/perLoad) )  {
+#      start <- (i-1)*perLoad + 1
+#      end   <- min(start + perLoad - 1, lencsvs)
+#      #print(start:end)
+#      theseRuns <- RAs2multirunRA( read2RAs(csvs[start:end], firstTick=firstTick), stripcsv(csvs[start:end]) )
+#      at("abind-ing sub-array ", i, " to main array\n")
+#      ra <- abind(mra, theseRuns)
+#  }
+#  mra
+#}
+
 
 readcsvs(csvs) {
   dframes <- list()
