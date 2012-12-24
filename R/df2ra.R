@@ -161,9 +161,25 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
 }
 
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
-read2multirunRA <- function(csvs, firstTick=1) {
-  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
+read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
+  lencsvs <- length(csvs)
+  mra <- NULL
+
+  for ( i in 1:ceiling(lencsvs/perLoad) )  {
+      start <- (i-1)*perLoad + 1
+      end   <- min(start + perLoad - 1, lencsvs)
+      #print(start:end)
+      theseRuns <- RAs2multirunRA( read2RAs(csvs[start:end], firstTick=firstTick), stripcsv(csvs[start:end]) )
+      at("abind-ing sub-array ", i, " to main array\n")
+      ra <- abind(mra, theseRuns)
+  }
+  mra
 }
+
+# old, working (but memory hog) version:
+#read2multirunRA <- function(csvs, firstTick=1) {
+#  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
+#}
 
 # run read2multirunRA in specified directory, returning to current directory when done:
 read2multirunRAfromDir <- function(datadir, firstTick=1) {
