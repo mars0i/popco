@@ -175,13 +175,24 @@ read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
                  RAs2multirunRA(read2RAs(csvs[runidxs], firstTick=firstTick),
 		                stripcsv(csvs[runidxs])) )
   }
-  mra
+
+  restoreTopDimnames(mra) # add back the top-level dim names that abind loses
 }
 
 # old, working (memory hog) version of read2multirunRA:
 #read2multirunRA <- function(csvs, firstTick=1) {
 #  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
 #}
+
+# Add back the top-level dim names that abind loses:
+restoreTopDimnames <- function(mra) {
+  dimnames(mra) <- list(person=dimnames(mra)[[1]], 
+                        proposition=dimnames(mra)[[2]], 
+                        tick=dimnames(mra)[[3]], 
+                        run=dimnames(mra)[[4]])
+  mra
+}
+
 
 # run read2multirunRA in specified directory, returning to current directory when done:
 read2multirunRAfromDir <- function(datadir, firstTick=1) {
