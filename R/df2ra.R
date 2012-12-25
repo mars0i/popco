@@ -166,6 +166,8 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
 # firstTick: starting tick to keep in data
 # perLoad: number of csv files to process at one time
 read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
+  require(abind)
+
   mra <- NULL
 
   for (i in seq(1, length(csvs), perLoad)) {
