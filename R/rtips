@@ -19,12 +19,25 @@ dimnames(mda_g2) <- list(1:dim(mda_g2)[1], c("person", "proposition", "tick"))
 # dimension have a name, but the dimensions don't have names.  
 # abind (from library abind) has this effect, at least by default.
 # Here is a way to put the dimension names back. (There might be a simpler way.)
+# See other version above.
 
 dimnames(mrax) <- 
  list(person=dimnames(mrax)[[1]], 
       proposition=dimnames(mrax)[[2]], 
       tick=dimnames(mrax)[[3]], 
       run=dimnames(mrax)[[4]])
+
+# Wrapping it in a function won't change the top level variable:
+restoreTopDimnames <- function(mra) {
+  mra <- list(person=dimnames(mra)[[1]], 
+              proposition=dimnames(mra)[[2]], 
+              tick=dimnames(mra)[[3]], 
+              run=dimnames(mra)[[4]])
+  mra
+}
+# so you have to assign it:
+dimnames(mra) <- restoreTopDimnames(mra)
+# the function is now added to df2ra.R
 
 ----------------------------------------------------------------------
 
@@ -249,7 +262,6 @@ xyplot(P ~ H, groups=bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", typ
 # add a grid more or less by hand at those tick marks, plus a diagonal:
 xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans, xlim=c(-1,1), ylim=c(-1,1), 
        auto.key=list(space="left"), aspect="iso", 
-       scales=list(x=list(at=seq(from=-1,to=1,by=2/10)), y=list(at=seq(from=-1,to=1,by=2/9))), 
        type=c("p"), 
        abline=c(list(h=seq(from=-1,to=1,by=2/9), v=seq(from=-1,to=1,by=2/10)), # grid at theoretical convergence values
                 list(a=0,b=1),  # diagonal line

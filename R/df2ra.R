@@ -41,6 +41,17 @@
 
 punditPrefix <- "AA"
 
+#------------------------------------------------------
+basename <- function(path) paste(sub(".*/", "", path), collapse=", ")
+
+# usage: mra <- stripRunPaths(mra)
+stripRunPaths <- function(mra) {
+  dimnames(mra)$run <- lapply(dimnames(mra)$run, basename)
+  mra
+}
+
+#------------------------------------------------------
+
 # This function can be used to create buckets into which activation avgs can be sorted e.g. for a histogram.
 # Given a vector of evenly-spaced "foci"--points to which activation averages will usually 
 # converge--return a vector of points shifted half the distance between two foci, with
@@ -51,19 +62,19 @@ addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trello
 
 # given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
 # produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
-DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
+# NOTE: must have a column called "rawsum". Only rows with value "raw" will be processed.
+DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals, catvar="bias") {
   # add cut intervals to the internal copy of the input df:
   cookedDF <- DF2freqDF.prepare.aDF(aDF, dom1, dom2, dom1intervals, dom2intervals)
-  #aDF <- aDF[aDF$rawsum=="raw",] # strip out means, etc.
-  #aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
-  #aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
-  biases <- levels(cookedDF$bias)
+  cats <- levels(cookedDF[[catvar]])
+  print(paste("cats:", cats)) # DEBUG
   # I don't know how to do this without a loop:
   freqDF <- NULL
-  for (i in 1:length(biases)) {
-    freqDF <- rbind(freqDF, DF2freqDF.component(biases[i], cookedDF, dom1, dom2))
+  for (i in 1:length(cats)) {
+    freqDF <- rbind(freqDF, DF2freqDF.component(cats[i], cookedDF, dom1, dom2))
   }
-  names(freqDF) <- c(dom1, dom2, "Freq", "bias")
+  print(names(freqDF)) # DEBUG
+  names(freqDF) <- c(dom1, dom2, "Freq", catvar)
   freqDF
 }
 
@@ -87,6 +98,25 @@ DF2freqDF.component <- function(bias, aDF, dom1, dom2) {
   freqDF
 }
 
+# OLD VERSION THAT ASSUMED CATEGORY VAR WAS CALLED "bias"
+# given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
+# produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
+#DF2freqDF <- function(aDF, dom1, dom2, dom1intervals, dom2intervals) {
+#  # add cut intervals to the internal copy of the input df:
+#  cookedDF <- DF2freqDF.prepare.aDF(aDF, dom1, dom2, dom1intervals, dom2intervals)
+#  #aDF <- aDF[aDF$rawsum=="raw",] # strip out means, etc.
+#  #aDF$cut1 <- cut(aDF[[dom1]], dom1intervals)
+#  #aDF$cut2 <- cut(aDF[[dom2]], dom2intervals)
+#  biases <- levels(cookedDF$bias)
+#  # I don't know how to do this without a loop:
+#  freqDF <- NULL
+#  for (i in 1:length(biases)) {
+#    freqDF <- rbind(freqDF, DF2freqDF.component(biases[i], cookedDF, dom1, dom2))
+#  }
+#  names(freqDF) <- c(dom1, dom2, "Freq", "bias")
+#  freqDF
+#}
+
 # utility to add top-level dimension names to a multi-RA if didn't do it already:
 addTopDimNamesToMultiRA <- function(RA) {
   dimns <- dimnames(RA)
@@ -107,6 +137,8 @@ spread <- function(x){abs( max(x) - min(x) )}
 # return a vector of names of runs which have at least proposition with disagreement between
 # persons greater than tolerance (where disagreement is measured by spread(), i.e. by distance
 # between max and min activations across persons for a proposition).
+# ACTUALLY, there's no reason to restrict this to a domain.  However, you do want to
+# remove pundits, since they are unlikely to agree with everyone, in general.
 # NOTE tickIndex is relative to length of domMultiRA, if numeric.  e.g. if domMultiRA has
 # only one tick, originally tick 1500, then tickIndex should be 1, or the string "1500".
 findRunsWithDisagreement <- function(domMultiRA, tolerance, tickIndex=1) {
@@ -149,7 +181,6 @@ read2RAs <- function(csvs, firstTick=1) {
   dfs2RAs(readcsvs(csvs), firstTick=firstTick)
 }
 
-# NAME CONVERSION BUG INSIDE HERE 11/4/2012:
 dfs2RAs <- function(dframes, firstTick=1) {
   lapply(dframes, df2RA, firstTick=firstTick)
 }
@@ -160,10 +191,42 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
   RAs2multirunRA(RAs, stripcsv(getcsvnames()))
 }
 
+# read2multirunRA
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
-read2multirunRA <- function(csvs, firstTick=1) {
-  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
+# csvs: csv file names to process
+# The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
+# firstTick: starting tick to keep in data
+# perLoad: number of csv files to process at one time
+read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
+  require(abind)
+
+  mra <- NULL
+
+  for (i in seq(1, length(csvs), perLoad)) {
+    runidxs <- i:(i+perLoad-1)  # -1 because we want the seq *up to* but not including next i
+    cat("abind-ing run(s) ", runidxs, " to main array\n")
+    mra <- abind( mra, 
+                 RAs2multirunRA(read2RAs(csvs[runidxs], firstTick=firstTick),
+		                stripcsv(csvs[runidxs])) )
+  }
+
+  restoreTopDimnames(mra) # add back the top-level dim names that abind loses
 }
+
+# old, working (memory hog) version of read2multirunRA:
+#read2multirunRA <- function(csvs, firstTick=1) {
+#  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
+#}
+
+# Add back the top-level dim names that abind loses:
+restoreTopDimnames <- function(mra) {
+  dimnames(mra) <- list(person=dimnames(mra)[[1]], 
+                        proposition=dimnames(mra)[[2]], 
+                        tick=dimnames(mra)[[3]], 
+                        run=dimnames(mra)[[4]])
+  mra
+}
+
 
 # run read2multirunRA in specified directory, returning to current directory when done:
 read2multirunRAfromDir <- function(datadir, firstTick=1) {
