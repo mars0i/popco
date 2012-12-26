@@ -262,7 +262,6 @@ xyplot(P ~ H, groups=bias, data=m, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", typ
 # add a grid more or less by hand at those tick marks, plus a diagonal:
 xyplot(P~H|bias, groups=rawsum, data=onePunditTick1500RunMeans, xlim=c(-1,1), ylim=c(-1,1), 
        auto.key=list(space="left"), aspect="iso", 
-       scales=list(x=list(at=seq(from=-1,to=1,by=2/10)), y=list(at=seq(from=-1,to=1,by=2/9))), 
        type=c("p"), 
        abline=c(list(h=seq(from=-1,to=1,by=2/9), v=seq(from=-1,to=1,by=2/10)), # grid at theoretical convergence values
                 list(a=0,b=1),  # diagonal line
