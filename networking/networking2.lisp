@@ -1,5 +1,5 @@
-;networking1.lisp
-;sandbox for networks in POPCO
+;networking2.lisp
+;sandbox for networks in POPCO--redefining make-person
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
@@ -60,6 +60,22 @@
 ;             '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
 
 ; make one model person
+
+(defun make-person (person group given initial-input &optional addl-input converse-strucs talks-to)
+  (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
+  (put person 'group group)
+  (put group 'members (cons-if-new person (get group 'members))) ; changed push to cons-if-new  -MA 6/2011
+  (put person 'given-el given) ; NOTE PROPNS ARE IN FULL SUBJ/PRED MESSAGE FORMAT
+  ; (put person 'other-el other)
+  (put person 'input initial-input)
+  (when addl-input 
+    (put person 'addl-input addl-input))
+  (put person 'converse-strucs (mapcar #'generic-to-personal-sym converse-strucs))
+  (when talks-to
+    (put person 'talks-to talks-to)) ;New for networking--groups that person talks to
+  person)
+
+
 (make-person 'alex 'alpha nil
              `((make-struc 'target 'problem '(start (,@other)) 
                                             ;'(goals (,@other-goals))
@@ -69,7 +85,8 @@
                                             )
                ,@similarity)
              `(,@pragmatic-relations)
-             '())
+             '()
+             '('alpha 'bravo))
 (persons-like 'alex '(bailey chris dana))
 
 
@@ -82,7 +99,8 @@
                                             )
                ,@similarity)
              `(,@pragmatic-relations)
-             '())
+             '()
+             '('alpha 'bravo 'charlie))
 
 (persons-like 'james '(kristen mary logan))
 
@@ -95,14 +113,15 @@
                                             )
                ,@similarity)
              `(,@pragmatic-relations)
-             '())
+             '()
+             '('bravo 'charlie))
 
 (persons-like 'zander '(yasamin xavier wilson))
 
 
-
-(defun merge-pops (pop1 pop2)
-  (cons (get pop1 'members) (get pop2 'members))
+;;I want to loop over all the groups in 'talks-to and (get group 'members)
+(defun get-conversers (person)
+  ( )
   )
 
 
@@ -118,14 +137,9 @@
 ;*************************
 
 
-(print (get (get 'alex 'group) 'members))
 
 
-(setf 'ab (merge-pops 'alpha 'bravo))
-(setf 'bc (merge-pops 'bravo 'charlie))
 
-(run-population-once 'ab)
-(run-population-once 'bc)
 
 
 
