@@ -527,6 +527,12 @@
     sym
     (generic-to-personal-sym sym person)))
 
+(defun personalize-message (msg &optional (person *the-person*))
+  (if (null (cdr msg))
+    (list (generic-to-personal-sym (car msg) person))
+    (cons (car msg) (personalize-message (cdr msg) person))))
+
+
 ;; blow away everything in the property list of symbols
 (defun clear-plists (&rest symbols)
   (mapc #'clear-props symbols)) ; network.lisp
