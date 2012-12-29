@@ -1,3 +1,18 @@
+When SBCL throws you into a debugging loop, and you enter
+	backtrace
+sometimes you won't see all of the function calls, because SBCL has
+compiled them away, I guess.  If the function you need to find is one
+of the missing ones, this can be frustrating.  One option is to run
+the program in another Common Lisp implementation.  I often try:
+ABCL, with backtrace command
+	:bt
+or Clozure Common Lisp (ccl), with backtrace command
+	:b
+
+
+
+Illustration of syntax of CL's DO loop macro:
+
 * (do ((i 0 (1+ i)))
     ((> i 10) 'yay)
    (print i))
@@ -14,6 +29,7 @@
 9 
 10 
 YAY
+
 * (do ((i 0 (1+ i))
        (j 0 (+ 2 j)))
     ((> i 10) 'whatever)
