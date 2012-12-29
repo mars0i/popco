@@ -1,4 +1,4 @@
-;; crime2c.lisp
+;; crime2b.lisp
 
 (load "crime/crime2")
 
@@ -19,9 +19,9 @@
 (defun half-perceived-aa (msg)
   (perceived msg .5 'aa))
 
-(make-beast-bias-crime-talker 'aa beastly-crime-propns) ; only beastly crime propns get activn = 1
+(make-virus-bias-crime-talker 'aa beastly-crime-propns) ; only beastly crime propns get activn = 1
 
-(make-beast-bias-crime-talker 'temp-person)
+(make-virus-bias-crime-talker 'temp-person)
 (n-persons-with-name 'temp-person 'p (1- *my-pop-size*)) ; "p" for person
 (rem-elt-from-property 'temp-person 'folks 'members)
 
