@@ -31,5 +31,6 @@
 
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 1)
-;(popco)
+(setf *max-pop-ticks* 5000)
+(popco)
+(quit)

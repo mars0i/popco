@@ -5,10 +5,12 @@
 #
 # CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
 # mra <- read2multirunRA(csvs)   # defined below: create multi-run array
-# SAME THING BUT PASS DIRECTORY NAME INSTEAD:
-# read2dfsFromDir(datadir)
+# SAME THING BUT LOAD AND PROCESS ONE CSV AT A TIME (uses less memory):
+# mra <- read2multirunRA(csvs, perLoad=1)
 # SAME THING BUT SKIP FIRST N TICKS:
 # read2multirunRAfromDir(datadir, firstTick=1)
+# SAME THING BUT PASS DIRECTORY NAME INSTEAD:
+# read2dfsFromDir(datadir)
 #
 # CHECK WHETHER BETWEEN-PERSON ACTIVATIONS HAVE CONVERGED (return names of runs with non-convergent propns):
 # findRunsWithDisagreement(mra, tolerance, tickIndex=1)
