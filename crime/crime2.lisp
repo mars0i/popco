@@ -139,8 +139,6 @@
     (aggressive (prev-criminal-cperson) cb-ap)
    ))
 
-(defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
-
 ; Note:
 ; It's desirable (required?) to give different names to person objects
 ; here and in crime-propns.  Even though they're persons, they're not
@@ -171,6 +169,15 @@
 
     (aggressive (beast) b-ab)
    ))
+
+
+(defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
+
+(defvar virus-propn-syms (mapcar #'third virus-propns))
+(defvar beast-propn-syms (mapcar #'third beast-propns))
+(defvar viral-crime-propn-syms (mapcar #'third viral-crime-propns))
+(defvar beastly-crime-propn-syms (mapcar #'third beastly-crime-propns))
+(defvar crime-propn-syms (mapcar #'third crime-propns))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Note that I'm reversing source vs target wrt the sanday simulations:

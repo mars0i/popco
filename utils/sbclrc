@@ -1,0 +1,15 @@
+; Copy this to a file named $HOME/.sbcl to run POPCO with SBCL.
+
+; Obvious, programmer-friendly default implementation choices aren't 
+; prioritized in SBCL ...
+(unlock-package 'common-lisp)
+; Explanation:
+; By default SBCL "locks" the central COMMON-LISP package to prevent
+; users from messing with it.  Sounds like a good idea, but apparently
+; breaks code that applies type declarations to functions in that
+; package.  -Marshall Abrams
+
+; set initial current working dir:
+;(setf *DEFAULT-PATHNAME-DEFAULTS* (truename "~/popco"))
+; note that a path is a normal, fully-specified path string preceded by "#P".
+; truename translates OS abbreviations into this format.

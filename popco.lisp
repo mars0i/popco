@@ -783,6 +783,9 @@
 ; Perceive a propn.  Insert the proposition into a person's "external" environment, 
 ; setting activation to 1 by default.
 ; ARG: a generic proposition message, i.e. a full subject/predicate representation in list form.
+; NOTE: Typically this has to be called *after* the population has been initialized by init-pop.
+; If you get an error indicating that personal-to-generic-sym is trying to convert nil to a personal
+; symbol, that might be the problem.
 ; *THE-PERSON* MUST BE SET CORRECTLY.
 ; ALSO SEE: perceived-negation
 (defun perceived (msg &optional (degree 1.0) (person *the-person*))
