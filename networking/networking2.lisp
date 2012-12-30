@@ -4,6 +4,9 @@
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
 
+; turn off annoying style warnings in SBCL -MA
+(declaim #+sbcl(sb-ext:muffle-conditions style-warning))
+
 ;; These are output to NetLogo:
 (setf *propn-category-prefixes* '("S"))
 (setf *propn-category-descriptions* '("Stuff"))
@@ -57,10 +60,10 @@
 ;               (make-struc 'source 'problem '(start (,@propns-to-subst-in-here)))
 ;               ,@semantic-specs-to-subst-in-here)
 ;             `(@,pragmatic-relations)
-;             '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
+;             '() ; put 'source or 'target in list to restrict utterances to propns in that struc
+;	      '(groups-to talk-to)) ;a list of the groups this person talks to (can just be his own)
 
-; make one model person
-
+;;;Originally defined in consensus.lisp
 (defun make-person (person group given initial-input &optional addl-input converse-strucs talks-to)
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
   (put person 'group group)
@@ -75,7 +78,24 @@
     (put person 'talks-to talks-to)) ;New for networking--groups that person talks to
   person)
 
+;;;Originally defined in consensus.lisp--> Changed to add 'talks-to for networking
+(defun persons-like (old list-of-new)
+  (do ((persons list-of-new (cdr persons))
+       (result nil))
+    ((null persons) result) ; repeat
+    (push
+      (make-person (car persons)
+                   (get old 'group)
+                   (get old 'given-el)
+                   (get old 'input)
+                   (get old 'addl-input)
+                   (mapcar #'(lambda (personal-struc) (personal-to-generic-sym personal-struc old))
+                           (get old 'converse-strucs))
+                   (get old 'talks-to))
+      result)))
 
+
+; make one model person
 (make-person 'alex 'alpha nil
              `((make-struc 'target 'problem '(start (,@other)) 
                                             ;'(goals (,@other-goals))
@@ -86,7 +106,7 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '('alpha 'bravo))
+             '(alpha bravo))
 (persons-like 'alex '(bailey chris dana))
 
 
@@ -100,7 +120,7 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '('alpha 'bravo 'charlie))
+             '(alpha bravo charlie))
 
 (persons-like 'james '(kristen mary logan))
 
@@ -114,29 +134,37 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '('bravo 'charlie))
+             '(bravo charlie))
 
 (persons-like 'zander '(yasamin xavier wilson))
 
 
 ;;I want to loop over all the groups in 'talks-to and (get group 'members)
 (defun get-conversers (person)
-  ( )
-  )
+  "Returns a list of all the people PERSON talks to."
+  (let ((thelist))
+    (dolist (group (get person 'talks-to))
+      (setf thelist (concatenate 'list (get group 'members) thelist)))
+    (return-from get-conversers thelist)))
 
 
 
 ;*************************
 ; INITIAL SETTINGS
 (setf *max-pop-ticks* 20)
-(setf *do-converse* nil)             ; Whether to send utterances between persons
+(setf *do-converse* t)             ; Whether to send utterances between persons
 (setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-(setf *do-report-analogy-nets-to-guess* t)
+(setf *do-report-to-netlogo* nil)  ; Whether to create file for input to NetLogo 
+(setf *do-report-analogy-nets-to-guess* nil)
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
 
+;;;To run the model, must initialize all groups
+(init-pop 'alpha)
+(init-pop 'bravo)
+(init-pop 'charlie)
 
+;(popco)
 
 
 

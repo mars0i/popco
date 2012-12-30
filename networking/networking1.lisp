@@ -102,7 +102,7 @@
 
 
 (defun merge-pops (pop1 pop2)
-  (cons (get pop1 'members) (get pop2 'members))
+  (concatenate (get pop1 'members) (get pop2 'members))
   )
 
 
