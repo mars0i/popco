@@ -17,6 +17,10 @@
 # 
 # DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE): 
 # df <- multiRA2meanDF(mra, "H", "P", firstTick=1500)
+# Do that twice, and then you can combine the dfs like this:
+# df <- combineMeanDFsWithBiases <- function(df1, bias1, df2, bias2)
+# [this process isn't yet set up for more than two]
+
 #
 # EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
 # xseq <- seq(from=-9, to=9, by=2*.9)/10     # for 10 propns in a domain, max is 10*.9, min 10*-.9
@@ -275,10 +279,20 @@ domRA2runMeanVec <- function(domRA) {
 #   mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
 # which would produce a two-column dataframe of per-run means for hunting and parenting
 multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiRA)[3]) {
-  df <- data.frame(apply(multiRA2punditFreeDomRA(multiRA[,,firstTick:lastTick,,drop=F], dom1), 4, mean),
-                   apply(multiRA2punditFreeDomRA(multiRA[,,firstTick:lastTick,,drop=F], dom2), 4, mean))
+  mra <- stripRunPaths(multiRA)
+  df <- data.frame(apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom1), 4, mean),
+                   apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom2), 4, mean))
   names(df) <- c(dom1, dom2)
+  df$rawsum <- "raw"
+  df <- rbind(df, c(colMeans(df[,1:2]), rawsum="mean"))
   df
+}
+
+combineMeanDFsWithBiases <- function(df1, bias1, df2, bias2) {
+  # note these are changes to the internal copies, not the function arguments:
+  df1$bias <- bias1
+  df2$bias <- bias2
+  rbind(df1, df2)
 }
 
 ##############################################################

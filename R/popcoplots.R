@@ -3,15 +3,14 @@
 # First CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
 # mra <- read2multirunRA(csvs) 
 
-library(lattice)
-
 # activnsAtTickBarchart:
 # Return barcharts of activations for each proposition grouped by person
 # using 4-D array mra of popco data
-# at tick tick
-
+# at tick
 # this version assumes 4 domains
 activnsAtTickBarchart <- function(mra, tick, run=1, main=paste("tick", tick)) {
+  require(lattice)
+
   divadj <- .50 # pushes inter-domain lines up a bit
   # trellgray <- trellis.par.get("reference.line")$col;  # gets default grid gray - lighter than "gray"
 
