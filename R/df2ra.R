@@ -210,7 +210,7 @@ read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
 
   for (i in seq(1, length(csvs), perLoad)) {
     runidxs <- i:(i+perLoad-1)  # -1 because we want the seq *up to* but not including next i
-    cat("abind-ing run(s) ", runidxs, " to main array\n")
+    cat("abind-ing run(s)", runidxs, "to main array ...\n")
     mra <- abind( mra, 
                  RAs2multirunRA(read2RAs(csvs[runidxs], firstTick=firstTick),
 		                stripcsv(csvs[runidxs])) )
@@ -341,7 +341,7 @@ stripcsv <- function(filenames) {gsub("\\.csv$", "", filenames)} # given vec or 
 # i.e. the returned RA will go from firstTick to lastTick, inclusive.
 
 df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
-  print(paste0("converting dframe to array, using ticks ", firstTick, " to ", lastTick))
+  cat("converting dframe to array, using ticks", firstTick, "to", lastTick, "\n")
   # extract desired dimensions and labels from the dataframe:
   cols = colnames(dframe)
   persnames = persPropNames2persNames(cols)     # ; print(persnames)
@@ -372,7 +372,7 @@ df2RA <- function(dframe, firstTick=1, lastTick=nrow(dframe)) {
 # Note: It appears that the arguments can be vectors or lists.
 
 RAs2multirunRA <- function(RAs, runIDs) {
-  print("converting arrays to mulitrun array")
+  cat("converting arrays to mulitrun array\n")
   numRAs = length(RAs)
 
   # error checking
