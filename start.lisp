@@ -1,5 +1,5 @@
 ;---------------------------------------------------------------------
-; FILE : POPCO-START.lisp (modified version of PT's COHERE-START.lisp)
+; FILE : POPCO's start.lisp (modified version of PT's COHERE-START.lisp)
 ; PURPOSE : Load all coherence files
 ; PROGRAMMER: Paul Thagard; modified by Marshall Abrams
 ; CREATED : 5-1-1995
