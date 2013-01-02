@@ -1,5 +1,49 @@
 R tips:
 
+# on the cost of repeated abind:
+
+slowbind <- function(nCopies, ra) {
+  newra <- ra
+
+  for (i in 1:(nCopies-1)) {
+    newra <- abind(newra, ra)
+  }
+
+  newra
+}
+
+newbind <- function(nCopies, inRA) {
+  inRA.dims <- dim(inRA)
+  last.idx <- 3 # hardcoded
+  inRA.lastdim <- inRA.dims[last.idx]
+
+  outRA.dims <- inRA.dims
+  outRA.dims[last.idx] <- nCopies * inRA.lastdim
+
+  outRA <- array(0, outRA.dims)  # 0 will get repeated as value of each element
+
+  for ( i in seq(1, nCopies*inRA.lastdim, inRA.lastdim) ) {
+    outRA[,,i:(i+inRA.lastdim-1)] <- inRA
+  }
+
+  outRA
+}
+
+
+> dim(a)
+[1] 100 100 100
+
+> system.time(bnew <- newbind(100,a))
+   user  system elapsed 
+  2.906   0.679   3.564 
+
+> system.time(bslow <- slowbind(100,a))
+   user  system elapsed 
+ 51.763  46.718 100.964 
+
+
+----------------------------------------------------------------------
+
 # This
 mra_g2 <- which(abs(mras[,,,54]-mras[,,,55])>.2, arr.ind=T)
 # gives a matrix of indexes at which runs mras[,,,54] and 55 differ by
