@@ -6,7 +6,7 @@
 # CREATE 4-D MULTIRUN ARRAY FROM LIST/ARRAY OF CSV FILENAMES:
 # mra <- read2multirunRA(csvs)   # defined below: create multi-run array
 # SAME THING BUT LOAD AND PROCESS ONE CSV AT A TIME (uses less memory):
-# mra <- read2multirunRA(csvs, perLoad=1)
+# mra <- read2multirunRA(csvs, perload=1)
 # SAME THING BUT SKIP FIRST N TICKS:
 # read2multirunRAfromDir(datadir, firstTick=1)
 # SAME THING BUT PASS DIRECTORY NAME INSTEAD:
@@ -202,14 +202,41 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
 # csvs: csv file names to process
 # The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
 # firstTick: starting tick to keep in data
-# perLoad: number of csv files to process at one time
-read2multirunRA <- function(csvs, firstTick=1, perLoad=length(csvs)) {
+read2multirunRA <- function(csvs, firstTick=1) {
+  n.runs <- length(csvs)
+
+  # first process the first csv file so that we know the dimensions of the run component mras
+  mra.run1 <- RAs2multirunRA(read2RAs(csvs[1], firstTick=firstTick), stripcsv(csvs[1]))
+  mra.dims <- dim(mra.run1) # CHECK is last dim getting dropped or being retained? retained I think.
+  mra.dims[4] <- n.runs
+
+  # now construct an array as large as the final array we'll need.  then we'll fill it in.
+  mra <- array(0, mra.dims) # SHOULD WE BE INITIALIZING THE FIRST PART WITH mra.run1 HERE--IS THAT FASTER?
+
+  # fill the first run
+  mra[,,,1] <- mra.run1
+
+  # process and fill in the other runs:
+  for (i in 2:n.runs) {  # IS THIS RIGHT???
+    mra[,,,i] <- RAs2multirunRA(read2RAs(csvs[i], firstTick=firstTick), stripcsv(csvs[i]))
+  }
+
+  mra
+}
+
+# read2multirunRA OLD VERSION
+# Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
+# csvs: csv file names to process
+# The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
+# firstTick: starting tick to keep in data
+# perload: number of csv files to process at one time
+read2multirunRA.old <- function(csvs, firstTick=1, perload=length(csvs)) {
   require(abind)
 
   mra <- NULL
 
-  for (i in seq(1, length(csvs), perLoad)) {
-    runidxs <- i:(i+perLoad-1)  # -1 because we want the seq *up to* but not including next i
+  for (i in seq(1, length(csvs), perload)) {
+    runidxs <- i:(i+perload-1)  # -1 because we want the seq *up to* but not including next i
     cat("abind-ing run(s)", runidxs, "to main array ...\n")
     mra <- abind( mra, 
                  RAs2multirunRA(read2RAs(csvs[runidxs], firstTick=firstTick),
