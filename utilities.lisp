@@ -194,7 +194,7 @@
 
 ; INHIB
 (defun inhib (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (cond ((equal *silent-run?* t))
         ((= num *inhib-weight*)
          (my-print '"Inhibition unchanged at " num)
@@ -208,7 +208,7 @@
   )
 ; DECAY
 (defun decay (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (cond ( (equal *silent-run?* t))
         ( (= num *decay-amount*)
          (my-print '"Decay unchanged at " num)
@@ -223,7 +223,7 @@
 
 ; EXCIT
 (defun excit (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (cond ( (equal *silent-run?* t))
         ( (= num *excit-weight*)
          (my-print '"Excitation unchanged at " num))
@@ -234,7 +234,7 @@
 
 ; DATA-EXCIT
 (defun data-excit (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (cond ( (equal *silent-run?* t))
         ( (= num *data-excit*)
          (my-print '"Data excitation unchanged at " num)
@@ -249,7 +249,7 @@
 
 ; SIMPLE
 (defun simple (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (if (> num *simpl-impact*)
       (my-print '"Simplicity impact increased from " *simpl-impact* '" to " num)
     ; else
@@ -261,7 +261,7 @@
 ; OUTPUT
 
 (defun output (num)
-  (declare (type (float) num))
+  ;(declare (type (float) num))
   (cond ( (equal *silent-run?* t))
         ( (= num *output-threshold*)
          (my-print '"Output threshold unchanged at " num)
