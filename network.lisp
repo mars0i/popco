@@ -3,8 +3,11 @@
 ; UPDATED: 6-23-2000
 
 ; Mainly by Paul Thagard and collaborators, 
-; but with many modifications by Marshall Abrams (2011)
+; but with many modifications by Marshall Abrams (2011, 2012, 2013)
 ; (Many are marked. Code tied to references to *the-person* are by MA.)
+
+; 1/3/2012 commented out type and ftype declarations.
+; In SBCL, they don't speed up, and some of them significantly slow runs.
 
 
 ;*********************************************************************************
@@ -286,7 +289,7 @@
 ; inhibition separately.
 ; Uses global variables *current-excit* and *current-inhib*
 (defun update-unit-activn-gross (unit)
-  (declare (ftype (function (&rest float) float) + - * min max))
+  ;(declare (ftype (function (&rest float) float) + - * min max))
   ; calculate excitation and inhibition.
   (if *tversky?*
       (excit-and-inhib-tversky unit)
@@ -306,14 +309,14 @@
 ; linked nodes, separately, and then set these into two global variables,
 ; which are used to pass these sums to e.g. update-unit-activn-gross.
 (defun excit-and-inhib (unit)
-  (declare (ftype (function (&rest float) float) max + *)
-           (ftype (function (float float) symbol) >))
+  ;(declare (ftype (function (&rest float) float) max + *)
+  ;         (ftype (function (float float) symbol) >))
   (do ((excit 0.0) (inhib 0.0) (wt 0.0) (activn 0.0)
        (links (links-from unit) (cdr links)))
       ((null links)
        (setf *current-excit* excit)
        (setf *current-inhib* inhib))
-    (declare (type (float) excit inhib wt activn))
+    ;(declare (type (float) excit inhib wt activn))
     (setf wt (float (cdar links)))
     (setf activn (max *output-threshold* (activation (caar links))))
     (if (> wt 0.0)
@@ -322,14 +325,14 @@
       (setf inhib (+ inhib (* wt activn))))))
 
 (defun excit-and-inhib-tversky (unit)
-  (declare (ftype (function (&rest float) float) max + *)
-           (ftype (function (float float) symbol) >))
+  ;(declare (ftype (function (&rest float) float) max + *)
+  ;         (ftype (function (float float) symbol) >))
   (do ((excit 0.0) (inhib 0.0) (wt 0.0)
        (links (links-from unit) (cdr links)))
       ((null links)
        (setf *current-excit* excit)
        (setf *current-inhib* inhib))
-    (declare (type (float) excit inhib wt))
+    ;(declare (type (float) excit inhib wt))
     (setf wt (float (cdar links)))
     (if (> wt 0.0)
         (setf excit (+ excit (* wt (activation (caar links)))))
