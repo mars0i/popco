@@ -197,16 +197,21 @@ dfs2multirunRA <- function(dframes, firstTick=1) {
   RAs2multirunRA(RAs, stripcsv(getcsvnames()))
 }
 
-# read2multirunRA
+# read2multirunRA (v3)
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
-# csvs: csv file names to process
-# The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
+# csvs: csv file names to process, assumed to have same persons, propositions, and number of pop-ticks.
 # firstTick: starting tick to keep in data
+# [This version (1/2013) uses less memory than previous versions by preallocating the full array
+# to be returned, and then filling it with data one csv file at a time.  The original version
+# was extremely simple--really just a wrapper--but tried to process all of the csvs at once
+# before constructing the array, which was extremely memory intensive for more than a few csv files.  
+# The version just before this one was able to process csvs individually, but then abind'ed them into 
+# a new array one by one, which resulted in excessive memory use when the number of csvs was large.]
 read2multirunRA <- function(csvs, firstTick=1) {
   n.runs <- length(csvs)
 
-  # first process the first csv file so that we know the dimensions of the run component mras
-  mra.run1 <- RAs2multirunRA(read2RAs(csvs[1], firstTick=firstTick), stripcsv(csvs[1]))
+  # process the first csv file so that we know the dimensions of the per-run component mras
+  mra.run1 <- RAs2multirunRA(read2RAs(csvs[1], firstTick=firstTick), stripcsv(csvs[1]))  # stripcsv(csvs[1]) would be a dimname, but will be lost and then restored
   mra.dims <- dim(mra.run1) # CHECK is last dim getting dropped or being retained? retained I think.
   mra.dims[4] <- n.runs
 
@@ -219,19 +224,19 @@ read2multirunRA <- function(csvs, firstTick=1) {
   # process and fill in the other runs:
   if (length(csvs) > 1) {
     for (i in 2:n.runs) {  # IS THIS RIGHT???
-      mra[,,,i] <- RAs2multirunRA(read2RAs(csvs[i], firstTick=firstTick), stripcsv(csvs[i]))
+      mra[,,,i] <- RAs2multirunRA(read2RAs(csvs[i], firstTick=firstTick), stripcsv(csvs[i])) # see comment above re stripcsv(csvs[i])
     }
   }
 
   # now add the dim names:
   mra <- restoreTopDimnames(mra)
   dimnames(mra)[1:3] <- dimnames(mra.run1)[1:3]
-  dimnames(mra)$run <- csvs
+  dimnames(mra)$run <- stripcsv(csvs)
 
   mra
 }
 
-# read2multirunRA OLD VERSION
+# read2multirunRA OLD VERSION (v2)
 # Given a list or vector of filenames, return a 4-dimensional array created by RAs2multirunRA()
 # csvs: csv file names to process
 # The optional parameters exist to avoid using gobs of memory, causing the machine to thrash:
@@ -253,7 +258,7 @@ read2multirunRA.old <- function(csvs, firstTick=1, perload=length(csvs)) {
   restoreTopDimnames(mra) # add back the top-level dim names that abind loses
 }
 
-# old, working (memory hog) version of read2multirunRA:
+# original memory hog version of read2multirunRA (v1):
 #read2multirunRA <- function(csvs, firstTick=1) {
 #  RAs2multirunRA(read2RAs(csvs, firstTick=firstTick), stripcsv(csvs))
 #}
