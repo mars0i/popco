@@ -10,7 +10,7 @@
 
 
 ;;;Originally defined in consensus.lisp--> Changed to add 'talks-to for networking
-(defun make-person (person group given initial-input &optional addl-input converse-strucs (talks-to nil) (num-listeners 0))
+(defun make-person (person group given initial-input &optional addl-input converse-strucs (talks-to (list group)) (num-listeners 1))
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
   (put person 'group group)
   (put group 'members (cons-if-new person (get group 'members))) ; changed push to cons-if-new  -MA 6/2011

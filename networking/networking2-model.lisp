@@ -3,22 +3,11 @@
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
-; turn off annoying style warnings in SBCL -MA
-;(declaim #+sbcl(sb-ext:muffle-conditions style-warning))
-
-
-(myload "natural_selection/nat_selection1.lisp")
 (myload "networking/networking2-functions.lisp")
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "LG" "LP" "T"))
 (setf *propn-category-descriptions* '("lightbulb-common" "lightbulb-good" "lightbulb-poor" "tumor"))
-
-;; first reset everything
-(kill-everyone 'folks)
-(setf *the-population* 'folks)
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -157,14 +146,14 @@
 ;               ,@semantic-specs-to-subst-in-here)
 ;             `(@,pragmatic-relations)
 ;             '() ; put 'source or 'target in list to restrict utterances to propns in that struc
-;	      '(groups-to talk-to)) ;a list of the groups this person talks to (can just be his own)
+;	      '(groups-to talk-to)) ;a list of the groups this person talks to (defaults to only own group)
 ;	      num-listeners ;integer variable
 
 
 ;; make the people
 ;for right now, just using a global for the number of listeners each person has
-(defvar *num-ppl-talking* 2)
-(make-person 'alex 'alpha nil
+(defvar *num-ppl-talking* 1)
+(make-person 'alex 'alpha '()
              `((make-struc 'target 'problem '(start (,@lightbulb-info-poor)) 
                                             ;'(goals (,@lightbulb-goals-poor))
                                             )
@@ -179,7 +168,7 @@
 (persons-like 'alex '(bailey chris dana))
 
 
-(make-person 'james 'bravo nil
+(make-person 'james 'bravo '()
              `((make-struc 'target 'problem '(start (,@lightbulb-common)) 
                                             ;'(goals (,@lightbulb-goals-common))
                                             )
@@ -194,7 +183,7 @@
 (persons-like 'james '(kristen mary logan))
 
 
-(make-person 'zander 'charlie nil
+(make-person 'zander 'charlie lightbulb-common
              `((make-struc 'target 'problem '(start (,@lightbulb-info-good)) 
                                             ;'(goals (,@lightbulb-goals-good))
                                             )
@@ -214,17 +203,16 @@
 ;*************************
 ; INITIAL SETTINGS
 (setf *max-pop-ticks* 20)
+(setf *the-population* 'folks)
 (setf *do-converse* t)             ; Whether to send utterances between persons
-(setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-(setf *do-report-analogy-nets-to-guess* t)
+(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
 
 
-;;;To run the model, must merge and initialize all groups
-(merge-pops (list 'alpha 'bravo 'charlie))
+;;;To run the model
+(merge-pops '(alpha bravo charlie))
 (init-pop)
 (print (get 'folks 'members))
 
-;(popco)
+(popco)

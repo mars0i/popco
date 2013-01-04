@@ -1,27 +1,14 @@
-;networking2-model.lisp
+;net2-one-pop.lisp
 ;model for use with networking functions with only one group
 ;using Holyoak/Thagard's lightbulb/tumor problem (1989)
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
-; turn off annoying style warnings in SBCL -MA
-;(declaim #+sbcl(sb-ext:muffle-conditions style-warning))
-
-
-
-(myload "natural_selection/nat_selection1.lisp")
 (myload "networking/networking2-functions.lisp")
-
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "LG" "LP" "T"))
 (setf *propn-category-descriptions* '("lightbulb-common" "lightbulb-good" "lightbulb-poor" "tumor"))
-
-;; first clear everything out
-(kill-everyone 'folks)
-(setf *the-population* 'folks)
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -160,7 +147,7 @@
 ;               ,@semantic-specs-to-subst-in-here)
 ;             `(@,pragmatic-relations)
 ;             '() ; put 'source or 'target in list to restrict utterances to propns in that struc
-;	      '(groups-to talk-to)) ;a list of the groups this person talks to (can just be his own)
+;	      '(groups-to talk-to)) ;a list of the groups this person talks to (defaults to only own group)
 ;	      num-listeners ;integer variable
 
 
@@ -217,10 +204,9 @@
 ;*************************
 ; INITIAL SETTINGS
 (setf *max-pop-ticks* 20)
+(setf *the-population* 'folks)
 (setf *do-converse* t)             ; Whether to send utterances between persons
-(setf *do-update-propn-nets* t)    ; Whether to update propn constraints from propn map units
-(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo 
-(setf *do-report-analogy-nets-to-guess* t)
+(setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console
 ;*************************
 
@@ -229,4 +215,4 @@
 (init-pop)
 (print (get 'folks 'members))
 
-;(popco)
+(popco)
