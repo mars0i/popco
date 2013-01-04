@@ -217,9 +217,16 @@ read2multirunRA <- function(csvs, firstTick=1) {
   mra[,,,1] <- mra.run1
 
   # process and fill in the other runs:
-  for (i in 2:n.runs) {  # IS THIS RIGHT???
-    mra[,,,i] <- RAs2multirunRA(read2RAs(csvs[i], firstTick=firstTick), stripcsv(csvs[i]))
+  if (length(csvs) > 1) {
+    for (i in 2:n.runs) {  # IS THIS RIGHT???
+      mra[,,,i] <- RAs2multirunRA(read2RAs(csvs[i], firstTick=firstTick), stripcsv(csvs[i]))
+    }
   }
+
+  # now add the dim names:
+  mra <- restoreTopDimnames(mra)
+  dimnames(mra)[1:3] <- dimnames(mra.run1)[1:3]
+  dimnames(mra)$run <- csvs
 
   mra
 }
