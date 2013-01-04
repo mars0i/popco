@@ -1,5 +1,6 @@
 ;networking2-model.lisp
-;model with persons and groups using Holyoak/Thagard's lightbulb/tumor problem (1989)
+;model for use with networking functions with only one group
+;using Holyoak/Thagard's lightbulb/tumor problem (1989)
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
@@ -7,14 +8,16 @@
 ;(declaim #+sbcl(sb-ext:muffle-conditions style-warning))
 
 
+
 (myload "natural_selection/nat_selection1.lisp")
 (myload "networking/networking2-functions.lisp")
+
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "LG" "LP" "T"))
 (setf *propn-category-descriptions* '("lightbulb-common" "lightbulb-good" "lightbulb-poor" "tumor"))
 
-;; first reset everything
+;; first clear everything out
 (kill-everyone 'folks)
 (setf *the-population* 'folks)
 
@@ -163,8 +166,8 @@
 
 ;; make the people
 ;for right now, just using a global for the number of listeners each person has
-(defvar *num-ppl-talking* 2)
-(make-person 'alex 'alpha nil
+(defvar *num-ppl-talking* 1)
+(make-person 'alex 'folks '()
              `((make-struc 'target 'problem '(start (,@lightbulb-info-poor)) 
                                             ;'(goals (,@lightbulb-goals-poor))
                                             )
@@ -174,12 +177,12 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '(alpha bravo)
+             '(folks)
              *num-ppl-talking*)
 (persons-like 'alex '(bailey chris dana))
 
 
-(make-person 'james 'bravo nil
+(make-person 'james 'folks '()
              `((make-struc 'target 'problem '(start (,@lightbulb-common)) 
                                             ;'(goals (,@lightbulb-goals-common))
                                             )
@@ -189,12 +192,12 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '(alpha bravo charlie)
+             '(folks)
              *num-ppl-talking*)
 (persons-like 'james '(kristen mary logan))
 
 
-(make-person 'zander 'charlie nil
+(make-person 'zander 'folks lightbulb-common
              `((make-struc 'target 'problem '(start (,@lightbulb-info-good)) 
                                             ;'(goals (,@lightbulb-goals-good))
                                             )
@@ -204,7 +207,7 @@
                ,@similarity)
              `(,@pragmatic-relations)
              '()
-             '(bravo charlie)
+             '(folks)
              *num-ppl-talking*)
 (persons-like 'zander '(yasamin xavier wilson))
 
@@ -222,8 +225,7 @@
 ;*************************
 
 
-;;;To run the model, must merge and initialize all groups
-(merge-pops (list 'alpha 'bravo 'charlie))
+;;;To run the model
 (init-pop)
 (print (get 'folks 'members))
 

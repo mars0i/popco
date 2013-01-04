@@ -47,41 +47,43 @@
 (defun choose-conversers (population) 
   (if (not *do-converse*)
       (cons nil population)
-      (let* ((pop-members (get population 'members))
-             (converser-list))
-        (dolist (speaker pop-members)
-          (let* ((randomized-conversers (randomize (get-conversers speaker)))
-                 (num-people (length randomized-conversers))
-                 (num-listening 4)
-                 (num-conversers (if (> num-listening num-people)
-                                     num-people
-                                     num-listening))
-                 (actual-conversers (last randomized-conversers num-conversers))
-                 (speaker-list (make-list num-conversers :initial-element speaker)))            
-            (setf converser-list 	
-                  (concatenate 'list
-                               (mapcar #'list speaker-list actual-conversers)
-                               converser-list))))
-        (return-from choose-conversers (cons converser-list population)))))
+      (cons (apply #'append
+                   (mapcar #'make-converser-pairs (get population 'members)))
+            population)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;   NEW FUNCTIONS   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;Guts of choose-conversers--probably want to make this more lisp-y too. -KMH
+(defun make-converser-pairs (speaker)
+  (let* ((randomized-conversers (randomize (get-conversers speaker)))
+         (num-people (length randomized-conversers))
+         (num-listening (get speaker 'num-listeners))
+         (num-conversers (min num-listening num-people))
+         (actual-conversers (last randomized-conversers num-conversers))
+         (speaker-list (make-list num-conversers :initial-element speaker)))
+    (mapcar #'list speaker-list actual-conversers)))
+
+
+
 ;;Loops over all the groups in 'talks-to and does (get group 'members)
 (defun get-conversers (person)
   "Returns a list of all the people PERSON talks to."
-  (let ((thelist))
-    (dolist (group (get person 'talks-to))
-      (setf thelist (concatenate 'list (get group 'members) thelist)))
-    (setf thelist (remove person thelist))
-    (return-from get-conversers thelist)))
+  (remove person
+    (apply #'append 
+      (mapcar #'get-members(get person 'talks-to)))))
+
+(defun get-members (group)
+  (get group 'members))
 
 ;;Takes a list of groups and merges them, sets the given population (default *the-population*)
 ;;to have the new list of persons as its 'members
 (defun merge-pops (list-of-pops &optional (population *the-population*))
   (let ((merged-pops))
     (dolist (pop list-of-pops)
-      (setf merged-pops (concatenate 'list (get pop 'members) merged-pops)))
+      (setf merged-pops (append (get pop 'members) merged-pops)))
     (setf (get population 'members) merged-pops)
     (return-from merge-pops population)))
 
+
+(format t "Networking Functions Loaded")
