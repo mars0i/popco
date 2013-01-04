@@ -85,8 +85,8 @@
 
 ; Lisp code for emotional coherence.
 ;(print "Loading HOTCO emotional coherence algorithms.")
-(myload "hotco")
-(print "HOTCO functions loaded.")
+;(myload "hotco")
+;(print "HOTCO functions loaded.")
 
 ; added by Marshall
 ;(print "Loading acme-infer")
