@@ -272,4 +272,5 @@
 ;; first clear everything out
 (mapcar #'clear-plists (get 'folks 'members))
 (clear-person-nets 'folks)
+;(kill-everyone)
 (setf *the-population* 'folks)

@@ -211,7 +211,8 @@
 
 
 ;;;To run the model
-(merge-pops '(alpha bravo charlie))
+;(merge-pops '(alpha bravo charlie))
+(merge-groups '(alpha bravo charlie))
 (init-pop)
 (print (get 'folks 'members))
 

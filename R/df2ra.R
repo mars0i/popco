@@ -327,7 +327,20 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiR
   df
 }
 
-combineMeanDFsWithBiases <- function(df1, bias1, df2, bias2) {
+combineMeanDFsWithBiases <- function(dfs=NULL, biases=NULL) {
+  if (length(dfs) == 0 || length(biases) == 0) {stop("dfs or biases is empty.")}
+  if (length(dfs) != length(biases)) {stop("lengths of dfs and biases are not the same.")}
+
+  df <- NULL
+
+  for (i in 1:length(dfs)){
+    dfs[i]$bias <- biases[i]
+  }
+
+  do.call(rbind, dfs)
+}
+
+combineMeanDFsWithBiases.old <- function(df1, bias1, df2, bias2) {
   # note these are changes to the internal copies, not the function arguments:
   df1$bias <- bias1
   df2$bias <- bias2

@@ -60,7 +60,7 @@
          (num-people (length randomized-conversers))
          (num-listening (get speaker 'num-listeners))
          (num-conversers (min num-listening num-people))
-         (actual-conversers (last randomized-conversers num-conversers))
+         (actual-conversers (last randomized-conversers num-conversers)) ; CHANGE LAST TO e.g. SUBSEQ
          (speaker-list (make-list num-conversers :initial-element speaker)))
     (mapcar #'list speaker-list actual-conversers)))
 
@@ -84,6 +84,10 @@
       (setf merged-pops (append (get pop 'members) merged-pops)))
     (setf (get population 'members) merged-pops)
     (return-from merge-pops population)))
+
+(defun merge-groups (list-of-groups &optional (population *the-population*))
+  (setf (get population 'members) 
+        (append (mapcar #'get-members list-of-groups))))
 
 
 (format t "Networking Functions Loaded")
