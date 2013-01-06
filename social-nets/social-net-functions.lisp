@@ -1,15 +1,15 @@
 ;social-net-functions.lisp
-;sandbox for networks in POPCO--redefining make-person and choose-conversers
+;sandbox for social networks in POPCO--redefining make-person and choose-conversers
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;  NETWORKING REDEFINITIONS   ;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;   SOCIAL NETWORKING REDEFINITIONS   ;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;Originally defined in consensus.lisp--> Changed to add 'talks-to for networking
+;;;Originally defined in consensus.lisp--> Changed to add 'talks-to and 'num-listeners for networking
 (defun make-person (person group given initial-input &optional addl-input converse-strucs (talks-to (list group)) (num-listeners 1))
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
   (put person 'group group)
@@ -24,7 +24,7 @@
   (put person 'num-listeners num-listeners) ;New for networking--number of listeners a person has (a radio dj only reaches a percentage of the people who might listen to him)
   person)
 
-;;;Originally defined in consensus.lisp--> Changed to add 'talks-to for networking
+;;;Originally defined in consensus.lisp--> Changed to add 'talks-to and num-listeners for networking
 (defun persons-like (old list-of-new)
   (do ((persons list-of-new (cdr persons))
        (result nil))
@@ -76,18 +76,12 @@
 (defun get-members (group)
   (get group 'members))
 
+
 ;;Takes a list of groups and merges them, sets the given population (default *the-population*)
 ;;to have the new list of persons as its 'members
-(defun merge-pops (list-of-pops &optional (population *the-population*))
-  (let ((merged-pops))
-    (dolist (pop list-of-pops)
-      (setf merged-pops (append (get pop 'members) merged-pops)))
-    (setf (get population 'members) merged-pops)
-    (return-from merge-pops population)))
-
 (defun merge-groups (list-of-groups &optional (population *the-population*))
   (setf (get population 'members) 
-        (append (mapcar #'get-members list-of-groups))))
+        (apply #'append (mapcar #'get-members list-of-groups))))
 
 
 (format t "Networking Functions Loaded")
