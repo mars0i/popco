@@ -1,4 +1,4 @@
-;networking2.lisp
+;social-net-functions.lisp
 ;sandbox for networks in POPCO--redefining make-person and choose-conversers
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding

@@ -1,4 +1,4 @@
-;net2-one-pop.lisp
+;social-net-one-pop.lisp
 ;model for use with networking functions with only one group
 ;using Holyoak/Thagard's lightbulb/tumor problem (1989)
 ;Author:    Kristen Hammack

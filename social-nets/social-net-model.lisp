@@ -1,9 +1,9 @@
-;networking2-model.lisp
+;social-net-model.lisp
 ;model with persons and groups using Holyoak/Thagard's lightbulb/tumor problem (1989)
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
-(myload "networking/networking2-functions.lisp")
+(myload "social-nets/social-net-functions.lisp")
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "LG" "LP" "T"))
