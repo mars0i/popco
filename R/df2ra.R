@@ -64,8 +64,6 @@ stripRunPaths <- function(mra) {
 # -1 and 1 added at the ends instead of whatever close point the shift would create.
 foci2intervals <- function(foci){ c(-1, (foci - (foci[2]-foci[1])/2)[-1], 1) }
 
-addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
-
 # given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
 # produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
 # NOTE: must have a column called "rawsum". Only rows with value "raw" will be processed.
@@ -317,7 +315,7 @@ domRA2runMeanVec <- function(domRA) {
 # Example of typical usage: 
 #   mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
 # which would produce a two-column dataframe of per-run means for hunting and parenting
-multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=1, lastTick=dim(multiRA)[3]) {
+multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=dim(multiRA)[3], lastTick=dim(multiRA)[3]) {
   mra <- stripRunPaths(multiRA)
   df <- data.frame(apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom1), 4, mean),
                    apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom2), 4, mean))
@@ -334,7 +332,7 @@ combineMeanDFsWithBiases <- function(dfs=NULL, biases=NULL) {
   df <- NULL
 
   for (i in 1:length(dfs)){
-    dfs[i]$bias <- biases[i]
+    dfs[[i]]$bias <- biases[[i]]
   }
 
   do.call(rbind, dfs)

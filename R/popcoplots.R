@@ -33,6 +33,22 @@ activnsAtTickBarchart <- function(mra, tick, run=1, main=paste("tick", tick)) {
              panel.barchart(y=y, col=domcols[y], border="transparent", ...)})
 }
 
+# plot 2D plot of activation means from different runs
+# form: a formula
+# data: a dataframe
+# yfoci, xfoci: vectors of values at which means are expected to lie [in order y, x, since that's order in formula]
+# anonymous fifth argument can be groups=columns to distinguish different data within each plot
+xyMeanActivnPlot <- function(form, data, yfoci, xfoci, ...){
+  require(lattice)
+  xyplot(form, data=data, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", auto.key=T,
+         abline=c(list(h=yfoci, v=xfoci),             # grid
+		  list(a=0,b=1),                      # diagonal
+                  trellis.par.get("reference.line")), # color
+         ...)  # groups argument might be passed here
+}
+
+
+addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
 
 # Plot max and min differences between all possible pairs of runs, summarizing how they diverge (or don't)
 # parameters:
