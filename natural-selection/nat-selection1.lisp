@@ -1,4 +1,4 @@
-;nat_selection1.lisp
+;nat-selection1.lisp
 ;sandbox for natural selection functionality in POPCO
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 08/2012 kmh - initial coding
