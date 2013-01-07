@@ -1,4 +1,4 @@
-;; crime1basicCheck1.lisp
+;; crimeNbasicCheck.lisp
 
 ;(load "crime/crime1")
 (unless (boundp 'virus-propns)
@@ -6,15 +6,15 @@
 "~%
 ************************************************************
 ************************************************************
-LOAD crime proposition, person-making definitions, etc. first
+LOAD crime propositions, person-making definitions, etc. first
 ************************************************************
 ************************************************************
 ~%"))
 
-; don't move graph around in telguess:
+(setf *do-report-to-netlogo* nil)
 (setf *guess-layout-commands* "")
 (setf *extra-meta-commands* "")
-(setf *do-converse* NIL)
+(SETF *DO-CONVERSE* NIL)
 
 ;(setf *propn-excit-weight* .2L0) ; traditional value from sanday sims: .2L0
 ;(setf *propn-inhib-weight* -.01) ; default value from sanday sims: -.025L0, i.e. 1/8 of .2
