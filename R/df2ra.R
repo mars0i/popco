@@ -18,8 +18,7 @@
 # DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE): 
 # df <- multiRA2meanDF(mra, "H", "P", firstTick=1500)
 # Do that twice, and then you can combine the dfs like this:
-# df <- combineMeanDFsWithBiases <- function(df1, bias1, df2, bias2)
-# [this process isn't yet set up for more than two]
+# df <- combineMeanDFsWithBiases <- function(dfs, biases)
 
 #
 # EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
@@ -315,7 +314,7 @@ domRA2runMeanVec <- function(domRA) {
 # Example of typical usage: 
 #   mi <- multiRA2meanDF(mra2i, "H", "P", firstTick=1500)
 # which would produce a two-column dataframe of per-run means for hunting and parenting
-multiRA2meanDF <- function(multiRA, dom1, dom2, firstTick=dim(multiRA)[3], lastTick=dim(multiRA)[3]) {
+multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstTick=lastTick) {
   mra <- stripRunPaths(multiRA)
   df <- data.frame(apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom1), 4, mean),
                    apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], dom2), 4, mean))
