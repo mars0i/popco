@@ -176,5 +176,22 @@ RETURNS: A list of all of the groups in the 'TALKS-TO property of every SPEAKER 
                   (get speaker 'talks-to))))))
 
 
+;;;I know this is bad style and I don't know why it returns nil, but it seems to be doing
+;;;what I want it to do.
+(defun make-grouped-directed-pairs (list-of-pairs)
+  "Takes a list of pairs of existing persons and makes directed links between those persons
+as specified by the pair (SPEAKER LISTENER).
+A new, randomly named group is created for each SPEAKER, into which each LISTENER of that
+SPEAKER is placed. "
+  (let ((oldperson)
+        (thegroup)
+        (result))
+    (dolist (speaker-listener (sort (copy-seq list-of-pairs) #'string< :key #'car))
+      (unless (eq oldperson (first speaker-listener))
+        (setf oldperson (first speaker-listener))
+        (setf thegroup (gentemp "G")))
+      (append result (make-directed-pair speaker-listener thegroup)))
+    result))
+
 
 (format t "Networking Functions Loaded")
