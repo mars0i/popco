@@ -139,9 +139,9 @@ to have the new list of persons as its 'MEMBERS"
 (defun make-groups (list-of-lists)
   "Takes a list of lists of existing persons and creates a new group for each list of persons,
 with all persons having their 'TALKS-TO eq their 'GROUPS."
-  (mapcar #'make-group list-of-lists))
+  (mapcar #'make-talking-group list-of-lists))
 
-(defun make-group (list-of-persons)
+(defun make-talking-group (list-of-persons)
   "Helper function to MAKE-GROUPS"
   (mapcar #'put-in-group-and-talks-to 
         list-of-persons 
@@ -155,6 +155,26 @@ Puts GROUP in PERSON 'GROUPS
 Puts GROUP in PERSON 'TALKS-TO"
   (put-in-group person group)
   (put person 'talks-to (cons-if-new group (get person 'talks-to))))
+
+
+;;;Can't decide whether what this returns is useful or not... Seems like it might be.
+(defun make-ungrouped-directed-pairs (list-of-pairs)
+  "Takes a list of pairs of existing persons and makes directed links between those persons
+as specified by the pair (SPEAKER LISTENER).
+A new, randomly named group is created for each LISTENER.
+RETURNS: A list of all of the groups in the 'TALKS-TO property of every SPEAKER specified."
+  (remove-duplicates (flatten (list (mapcar #'make-directed-pair list-of-pairs)))))
+
+
+(defun make-directed-pair (speaker-listener &optional (group (gentemp "G")))
+  "Puts LISTENER in GROUP (default random new group) and adds GROUP to SPEAKER 'TALKS-TO"
+  (let ((speaker (first speaker-listener))
+        (listener (second speaker-listener)))
+    (put speaker 'talks-to 
+         (remove-duplicates
+          (append (put-in-group listener group)
+                  (get speaker 'talks-to))))))
+
 
 
 (format t "Networking Functions Loaded")
