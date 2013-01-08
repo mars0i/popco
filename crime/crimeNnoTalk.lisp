@@ -35,6 +35,7 @@ LOAD crime propositions, person-making definitions, etc. first
 (print (get 'folks 'members))
 
 ;(setf *max-pop-ticks* 100)
-(setf *max-pop-ticks* 5000)
-(popco)
+;(setf *max-pop-ticks* 5000)
+(setf *max-pop-ticks* 1)
+;(popco)
 ;(quit)
