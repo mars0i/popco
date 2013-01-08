@@ -82,8 +82,9 @@ of his GET-CONVERSERS list."
 (defun get-conversers (person)
   "Returns a list of all the people PERSON talks to."
   (remove person
-    (apply #'append 
-      (mapcar #'get-members(get person 'talks-to)))))
+          (remove-duplicates
+           (apply #'append 
+                  (mapcar #'get-members(get person 'talks-to))))))
 
 
 (defun get-members (group)
@@ -92,32 +93,68 @@ of his GET-CONVERSERS list."
 
 
 (defun put-in-group (person group)
-  "Puts PERSON in GROUP if s/he is not already there."
-  (put group 'members (cons-if-new person (get group 'members))))
+  "Puts PERSON in GROUP if s/he is not already there.
+Also adds GROUP to PERSON's 'GROUPS property.
+
+SPECIAL BEHAVIOR:  If GROUP is NIL, puts PERSON in *THE-POPULATION*
+but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
+  (if group
+      (progn
+        (put group 'members (cons-if-new person (get group 'members)))
+        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))
+      (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
 
 
 (defun put-in-groups (person list-of-groups)
   "Puts PERSON in each of LIST-OF-GROUPS.
 If LIST-OF-GROUPS is nil, puts PERSON in *THE-POPULATION."
-  (if list-of-groups
-      (if (atom list-of-groups) ;Don't know which to expect more often so went with same style as above
-          (put-in-group person list-of-groups)
-          (mapcar #'put-in-group 
-                  (make-list
-                   (length list-of-groups)
-                   :initial-element person)
-                  list-of-groups))
-      (put-in-group person *the-population*)))
+  (if (atom list-of-groups) ;Don't know which to expect more often so went with same style as above
+      (put-in-group person list-of-groups)
+      (mapcar #'put-in-group 
+              (make-list
+               (length list-of-groups)
+               :initial-element person)
+              list-of-groups)))
+
+
+(defun make-merged-groups (list-of-lists &optional (population *the-population*))
+  "Takes a list of lists of persons, creates a new group for each list, and merges
+the groups together into POPULATION.
+SEE: MERGE-GROUPS, MAKE-GROUPS"
+  (merge-groups
+   (flatten (list (make-groups list-of-lists)))
+   population))
 
 
 (defun merge-groups (list-of-groups &optional (population *the-population*))
-  "Takes a list of groups and merges them, sets the given population (default *the-population*)
-to have the new list of persons as its 'members"
+  "Takes a list of groups and merges them, sets POPULATION (default *THE-POPULATION*)
+to have the new list of persons as its 'MEMBERS"
   (setf (get population 'members)
-        (append (get population 'members)        
-                (remove-duplicates
+        (remove-duplicates
+         (append (get population 'members)
                  (flatten
                   (apply #'append (mapcar #'get-members list-of-groups)))))))
+
+
+(defun make-groups (list-of-lists)
+  "Takes a list of lists of existing persons and creates a new group for each list of persons,
+with all persons having their 'TALKS-TO eq their 'GROUPS."
+  (mapcar #'make-group list-of-lists))
+
+(defun make-group (list-of-persons)
+  "Helper function to MAKE-GROUPS"
+  (mapcar #'put-in-group-and-talks-to 
+        list-of-persons 
+        (make-list
+         (length list-of-persons)
+         :initial-element (gentemp "G"))))
+
+(defun put-in-group-and-talks-to (person group)
+  "Puts PERSON in GROUP 'MEMBERS
+Puts GROUP in PERSON 'GROUPS
+Puts GROUP in PERSON 'TALKS-TO"
+  (put-in-group person group)
+  (put person 'talks-to (cons-if-new group (get person 'talks-to))))
 
 
 (format t "Networking Functions Loaded")

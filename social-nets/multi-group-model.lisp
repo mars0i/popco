@@ -1,18 +1,21 @@
 ;multi-group-model.lisp
 ;model with persons being in multiple groups using Holyoak/Thagard's lightbulb/tumor problem (1989)
 ;Author:    Kristen Hammack
-;Vers:      1.0.0 12/2012 kmh - initial coding
+;Vers:      1.0.0 01/2013 kmh - initial coding
 
 (myload "social-nets/social-net-functions.lisp")
 (myload "lightbulb/lightbulb-vars.lisp")
 
 ;*************************
 ; INITIAL SETTINGS
-(setf *max-pop-ticks* 20)
+(setf *max-pop-ticks* 50)
 (setf *the-population* 'folks)   ; NOW REQUIRED TO BE SET BEFORE ANY CALL TO MAKE-PERSON
 (setf *do-converse* t)           ; Whether to send utterances between persons
 (setf *do-report-to-netlogo* t)  ; Whether to create file for input to NetLogo
 (setf *silent-run?* t)           ; If nil, use Thagard-style verbose reporting to console
+(setf *do-report-propns-to-csv* nil)
+(setf *do-update-propn-nets* nil)
+(setf *time-runs* nil)
 ;*************************
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -114,20 +117,9 @@
              0)
 
 
-
-(put-in-group 'alpha03 'delta)
-(put 'alpha03 'groups '(alpha delta))
-(put 'alpha03 'talks-to '(delta))
-
-(put-in-group 'bravo03 'delta)
-(put 'bravo03 'groups '(alpha delta))
-(put 'bravo03 'talks-to '(delta))
-
-(put-in-group 'charlie03 'delta)
-(put 'charlie03 'groups '(alpha delta))
-(put 'charlie03 'talks-to '(delta))
-
-
+(put-in-group-and-talks-to 'alpha03 'delta)
+(put-in-group-and-talks-to 'bravo03 'delta)
+(put-in-group-and-talks-to 'charlie03 'delta)
 
 
 ;;;To run the model
@@ -135,4 +127,4 @@
 (init-pop)
 (print (get 'folks 'members))
 
-;(popco)
+(popco)
