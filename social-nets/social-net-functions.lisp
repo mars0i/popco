@@ -101,7 +101,7 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
   (if group
       (progn
         (put group 'members (cons-if-new person (get group 'members)))
-        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))
+        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))       ; FLATTEN (LIST to deal with if value of groups is a symbol and not a list
       (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
 
 
@@ -147,7 +147,7 @@ with all persons having their 'TALKS-TO eq their 'GROUPS."
         list-of-persons 
         (make-list
          (length list-of-persons)
-         :initial-element (gentemp "G"))))
+         :initial-element (gentemp "G")))) ; btw gentemp is deprecated
 
 (defun put-in-group-and-talks-to (person group)
   "Puts PERSON in GROUP 'MEMBERS
