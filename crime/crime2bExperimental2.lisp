@@ -1,4 +1,4 @@
-;; crime2cExperimental2.lisp
+;; crime2bExperimental2.lisp
 
 (load "crime/crime2")
 
@@ -10,10 +10,10 @@
 (setf *do-report-to-netlogo* nil)
 (setf *do-converse* t)
 
-(make-beast-bias-crime-talker 'av viral-crime-propns)
-(make-beast-bias-crime-talker 'ab1 beastly-crime-propns)
-(make-beast-bias-crime-talker 'ab2 beastly-crime-propns)
-(make-beast-bias-crime-talker 'temp-person)
+(make-virus-bias-crime-talker 'av viral-crime-propns)
+(make-virus-bias-crime-talker 'ab1 beastly-crime-propns)
+(make-virus-bias-crime-talker 'ab2 beastly-crime-propns)
+(make-virus-bias-crime-talker 'temp-person)
 (n-persons-with-name 'temp-person 'p (1- *my-pop-size*)) ; "p" for person
 (rem-elt-from-property 'temp-person 'folks 'members)
 
