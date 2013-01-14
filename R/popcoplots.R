@@ -48,7 +48,7 @@ xyMeanActivnPlot <- function(form, data, yfoci, xfoci, ...){
 }
 
 
-addJitter <- function(trellobj=trellis.last.object(), amount=.03) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
+addJitter <- function(trellobj=trellis.last.object(), amount=.025) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
 
 # Plot max and min differences between all possible pairs of runs, summarizing how they diverge (or don't)
 # parameters:

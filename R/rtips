@@ -1,5 +1,13 @@
 R tips:
 
+-----------------
+make a pdf:
+pdf()
+xyplot(...) or whatever
+dev.off()
+Now look for Rplots.pdf, or see ?pdf for more variations.
+-----------------
+
 # on the cost of repeated abind:
 
 slowbind <- function(nCopies, ra) {
