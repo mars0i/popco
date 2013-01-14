@@ -2,6 +2,8 @@
 
 (load "crime/crime2")
 
+(setf *propns-csv-output-name* (format nil "~A/~A~A.csv" *data-dir* *run-id* "beastbias"))
+
 (defvar *my-pop-size* 21)
 
 ; don't move graph around in telguess:
