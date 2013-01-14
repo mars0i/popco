@@ -13,12 +13,10 @@
 # read2dfsFromDir(datadir)
 #
 # CHECK WHETHER BETWEEN-PERSON ACTIVATIONS HAVE CONVERGED (return names of runs with non-convergent propns):
-# findRunsWithDisagreement(mra, tolerance, tickIndex=1)
-# NOTE: Don't forget to remove the pundits before running this test.
+# findRunsWithDisagreement(mra[-1,,,], tolerance) # don't forget to remove pundits.  defaults to last tick.
 # 
 # DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE): 
-# df <- multiRA2meanDF(mra, "H", "P", firstTick=1500)
-# NOTE if you only want the last poptick, the 4th argument can be omitted.
+# df <- multiRA2meanDF(mra, "H", "P") # defaults to last tick only
 # Do that twice, and then you can combine the dfs like this:
 # df <- combineMeanDFsWithBiases <- function(dfs, biases)
 
@@ -146,7 +144,7 @@ spread <- function(x){abs( max(x) - min(x) )}
 # remove pundits, since they are unlikely to agree with everyone, in general.
 # NOTE tickIndex is relative to length of domMultiRA, if numeric.  e.g. if domMultiRA has
 # only one tick, originally tick 1500, then tickIndex should be 1, or the string "1500".
-findRunsWithDisagreement <- function(domMultiRA, tolerance, tickIndex=1) {
+findRunsWithDisagreement <- function(domMultiRA, tolerance, tickIndex=dim(domMultiRA)[3]) {  # defaults to last tick
   spreads <- apply(domMultiRA[,,tickIndex, , drop=F], c(2,4), spread)  # return 2D array of spreads at tickIndex for each propn in each run
   spreadsGTtolerance <- spreads > tolerance  # change preceding array into propn X run array of T/F's, TRUE iff a given spread is > tolerance
   disagreeableRunPositions <- apply(spreadsGTtolerance, c(2), any) # return vector containing, for each run, TRUE iff some propn in run had spread > tolerance
@@ -323,6 +321,9 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
   names(df) <- c(dom1, dom2)
   df$rawsum <- "raw"
   df <- rbind(df, c(colMeans(df[,1:2]), rawsum="mean"))
+  # One of the steps above--not sure which--coerces the numbers to strings; undo that change:
+  df[[dom1]] <- as.numeric(df[[dom1]])
+  df[[dom2]] <- as.numeric(df[[dom2]])
   df
 }
 
