@@ -214,7 +214,7 @@ barchart(t(mra[,,50,]), groups=person,
 require(latticeExtra)
 
 # 3-D barchart/histogram:
-cloud(freq ~ P * H | bias, data=freqdf[freqdf$freq>0,], 
+cloud(freq ~ P * H | bias, data=freqdf[freqdf$freq>1,], 
     panel.3d.cloud = panel.3dbars,    # makes it a barchart/histogram
     screen = list(z = -40, x = -55),  # viewing angle
     zoom = 1,                         # fill up entire display region
@@ -232,6 +232,14 @@ cloud(freq ~ P * H, groups=bias, data=freqdf[freqdf$freq>0,],
     aspect = c(1.5, 0.75), 
     panel.aspect = 0.75, 
     zlab=NULL)
+
+
+names(Ex2.df):
+[1] "CV"     "CB"     "rawsum" "bias"   "cvfac"  "cbfac" 
+
+rv <- Ex2.df[Ex2.df$rawsum=="raw" & Ex2.df$bias=="virus",c("cvfac","cbfac")]
+
+cloud(table(rv$cvfac,rv$cbfac), panel.3d.cloud=panel.3dbars, screen=list(z=-40,x=-55), zoom=1, col.facet="turquoise", xbase=0.6, ybase=0.6, aspect=c(1.5, 0.75), panel.aspect=0.75,zlab=NULL, scales=list(cex=.3), ylab="CB", xlab="CV")
 
 # 3rd dimension represented by color and size:
 levelplot(sqrt(Freq) ~ P * H | bias, freqdf, shrink = c(0.7, 1), aspect="iso")
