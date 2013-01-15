@@ -8,6 +8,11 @@ dev.off()
 Now look for Rplots.pdf, or see ?pdf for more variations.
 -----------------
 
+plot(histogram(~cvfac|bias, Ex2.df, scales=list(cex=.3)), split=c(1,1,2,1))
+plot(histogram(~cbfac|bias, Ex2.df, scales=list(cex=.3)), split=c(2,1,2,1), newpage=F)
+
+-----------------
+
 # on the cost of repeated abind:
 
 slowbind <- function(nCopies, ra) {
@@ -205,6 +210,8 @@ barchart(t(mra[,,50,]), groups=person,
            panel.barchart(y=y, col=criment6cols[y], border="transparent", ...)})
 
 ----------------------------------------------------------------------
+
+require(latticeExtra)
 
 # 3-D barchart/histogram:
 cloud(freq ~ P * H | bias, data=freqdf[freqdf$freq>0,], 
