@@ -24,3 +24,27 @@ ksTestTwoMeanDFsForBias <- function(df1, df2, dom, bias, ...) {
 ksTestTwoBiases <- function(df, dom, bias1, bias2, ...) {
   ksTestTwoMeanDFs(df[df$bias==bias1,], df[df$bias==bias2,], dom, ...)
 }
+
+
+# EXPERIMENTS:
+
+ksTestTwoMeanDFsECDF <- function(df1, df2, dom, ...) {
+  vec1 <- df1[df1$rawsum=="raw", dom]
+  vec2 <- df2[df2$rawsum=="raw", dom]
+  ks.test(vec1, ecdf(vec2), ...)
+}
+
+ksTestTwoMeanDFsForBiasECDF <- function(df1, df2, dom, bias, ...) {
+  ksTestTwoMeanDFsECDF(df1[df1$bias==bias,], df2[df2$bias==bias,], dom, ...)
+}
+
+ksTestTwoMeanDFsDGOF <- function(df1, df2, dom, ...) {
+  require(dgof)
+  vec1 <- df1[df1$rawsum=="raw", dom]
+  vec2 <- df2[df2$rawsum=="raw", dom]
+  dgof::ks.test(vec1, ecdf(vec2), ...)
+}
+
+ksTestTwoMeanDFsForBiasDGOF <- function(df1, df2, dom, bias, ...) {
+  ksTestTwoMeanDFsDGOF(df1[df1$bias==bias,], df2[df2$bias==bias,], dom, ...)
+}
