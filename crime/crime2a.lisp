@@ -5,8 +5,8 @@
 (SETF *DO-REPORT-TO-NETLOGO* NIL)
 
 ; rename csv output file so it's easy to see what branch it's from
-(defvar *gitbranch* (read-line (process-output (run-program "thisbranch" '() :search t :output :stream :wait nil))))
-(setf *propns-csv-output-name* (format nil "~A/~A~A.csv" *data-dir* *run-id* *gitbranch*))
+;(defvar *gitbranch* (read-line (process-output (run-program "thisbranch" '() :search t :output :stream :wait nil))))
+;(setf *propns-csv-output-name* (format nil "~A/~A~A.csv" *data-dir* *run-id* *gitbranch*))
 
 (defvar *my-pop-size* 20)
 
@@ -25,5 +25,5 @@
 
 (setf *max-pop-ticks* 5000)
 (popco)
-(format t "git branch = ~S.  csv file = ~S.  *min-pop-ticks-to-settle* = ~S~%" *gitbranch* *propns-csv-output-name* *min-pop-ticks-to-settle*)
+;(format t "git branch = ~S.  csv file = ~S.  *min-pop-ticks-to-settle* = ~S~%" *gitbranch* *propns-csv-output-name* *min-pop-ticks-to-settle*)
 (quit)
