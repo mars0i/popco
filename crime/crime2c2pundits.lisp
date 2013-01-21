@@ -1,5 +1,6 @@
 ;; crime2c2pundits.lisp
 
+(load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime2")
 
 (setf *max-pop-ticks* 5000)
