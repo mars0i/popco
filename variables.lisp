@@ -273,7 +273,7 @@
 (defvar *sleep-delay* nil) ; if non-nil, gives number of seconds to pause between pop-ticks
 (defvar *max-pop-ticks* 50) ; max number of pop-tick iterations; 0 for infinite
 (defvar *pop-tick* 0)
-(defvar *min-pop-ticks-to-settle* 5) ; number of initial pop ticks in which we don't allow networks to stop settling
+(defvar *min-pop-ticks-to-settle* 5) ; number of initial pop ticks in which we don't allow networks to stop settling [or nil for forever]
 (defvar *persons-reporting-to-guess* '()) ; persons whose data we want to send to GUESS
 (defvar *write-person-graphs-at-pop-ticks* '()) ; if pop-tick equals this, then call write-person-graphs using a tick-named directory under *person-graph-basename*.
 (defvar *person-graphs-basename* ".")

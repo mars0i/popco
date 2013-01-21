@@ -182,6 +182,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Note that I'm reversing source vs target wrt the sanday simulations:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Persons who only talk about crime:
+
 (defun make-no-bias-crime-talker (name &optional (given '()))
     (make-person name 'folks given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
@@ -215,6 +218,7 @@
                  '(target)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Persons who talk about everything:
 
 (defun make-virus-bias-all-talker (name &optional (given '()))
     (make-person name 'folks given
