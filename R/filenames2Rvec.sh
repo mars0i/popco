@@ -5,4 +5,4 @@
 # the script constructs the R expression:
 #	c("filename1","filename2",...,"filenameN")
 
-sed -e 's/\([^ ][^ ]*\)/"\1",/g'  -e 's/\(.*\), */c(\1)/'
+sed -e 's/\([^ ][^ ]*\) */"\1",/g'  -e 's/\(.*\), */c(\1)/'
