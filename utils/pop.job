@@ -1,0 +1,15 @@
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=24:00:00,vf=500M
+# starting and ending indices of identical jobs to run:
+#$ -t 1-4
+# max number of jobs at any one time:
+#$ -tc 16
+#$ -e err.txt
+#$ -o out.txt
+#$ -m eas
+#$ -M mabrams@uab.edu
+cd $HOME/coh/popco
+time sbcl --load start --eval '(defun report-progress-to-console () )' --load crime/crime2c.lisp
