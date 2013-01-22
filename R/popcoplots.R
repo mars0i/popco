@@ -38,7 +38,7 @@ activnsAtTickBarchart <- function(mra, tick, run=1, main=paste("tick", tick)) {
 # data: a dataframe
 # yfoci, xfoci: vectors of values at which means are expected to lie [in order y, x, since that's order in formula]
 # anonymous fifth argument can be groups=columns to distinguish different data within each plot
-xyMeanActivnPlot <- function(form, data, yfoci, xfoci, ...){
+xyMeanActivnPlot <- function(form, data, yfoci=seq(-1,1,.2), xfoci=seq(-1,1,.2), ...){
   require(lattice)
   xyplot(form, data=data, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", auto.key=T,
          abline=c(list(h=yfoci, v=xfoci),             # grid

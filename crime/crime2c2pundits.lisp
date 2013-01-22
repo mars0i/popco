@@ -14,8 +14,8 @@
 
 ;; make the pundits
 ;; "aa" for "assured advocate" [propns are alpha-sorted, so insures this person is 1st]:
-(make-beast-bias-crime-talker 'aap crime-propns) ; "aap" i.e. the positive [p] advocate, the true believer
-(make-beast-bias-crime-talker 'aan crime-propns) ; "aap" i.e. the negative [n] advocate, the naysayer
+(make-beast-bias-crime-talker 'aaT crime-propns) ; "aaT" i.e. the true believer, who believes all the crime propns
+(make-beast-bias-crime-talker 'aaF crime-propns) ; "aaF" i.e. the the naysayer, who disbelieves all the crime propns
 
 ;; now make the rest of the population
 (make-beast-bias-crime-talker 'temp-person)
@@ -23,6 +23,10 @@
 (rem-elt-from-property 'temp-person 'folks 'members)
 
 (init-pop)
+
+; AT THIS POINT, THE PROPOSITIONS IN AAF'S ENV HAVE BEEN INITIALIZED WITH ACTIVNS = 1.0. NOW NEGATE THEM:
+(mapc #'negate-propn (get 'aaF-env 'all-propositions))    ; crude low-level method to cause aa to *disbelieve* all lifestyle propositions
+
 (print (get 'folks 'members))
-(popco)
-(quit)
+;(popco)
+;(quit)

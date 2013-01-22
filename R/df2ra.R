@@ -15,7 +15,7 @@
 # CHECK WHETHER BETWEEN-PERSON ACTIVATIONS HAVE CONVERGED (return names of runs with non-convergent propns):
 # findRunsWithDisagreement(mra[-1,,,], tolerance) # don't forget to remove pundits.  defaults to last tick.
 # 
-# DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE): 
+# DATAFRAME OF RUN MEANS AT ONE TIME (FOR USE WITH LATTICE). Note pundits will be excluded: 
 # df <- multiRA2meanDF(mra, "H", "P") # defaults to last tick only
 # Do that twice, and then you can combine the dfs like this:
 # df <- combineMeanDFsWithBiases <- function(dfs, biases)
