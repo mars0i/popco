@@ -28,5 +28,5 @@
 (mapc #'negate-propn (get 'aaF-env 'all-propositions))    ; crude low-level method to cause aa to *disbelieve* all lifestyle propositions
 
 (print (get 'folks 'members))
-;(popco)
-;(quit)
+(popco)
+(quit)
