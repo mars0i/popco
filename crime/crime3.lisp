@@ -37,9 +37,11 @@
     (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
     ; it's not getting mapped, anywa, so this isn't doing anything
 
-    ; THESE ARE GETTING CREATED AND THEN ERASED AFTER A TICK OR TWO:
-    ;(semantic-iff 'cb-vpp 'v-ipa -.1)
-    ;(semantic-iff 'cv-rpa 'b-abp -.1)
+    ; old note: "These are getting created and then erased after a tick or two."
+    ; However, they make an important difference at least in no-conversation conditions.
+    ; So maybe they aren't disappearing?
+    (semantic-iff 'cb-vpp 'v-ipa -.1)
+    (semantic-iff 'cv-rpa 'b-abp -.1)
 
     ;(similar 'infect 'victimize (* -.5 *ident-weight*))
     ;(similar 'attack 'recruit   (* -.5 *ident-weight*))
@@ -136,18 +138,11 @@
 
     (capture (prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
-    (dangerous-to-do (cb-cpc) cb-dcpc)
+
+    (dangerous-to-do (cb-cpc) cb-dcpc) ; added going from crime2 to crime3
    ))
 
-; Note:
-; It's desirable (required?) to give different names to person objects
-; here and in crime-propns.  Even though they're persons, they're not
-; really the same persons playing a role in a crime scenario and in 
-; a beast scenario.  They can/should get identified by the analogizing
-; process, but the process can do that.
-; So rather than calling what's attacked an at-risk-cperson (like people
-; who might become criminals) or a cperson (like those who are
-; harmed by crime), we use another term for potential beast victims.
+; Note: It's desirable (required?) to give different names to person objects here and in crime-propns.  Even though they're persons, they're not really the same persons playing a role in a crime scenario and in a beast scenario.  They can/should get identified by the analogizing process, but the process can do that.  So rather than calling what's attacked an at-risk-cperson (like people who might become criminals) or a cperson (like those who are harmed by crime), we use another term for potential beast victims.
 
 (defvar beast-propns
   '(

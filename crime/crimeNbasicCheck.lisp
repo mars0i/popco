@@ -44,6 +44,6 @@ LOAD crime propositions, person-making definitions, etc. first
 ;(mapc #'negate-propn (get 'nay-Bea-env 'all-propositions))
 ;(mapc #'negate-propn (get 'nay-Virgil-env 'all-propositions))
 
-;(setf *max-pop-ticks* 100)
-(setf *max-pop-ticks* 5000)
+(setf *max-pop-ticks* 100)
+;(setf *max-pop-ticks* 5000)
 ;(popco)
