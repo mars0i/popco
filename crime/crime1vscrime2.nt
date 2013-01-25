@@ -14,3 +14,13 @@ In crime2.lisp but not crime1.lisp, beast-propns has these added:
 
 crime2.lisp has additional person-creation functions.
 
+
+
+Also note:
+crime1plus.lisp differs from crime1.lisp only in having this addition
+[apart from insignificant differences]:
+
+    (similar 'infect 'victimize (* -.5 *ident-weight*))
+    (similar 'attack 'recruit   (* -.5 *ident-weight*))
+
+
