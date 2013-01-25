@@ -1,0 +1,16 @@
+What's the difference between crime1 and crime2?
+Apart from insignificant differences:
+
+In crime2.lisp but not crime1.lisp, semantic-relations includes this:
+
+    ; THESE ARE GETTING CREATED AND THEN ERASED AFTER A TICK OR TWO:
+    (semantic-iff 'cb-vpp 'v-ipa -.1)
+    (semantic-iff 'cv-rpa 'b-abp -.1)
+
+In crime2.lisp but not crime1.lisp, beast-propns has these added:
+
+    (helps (beast) b-hb)
+    (cause (b-abp b-hb) b-abp->hb) 
+
+crime2.lisp has additional person-creation functions.
+
