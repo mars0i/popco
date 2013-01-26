@@ -2,7 +2,6 @@
 
 (load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime3")
-(setf *data-dir* "../data/crime3/b/")
 
 (setf *do-report-to-netlogo* nil)
 
