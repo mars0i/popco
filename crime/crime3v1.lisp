@@ -137,10 +137,11 @@
     (cause (cb-vpp cb-hcp) cb-vpp->hcp) ; existing criminals harm those not at risk
     (helps (prev-criminal-cperson) cb-hp)
     (cause (cb-vpp cb-hp) cb-vpp->hp) ; criminals benefit from attacking--e.g get money
+
     (capture (cperson prev-criminal-cperson) cb-cpc) ; cp is already used as name for crime propn
     (prevent (cb-cpc cb-vpp) cb-cpc->-vpp)
-    (danger-to (cperson) cb-dtp)
-    (cause (cb-cpc cb-dtp) cb-cpc->dtp)
+
+    (dangerous-to-do (cb-cpc) cb-dcpc) ; added going from crime2 to crime3
    ))
 
 ; Note: It's desirable (required?) to give different names to person objects here and in crime-propns.  Even though they're persons, they're not really the same persons playing a role in a crime scenario and in a beast scenario.  They can/should get identified by the analogizing process, but the process can do that.  So rather than calling what's attacked an at-risk-cperson (like people who might become criminals) or a cperson (like those who are harmed by crime), we use another term for potential beast victims.
@@ -156,10 +157,10 @@
     (cause (b-abp b-hp) b-abp->hp) ; being attacked is harmful
     (helps (beast) b-hb)
     (cause (b-abp b-hb) b-abp->hb) ; beasts benefit from attacking--e.g get food
+
     (capture (bperson beast) b-cpb)
     (prevent (b-cpb b-abp) b-cpb->-abp)
-    (danger-to (bperson) b-dtp)
-    (cause (b-cpb b-dtp) b-cpb->dtp)
+    (dangerous-to-do (b-cpb) b-dcpb)
    ))
 
 
