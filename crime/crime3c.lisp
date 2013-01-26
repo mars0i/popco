@@ -1,5 +1,6 @@
 ;; crime3c.lisp
 
+(load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime3")
 
 (setf *do-report-to-netlogo* nil)
