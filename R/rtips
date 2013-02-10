@@ -1,5 +1,16 @@
 R tips:
 
+
+crime2_2pundits.tab <- table(crime2_2pundits.df[crime2_2pundits.df$rawsum=="raw",c("cb.fac","cv.fac","bias")])
+levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill")
+# make it grayscale:
+trellis.par.set(canonical.theme(color = FALSE))
+
+# change the gray scale:
+levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(0:100/100))
+levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(100:0/100))
+levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(95:0/100))
+
 -----------------
 make a pdf:
 pdf()
@@ -242,8 +253,14 @@ rv <- Ex2.df[Ex2.df$rawsum=="raw" & Ex2.df$bias=="virus",c("cvfac","cbfac")]
 cloud(table(rv$cvfac,rv$cbfac), panel.3d.cloud=panel.3dbars, screen=list(z=-40,x=-55), zoom=1, col.facet="turquoise", xbase=0.6, ybase=0.6, aspect=c(1.5, 0.75), panel.aspect=0.75,zlab=NULL, scales=list(cex=.3), ylab="CB", xlab="CV")
 
 # 3rd dimension represented by color and size:
-levelplot(sqrt(Freq) ~ P * H | bias, freqdf, shrink = c(0.7, 1), aspect="iso")
+levelplot(sqrt(Freq) ~ P * H | bias, freqdf, shrink = c(0.7, 1), aspect="iso")   # makes blocks square
+levelplot(sqrt(Freq) ~ P * H | bias, freqdf, shrink = c(0.7, 1), aspect="fill")  # makes plots stretch with window
 levelplot(sqrt(Freq) ~ P * H | bias, freqdf[freqdf$Freq>0,], shrink = c(0.7, 1), aspect="iso")
+
+levelplot(table(crime2_2pundits.df[crime2_2pundits.df$rawsum=="raw",c("cb.fac","cv.fac","bias")]), shrink = c(0.7, 1), aspect="fill")
+
+# make it grayscale:
+trellis.par.set(canonical.theme(color = FALSE))
 
 ----------------------------------------------------------------------
 
