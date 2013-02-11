@@ -42,8 +42,14 @@
 ;;;              '()) ; put 'source or 'target in list to restrict utterances to propns in that struc
 ;;; Changed to add 'talks-to and 'num-listeners for networking 12/2012 -KH
 ;;; Changed to allow for multiple groups 1/2013 -KH
+;;; 2/2013 bugfix to allow optional defaulting in talks-to when a single group is given as a symbol rather than list.
+;;; This makes it backward compatible, it seems.  -MA
 
-(defun make-person (person list-of-groups given initial-input &optional addl-input converse-strucs (talks-to list-of-groups) (num-listeners 1))
+(defun make-person (person list-of-groups given initial-input 
+                           &optional addl-input 
+                                     converse-strucs 
+                                     (talks-to (if (consp list-of-groups) list-of-groups (list list-of-groups)))
+                                     (num-listeners 1))
   "Makes a person with the given parameters.
 REQUIRED: *the-population* MUST BE DEFINED.
 (Maybe) Surprising Behavior: If LIST-OF-GROUPS is NIL and TALKS-TO is not given,
