@@ -15,9 +15,8 @@
 (defun make-person (person list-of-groups given initial-input &optional addl-input converse-strucs (talks-to list-of-groups) (num-listeners 1))
   "Makes a person with the given parameters.
 REQUIRED: *the-population* MUST BE DEFINED.
-
 (Maybe) Surprising Behavior: If LIST-OF-GROUPS is NIL and TALKS-TO is not given,
-(get PERSON 'GROUPS) and (get PERSON 'TALKS-TO)will return NIL, but (get *THE-POPULATION* 'members)
+(get PERSON 'GROUPS) and (get PERSON 'TALKS-TO) will return NIL, but (get *THE-POPULATION* 'members)
 will return a list with PERSON in it, i.e. PERSON will be in a group but will not 'know' it, and
 s/he will not initiate conversation."
   (initialize-person-properties person)  ; From popco.lisp. Note: setfs *the-person* to person
@@ -66,7 +65,7 @@ s/he will not initiate conversation."
 
 ;;Guts of choose-conversers
 (defun make-converser-pairs (speaker)
-  "Returns a list of converser-pairs(lists with SPEAKER as the car and a listener as the cdr).
+  "Returns a list of converser-pairs (lists with SPEAKER as the car and a listener as the cdr).
 The number of pairs returned will be the minimum of the speaker's 'NUM-LISTENERS and the length
 of his GET-CONVERSERS list."
   (let* ((randomized-conversers (randomize (get-conversers speaker)))
@@ -84,7 +83,7 @@ of his GET-CONVERSERS list."
   (remove person
           (remove-duplicates
            (apply #'append 
-                  (mapcar #'get-members(get person 'talks-to))))))
+                  (mapcar #'get-members (get person 'talks-to))))))
 
 
 (defun get-members (group)
@@ -95,13 +94,12 @@ of his GET-CONVERSERS list."
 (defun put-in-group (person group)
   "Puts PERSON in GROUP if s/he is not already there.
 Also adds GROUP to PERSON's 'GROUPS property.
-
 SPECIAL BEHAVIOR:  If GROUP is NIL, puts PERSON in *THE-POPULATION*
 but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
   (if group
       (progn
         (put group 'members (cons-if-new person (get group 'members)))
-        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))       ; FLATTEN (LIST to deal with if value of groups is a symbol and not a list
+        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))       ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
       (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
 
 
@@ -148,6 +146,15 @@ with all persons having their 'TALKS-TO eq their 'GROUPS."
         (make-list
          (length list-of-persons)
          :initial-element (gentemp "G")))) ; btw gentemp is deprecated
+
+;; (Why is gentemp deprecated?  Because it can cause bugs if your code thinks it is
+;; creating a new symbol which, as it turns out, is the same as one created by gentemp.
+;; e.g. if you write a gentemp'ed symbol to a file and then create symbols based on
+;; what's in that file later, and then call gentemp separately .... You see the problem.
+;; The other part of the rationale for removing gentemp from the language is that
+;; it's easy to write a replacement function by hand.  Which is probably what I'll
+;; do if they ever take it out of the language.
+;; -MA 2/2013)
 
 (defun put-in-group-and-talks-to (person group)
   "Puts PERSON in GROUP 'MEMBERS
