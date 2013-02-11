@@ -279,28 +279,8 @@
 
 
 ;;-----------------------------------------------------
-;; CHOOSE-CONVERSEPAIRS
-
-;; Produce a list of persons who are to converse (probably only one-way eg 
-;; first talks to second) i.e. a list of conversers, each containing two 
-;; persons from the pop where noone appears in more than one pair. 
-;; [consensus.lisp's make-meeters isn't appropriate here]
-;; ARGS:    population
-;; RETURNS: a cons with a list of pairs (lists) of persons as car, 
-;;          and the entire population as cdr
-(defun choose-conversers (population) 
-  (if (not *do-converse*)
-    (cons nil population)
-    (let* ((pop-members (get population 'members))
-           (pop-size (length pop-members))
-           (half-size (round (/ pop-size 2)))   ; round up if odd number of members
-           (randomized-members (randomize pop-members))
-           (subpop1-members (butlast randomized-members half-size)) ; If pop-size is odd, we left out the member in the middle of the randomized list.
-           (subpop2-members (nthcdr half-size randomized-members))) ; That's OK; s/he'll just have to wait until next time.
-      (cons
-        (mapcar #'list subpop1-members subpop2-members) ; list of pairs
-        population))))
-
+;; CHOOSE-CONVERSERS 
+;; choose-conversers MOVED to social-net.lisp, i.e. replaced by KH's version (2/2013)
 
 
 ;;-----------------------------------------------------

@@ -41,90 +41,33 @@
 ;(use-package 'cl-ppcre) ; for regex-replace
 ; Maybe personal-to-generic-sym, etc. should be rewritten using this now.
 
-;Lisp code for initializing global variables.  
-;(print "Loading global variables.")
+;; These files started as Thagard's COHERE files, though they've been modified:
 (myload "variables") 
-;(print "Global variables and constants loaded.")
-
-; Lisp code for utility functions.
-;(print "Loading utility functions.")
 (myload "utilities")
-;(print "Utility functions loaded.")
-
-; Lisp code for creating and running networks.
-;(print "Loading constraint network functions.")
-(myload "network") ; overwrite of macro plist from utilities is ok--identical code
-;(print "Constraint network functions loaded.")
-
-; Lisp code for ECHO
-;(print "Loading ECHO.")
+(myload "network") ; i.e. neural networks internal to persons
 (myload "echo")
-;(print "ECHO functions loaded.")
-
-; Lisp code for DECO
-;;(print "Loading DECO.")
-;;(myload "deco")
-;;(print "DECO functions loaded.")
-
-;; NOTE: See note below [it *should* be below] in the (load "popco") paragraph.
-; Lisp code for IMP
-;(print "Loading IMP.")
-(myload "imp")
-;(print "IMP functions loaded.")  ; used by acme-infer.lisp
-
-; Lisp code for ACME
-;(print "Loading ACME.")
+(myload "imp") ; NOTE: See note below [it *should* be below] in the (load "popco") paragraph.
 (myload "acme")
-;(print "ACME functions loaded.")
-
-;; contains various utility functions
-;(print "Loading cohere")
 (myload "cohere") ; redef of pls is OK--I like this one better
-;(print "Basic COHERE utility functions loaded.")
-
-; Lisp code for non-connectionist algorithms.
-;;(print "Loading non-connectionist coherence algorithms.")
-;(myload "greedy")
-
-; Lisp code for emotional coherence.
-;(print "Loading HOTCO emotional coherence algorithms.")
-;(myload "hotco")
-;(print "HOTCO functions loaded.")
-
-; added by Marshall
-;(print "Loading acme-infer")
 (myload "acme-infer")
-;(print "ACME-INFER functions loaded.")
-
-; Lisp code for graphics.
-;(print "Loading graphics.")
-;(myload "graphics")
-
 ; consensus.lisp now replaced by persons.lisp, loaded below.
 
-(print "All original COHERE files needed (modified for POPCO) have been loaded.")
-
+(myload "social-net")
 (myload "persons")
-
-;(print "Loading additional POPCO utility functions.")
 (myload "popco-macros")
 (myload "popco-utils")
-;(print "Additional POPCO utility functions loaded (popco-utils.lisp).")
 
-(terpri)
-(print "Loading POPCO data formatting functions:")
-(myload "popco-fmt-utils") (print "popco-fmt-utils loaded")
-(myload "popco-fmt-csv") (print "popco-fmt-csv loaded")
-(myload "popco-fmt-netlogo") (print "popco-fmt-netlogo loaded")
-(myload "popco-fmt-guessML-general") (print "popco-fmt-guessML-general loaded")
-(myload "popco-fmt-guessML-specific1") (print "popco-fmt-guessML-specific1 loaded")
-(myload "popco-model-run") (print "popco-model-run loaded")
+(myload "popco-fmt-utils")
+(myload "popco-fmt-csv")
+(myload "popco-fmt-netlogo")
+(myload "popco-fmt-guessML-general")
+(myload "popco-fmt-guessML-specific1")
+(myload "popco-model-run")
 
 #+sbcl (progn
         (print "SBCL-specific code:")
         (myload "sbcl-sockets")
-        (myload "popco-fmt-guessCmds")
-        (print "SBCL-specific code loaded."))
+        (myload "popco-fmt-guessCmds"))
 
 ;; NOTE: Do NOT move the popco.lisp load before the load of imp.lisp, 
 ;; unless you know what you're doing.  Last time I checked, I was
