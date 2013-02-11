@@ -24,14 +24,17 @@
 
 (defconstant +progloc+ "./") ; added by M.Abrams
 (defun myload (filename)
-  (load (concatenate 'string +progloc+ filename)))
+  (load (concatenate 'string +progloc+ filename))
+  (format t "~S " filename))
+
+(print "POPCO")
 
 (print "Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc.")
 (print "Version 4.0. June, 2000")
 (print "This program is copyright (c) Paul Thagard 1996, 1997, 2000.")
 (print "Permission is granted for use for research purposes only.")
 
-(print "Modifications, additional code for POPCO copyright (c) Marshall Abrams 2012.")
+(print "Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013.")
 
 (load "~/quicklisp/setup")
 (ql:quickload "cl-ppcre")  ; perl-compatible regular expressions used in popco-fmt-utils.lisp
@@ -41,22 +44,22 @@
 ;Lisp code for initializing global variables.  
 ;(print "Loading global variables.")
 (myload "variables") 
-(print "Global variables and constants loaded.")
+;(print "Global variables and constants loaded.")
 
 ; Lisp code for utility functions.
 ;(print "Loading utility functions.")
 (myload "utilities")
-(print "Utility functions loaded.")
+;(print "Utility functions loaded.")
 
 ; Lisp code for creating and running networks.
 ;(print "Loading constraint network functions.")
 (myload "network") ; overwrite of macro plist from utilities is ok--identical code
-(print "Constraint network functions loaded.")
+;(print "Constraint network functions loaded.")
 
 ; Lisp code for ECHO
 ;(print "Loading ECHO.")
 (myload "echo")
-(print "ECHO functions loaded.")
+;(print "ECHO functions loaded.")
 
 ; Lisp code for DECO
 ;;(print "Loading DECO.")
@@ -67,17 +70,17 @@
 ; Lisp code for IMP
 ;(print "Loading IMP.")
 (myload "imp")
-(print "IMP functions loaded.")  ; used by acme-infer.lisp
+;(print "IMP functions loaded.")  ; used by acme-infer.lisp
 
 ; Lisp code for ACME
 ;(print "Loading ACME.")
 (myload "acme")
-(print "ACME functions loaded.")
+;(print "ACME functions loaded.")
 
 ;; contains various utility functions
 ;(print "Loading cohere")
 (myload "cohere") ; redef of pls is OK--I like this one better
-(print "Basic COHERE utility functions loaded.")
+;(print "Basic COHERE utility functions loaded.")
 
 ; Lisp code for non-connectionist algorithms.
 ;;(print "Loading non-connectionist coherence algorithms.")
@@ -91,24 +94,24 @@
 ; added by Marshall
 ;(print "Loading acme-infer")
 (myload "acme-infer")
-(print "ACME-INFER functions loaded.")
+;(print "ACME-INFER functions loaded.")
 
 ; Lisp code for graphics.
 ;(print "Loading graphics.")
 ;(myload "graphics")
 
-;(print "Loading consensus")
-(myload "consensus")
-(print "Consensus functions loaded.")
+; consensus.lisp now replaced by persons.lisp, loaded below.
 
 (print "All original COHERE files needed (modified for POPCO) have been loaded.")
+
+(myload "persons")
 
 ;(print "Loading additional POPCO utility functions.")
 (myload "popco-macros")
 (myload "popco-utils")
-(print "Additional POPCO utility functions loaded (popco-utils.lisp).")
-(terpri)
+;(print "Additional POPCO utility functions loaded (popco-utils.lisp).")
 
+(terpri)
 (print "Loading POPCO data formatting functions:")
 (myload "popco-fmt-utils") (print "popco-fmt-utils loaded")
 (myload "popco-fmt-csv") (print "popco-fmt-csv loaded")
@@ -118,8 +121,10 @@
 (myload "popco-model-run") (print "popco-model-run loaded")
 
 #+sbcl (progn
-        (myload "sbcl-sockets") (print "sbcl-sockets SBCL socket-handling code loaded.")
-        (myload "popco-fmt-guessCmds") (print "popco-fmt-guessCmds loaded"))
+        (print "SBCL-specific code:")
+        (myload "sbcl-sockets")
+        (myload "popco-fmt-guessCmds")
+        (print "SBCL-specific code loaded."))
 
 ;; NOTE: Do NOT move the popco.lisp load before the load of imp.lisp, 
 ;; unless you know what you're doing.  Last time I checked, I was
@@ -131,7 +136,7 @@
 (print "Main POPCO routines loaded (popco.lisp).")
 
 (setq *asymptote* .0001)
-(load "HT1989params")
+(myload "HT1989params")
 (format t "Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.~%~%")
 
 ;(print-parameters)
