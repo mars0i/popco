@@ -43,7 +43,6 @@ of his GET-CONVERSERS list."
     (mapcar #'list speaker-list actual-conversers)))
 
 
-
 (defun get-conversers (person)
   "Returns a list of all the people PERSON talks to."
   (remove person

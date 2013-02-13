@@ -1,5 +1,39 @@
 
 ---------------------------------------------------------
+2/13/2013
+
+problem/bug in transition to social net versions:
+
+The csv files, i.e. propn activations are radically different
+before/after moving the social net versions of e.g. make-person
+and choose-converser into the main code.
+
+This is solely due to that difference--not to anything I did to
+accomodate or modify that code, I think (I made one small change to
+make-person), because when I run in the old, unmerged version of the
+code, but loading Kristen's social-net-functions.lisp, I get output
+that's identical to the new, merged code's output.  (This requires a
+small change to crime3d2pundits.lisp--that's what I fixed away in my
+altered version of her make-person in the merged version.)  At least
+that's true for 500 ticks using crime3d2pundits.lisp.  (The
+discrepancies occur much earlier--less than 50 ticks out.)
+
+That the issue is in choose-conversers makes intuitive sense (since
+in theory I'm not actually using any social net behavior in
+crime3d2pundits.lisp), and it looks like what's shown in the csv
+files: The non-pundit propns start getting non-zero activations at
+different points.  i.e. it looks like the first utterances are
+different, which could come from getting different speakers.
+
+Possibly this is innocuous.  It might simply be that the random choice
+proceeds in a different way in the new code, which creates
+discrepancies, and allows for small differences to be amplified by
+conversation, etc.  In this case the average behavior should be the
+same.  (This should be tested with single-pundit models, since they are
+more likely to produce obviously different distributions.)
+
+
+---------------------------------------------------------
 poss experiments
 
 . Write fortress propns
