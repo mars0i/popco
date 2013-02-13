@@ -32,6 +32,37 @@ conversation, etc.  In this case the average behavior should be the
 same.  (This should be tested with single-pundit models, since they are
 more likely to produce obviously different distributions.)
 
+Note that my old code, unlike Kristen's new code, seems to allow people
+to talk to themselves.  I don't see where this is prevented.  The
+speaker certainly isn't ruled out as a listener in choose-conversers,
+though maybe there's something else that prevents talking to oneself--I
+don't see it, though.  If so, this is a bug, since it can reinforce a
+belief randomly without conversation proper, or any other internal
+process, I think.  (It's not such a bad effect, but it wasn't intended.)
+
+Note that other than the fact that each person is missing from its
+list of potential listeners, the list is ending up in the same
+order as the population list.  Ah--that's because Kristen's just
+getting the members from folks in the case of crime3d2pundits.lisp,
+and then removing the speaker.  However, right there, there are going to
+be discrepancies since the listener list is one less than the list
+in the old code.  Well, also, in the old code, you just randomize
+the population and then split it in half, and zip the two halves
+together to make speaker pairs.  Whereas Kristen constructs a
+speaker-specific list each time.  In the case of crime3d2pundits.lisp,
+each person only talks to one at a time, BUT EVERYBODY TALKS EVERY
+TIME, whereas in the old version, only half the population talks each
+time.  So this is very different.  So of course the behavior is
+different.
+
+So I now trust the code--I understand it and think that the new
+version seems OK.
+
+Still, I should rerun the crime stuff and compare distributions.  I'll
+bet that the distributions will be a bit different between popco
+versions, but that's OK if the differences between distributions within
+the popco version are as expected.
+
 
 ---------------------------------------------------------
 poss experiments
