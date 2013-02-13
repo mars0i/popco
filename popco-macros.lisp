@@ -10,7 +10,7 @@
 (defmacro analog-struc-of-pred (pred) `(car (get ,pred 'belongs-to)))
 (defmacro analog-struc-of-obj (obj) `(car (get ,obj 'belongs-to)))     ; BUG CURRENTLY OBJS DON'T HAVE THIS
 (defmacro speaker-of-cpair (conversepair) `(car ,conversepair))
-(defmacro listener-of-cpair (conversepair) `(cdr ,conversepair))
+(defmacro listener-of-cpair (conversepair) `(cadr ,conversepair))
 (defmacro target-analog-strucs-of-person (person)
   `(remove-if-not #'target-analog-struc?
     (get ,person 'all-structures)))
