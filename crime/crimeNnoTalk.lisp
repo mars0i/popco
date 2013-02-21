@@ -1,4 +1,4 @@
-;;; crime2notalk.lisp
+;;; crimeNnotalk.lisp
 ;;; Shows what happens to crime beliefs with crime2.lisp setup 
 ;;; when there is no conversation.  i.e. make everyone a true-believer,
 ;;; differing only in the virus/beast analogies available.
