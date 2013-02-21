@@ -1,5 +1,8 @@
 R tips:
 
+Add factors to the dataframe e.g. like this:
+crime3p1t5000.df$cv.fac <- cut(crime3p1t5000.df$CV, foci2factors(cv.foci))
+(You might need the more recent version in df2ra.R that's not yet in the package?)
 
 crime2_2pundits.tab <- table(crime2_2pundits.df[crime2_2pundits.df$rawsum=="raw",c("cb.fac","cv.fac","bias")])
 levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill")
@@ -8,8 +11,12 @@ trellis.par.set(canonical.theme(color = FALSE))
 
 # change the gray scale:
 levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(0:100/100))
+# this one is nice:
 levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(100:0/100))
+# this too:
 levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(95:0/100))
+# This is nice: no size variation, but you get a gride:
+levelplot(crime3p2t5000.tab, shrink = c(0.9), aspect="fill", scales=list(x=list(rot=45)), col.regions = gray(97:0/100))
 
 -----------------
 make a pdf:

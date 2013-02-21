@@ -61,7 +61,10 @@ stripRunPaths <- function(mra) {
 # Given a vector of evenly-spaced "foci"--points to which activation averages will usually 
 # converge--return a vector of points shifted half the distance between two foci, with
 # -1 and 1 added at the ends instead of whatever close point the shift would create.
-foci2intervals <- function(foci){ c(-1, (foci - (foci[2]-foci[1])/2)[-1], 1) }
+foci2intervals <- function(foci){
+  dif <- foci[2]-foci[1]
+  c(-1, foci[1]-dif/2, foci+dif/2, 1)
+}
 
 # given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
 # produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
@@ -327,7 +330,7 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
   df
 }
 
-# dfs and biases can be either lists or vectors, I believe
+# dfs must be a list, but biases can be either a list or a vector
 combineMeanDFsWithBiases <- function(dfs=NULL, biases=NULL) {
   if (length(dfs) == 0 || length(biases) == 0) {stop("dfs or biases is empty.")}
   if (length(dfs) != length(biases)) {stop("lengths of dfs and biases are not the same.")}
