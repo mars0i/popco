@@ -1,4 +1,12 @@
 R tips:
+-----------------
+# How to order panels in multi-panel plot:
+# add this to the call:
+index.cond=list(c(1,4,3,2))
+# or whatever permutation of the alpha order you want.
+# you can also make the dimension into factors.
+
+-----------------
 
 Add factors to the dataframe e.g. like this:
 crime3p1t5000.df$cv.fac <- cut(crime3p1t5000.df$CV, foci2factors(cv.foci))
