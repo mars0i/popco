@@ -11,8 +11,8 @@
     (cause (v-ia v-ha) v-ci->ha)
     (infect (prev-infected-elt at-risk-elt) v-ipa) ; infection spreads from the previously infected to the at-risk
     (cause (v-ipa v-ia) v-ipa->ia) ; transmission from infected to uninfected causes infection
-    (innoculate (at-risk-elt) v-ica)   ; innoculating the at-risk prevents spread to new individuals (or something with cells?)
-    (prevent (v-ica v-ipa) v-ia->-spa) ; innoculation of uninfected prevents further infection
+    (inoculate (at-risk-elt) v-ica)   ; inoculating the at-risk prevents spread to new individuals (or something with cells?)
+    (prevent (v-ica v-ipa) v-ia->-spa) ; inoculation of uninfected prevents further infection
     (cause (v-ia->-spa v-na) v-iaspa->na) ; preventing spread of infection causes [preserves] lack of infection in the at-risk
     (quarantine (prev-infected-elt) v-qp) ; previously infected is quarantined (or cells sequestered, I suppose)
     (prevent (v-qp v-ipa) v-qp->-spa) ; quarantining the infected prevents spread to new individuals 
