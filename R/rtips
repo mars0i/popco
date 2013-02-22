@@ -1,5 +1,16 @@
 R tips:
+
 -----------------
+
+# change bg color of panel labels:
+sb <- trellis.par.get("strip.background") 
+sb[["col"]][1] <- "lightblue"
+trellis.par.set("strip.background", sb)
+
+note to do this in pdf(), you have to run it during the pdf open time.
+
+-----------------
+
 # How to order panels in multi-panel plot:
 # add this to the call:
 index.cond=list(c(1,4,3,2))
