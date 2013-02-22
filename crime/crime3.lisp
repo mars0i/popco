@@ -37,13 +37,13 @@
     (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
     ; it's not getting mapped, anywa, so this isn't doing anything
 
+    (similar 'is-beastly 'is-infected (* -1 *ident-weight*))
+
     ; old note: "These are getting created and then erased after a tick or two."
     ; However, they make an important difference at least in no-conversation conditions.
     ; So maybe they aren't disappearing?
     (semantic-iff 'cb-vpp 'v-ipa -.1)
     (semantic-iff 'cv-rpa 'b-abp -.1)
-
-    (similar 'is-beastly 'is-infected (* -1 *ident-weight*))
 
     ;(similar 'infect 'victimize (* -.5 *ident-weight*))
     ;(similar 'attack 'recruit   (* -.5 *ident-weight*))
