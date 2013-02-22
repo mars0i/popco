@@ -1,4 +1,5 @@
-;; crimeNbasicCheck.lisp
+;; crimeNbasicNay.lisp
+;; Like crimeNbasicCheck.lisp but with naysayers instead of true believers
 
 ;(load "crime/crime1")
 (unless (boundp 'virus-propns)
@@ -39,10 +40,10 @@ LOAD crime propositions, person-making definitions, etc. first
 
 ; crude low-level method to cause to *disbelieve* all formerly perceived propositions.
 ; note this has to happen after init-pop.
-;(mapc #'negate-propn (get 'nay-Vicky-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Becky-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Bea-env 'all-propositions))
-;(mapc #'negate-propn (get 'nay-Virgil-env 'all-propositions))
+(mapc #'negate-propn (get 'Vicky-env 'all-propositions))
+(mapc #'negate-propn (get 'Becky-env 'all-propositions))
+(mapc #'negate-propn (get 'Bea-env 'all-propositions))
+(mapc #'negate-propn (get 'Virgil-env 'all-propositions))
 
 (setf *max-pop-ticks* 500)
 ;(setf *max-pop-ticks* 5000)

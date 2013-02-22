@@ -1,5 +1,5 @@
 #!/bin/sh
-guess "$@" ~/mi/guess/popco.py ~/mi/guess/gem.py
+guess "$@" ~/popco/guess/popco.py ~/popco/guess/gem.py
 
 # ~/mi/guess/popco.py: 
 #	add various functionality useful for POPCO networks
