@@ -3,7 +3,7 @@
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 01/2013 kmh - initial coding
 
-(myload "social-nets/social-net-functions.lisp")
+;(myload "social-nets/social-net-functions.lisp")
 (myload "lightbulb/lightbulb-vars.lisp")
 
 ;*************************
