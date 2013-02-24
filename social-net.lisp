@@ -62,7 +62,6 @@ of his GET-CONVERSERS list."
 Also adds GROUP to PERSON's 'GROUPS property.
 SPECIAL BEHAVIOR:  If GROUP is NIL, puts PERSON in *THE-POPULATION*
 but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
-(error "broke out of put-in-group")
   (if group
       (progn
         (put group 'members (cons-if-new person (get group 'members)))
