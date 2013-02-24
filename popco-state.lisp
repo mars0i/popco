@@ -3,6 +3,14 @@
 ;; May be distributed only with permission from the author.
 ;; Functions for storing and restoring the entire state of a population.
 
+;; **WORK IN PROGRESS**
+
+;; NOTE: Think about potential problems due to social-net.lisp using GENTEMP to create groups:
+;; Why is gentemp deprecated?  Because it can cause bugs if your code thinks it is
+;; creating a new symbol which, as it turns out, is the same as one created by gentemp.
+;; e.g. if you write a gentemp'ed symbol to a file and then create symbols based on
+;; what's in that file later, and then call gentemp separately .... you see the problem.
+
 ;; Note that we're using backquote in defuns rather than defmacros in some cases below.
 ;; The point is to construct a code list without evaluating it.
 

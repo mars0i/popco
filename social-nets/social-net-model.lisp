@@ -7,7 +7,6 @@
 (myload "lightbulb/lightbulb-vars.lisp")
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MODEL PERSONS
 
@@ -25,6 +24,9 @@
 ;; make the people
 ;for right now, just using a global for the number of listeners each person has
 (defvar *num-ppl-talking* 1)
+
+;; Note groups get defined implicitly in the make-person calls below, in second to last argument:
+
 (make-person 'alex 'alpha '()
              `((make-struc 'target 'problem '(start (,@lightbulb-info-poor)) 
                                             ;'(goals (,@lightbulb-goals-poor))
@@ -88,4 +90,4 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(popco)
+;(popco)

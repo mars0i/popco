@@ -3,6 +3,7 @@
 ;;;; Author:    Kristen Hammack
 ;;;; Vers:      1.0.0 12/2012 kmh - initial coding
 ;;;;            1.0.1 2/2012 MA moved make-person and choose-conversers to persons.lisp.
+;;;; Other small mods by MA ...
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;   SOCIAL NETWORKING REDEFINITIONS   ;;;;;;;;;;;;;;;;;;;
@@ -61,6 +62,7 @@ of his GET-CONVERSERS list."
 Also adds GROUP to PERSON's 'GROUPS property.
 SPECIAL BEHAVIOR:  If GROUP is NIL, puts PERSON in *THE-POPULATION*
 but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
+(error "broke out of put-in-group")
   (if group
       (progn
         (put group 'members (cons-if-new person (get group 'members)))
@@ -133,13 +135,13 @@ Puts GROUP in PERSON 'TALKS-TO"
 (defun make-ungrouped-directed-pairs (list-of-pairs)
   "Takes a list of pairs of existing persons and makes directed links between those persons
 as specified by the pair (SPEAKER LISTENER).
-A new, randomly named group is created for each LISTENER.
+A new, arbitrarily named group is created for each LISTENER.
 RETURNS: A list of all of the groups in the 'TALKS-TO property of every SPEAKER specified."
   (remove-duplicates (flatten (list (mapcar #'make-directed-pair list-of-pairs)))))
 
 
 (defun make-directed-pair (speaker-listener &optional (group (gentemp "G")))
-  "Puts LISTENER in GROUP (default random new group) and adds GROUP to SPEAKER 'TALKS-TO"
+  "Puts LISTENER in GROUP (default: arbitarily-named new group) and adds GROUP to SPEAKER'S 'TALKS-TO"
   (let ((speaker (first speaker-listener))
         (listener (second speaker-listener)))
     (put speaker 'talks-to 

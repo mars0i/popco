@@ -64,8 +64,8 @@ s/he will not initiate conversation."
   (when addl-input 
     (put person 'addl-input addl-input))
   (put person 'converse-strucs (mapcar #'generic-to-personal-sym converse-strucs))
-  (put person 'talks-to talks-to) ;New for networking--groups that person talks to
-  (put person 'num-listeners num-listeners) ;New for networking--number of listeners a person has (a radio dj only reaches a percentage of the people who might listen to him)
+  (put person 'talks-to talks-to) ;new social for networks--groups that person talks to
+  (put person 'num-listeners num-listeners) ;new for social networks--number of listeners a person has (a radio dj only reaches a percentage of the people who might listen to him)
   person)
 
 ;;; Changed to add 'talks-to and num-listeners for networking -KH
