@@ -4,7 +4,7 @@
 ;Author:    Kristen Hammack
 ;Vers:      1.0.0 12/2012 kmh - initial coding
 
-(myload "networking/networking2-functions.lisp")
+;(myload "networking/networking2-functions.lisp")
 
 ; These are output to NetLogo:
 (setf *propn-category-prefixes* '("L" "LG" "LP" "T"))

@@ -2,7 +2,7 @@
 ;; taken directly from crime/crime2a, without some of the extra stuff
 ;; trying to figure out what's different between my choose-conversers and
 ;; Dr. Abrams' that makes this model not work...
-(load "networking/networking2-functions.lisp")
+;(load "networking/networking2-functions.lisp")
 (load "crime/crime2")
 
 

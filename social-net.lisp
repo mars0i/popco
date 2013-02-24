@@ -9,6 +9,14 @@
 ;;;;;;;;;;;;;;   SOCIAL NETWORKING REDEFINITIONS   ;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; General notes (MA):
+;;; 
+;;; I believe that put-in-group is the lowest-level group/edge-making function,
+;;; and that it's called, eventually, by all methods of creating groups, including
+;;; the groups that are created automatically to represent directed edges between
+;;; individual persons.  So if you want to affect all ways of creating groups, you 
+;;; you can do it by modifying put-in-group.
+
 ;;-----------------------------------------------------
 ;; CHOOSE-CONVERSERS
 ;; Produce a list of persons who are to converse (probably only one-way eg 
@@ -65,7 +73,9 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
   (if group
       (progn
         (put group 'members (cons-if-new person (get group 'members)))
-        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))))       ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
+        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
+        ;(push group *all-social-net-groups*) ;; BUG: CREATES DUPLICATES
+        )
       (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
 
 
