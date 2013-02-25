@@ -39,9 +39,9 @@ activnsAtTickBarchart <- function(mra, tick, run=1, main=paste("tick", tick), xl
 # data: a dataframe
 # yfoci, xfoci: vectors of values at which means are expected to lie [in order y, x, since that's order in formula]
 # anonymous fifth argument can be groups=columns to distinguish different data within each plot
-xyMeanActivnPlot <- function(form, data, yfoci=seq(-1,1,.2), xfoci=seq(-1,1,.2), ...){
+xyMeanActivnPlot <- function(form, data, yfoci=seq(-1,1,.2), xfoci=seq(-1,1,.2), auto.key=T, ...){
   require(lattice)
-  xyplot(form, data=data, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", auto.key=T,
+  xyplot(form, data=data, xlim=c(-1,1), ylim=c(-1,1), aspect="iso", auto.key=auto.key,
          abline=c(list(h=yfoci, v=xfoci),             # grid
 		  list(a=0,b=1),                      # diagonal
                   trellis.par.get("reference.line")), # color
@@ -50,6 +50,15 @@ xyMeanActivnPlot <- function(form, data, yfoci=seq(-1,1,.2), xfoci=seq(-1,1,.2),
 
 
 addJitter <- function(trellobj=trellis.last.object(), amount=.025) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
+
+# Set background color of the top label strips in each panel.
+# Note that this modifies how the trellis object is displayed; it doesn't modify the object itself, apprently.
+# e.g. to make it affect a PDF file, call pdf(), then call this, then run the plot, then dev.off().
+stripbg <- function(colorstring){
+  sb <- trellis.par.get("strip.background") 
+  sb[["col"]][1] <- colorstring
+  trellis.par.set("strip.background", sb)
+}
 
 # Plot max and min differences between all possible pairs of runs, summarizing how they diverge (or don't)
 # parameters:

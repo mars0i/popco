@@ -9,9 +9,9 @@
 ;;;;;;;;;;;;;;   SOCIAL NETWORKING REDEFINITIONS   ;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; General notes (MA):
+;;; General notes -MA:
 ;;; 
-;;; I believe that put-in-group is the lowest-level group/edge-making function,
+;;; I believe that PUT-IN-GROUP is the lowest-level group/edge-making function,
 ;;; and that it's called, eventually, by all methods of creating groups, including
 ;;; the groups that are created automatically to represent directed edges between
 ;;; individual persons.  So if you want to affect all ways of creating groups, you 
