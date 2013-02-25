@@ -250,7 +250,7 @@
 (defconstant +acme-max-weight+ .5) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
 
 (defvar *the-person* 'the-person) ; value normally swapped among members of population. Setting to 'the-person also makes it work with traditional COHERE.
-(defvar *the-population* 'the-population)
+(defvar *the-population* 'folks)
 ;(defvar *dont-converse* nil) ; OBSOLETE
 (defvar *do-converse* t)
 ;	Set previous to nil to stop conversations between persons:
@@ -288,7 +288,7 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
-(defvar *all-social-net-groups* '()) ; supposed to store all social network groups (including e.g. small gentemp'ed groups)
+(defvar *all-social-net-groups* (list *the-population*)) ; supposed to store all social network groups (including e.g. small gentemp'ed groups)
 
 ; Some Lisps (e.g. SBCL) use the same random state every time, by
 ; default, causing conversation sequences to be identical.
