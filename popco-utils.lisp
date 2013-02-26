@@ -208,6 +208,11 @@
 (defun activn-greaterp (u1 u2)
   (> (activation u1) (activation u2)))
 
+
+;;; TREE FUNCTIONS
+;;; Consider rewriting some using built-in functions as described at:
+;;; http://lisptips.com/post/43404489000/the-tree-walkers-of-cl
+
 ; Reproduce structure of a two trees, with t's where
 ; they match, and left as is where they differ and below.
 (defun tree-diff (branch1 branch2)
