@@ -177,37 +177,45 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Persons who only talk about crime:
 
-(defun make-no-bias-crime-talker (name &optional (given '()))
-    (make-person name 'folks given
+(defun make-no-bias-crime-talker (name &optional (given '()) (groups 'folks) (talks-to '()) (num-listeners 1))
+    (make-person name groups given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start ()))
                    ,@semantic-relations)
-                 '()
-                 '(target)))
+                 '()          ; addl-input
+                 '(target)    ; converse-strucs
+                 talks-to
+                 num-listeners))
 
-(defun make-virus-bias-crime-talker (name &optional (given '()))
-    (make-person name 'folks given
+(defun make-virus-bias-crime-talker (name &optional (given '()) (groups 'folks) (talks-to '()) (num-listeners 1))
+    (make-person name groups given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@virus-propns)))
                    ,@semantic-relations)
-                 '()
-                 '(target)))
+                 '()          ; addl-input
+                 '(target)    ; converse-strucs
+                 talks-to
+                 num-listeners))
 
-(defun make-beast-bias-crime-talker (name &optional (given '()))
-    (make-person name 'folks given
+(defun make-beast-bias-crime-talker (name &optional (given '()) (groups 'folks) (talks-to '()) (num-listeners 1))
+    (make-person name groups given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@beast-propns)))
                    ,@semantic-relations)
-                 '()
-                 '(target)))
+                 '()          ; addl-input
+                 '(target)    ; converse-strucs
+                 talks-to
+                 num-listeners))
 
-(defun make-both-bias-crime-talker (name &optional (given '()))
-    (make-person name 'folks given
+(defun make-both-bias-crime-talker (name &optional (given '()) (groups 'folks) (talks-to '()) (num-listeners 1))
+    (make-person name groups given
                  `((make-struc 'target 'problem '(start (,@crime-propns)))
                    (make-struc 'source 'problem '(start (,@virus-propns ,@beast-propns)))
                    ,@semantic-relations)
-                 '()
-                 '(target)))
+                 '()          ; addl-input
+                 '(target)    ; converse-strucs
+                 talks-to
+                 num-listeners))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Persons who talk about everything:
