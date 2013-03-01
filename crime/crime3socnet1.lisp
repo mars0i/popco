@@ -23,15 +23,13 @@
 
 (make-virus-bias-crime-talker 'temp-v '() 'vulcans '(vulcans))
 (n-persons-with-name 'temp-v 'v *group-size*)
+(kill 'temp-v)
 
 (make-beast-bias-crime-talker 'temp-b '() 'betazoids '(betazoids))
 (n-persons-with-name 'temp-b 'b *group-size*)
-
+(kill 'temp-b)
 
 (init-pop)
-error:
-(rem-elt-from-property 'temp-v 'folks 'members) ; has to happen after init-pop when groups are merged into 'folks
-(rem-elt-from-property 'temp-b 'folks 'members)
 (print (get 'folks 'members))
 
 (setf *max-pop-ticks* 500)

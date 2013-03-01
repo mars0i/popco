@@ -54,6 +54,7 @@
 
 (myload "social-net")
 (myload "persons")
+(myload "natsel")
 (myload "popco-macros")
 (myload "popco-utils")
 
