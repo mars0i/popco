@@ -1,8 +1,16 @@
+---------------------------------------------------------
+3/3/2013 BUG
+The following commit introduced a bug into social net code: Groups that
+shouldn't be listed in some persons' talks-to are listed there.  Run
+make-dirpairs-model.lisp before and after this commit and then mapc
+print-talks-to over the pop to see the problem.
+
+* a3a1abd 2013-02-25 | Changed put-in-group so that it properly records all social net groups without duplicates. Also changed default value of *the-population* i
+n variables.lisp to 'folks, and then stuffed that into *all-social-net-groups*. [mabrams]
 
 ---------------------------------------------------------
-2/13/2013
-
-problem/bug in transition to social net versions:
+2/13/2013 problem/bug in transition to social net versions
+FIXED
 
 The csv files, i.e. propn activations are radically different
 before/after moving the social net versions of e.g. make-person
@@ -63,6 +71,7 @@ bet that the distributions will be a bit different between popco
 versions, but that's OK if the differences between distributions within
 the popco version are as expected.
 
+DID THAT, and the results were good.
 
 ---------------------------------------------------------
 poss experiments
