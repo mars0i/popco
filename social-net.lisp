@@ -23,8 +23,22 @@
 (defun get-groups (p) (get p 'groups))
 (defun get-talks-to (p) (get p 'talks-to))
 (defun print-groups (p) (print (list p (get-groups p))))
-(defun print-talks-to (p) (print (list p (get-talks-to p))))
-(defun print-talks-to-persons (p) (print (list p (flatten (mapcar #'get-members (get-talks-to p))))))
+(defun print-talks-to (p)
+  (print (list p 
+               (sort 
+                 (get-talks-to p)
+                 #'symbol-lessp))))
+;; List persons that person p can talk to:
+(defun talks-to-persons (p)
+  (remove-duplicates 
+    (flatten 
+      (mapcar #'get-members (get-talks-to p)))))
+;; Print out result of preceding:
+(defun print-talks-to-persons (p) 
+  (print (list p 
+               (sort 
+                 (talks-to-persons p)
+                 #'symbol-lessp))))
 
 ;;-----------------------------------------------------
 ;; CHOOSE-CONVERSERS
