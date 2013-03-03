@@ -288,7 +288,7 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
-(defvar *all-social-net-groups* '()) ; should store all social network groups (including e.g. small gentemp'ed groups)
+(defvar *all-soc-net-groups* '()) ; should store all social network groups (including e.g. small gentemp'ed groups)
 
 ; Some Lisps (e.g. SBCL) use the same random state every time, by
 ; default, causing conversation sequences to be identical.

@@ -43,6 +43,9 @@
 		<key id="guess-edge-visible" for="edge" attr.name="visible" attr.type="boolean">
 			<default>true</default>
 		</key>
+		<key id="guess-edge-directed" for="edge" attr.name="directed" attr.type="boolean">
+			<default>true</default>
+		</key>
 		<key id="guess-edge-width" for="edge" attr.name="width" attr.type="double"/>
 		<key id="guess-edge-weight" for="edge" attr.name="weight" attr.type="double"/>
 		<!-- For links between propositions, the edge weight is a function of the activation of this node: -->
@@ -82,12 +85,13 @@
                 <edge source="p02" target="p05"></edge>
                 <edge source="p06" target="p01"></edge>
 
-                <!-- How to combine into one bidirectional edge? -->
-                <edge source="p03" target="p06"></edge>
-                <edge source="p06" target="p03"></edge>
+                <edge source="p03" target="p06">
+			<data key="guess-edge-directed">false</data>
+		</edge>
 
-                <edge source="p01" target="p04"></edge>
-                <edge source="p04" target="p01"></edge>
+                <edge source="p01" target="p04">
+			<data key="guess-edge-directed">false</data>
+		</edge>
 
 	</graph>
 </graphml>

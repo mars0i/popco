@@ -19,7 +19,7 @@
 
 ;;Removes person from *the-population* and groups and uninterns the symbol for the person
 (defun kill (person)
-  (mapc #'(lambda (group) (remove-from-group person group)) *all-social-net-groups*)
+  (mapc #'(lambda (group) (remove-from-group person group)) *all-soc-net-groups*)
   (remove-from-group person *the-population*)
   (unintern person))
 

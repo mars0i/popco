@@ -631,7 +631,7 @@
 
 ; mnemonic synonym for create-nets
 (defun init-pop (&optional (population *the-population*))
-  (merge-groups *all-social-net-groups*)
+  (merge-groups *all-soc-net-groups*)
   (format t "~%Creating analogy networks for each person ....~%")
   (create-nets population))
 
