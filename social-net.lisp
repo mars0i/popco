@@ -17,6 +17,15 @@
 ;;; individual persons.  So if you want to affect all ways of creating groups, you 
 ;;; you can do it by modifying put-in-group.
 
+
+;;-----------------------------------------------------
+;; UTILITIES for debugging, investigation
+(defun get-groups (p) (get p 'groups))
+(defun get-talks-to (p) (get p 'talks-to))
+(defun print-groups (p) (print (list p (get-groups p))))
+(defun print-talks-to (p) (print (list p (get-talks-to p))))
+(defun print-talks-to-persons (p) (print (list p (flatten (mapcar #'get-members (get-talks-to p))))))
+
 ;;-----------------------------------------------------
 ;; CHOOSE-CONVERSERS
 ;; Produce a list of persons who are to converse (probably only one-way eg 
