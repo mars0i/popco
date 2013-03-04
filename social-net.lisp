@@ -97,8 +97,7 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
       (progn
         (setf *all-soc-net-groups* (cons-if-new group *all-soc-net-groups*))
         (put group 'members (cons-if-new person (get group 'members)))
-        (put person 'groups (cons-if-new group (flatten (list (get person 'groups))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
-        )
+        (put person 'groups (cons-if-new group (flatten (list (get person 'groups)))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
       (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
 
 
