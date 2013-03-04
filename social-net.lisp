@@ -108,7 +108,7 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
 If LIST-OF-GROUPS is nil, puts PERSON in *THE-POPULATION."
   (if (atom list-of-groups) ; Don't know which to expect more often so went with same style as above
       (put-in-group person list-of-groups)
-      (mapcar #'put-in-group 
+      (mapc #'put-in-group 
               (make-list
                (length list-of-groups)
                :initial-element person)
