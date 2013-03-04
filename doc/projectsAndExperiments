@@ -1,0 +1,76 @@
+Poss experiments and projects
+[SEE ALSO nts directories in Marshall's directories for papers/presentations 
+using POPCO, e.g. CulturalCoherenceSim, CulturalCoherenceSim2, Crime.]
+
+. Recreate some of Jason Alexander's and Patrick Grimm's experiments
+with network structure.  e.g. see under what conditions it's easy to
+maintain cultural differences despite (limited) communication.
+
+. Write fortress propns
+. Construct a real convergence statement
+
+. experiments on influence of analogy on long-term persistence and
+  transmission. (Have I already done some of these, in effect?)
+  	[Well in the 7/2012 paper I had the perceived domains driving
+	the origin domains (with some cross-domain effects as well).
+	e.g. pegging the hunting propns raises the sky propns.
+	Note though that these experiments had no restrictions on
+	domain of discourse--i.e. propns were from all four domains.
+	So I haven't done what's described below.  But I can do it by
+	specifying converse-strucs in the make-person calls.]
+
+. cross-analogy coherence demonstration/experiment:
+  See parenting18coherence1.lisp, etc.
+	Goal:
+
+	Show that coherence due to background analogy can work against
+	believing a propn that otherwise would be consistent with other beliefs.
+	i.e. let salience or conversation emphasize s1-sn, those create emphasis
+	on t1-tm due to analogy, and this fact makes it hard to disbelieve s(n+1),
+	despite that otherwise that would work.
+
+	Strategy:
+	
+	Give each individual all of the propns.
+	
+	Make most source propns in one domain (parenting or hunting) salient for
+	one individual, either by making them directly perceived, or by making
+	the perceived for others, and then letting conversation emphasize these
+	propns.
+	
+	Make one proposition in the same domain disbelieved, either through
+	direct perception or conversation, as before.
+	
+	Choose this last proposition so that:
+	
+	It has no or few positive links to propns in its own (source) domain.
+	
+	It maps to propns which do have significant positive links to others in
+	the analog (target) domain.
+	
+	Show that activation flows from the emphasized source propns through the
+	analogical connections to the target propns, and back to the chosen
+	source propn.
+	
+	Show that this propn will not go as negative as it would otherwise, and
+	maybe even can be maintained as positive.
+
+
+Old poss SANDAY experiments:
+
+. Let origin stories filter into society from one or two sources.
+. Let effects of parent, or hunting, salience filter in from few sources.
+. Let effects of both filter in from few sources.  See variation in
+  pops wrt how patterns end up.
+. Do the preceding iteratively to produce cumulative evolution.
+. Here's something that would be nice with cumulative stuff:
+  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
+  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
+  there is a context for them, let them become significant.
+. Take stabilized pop and flip salience, or change salience in a few
+  gradually, or drop saliences and make a small subset with opposite
+  salience (as in parenting14k.nts).
+. Question: Can conversation can create links that don't correspond
+  to map nodes?  Or only that aren't reflected in the colored
+  triangles.
+

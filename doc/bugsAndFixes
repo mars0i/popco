@@ -1,0 +1,180 @@
+---------------------------------------------------------
+3/3/2013 BUG
+FIXED
+The following commit introduced a bug into social net code: Groups that
+shouldn't be listed in some persons' talks-to are listed there.  Run
+make-dirpairs-model.lisp before and after this commit and then mapc
+print-talks-to over the pop to see the problem.
+
+* a3a1abd 2013-02-25 | Changed put-in-group so that it properly records all social net groups without duplicates. Also changed default value of *the-population* i
+n variables.lisp to 'folks, and then stuffed that into *all-social-net-groups*. [mabrams]
+
+---------------------------------------------------------
+2/13/2013 problem/bug in transition to social net versions
+FIXED
+
+The csv files, i.e. propn activations are radically different
+before/after moving the social net versions of e.g. make-person
+and choose-converser into the main code.
+
+This is solely due to that difference--not to anything I did to
+accomodate or modify that code, I think (I made one small change to
+make-person), because when I run in the old, unmerged version of the
+code, but loading Kristen's social-net-functions.lisp, I get output
+that's identical to the new, merged code's output.  (This requires a
+small change to crime3d2pundits.lisp--that's what I fixed away in my
+altered version of her make-person in the merged version.)  At least
+that's true for 500 ticks using crime3d2pundits.lisp.  (The
+discrepancies occur much earlier--less than 50 ticks out.)
+
+That the issue is in choose-conversers makes intuitive sense (since
+in theory I'm not actually using any social net behavior in
+crime3d2pundits.lisp), and it looks like what's shown in the csv
+files: The non-pundit propns start getting non-zero activations at
+different points.  i.e. it looks like the first utterances are
+different, which could come from getting different speakers.
+
+Possibly this is innocuous.  It might simply be that the random choice
+proceeds in a different way in the new code, which creates
+discrepancies, and allows for small differences to be amplified by
+conversation, etc.  In this case the average behavior should be the
+same.  (This should be tested with single-pundit models, since they are
+more likely to produce obviously different distributions.)
+
+Note that my old code, unlike Kristen's new code, seems to allow people
+to talk to themselves.  I don't see where this is prevented.  The
+speaker certainly isn't ruled out as a listener in choose-conversers,
+though maybe there's something else that prevents talking to oneself--I
+don't see it, though.  If so, this is a bug, since it can reinforce a
+belief randomly without conversation proper, or any other internal
+process, I think.  (It's not such a bad effect, but it wasn't intended.)
+
+Note that other than the fact that each person is missing from its
+list of potential listeners, the list is ending up in the same
+order as the population list.  Ah--that's because Kristen's just
+getting the members from folks in the case of crime3d2pundits.lisp,
+and then removing the speaker.  However, right there, there are going to
+be discrepancies since the listener list is one less than the list
+in the old code.  Well, also, in the old code, you just randomize
+the population and then split it in half, and zip the two halves
+together to make speaker pairs.  Whereas Kristen constructs a
+speaker-specific list each time.  In the case of crime3d2pundits.lisp,
+each person only talks to one at a time, BUT EVERYBODY TALKS EVERY
+TIME, whereas in the old version, only half the population talks each
+time.  So this is very different.  So of course the behavior is
+different.
+
+So I now trust the code--I understand it and think that the new
+version seems OK.
+
+Still, I should rerun the crime stuff and compare distributions.  I'll
+bet that the distributions will be a bit different between popco
+versions, but that's OK if the differences between distributions within
+the popco version are as expected.
+
+DID THAT, and the results were good.
+
+---------------------------------------------------------
+. POSSIBLE BUG when conversations introduce new predicates, at least:
+  Question: Shouldn't semantic relations be reinvoked later if the
+  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
+  to a map node.  But if the map node doesn't exist initially, these
+  special links won't get created; currently (4/2012) they are only
+  created by create-net by the line
+  	(mapc #'eval (get person 'input))
+  This also might have to be reinvoked:
+  	(mapc #'eval (get person 'addl-input))
+  Or maybe they should always exist in everyone?
+  this is at least an issue with specifying direct symlinks on units.
+  
+-----------------------------------------------------------------
+BUGS CONCERNING USE OF EXTERNAL DISPLAY PROGRAMS, e.g. GUESS, NETLOGO
+
+. UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
+  New nodes in analogy net appear but don't get linked.
+  Is the is-new-link stuff broken??  Or what?
+
+. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
+  the nodes that result from conversation?)
+
+. in parenting14l mless-parent, I get completely disconnected
+  proposition nodes (OK) yet some of them change activations, getting
+  significantly positive, or a little negative.  Oh, wait, I think
+  that's because there are unrepresented things in GUESS due to
+  conversation which isn't yet reflected graphically.  OK.
+
+. Bug in newly-added edges?: They don't have all of the informative
+  fields that old edges have?  Possibly add code to assign that stuff.
+
+. BUG: GUESS: I seem to be losing the informative rollover
+  functionality in edges  sometimes.
+
+. BUG: Sometimes GUESS errors out (and stops Lisp, eventually) if you
+  run dynamic updating too long.  Index out of bounds.  Question: Does
+  this happen without node/edge adds?  Question: Is there some GUESS
+  operation that would prevent this?  Presumably it's a memory leak or
+  involves exceeding some bound.
+
+. BUG OK for now:
+  Currently, remove-constraint and remove-all-constraints in acme.lisp
+  record the newly-deleted constraints in a single property of the person.
+  This works with GUESS even when I'm not displyaing the analogy net
+  because GUESS is not unhappy with attempts to delete nonexistent edges.
+  However, in the future I may need to split up the newly deleted constraints
+  into analogy and proposition network constraints for some other external
+  display program.
+
+
+------------------------------------------
+MINOR BUGS AND POTENTIAL FUTURE PROBLEMS
+
+. FUTURE BUG: make-propns sets activation of a proposition if it's the
+  third argument of a proposition message.  make-propns gets called on
+  all messages in every struc every generation.  so if credences
+  (initial activations) are included in messages, I think they'll
+  clobber any activations that have been developing over time.  THE FIX
+  FOR NOW: DON'T INCLUDE INITIAL CREDENCES.
+
+. BUG OK:
+  The first time after boot you run telguesses with multiple persons,
+  it fails on all but one of the GUESS instances.  After that it's fine.
+  I think that it starts the processes too close in time to each other,
+  and there's a moment when one instance has started loading Java,
+  but Java can't respond by saying it's loaded, and the OS won't respond
+  by saying it's not.  The error you get suggests this interpretation.
+  I don't know that it's worth adding a delay.
+
+. BUG OK for now:
+  The function SIMILAR? checks whether the predicate pair is listed in
+  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
+  IS ACTUALLY A BUG because it means that all persons are sharing
+  predicate similarities, and overriding variants.  *similiar* should be
+  a field of the person rather than a global.  Or the similarities could
+  be personalized.  But then everyone has to through a long list of
+  similarities.  [This is OK if all of the persons *do* share
+  similarities.]
+
+. NOTE total-times is inited to 0 in initialize-person-properties.
+  However, clear-net in network.lisp sets it to 1.
+  However, I have this function wrapped in clear-person-net
+  and clear-person-nets, which my model scripts are calling.
+  SO THAT'S A LITTLE BUG: SHOULD THIS BE 0 OR 1? WHAT'S IT GETTING
+  SET TO BEFORE A RUN?
+
+. SMALL BUG: Calling n-persons-with-name twice with the same name
+  seems to cause an error when popco is run.
+
+
+. THIS IS FIXED, but consider modifying make-sym-link to use the
+  new unlinked? function.
+  old:
+  bug in new add-to-guess code:
+	The test for new constraint before pushing onto the 
+	'newly-added-constraints list [with mark-constraint-newly-added]
+	just checks for zero weight.
+	That's what make-sym-link does, and it is sensible there.
+	However, if there actually is a link, but it's zero weight
+	(this could theoretically happen in the proposition network,
+	with conversation), then popco may try later to add it to guess,
+	and guess will complain (or maybe bomb) because the node
+	already exists.

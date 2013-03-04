@@ -1,198 +1,4 @@
 ---------------------------------------------------------
-3/3/2013 BUG
-The following commit introduced a bug into social net code: Groups that
-shouldn't be listed in some persons' talks-to are listed there.  Run
-make-dirpairs-model.lisp before and after this commit and then mapc
-print-talks-to over the pop to see the problem.
-
-* a3a1abd 2013-02-25 | Changed put-in-group so that it properly records all social net groups without duplicates. Also changed default value of *the-population* i
-n variables.lisp to 'folks, and then stuffed that into *all-social-net-groups*. [mabrams]
-
----------------------------------------------------------
-2/13/2013 problem/bug in transition to social net versions
-FIXED
-
-The csv files, i.e. propn activations are radically different
-before/after moving the social net versions of e.g. make-person
-and choose-converser into the main code.
-
-This is solely due to that difference--not to anything I did to
-accomodate or modify that code, I think (I made one small change to
-make-person), because when I run in the old, unmerged version of the
-code, but loading Kristen's social-net-functions.lisp, I get output
-that's identical to the new, merged code's output.  (This requires a
-small change to crime3d2pundits.lisp--that's what I fixed away in my
-altered version of her make-person in the merged version.)  At least
-that's true for 500 ticks using crime3d2pundits.lisp.  (The
-discrepancies occur much earlier--less than 50 ticks out.)
-
-That the issue is in choose-conversers makes intuitive sense (since
-in theory I'm not actually using any social net behavior in
-crime3d2pundits.lisp), and it looks like what's shown in the csv
-files: The non-pundit propns start getting non-zero activations at
-different points.  i.e. it looks like the first utterances are
-different, which could come from getting different speakers.
-
-Possibly this is innocuous.  It might simply be that the random choice
-proceeds in a different way in the new code, which creates
-discrepancies, and allows for small differences to be amplified by
-conversation, etc.  In this case the average behavior should be the
-same.  (This should be tested with single-pundit models, since they are
-more likely to produce obviously different distributions.)
-
-Note that my old code, unlike Kristen's new code, seems to allow people
-to talk to themselves.  I don't see where this is prevented.  The
-speaker certainly isn't ruled out as a listener in choose-conversers,
-though maybe there's something else that prevents talking to oneself--I
-don't see it, though.  If so, this is a bug, since it can reinforce a
-belief randomly without conversation proper, or any other internal
-process, I think.  (It's not such a bad effect, but it wasn't intended.)
-
-Note that other than the fact that each person is missing from its
-list of potential listeners, the list is ending up in the same
-order as the population list.  Ah--that's because Kristen's just
-getting the members from folks in the case of crime3d2pundits.lisp,
-and then removing the speaker.  However, right there, there are going to
-be discrepancies since the listener list is one less than the list
-in the old code.  Well, also, in the old code, you just randomize
-the population and then split it in half, and zip the two halves
-together to make speaker pairs.  Whereas Kristen constructs a
-speaker-specific list each time.  In the case of crime3d2pundits.lisp,
-each person only talks to one at a time, BUT EVERYBODY TALKS EVERY
-TIME, whereas in the old version, only half the population talks each
-time.  So this is very different.  So of course the behavior is
-different.
-
-So I now trust the code--I understand it and think that the new
-version seems OK.
-
-Still, I should rerun the crime stuff and compare distributions.  I'll
-bet that the distributions will be a bit different between popco
-versions, but that's OK if the differences between distributions within
-the popco version are as expected.
-
-DID THAT, and the results were good.
-
----------------------------------------------------------
-poss experiments
-
-. Write fortress propns
-. Construct a real convergence statement
-
-. experiments on influence of analogy on long-term persistence and
-  transmission. (Have I already done some of these, in effect?)
-  	[Well in the 7/2012 paper I had the perceived domains driving
-	the origin domains (with some cross-domain effects as well).
-	e.g. pegging the hunting propns raises the sky propns.
-	Note though that these experiments had no restrictions on
-	domain of discourse--i.e. propns were from all four domains.
-	So I haven't done what's described below.  But I can do it by
-	specifying converse-strucs in the make-person calls.]
-
-  .. Compare two populations.  In both, only target propns are uttered.
-     Maybe these are restricted to one domain.
-     In one, there is a corresponding analog for the propns.
-     In the other, there's not.
-     What's the difference?
-
-  .. Compare two populations.  In both, only target propns are
-     uttered, from two domains.
-     The pops differ as to which source analog they have.
-     If this changes what fixes in the target domain, it shows
-     the role of bg analogy, as opposed to innateness, in biasing
-     tran.
-
-  Now trying to do this in parenting18analogsAsBiases1.lisp.
-
-. cross-analogy coherence demonstration/experiment:
-  See parenting18coherence1.lisp, etc.
-	Goal:
-
-	Show that coherence due to background analogy can work against
-	believing a propn that otherwise would be consistent with other beliefs.
-	i.e. let salience or conversation emphasize s1-sn, those create emphasis
-	on t1-tm due to analogy, and this fact makes it hard to disbelieve s(n+1),
-	despite that otherwise that would work.
-
-	Strategy:
-	
-	Give each individual all of the propns.
-	
-	Make most source propns in one domain (parenting or hunting) salient for
-	one individual, either by making them directly perceived, or by making
-	the perceived for others, and then letting conversation emphasize these
-	propns.
-	
-	Make one proposition in the same domain disbelieved, either through
-	direct perception or conversation, as before.
-	
-	Choose this last proposition so that:
-	
-	It has no or few positive links to propns in its own (source) domain.
-	
-	It maps to propns which do have significant positive links to others in
-	the analog (target) domain.
-	
-	Show that activation flows from the emphasized source propns through the
-	analogical connections to the target propns, and back to the chosen
-	source propn.
-	
-	Show that this propn will not go as negative as it would otherwise, and
-	maybe even can be maintained as positive.
-
-
-. Let origin stories filter into society from one or two sources.
-. Let effects of parent, or hunting, salience filter in from few sources.
-. Let effects of both filter in from few sources.  See variation in
-  pops wrt how patterns end up.
-. Do the preceding iteratively to produce cumulative evolution.
-. Here's something that would be nice with cumulative stuff:
-  INTRODUCE IDEAS TOO EARLY, AND ALLOW THEM TO BE REJECTED BECAUSE
-  THEY DON'T FIT--AND THEN MAYBE FORGOTTEN.  Later, when
-  there is a context for them, let them become significant.
-. Take stabilized pop and flip salience, or change salience in a few
-  gradually, or drop saliences and make a small subset with opposite
-  salience (as in parenting14k.nts).
-. Question: Can conversation can create links that don't correspond
-  to map nodes?  Or only that aren't reflected in the colored
-  triangles.
-------------------------------------------
-BUGS
-
-.     NOTE total-times is inited to 0 in initialize-person-properties.
-      However, clear-net in network.lisp sets it to 1.
-      However, I have this function wrapped in clear-person-net
-      and clear-person-nets, which my model scripts are calling.
-      SO THAT'S A LITTLE BUG: SHOULD THIS BE 0 OR 1? WHAT'S IT GETTING
-      SET TO BEFORE A RUN?
-  
-. UPDATE OF TELGUESS WHEN NEW PROPNS ARE ADDED IS BROKEN again.
-  New nodes in analogy net appear but don't get linked.
-  Is the is-new-link stuff broken??  Or what?
-
-. POSSIBLE BUG when conversations introduce new predicates, at least:
-  Question: Shouldn't semantic relations be reinvoked later if the
-  units come to exist?  e.g. SIMILAR causes an extra link from SEMANTIC
-  to a map node.  But if the map node doesn't exist initially, these
-  special links won't get created; currently (4/2012) they are only
-  created by create-net by the line
-  	(mapc #'eval (get person 'input))
-  This also might have to be reinvoked:
-  	(mapc #'eval (get person 'addl-input))
-  Or maybe they should always exist in everyone?
-  this is at least an issue with specifying direct symlinks on units.
-
-. concerns1 and concerns2 are empty in GUESS for some nodes. (Are these
-  the nodes that result from conversation?)
-
-. in parenting14l mless-parent, I get completely disconnected
-  proposition nodes (OK) yet some of them change activations, getting
-  significantly positive, or a little negative.  Oh, wait, I think
-  that's because there are unrepresented things in GUESS do to
-  conversation which isn't yet reflected graphically.  OK.
-. Bug in newly-added edges?: They don't have all of the informative
-  fields that old edges have?  Possibly add code to assign that stuff.
-
 ------------------------------------------
 ENHANCEMENTS
 
@@ -447,38 +253,7 @@ use adjoin?
 ..............................................................
 LONG-TERM ENHANCEMENTS AND BUGS:
 
-. BUG: GUESS: I seem to be losing the informative rollover functionality in edges 
-  sometimes.
-
-. BUG: Sometimes GUESS errors out (and stops Lisp, eventually) if you
-  run dynamic updating too long.  Index out of bounds.  Question: Does
-  this happen without node/edge adds?  Question: Is there some GUESS
-  operation that would prevent this?  Presumably it's a memory leak or
-  involves exceeding some bound.
-
 . See Overview Needs list below.
-
-. BUG OK for now:
-  The function SIMILAR? checks whether the predicate pair is listed in
-  *similarities*. THESE PAIRS ARE GENERIC [all predicates are], so  THIS
-  IS ACTUALLY A BUG because it means that all persons are sharing
-  predicate similarities, and overriding variants.  *similiar* should be
-  a field of the person rather than a global.  Or the similarities could
-  be personalized.  But then everyone has to through a long list of
-  similarities.  [This is OK if all of the persons *do* share
-  similarities.]
-
-. SMALL BUG: Calling n-persons-with-name twice with the same name
-  seems to cause an error when popco is run.
-
-. BUG OK for now:
-  Currently, remove-constraint and remove-all-constraints in acme.lisp
-  record the newly-deleted constraints in a single property of the person.
-  This works with GUESS even when I'm not displyaing the analogy net
-  because GUESS is not unhappy with attempts to delete nonexistent edges.
-  However, in the future I may need to split up the newly deleted constraints
-  into analogy and proposition network constraints for some other external
-  display program.
 
 . ENHANCEMENT:
   Need routine to thoroughly and safely clear the system so that I can manage multiple runs
@@ -519,29 +294,6 @@ LONG-TERM ENHANCEMENTS AND BUGS:
   syntax only that's doing the work.  What semantical help there is,
   is pretty weak.  So you have to enhance the semantics a bit with
   naming conventions.
-
-. THIS IS FIXED, but consider modifying make-sym-link to use the
-  new unlinked? function.
-  old:
-  bug in new add-to-guess code:
-	The test for new constraint before pushing onto the 
-	'newly-added-constraints list [with mark-constraint-newly-added]
-	just checks for zero weight.
-	That's what make-sym-link does, and it is sensible there.
-	However, if there actually is a link, but it's zero weight
-	(this could theoretically happen in the proposition network,
-	with conversation), then popco may try later to add it to guess,
-	and guess will complain (or maybe bomb) because the node
-	already exists.
-
-. BUG OK:
-  The first time after boot you run telguesses with multiple persons,
-  it fails on all but one of the GUESS instances.  After that it's fine.
-  I think that it starts the processes too close in time to each other,
-  and there's a moment when one instance has started loading Java,
-  but Java can't respond by saying it's loaded, and the OS won't respond
-  by saying it's not.  The error you get suggests this interpretation.
-  I don't know that it's worth adding a delay.
 
 . CLEANUP: Reorganize the code in popco-fmt-guessCmds.lisp and revise
 report-persons-to-guess in popco.lisp so that I can
@@ -648,7 +400,7 @@ activations).
   activations?
 
 . Integrate with ABCL??
-  ABCL's R/E now can be called from NetLogo.
+  ABCL's REPL now can be called from NetLogo.
 
 ..............................................................
 MORE LISP SIDE:
@@ -663,13 +415,6 @@ MORE LISP SIDE:
   units, etc.  Also should figure out a more efficient version of 
   sum-activn-changes rather than consing up a list and then
   applying + to it.  If nothing else, make a traditional C-style loop.
-
-. FUTURE BUG: make-propns sets activation of a proposition if it's the
-  third argument of a proposition message.  make-propns gets called on
-  all messages in every struc every generation.  so if credences
-  (initial activations) are included in messages, I think they'll
-  clobber any activations that have been developing over time.  THE FIX
-  FOR NOW: DON'T INCLUDE INITIAL CREDENCES.
 
 . I've added a lot of optional arguments in the proposition-update call
   tree order to use some of this code in new ways while trying not to
