@@ -91,6 +91,7 @@ of his GET-CONVERSERS list."
 (defun put-in-group (person group)
   "Puts PERSON in GROUP if s/he is not already there.
 Also adds GROUP to PERSON's 'GROUPS property.
+RETURNS: Person's groups after everything is done.
 SPECIAL BEHAVIOR:  If GROUP is NIL, puts PERSON in *THE-POPULATION*
 but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
   (if group
@@ -98,7 +99,8 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
         (setf *all-soc-net-groups* (cons-if-new group *all-soc-net-groups*))
         (setf (get group 'members) (cons-if-new person (get group 'members)))
         (setf (get person 'groups) (cons-if-new group (flatten (list (get person 'groups)))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
-      (setf (get *the-population* 'members) (cons-if-new person (get *the-population* 'members)))))
+      (setf (get *the-population* 'members) (cons-if-new person (get *the-population* 'members))))
+  (get person 'groups))
 
 
 (defun put-in-groups (person list-of-groups)
@@ -176,9 +178,9 @@ RETURNS: A list of all of the groups in the 'TALKS-TO property of every SPEAKER 
   (let ((speaker (first speaker-listener))
         (listener (second speaker-listener)))
     (setf (get speaker 'talks-to)
-         (remove-duplicates
-          (append (put-in-group listener group)
-                  (get speaker 'talks-to))))))
+          (remove-duplicates
+            (append (put-in-group listener group)
+                    (get speaker 'talks-to))))))
 
 
 ;;; I know this is bad style and I don't know why it returns nil, but it seems to be doing
