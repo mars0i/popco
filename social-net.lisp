@@ -96,9 +96,9 @@ but does not add *THE-POPULATION* to PERSON's 'GROUPS property."
   (if group
       (progn
         (setf *all-soc-net-groups* (cons-if-new group *all-soc-net-groups*))
-        (put group 'members (cons-if-new person (get group 'members)))
-        (put person 'groups (cons-if-new group (flatten (list (get person 'groups)))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
-      (put *the-population* 'members (cons-if-new person (get *the-population* 'members)))))
+        (setf (get group 'members) (cons-if-new person (get group 'members)))
+        (setf (get person 'groups) (cons-if-new group (flatten (list (get person 'groups)))))) ; FLATTEN LIST to deal with if value of groups is a symbol and not a list
+      (setf (get *the-population* 'members) (cons-if-new person (get *the-population* 'members)))))
 
 
 (defun put-in-groups (person list-of-groups)
@@ -159,7 +159,7 @@ with all persons having their 'TALKS-TO eq their 'GROUPS."
 Puts GROUP in PERSON 'GROUPS
 Puts GROUP in PERSON 'TALKS-TO"
   (put-in-group person group)
-  (put person 'talks-to (cons-if-new group (get person 'talks-to))))
+  (setf (get person 'talks-to) (cons-if-new group (get person 'talks-to))))
 
 
 ;;; Can't decide whether what this returns is useful or not... Seems like it might be.
@@ -175,7 +175,7 @@ RETURNS: A list of all of the groups in the 'TALKS-TO property of every SPEAKER 
   "Puts LISTENER in GROUP (default: arbitarily-named new group) and adds GROUP to SPEAKER'S 'TALKS-TO"
   (let ((speaker (first speaker-listener))
         (listener (second speaker-listener)))
-    (put speaker 'talks-to 
+    (setf (get speaker 'talks-to)
          (remove-duplicates
           (append (put-in-group listener group)
                   (get speaker 'talks-to))))))
