@@ -19,6 +19,8 @@
 # df <- multiRA2meanDF(mra, "H", "P") # defaults to last tick only
 # Do that twice, and then you can combine the dfs like this:
 # df <- combineMeanDFsWithBiases <- function(dfs, biases)
+# e.g.
+# df <- combineMeanDFsWithBiases <- function(list(dfb, dfv), c("beast, # # "virus"))
 
 #
 # EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
