@@ -1,0 +1,32 @@
+In R, see "Writing R Extensions" in Help.
+There's also a "tutorial" at http://cran.r-project.org/doc/contrib/Leisch-CreatingPackages.pdf, but you have to wade through lots of irrelevant stuff
+to get to the important stuff at the end, which isn't very clearly
+presented anyway.
+
+Well actually that PDF is useful.  Go to section 5.2.  That might
+be all you need.  i.e. do something like this:
+
+mv old package dir so that R can make a new one.
+
+I thought this would work, but seems not:
+package.skeleton(name="popco", code_files=c("df2ra.R","popcoplots.R","popcotests.R","utils.R"))
+
+Better:
+source all the R files you want included, then just do:
+	package.skeleton(name="popco")
+
+Now copy doc files etc that you had hacked earlier from the old
+package dir to the new one:
+
+	cp olddir/DESCRIPTION newdir
+	olddir/man/* newdir/man
+
+Then from the command line, do e.g. from the dir that contains the
+newly created package dir:
+
+	R CMD INSTALL -l `pwd` popco
+
+This is in section 6 of the "tutorial".
+
+Then fix any problems.
+
