@@ -29,4 +29,6 @@ newly created package dir:
 This is in section 6 of the "tutorial".
 
 Then fix any problems.
-
+This mostly has to do with adding the function name near the beginning
+of the Rd files, and maybe deleting some unnecessary comment lines.  An
+ed or perl script is useful if you need to do this to a lot of files.
