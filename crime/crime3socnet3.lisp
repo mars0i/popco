@@ -1,11 +1,13 @@
-;;;; crime3socnet1.lisp
-;;;; experiment with social network functions
-;;;; two distinct subpops who don't communicate with each other, 
+;;;; crime3socnet3.lisp
+;;;; experiment with social network functions:
+;;;; Two distinct subpops who mostly don't communicate with each other, 
 ;;;; but have different biases, and both listen to the same pundit.
-;;;; This should roughly duplicate the effect of running 
-;;;; crime3b.lisp and crime3c.lisp separately, although initially
-;;;; I'm doing these runs with fewer members in each subpop (10) rather
-;;;; than the 20 + pundit in crime3b.lisp and crime3c.lisp.
+;;;; This differs from crime3socnet1.lisp in that there is a pair of
+;;;; individuals, one from each subpop, who are willing to talk to each other.
+;;;; They're given distinguished names, "whorf" [sic--s/b "worf"] and "kira".
+;;;; [Note that since by default each person only talks to one
+;;;; individual on each tick, Whorf and Kira will only talk to each other
+;;;; about 1/10 of the time, other things being equal.]
 
 (load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime3")
@@ -25,6 +27,8 @@
 (n-persons-with-name 'template-v 'v (1- *group-size*))
 (kill 'template-v)
 (make-virus-bias-crime-talker 'whorf '() '(vulcans ds9) '(vulcans ds9))
+;; Oops, should have been 'worf'.  
+;; (Then again, why not merge Benjamin Lee and the son of Mogh?)
 
 (make-beast-bias-crime-talker 'template-b '() 'bajorans '(bajorans))
 (n-persons-with-name 'template-b 'b (1- *group-size*))
