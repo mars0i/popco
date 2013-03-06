@@ -18,21 +18,29 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
+;;; see comment below for meaning of parameters
+
+;; The Pundit (the environment, the TV, etc.)
 (make-no-bias-crime-talker 'aa crime-propns 'pundits '(vulcans bajorans))  ; pundit
 
+;; Vulcans who talk only to to Vulcans
 (make-virus-bias-crime-talker 'template-v '() 'vulcans '(vulcans))
 (n-persons-with-name 'template-v 'v (- *group-size* *link-subset-size*))
 (kill 'template-v)
 
-(make-virus-bias-crime-talker 'template-vf '() '(vulcans federation) '(vulcans federation))
+;; Vulcans who talk to friendly Bajorans
+;;                              my name    I see      my groups                  I talk to
+(make-virus-bias-crime-talker 'template-vf '() '(vulcans friendly-vulcans) '(vulcans friendly-bajorans))
 (n-persons-with-name 'template-vf 'vf *link-subset-size*)
 (kill 'template-vf)
 
+;; Bajorans who talk only to Bajorans
 (make-beast-bias-crime-talker 'template-b '() 'bajorans '(bajorans))
 (n-persons-with-name 'template-b 'b (- *group-size* *link-subset-size*))
 (kill 'template-b)
 
-(make-virus-bias-crime-talker 'template-bf '() '(bajorans federation) '(bajorans federation))
+;; Bajorans who talk to friendly Vulcans
+(make-virus-bias-crime-talker 'template-bf '() '(bajorans friendly-bajorans) '(bajorans friendly-vulcans))
 (n-persons-with-name 'template-bf 'bf *link-subset-size*)
 (kill 'template-bf)
 
