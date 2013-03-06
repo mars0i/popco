@@ -30,7 +30,7 @@
 
 ;; Vulcans who talk to friendly Bajorans
 ;;                              my name    I see      my groups                  I talk to
-(make-virus-bias-crime-talker 'template-vf '() '(vulcans friendly-vulcans) '(vulcans friendly-bajorans))
+(make-virus-bias-crime-talker 'template-vf '() '(vulcans federation) '(vulcans federation))
 (n-persons-with-name 'template-vf 'vf *link-subset-size*)
 (kill 'template-vf)
 
@@ -40,7 +40,7 @@
 (kill 'template-b)
 
 ;; Bajorans who talk to friendly Vulcans
-(make-virus-bias-crime-talker 'template-bf '() '(bajorans friendly-bajorans) '(bajorans friendly-vulcans))
+(make-virus-bias-crime-talker 'template-bf '() '(bajorans federation) '(bajorans federation))
 (n-persons-with-name 'template-bf 'bf *link-subset-size*)
 (kill 'template-bf)
 
