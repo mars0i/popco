@@ -29,7 +29,7 @@
 (kill 'template-v)
 
 ;; Vulcans who talk to friendly Bajorans
-;;                              my name    I see      my groups                  I talk to
+;;                              my name    I see      my groups           I talk to
 (make-virus-bias-crime-talker 'template-vf '() '(vulcans federation) '(vulcans federation))
 (n-persons-with-name 'template-vf 'vf *link-subset-size*)
 (kill 'template-vf)
