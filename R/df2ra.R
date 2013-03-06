@@ -20,7 +20,10 @@
 # Do that twice, and then you can combine the dfs like this:
 # df <- combineMeanDFsWithBiases <- function(dfs, biases)
 # e.g.
-# df <- combineMeanDFsWithBiases <- function(list(dfb, dfv), c("beast, # # "virus"))
+# df <- combineMeanDFsWithBiases <- function(list(dfv, dfb), c("virus", "beast))
+#
+# Or do it all at once:
+# df <- multiRAs2combinedMeanDF(list(mra1, mra2, ...), c("CV", "CB"), c("virus", "beast"))
 
 #
 # EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
@@ -339,6 +342,18 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
   df[[dom1]] <- as.numeric(df[[dom1]])
   df[[dom2]] <- as.numeric(df[[dom2]])
   df
+}
+
+# Given a list [i.e. with list(), not c()] of multi-run arrays, and a list or vector of strings
+# to use as names of the bias of each array, and two prefix strings for propositions, calls
+# multiRA2meanDF repeatedly on the arrays using the two prefix strings, and then combines the
+# resulting dataframes into one dataframe by passing them along with the vector/list of bias strings 
+# to combineMeanDFsWithBiases.
+# Examples:
+# df <- multiRAs2combinedMeanDF(list(mra1, mra2, mra3), c("virus", "beast", "both"), "CV", "CB")
+# df <- multiRAs2combinedMeanDF(list(mra[2:11,,,], mra[12:21,,,]), c("beast", "virus"), "CV", "CB")
+multiRAs2combinedMeanDF <- function(mras, biases, dom1, dom2, lastTick=dim(mras[[1]])[3], firstTick=lastTick) {
+  combineMeanDFsWithBiases(lapply(mras, multiRA2meanDF, dom1, dom2, lastTick, firstTick), biases)
 }
 
 # dfs must be a list, but biases can be either a list or a vector
