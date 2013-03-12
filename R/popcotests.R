@@ -16,6 +16,8 @@ ksBootTwoMeanDFs <- function(df1, df2, dom, ...) {
 
 # Same thing, but selects only rows with a particular bias from
 # a dataframe which is a combination of different mean dfs.
+# Usage example:
+# ksBootTwoMeanDFsForBias(socnet2t5000.df, socnet3t5000.df, "CV", "virus", nboots=10000)$ks.boot.pvalue
 ksBootTwoMeanDFsForBias <- function(df1, df2, dom, bias, ...) {
   ksBootTwoMeanDFs(df1[df1$bias==bias,], df2[df2$bias==bias,], dom, ...)
 }
