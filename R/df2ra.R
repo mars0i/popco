@@ -23,7 +23,7 @@
 # df <- combineMeanDFsWithBiases <- function(list(dfv, dfb), c("virus", "beast))
 #
 # Or do it all at once:
-# df <- multiRAs2combinedMeanDF(list(mra1, mra2, ...), c("CV", "CB"), c("virus", "beast"))
+# df <- multiRAs2combinedMeanDF(list(mra1, mra2), c("virus", "beast"), "CV", "CB")
 
 #
 # EXAMPLES: HOW TO CREATE A LIST OF POSS FOCI TOWARD WHICH RUN MEANS SHOULD CONVERGE:
