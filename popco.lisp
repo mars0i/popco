@@ -45,7 +45,7 @@
 
 ;; Call to MAKE-RANDOM-STATE now in variables.lisp, to precede setting *run-id*, which is used in other files.
 
-(defvar *data-dir* "../data")
+(defvar *data-dir* "data")
 
 (defvar *random-state-file* (format nil "~A/~A.lisp" *data-dir* *run-id*)) ; we'll write code to restore this session's random state here
 
