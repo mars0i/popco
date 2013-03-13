@@ -1,0 +1,14 @@
+module avail 
+  list possible modules
+
+module load R/R-2.15.0
+  load that version of R
+
+module list
+  list what I've got loaded
+
+module rm amodule
+  unload it
+
+module clear
+  unload all of 'em

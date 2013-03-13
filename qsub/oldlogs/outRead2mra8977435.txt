@@ -1,0 +1,326 @@
+/scratch/user/mabrams/data
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> source("~/pop/R/df2ra.R")
+> setwd("/scratch/user/mabrams/data/crime3/d2pundits")
+> mra3d2p <- read2multirunRA(c("RUN009669930.csv","RUN015688954.csv","RUN022415708.csv","RUN035977104.csv","RUN038930393.csv","RUN046441215.csv","RUN047078788.csv","RUN049479747.csv","RUN057794138.csv","RUN062835686.csv","RUN064342010.csv","RUN076893536.csv","RUN091848438.csv","RUN098310779.csv","RUN101320948.csv","RUN122759155.csv","RUN132871493.csv","RUN139634235.csv","RUN169125672.csv","RUN178373090.csv","RUN183372617.csv","RUN188565496.csv","RUN199935661.csv","RUN205933941.csv","RUN207142359.csv","RUN229264086.csv","RUN230373248.csv","RUN238893822.csv","RUN248379684.csv","RUN258394190.csv","RUN263123972.csv","RUN278582631.csv","RUN284067996.csv","RUN290488697.csv","RUN294251081.csv","RUN312802243.csv","RUN324811933.csv","RUN348364047.csv","RUN369777622.csv","RUN377016883.csv","RUN402032695.csv","RUN412131731.csv","RUN447691674.csv","RUN448138106.csv","RUN449837462.csv","RUN456626705.csv","RUN459894791.csv","RUN472920184.csv","RUN482014864.csv","RUN483698638.csv","RUN512717401.csv","RUN539496661.csv","RUN547705273.csv","RUN557491452.csv","RUN559090359.csv","RUN566958932.csv","RUN578319701.csv","RUN588903559.csv","RUN591244782.csv","RUN591925713.csv","RUN606901366.csv","RUN618535046.csv","RUN620889717.csv","RUN623434878.csv","RUN632733074.csv","RUN665732181.csv","RUN669494209.csv","RUN690585169.csv","RUN704566381.csv","RUN707275687.csv","RUN710404600.csv","RUN715864021.csv","RUN716383421.csv","RUN726202422.csv","RUN733102265.csv","RUN739193544.csv","RUN742490305.csv","RUN786484205.csv","RUN798575444.csv","RUN813655003.csv","RUN815039589.csv","RUN815122237.csv","RUN821140824.csv","RUN836554234.csv","RUN841433601.csv","RUN845994254.csv","RUN851465147.csv","RUN863665832.csv","RUN876934464.csv","RUN882487263.csv","RUN890721002.csv","RUN900332119.csv","RUN915347116.csv","RUN919621378.csv","RUN939684021.csv","RUN942836450.csv","RUN965942314.csv","RUN967599090.csv","RUN979684802.csv","RUN998196034.csv"))
+converting arrays to mulitrun array
+RUN009669930.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN015688954.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN022415708.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN035977104.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN038930393.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN046441215.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN047078788.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN049479747.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN057794138.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN062835686.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN064342010.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN076893536.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN091848438.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN098310779.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN101320948.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN122759155.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN132871493.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN139634235.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN169125672.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN178373090.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN183372617.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN188565496.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN199935661.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN205933941.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN207142359.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN229264086.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN230373248.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN238893822.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN248379684.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN258394190.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN263123972.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN278582631.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN284067996.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN290488697.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN294251081.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN312802243.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN324811933.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN348364047.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN369777622.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN377016883.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN402032695.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN412131731.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN447691674.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN448138106.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN449837462.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN456626705.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN459894791.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN472920184.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN482014864.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN483698638.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN512717401.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN539496661.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN547705273.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN557491452.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN559090359.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN566958932.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN578319701.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN588903559.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN591244782.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN591925713.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN606901366.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN618535046.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN620889717.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN623434878.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN632733074.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN665732181.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN669494209.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN690585169.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN704566381.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN707275687.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN710404600.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN715864021.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN716383421.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN726202422.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN733102265.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN739193544.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN742490305.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN786484205.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN798575444.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN813655003.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN815039589.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN815122237.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN821140824.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN836554234.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN841433601.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN845994254.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN851465147.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN863665832.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN876934464.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN882487263.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN890721002.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN900332119.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN915347116.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN919621378.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN939684021.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN942836450.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN965942314.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN967599090.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN979684802.csv 
+converting dframe to array, using ticks 1 to 5000 
+converting arrays to mulitrun array
+RUN998196034.csv 
+converting dframe to array, using ticks 1 to 5000 
+> save(mra3d2p, file="mra3d2p.rdata")
+> 

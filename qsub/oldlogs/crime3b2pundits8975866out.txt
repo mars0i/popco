@@ -1,0 +1,3315 @@
+start: Fri Feb 15 13:54:11 CST 2013
+This is SBCL 1.1.3, an implemThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE,This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE,
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN422563620.csv"
+g analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN936506482.csv"
+/b2pundits/RUN942352323.csv"
+start: Fri Feb 15 13:58:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN211290211.csv"
+start: Fri Feb 15 14:00:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN590625726.csv"
+start: Fri Feb 15 14:04:11 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN146195993.csv"
+start: Fri Feb 15 14:07:58 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN706051005.csv"
+start: Fri Feb 15 14:16:41 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorpThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN645698831.csv"
+start: Fri Feb 15 14:18:32 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN923359015.csv"
+start: Fri Feb 15 14:19:57 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN299497147.csv"
+Evaluation took:
+  1354.314 seconds of real time
+  1352.901328 seconds of total run time (1348.516994 user, 4.384334 system)
+  [ Run times consist of 50.999 seconds GC time, and 1301.903 seconds non-GC time. ]
+  99.90% CPU
+  37 lambdas converted
+  3,602,677,424,098 processor cycles
+  473,588,422,688 bytes consed
+  
+start: Fri Feb 15 14:21:11 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN119976342.csv"
+Evaluation took:
+  1373.564 seconds of real time
+  1370.957582 seconds of total run time (1366.098321 user, 4.859261 system)
+  [ Run times consist of 51.053 seconds GC time, and 1319.905 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  3,653,909,024,299 processor cycles
+  473,570,968,112 bytes consed
+  
+start: Fri Feb 15 14:23:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN190096467.csv"
+start: Fri Feb 15 14:24:41 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN399263308.csv"
+Evaluation took:
+  1344.946 seconds of real time
+  1343.257793 seconds of total run time (1338.485519 user, 4.772274 system)
+  [ Run times consist of 51.044 seconds GC time, and 1292.214 seconds non-GC time. ]
+  99.87% CPU
+  37 lambdas converted
+  3,577,783,245,849 processor cycles
+  473,586,868,320 bytes consed
+  
+start: Fri Feb 15 14:26:42 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN266814564.csv"
+start: Fri Feb 15 14:29:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN378025775.csv"
+Evaluation took:
+  1357.243 seconds of real time
+  1354.695055 seconds of total run time (1350.083756 user, 4.611299 system)
+  [ Run times consist of 50.644 seconds GC time, and 1304.052 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  3,610,493,713,117 processor cycles
+  473,608,550,848 bytes consed
+  
+start: Fri Feb 15 14:30:42 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN016511694.csv"
+start: Fri Feb 15 14:31:57 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN161009414.csv"
+start: Fri Feb 15 14:38:56 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN478748108.csv"
+Evaluation took:
+  1336.113 seconds of real time
+  1335.505972 seconds of total run time (1331.001657 user, 4.504315 system)
+  [ Run times consist of 49.504 seconds GC time, and 1286.002 seconds non-GC time. ]
+  99.95% CPU
+  37 lambdas converted
+  3,554,259,240,877 processor cycles
+  473,585,898,624 bytes consed
+  
+start: Fri Feb 15 14:40:56 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN613242492.csv"
+Evaluation took:
+  1343.600 seconds of real time
+  1341.922997 seconds of total run time (1337.589656 user, 4.333341 system)
+  [ Run times consist of 51.366 seconds GC time, and 1290.557 seconds non-GC time. ]
+  99.88% CPU
+  37 lambdas converted
+  3,574,175,085,207 processor cycles
+  473,588,821,200 bytes consed
+  
+start: Fri Feb 15 14:43:41 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN966289816.csv"
+Evaluation took:
+  1373.654 seconds of real time
+  1372.850295 seconds of total run time (1367.708077 user, 5.142218 system)
+  [ Run times consist of 53.385 seconds GC time, and 1319.466 seconds non-GC time. ]
+  99.94% CPU
+  37 lambdas converted
+  3,654,149,730,682 processor cycles
+  473,578,974,176 bytes consed
+  
+start: Fri Feb 15 14:46:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN825586647.csv"
+start: Fri Feb 15 14:46:56 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN259543012.csv"
+Evaluation took:
+  3212.100 seconds of real time
+  3201.707266 seconds of total run time (3188.945206 user, 12.762060 system)
+  [ Run times consist of 156.568 seconds GC time, and 3045.140 seconds non-GC time. ]
+  99.68% CPU
+  37 lambdas converted
+  5,150,975,277,179 processor cycles
+  473,618,814,816 bytes consed
+  
+start: Fri Feb 15 14:47:56 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN376714220.csv"
+Evaluation took:
+  3268.103 seconds of real time
+  3253.215436 seconds of total run time (3240.348392 user, 12.867044 system)
+  [ Run times consist of 157.176 seconds GC time, and 3096.040 seconds non-GC time. ]
+  99.54% CPU
+  37 lambdas converted
+  5,240,779,853,147 processor cycles
+  473,598,350,832 bytes consed
+  
+Evaluation took:
+  3273.207 seconds of real time
+  3254.790197 seconds of total run time (3242.018138 user, 12.772059 system)
+  [ Run times consist of 161.337 seconds GC time, and 3093.454 seconds non-GC time. ]
+  99.44% CPU
+  37 lambdas converted
+  5,249,002,334,828 processor cycles
+  473,547,445,632 bytes consed
+  
+start: Fri Feb 15 14:48:57 CST 2013
+This is SBCL 1.1.3, an implemThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN299635098.csv"
+start: Fri Feb 15 14:49:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN124232979.csv"
+Evaluation took:
+  1334.809 seconds of real time
+  1334.182174 seconds of total run time (1330.177783 user, 4.004391 system)
+  [ Run times consist of 50.608 seconds GC time, and 1283.575 seconds non-GC time. ]
+  99.95% CPU
+  37 lambdas converted
+  3,550,797,333,384 processor cycles
+  473,566,303,104 bytes consed
+  
+start: Fri Feb 15 14:51:59 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN704997788.csv"
+Evaluation took:
+  1353.188 seconds of real time
+  1349.363866 seconds of total run time (1344.846553 user, 4.517313 system)
+  [ Run times consist of 50.957 seconds GC time, and 1298.407 seconds non-GC time. ]
+  99.72% CPU
+  37 lambdas converted
+  3,599,705,477,238 processor cycles
+  473,573,429,680 bytes consed
+  
+start: Fri Feb 15 14:53:26 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN579572644.csv"
+Evaluation took:
+  1337.165 seconds of real time
+  1333.882218 seconds of total run time (1329.742848 user, 4.139370 system)
+  [ Run times consist of 50.711 seconds GC time, and 1283.172 seconds non-GC time. ]
+  99.75% CPU
+  37 lambdas converted
+  3,557,065,954,437 processor cycles
+  473,583,940,720 bytes consed
+  
+start: Fri Feb 15 14:54:27 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN671956113.csv"
+Evaluation took:
+  1409.462 seconds of real time
+  1407.394044 seconds of total run time (1401.836889 user, 5.557155 system)
+  [ Run times consist of 54.014 seconds GC time, and 1353.381 seconds non-GC time. ]
+  99.85% CPU
+  37 lambdas converted
+  3,749,380,713,157 processor cycles
+  473,604,340,896 bytes consed
+  
+start: Fri Feb 15 15:02:42 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN286723404.csv"
+Evaluation took:
+  1337.176 seconds of real time
+  1336.744784 seconds of total run time (1332.158481 user, 4.586303 system)
+  [ Run times consist of 50.666 seconds GC time, and 1286.079 seconds non-GC time. ]
+  99.97% CPU
+  37 lambdas converted
+  3,557,084,444,525 processor cycles
+  473,600,823,456 bytes consed
+  
+start: Fri Feb 15 15:03:27 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN796085979.csv"
+Evaluation took:
+  1339.624 seconds of real time
+  1337.822620 seconds of total run time (1333.581265 user, 4.241355 system)
+  [ Run times consist of 51.609 seconds GC time, and 1286.214 seconds non-GC time. ]
+  99.87% CPU
+  37 lambdas converted
+  3,563,597,892,304 processor cycles
+  473,589,634,048 bytes consed
+  
+start: Fri Feb 15 15:06:18 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN048724950.csv"
+start: Fri Feb 15 15:06:43 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN349950545.csv"
+Evaluation took:
+  1380.285 seconds of real time
+  1375.562882 seconds of total run time (1370.551644 user, 5.011238 system)
+  [ Run times consist of 52.989 seconds GC time, and 1322.574 seconds non-GC time. ]
+  99.66% CPU
+  37 lambdas converted
+  3,671,788,999,868 processor cycles
+  473,590,972,064 bytes consed
+  
+Evaluation took:
+  1354.861 seconds of real time
+  1353.072302 seconds of total run time (1348.836946 user, 4.235356 system)
+  [ Run times consist of 49.987 seconds GC time, and 1303.086 seconds non-GC time. ]
+  99.87% CPU
+  37 lambdas converted
+  3,604,138,488,695 processor cycles
+  473,590,969,520 bytes consed
+  
+start: Fri Feb 15 15:09:47 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN832373839.csv"
+/b2pundits/RUN649479673.csv"
+Evaluation took:
+  3267.793 seconds of real time
+  3249.331027 seconds of total run time (3236.481980 user, 12.849047 system)
+  [ Run times consist of 157.258 seconds GC time, and 3092.074 seconds non-GC time. ]
+  99.44% CPU
+  37 lambdas converted
+  5,240,320,737,551 processor cycles
+  473,605,782,272 bytes consed
+  
+start: Fri Feb 15 15:11:31 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN501463867.csv"
+start: ion took:
+  1353.158 seconds of real time
+  1350.727659 seconds of total run time (1346.206346 user, 4.521313 system)
+  [ Run times consist of 51.621 seconds GC time, and 1299.107 seconds non-GC time. ]
+  99.82% CPU
+  37 lambdas converted
+  3,599,633,095,287 processor cycles
+  473,607,107,232 bytes consed
+  
+Fri Feb 15 15:12:01 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorpThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN822715078.csv"
+Evaluation took:
+  1375.607 seconds of real time
+  1373.294226 seconds of total run time (1369.102864 user, 4.191362 system)
+  [ Run times consist of 50.897 seconds GC time, and 1322.398 seconds non-GC time. ]
+  99.83% CPU
+  37 lambdas converted
+  3,659,334,885,712 processor cycles
+  473,600,566,144 bytes consed
+  
+start: Fri Feb 15 15:15:15 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN732813706.csv"
+Evaluation took:
+  3373.043 seconds of real time
+  3357.529578 seconds of total run time (3344.723525 user, 12.806053 system)
+  [ Run times consist of 162.939 seconds GC time, and 3194.591 seconds non-GC time. ]
+  99.54% CPU
+  37 lambdas converted
+  5,409,072,159,026 processor cycles
+  473,549,251,824 bytes consed
+  
+start: Fri Feb 15 15:16:15 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN273931710.csv"
+start: Fri Feb 15 15:17:01 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN582455519.csv"
+Evaluation took:
+  1346.603 seconds of real time
+  1345.318480 seconds of total run time (1341.255098 user, 4.063382 system)
+  [ Run times consist of 49.529 seconds GC time, and 1295.790 seconds non-GC time. ]
+  99.90% CPU
+  37 lambdas converted
+  3,582,164,259,775 processor cycles
+  473,559,248,336 bytes consed
+  
+Evaluation took:
+  1420.918 seconds of real time
+  1418.863300 seconds of total run time (1413.134171 user, 5.729129 system)
+  [ Run times consist of 54.252 seconds GC time, and 1364.612 seconds non-GC time. ]
+  99.86% CPU
+  37 lambdas converted
+  3,779,855,432,224 processor cycles
+  473,571,702,736 bytes consed
+  
+start: Fri Feb 15 15:26:31 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN015826640.csv"
+start: Fri Feb 15 15:28:00 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorpThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN203420749.csv"
+Evaluation took:
+  1353.059 seconds of real time
+  1350.810646 seconds of total run time (1346.448309 user, 4.362337 system)
+  [ Run times consist of 52.519 seconds GC time, and 1298.292 seconds non-GC time. ]
+  99.83% CPU
+  37 lambdas converted
+  3,599,338,199,208 processor cycles
+  473,581,342,784 bytes consed
+  
+start: Fri Feb 15 15:29:01 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN962988895.csv"
+start: Fri Feb 15 15:30:15 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN297928204.csv"
+start: Fri Feb 15 15:31:01 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN999699742.csv"
+start: start: start:  15 15:33:00 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+bution for more information.
+This is SBCL 1.1.3, an implemstart: n of ANSI Common Lisp.
+More information about SBCL This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.This isFri Feb 15 15:33:01 CST 2013
+n of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This prostart: " 
+"Welcome to COHERE,This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS anThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+start: start: come to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+ilable at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+start: Fri Feb 15 15:33:01 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+solutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+start: Fri Feb 15 15:33:02 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; sThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+S
+CL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+ostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+ome portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+start: " 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+start:  15 15:33:03 CST 2013
+T 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+ome portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+33:04 CST 2013
+CST 2013
+ating ACME, ECHO, DECO, IMP, HOTCO etc." 
+This is S"Version "POPCO" 
+, 2000" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP,ailable at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+0." 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style "Permission is granted for use for research purposes only." 
+ion for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+ximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN083733209.csv"
+"Modifications, additionaThis is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+tart: 9 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+Recreating output file csv file "../data/crime3/b2pundits/RUN310796917.csv"
+hagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+start:  15 15:33:05 CST 2013
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+tem:
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+    cl-ppcre
+  Load 1 ASDF system:
+  Load 1 ASDF system:
+; Loading "cl-ppcre"
+    cl-ppcre
+    cl-ppcre
+; Loading "cl-ppcre"
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation.increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -..2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy   Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+works for each person ....
+
+(P20 P1This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+ome portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+ranted for use for research purposes only." 
+"Permission is granted for use for research purposes only." 
+ohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" 
+
+opco-fmt-guessCmds" "popco" 
+rporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+start: OPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+Output threshold unchanged at 0.0d0
+
+COHERE+POPCO ready.
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+Creating analogy networks for each person ....
+
+acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+Fri Feb 15 15:33:07 CST 2013
+ockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+Excitation increased from 0.04d0 to 0.1d0
+Decay unchanged at 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+
+Creating analogy networks for each person ....
+Creating analogy networks for each person ....
+
+ P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+sv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN030174157.csv"
+"social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "perso
+Creating analogy networks for each person ....
+
+" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+
+Creating analogy networks for each person ....
+Creating analogy networks for each person ....
+
+9 P08 P07 P06 P05 P04 P03 P02
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN983642052.csv"
+
+"POPCO" 
+"Welcome to COHERE, incorporating ACME, ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+P05 P04 P03 P02
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+Recreating output file csv file "../data/crime3/b2pundits/RUN468358761.csv"
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN207698379.csv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN660329846.csv"
+ck(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+
+
+Recreating output file csv file "../data/crime3/b2pundits/RUN343070215.csv"
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN911462886.csv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN421360648.csv"
+mack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+  Load 1 ASDF system:
+    cl-ppcre
+    cl-ppcre
+; Loading "cl-ppcre"
+; Loading "cl-ppcre"
+.Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+..
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN723701900.csv"
+loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inh  Load 1 ASDF system:
+    cl-ppcre
+ -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+Creating analogy networks for each person ....
+"Main POPCO routines loaded (popco; Loading "cl-ppcre"
+..sberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+isfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+"variables" "utilities" "n"Permission is granted for use for research purposes only." 
+" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt  Load 1 ASDF system:
+co-fmt-guessML-specific1" "popco-model-run" 
+ific1" "popco-model-run" 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+"Modifications, additional code for POPCO by Marshall Abram"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+(.20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 ; Loading "cl-pp".BCL-specific code:" "sbcl-sockets" "popco-fmt P01 AAF AAT. 
+pco" 
+ "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+s" "popco" 
+[ Run times consist of 79.036 seconds GC time, and 1504.566 seconds non-GC time. ]
+  99.76% CPU
+  37 lambdas converted
+  4,750,209,730,379 processor cycles
+  473,587,300,144 bytes consed
+  
+s in the
+distribution for more information.
+
+SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+; Loading "cl-ppcre"
+P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+.do-converse* T; *do-; Loading "cl-ppcre"
+ *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+opyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+89params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+Recreating output file csv file "../data/crime3/b2pundits/RUN832077904.csv"
+eased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"HT1989params" Network and ACME parameters set to values specified in Holyoak "Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating start: utput threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+ExciDecay unchanged at 0.1d0
+4d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+HT1989params" Network anCOHERE+POPCO ready.
+t to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+P
+PCO ready.
+
+creased from 0.04d0 to 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+.COHERE+POPCO ready.
+
+rks for each person ....
+
+r.reating analogy networks for each person ...
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of
+
+ cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+
+opco-fmt-guessML-specific1" "popco-model-run" 
+variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" ."SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" "SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+ting rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+..BCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPC."variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+reating analogy networks for each person ....
+
+ic code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+Decay unch"HT1989params" "Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+9 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+Excitation increased from 0.04d0 to OutputOutput threshold unchanged at This is SBCL 1.1.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+o.lisp)." Now using Grossbe"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+ set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+Decay unchanged at 0.1d0
+
+COHERE+POPCO ready.
+
+reating analogy networks for each person ....
+
+tion intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+tworks for each person ....
+"POPCO" 
+"Welcome to COHERE, incorporating ACME
+
+ECHO, DECO, IMP, HOTCO etc." 
+"Version 4.0. June, 2000" 
+"This program is copyright (c) Paul Thagard 1996, 1997, 2000." 
+"Permission is granted for use for research purposes only." 
+"Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
++POPCO ready.
+
+
+BCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+ile csv file "../data/crime3/b2pundits/RUN871740661.csv"
+'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'AnaRecreating output file csv file "../data/crime3/b2pundits/RUN984511451.csv"
+logy networks for each person ....
+
+2 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02Recreating output file csv file "../data/crime3/b2pundits/RUN136078749.csv"
+ck(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN351493575.csv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN236233088.csv"
+"social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+Creating analogy networks for each person ....
+
+P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN178384379.csv"
+
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+
+Recreating output file csv file "../data/crime3/b2pundits/RUN148543761.csv"
+
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tiRecreating output file csv file "../data/crime3/b2pundits/RUN715638930.csv"
+ NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN848820058.csv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN314520591.csv"
+
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN810046105.csv"
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN671218481.csv"
+2
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN387661242.csv"
+Recreating output file csv file "../data/crime3/b2pundits/RUN906022558.csv"
+tional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+...
+.."variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+."Modifications, additional code for POPCO by Marshall Abrams and Kristen Hammack copyright (c) Marshall Abrams 2012, 2013." To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+
+
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+
+Creating analogy networks for each person ....
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+..
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN305437331.csv"
+
+"variables" "utilities" "network" "echo" "imp" "acme" "cohere" "acme-infer" "social-net" "persons" "popco-macros" "popco-utils" "popco-fmt-utils" "popco-fmt-csv" "popco-fmt-netlogo" "popco-fmt-guessML-general" "popco-fmt-guessML-specific1" "popco-model-run" 
+"SBCL-specific code:" "sbcl-sockets" "popco-fmt-guessCmds" "popco" 
+"Main POPCO routines loaded (popco.lisp)." Now using Grossberg updating rule.
+Output threshold unchanged at 0.0d0
+Decay unchanged at 0.1d0
+Excitation increased from 0.04d0 to 0.1d0
+Inhibition intensified from -0.06d0 to -0.2d0
+"HT1989params" Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.
+
+
+COHERE+POPCO ready.
+
+Creating analogy networks for each person ....
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN497567081.csv"
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN383460071.csv"
+
+(P20 P19 P18 P17 P16 P15 P14 P13 P12 P11 P10 P09 P08 P07 P06 P05 P04 P03 P02
+ P01 AAF AAT) 
+Running popco with maximum of 5 cycles each in 5000 popco tick(s) ....
+*do-converse* T; *do-update-propn-nets* T; *do-report-to-netlogo* NIL; *do-report-propns-to-csv* T; *use-new-random-state* T
+Recreating output file csv file "../data/crime3/b2pundits/RUN877390002.csv"
+Evaluation took:
+  1639.994 seconds of real time
+  1633.282703 seconds of total run time (1625.150940 user, 8.131763 system)
+  [ Run times consist of 77.306 seconds GC time, and 1555.977 seconds non-GC time. ]
+  99.59% CPU
+  37 lambdas converted
+  4,907,451,991,337 processor cycles
+  473,566,201,696 bytes consed
+  
+Evaluation took:
+  1644.296 seconds of real time
+  1641.232496 seconds of total run time (1632.628803 user, 8.603693 system)
+  [ Run times consist of 81.880 seconds GC time, and 1559.353 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  4,920,443,569,323 processor cycles
+  473,540,019,232 bytes consed
+  
+Evaluation took:
+  1351.244 seconds of real time
+  1347.577137 seconds of total run time (1343.062823 user, 4.514314 system)
+  [ Run times consist of 52.411 seconds GC time, and 1295.167 seconds non-GC time. ]
+  99.73% CPU
+  37 lambdas converted
+  3,594,540,226,749 processor cycles
+  473,601,063,296 bytes consed
+  
+Evaluation took:
+  1720.659 seconds of real time
+  1711.532807 seconds of total run time (1701.682305 user, 9.850502 system)
+  [ Run times consist of 90.284 seconds GC time, and 1621.249 seconds non-GC time. ]
+  99.47% CPU
+  37 lambdas converted
+  5,148,937,484,159 processor cycles
+  473,590,918,976 bytes consed
+  
+Evaluation took:
+  1736.279 seconds of real time
+  1729.328102 seconds of total run time (1720.376463 user, 8.951639 system)
+  [ Run times consist of 87.647 seconds GC time, and 1641.682 seconds non-GC time. ]
+  99.60% CPU
+  37 lambdas converted
+  5,195,650,610,633 processor cycles
+  473,578,360,496 bytes consed
+  
+Evaluation took:
+  1367.658 seconds of real time
+  1365.810365 seconds of total run time (1361.201066 user, 4.609299 system)
+  [ Run times consist of 50.793 seconds GC time, and 1315.018 seconds non-GC time. ]
+  99.86% CPU
+  37 lambdas converted
+  3,638,187,918,788 processor cycles
+  473,595,298,976 bytes consed
+  
+Evaluation took:
+  1702.286 seconds of real time
+  1698.872732 seconds of total run time (1688.904248 user, 9.968484 system)
+  [ Run times consist of 87.757 seconds GC time, and 1611.116 seconds non-GC time. ]
+  99.80% CPU
+  37 lambdas converted
+  5,093,940,610,341 processor cycles
+  473,607,803,136 bytes consed
+  
+Evaluation took:
+  1734.683 seconds of real time
+  1730.414937 seconds of total run time (1720.392461 user, 10.022476 system)
+  [ Run times consist of 87.724 seconds GC time, and 1642.691 seconds non-GC time. ]
+  99.75% CPU
+  37 lambdas converted
+  5,190,851,394,270 processor cycles
+  473,560,711,968 bytes consed
+  
+Evaluation took:
+  1363.911 seconds of real time
+  1360.856118 seconds of total run time (1355.793888 user, 5.062230 system)
+  [ Run times consist of 53.890 seconds GC time, and 1306.967 seconds non-GC time. ]
+  99.78% CPU
+  37 lambdas converted
+  3,628,231,218,982 processor cycles
+  473,576,827,344 bytes consed
+  
+Evaluation took:
+  1338.383 seconds of real time
+  1333.778235 seconds of total run time (1329.652862 user, 4.125373 system)
+  [ Run times consist of 51.973 seconds GC time, and 1281.806 seconds non-GC time. ]
+  99.66% CPU
+  37 lambdas converted
+  3,560,306,574,643 processor cycles
+  473,571,843,392 bytes consed
+  
+Evaluation took:
+  3247.624 seconds of real time
+  3237.611808 seconds of total run time (3225.163700 user, 12.448108 system)
+  [ Run times consist of 150.858 seconds GC time, and 3086.754 seconds non-GC time. ]
+  99.69% CPU
+  37 lambdas converted
+  5,207,938,090,313 processor cycles
+  473,573,754,688 bytes consed
+  
+Evaluation took:
+  3316.707 seconds of real time
+  3302.078007 seconds of total run time (3289.573908 user, 12.504099 system)
+  [ Run times consist of 155.014 seconds GC time, and 3147.065 seconds non-GC time. ]
+  99.56% CPU
+  37 lambdas converted
+  5,318,725,413,995 processor cycles
+  473,561,015,584 bytes consed
+  
+Evaluation took:
+  3262.921 seconds of real time
+  3248.871097 seconds of total run time (3236.156030 user, 12.715067 system)
+  [ Run times consist of 160.788 seconds GC time, and 3088.084 seconds non-GC time. ]
+  99.57% CPU
+  37 lambdas converted
+  5,232,507,932,662 processor cycles
+  473,552,851,664 bytes consed
+  
+Evaluation took:
+  3320.476 seconds of real time
+  3297.176753 seconds of total run time (3283.683805 user, 13.492948 system)
+  [ Run times consist of 163.731 seconds GC time, and 3133.446 seconds non-GC time. ]
+  99.30% CPU
+  37 lambdas converted
+  5,324,774,198,921 processor cycles
+  473,602,480,624 bytes consed
+  
+Evaluation took:
+  1344.075 seconds of real time
+  1337.250707 seconds of total run time (1332.919366 user, 4.331341 system)
+  [ Run times consist of 50.952 seconds GC time, and 1286.299 seconds non-GC time. ]
+  99.49% CPU
+  37 lambdas converted
+  3,575,436,015,501 processor cycles
+  473,585,320,464 bytes consed
+  
+Evaluation took:
+  1421.329 seconds of real time
+  1418.183404 seconds of total run time (1413.437125 user, 4.746279 system)
+  [ Run times consist of 53.530 seconds GC time, and 1364.654 seconds non-GC time. ]
+  99.78% CPU
+  37 lambdas converted
+  3,780,950,722,492 processor cycles
+  473,565,925,664 bytes consed
+  
+Evaluation took:
+  1352.966 seconds of real time
+  1341.512059 seconds of total run time (1336.552813 user, 4.959246 system)
+  [ Run times consist of 51.300 seconds GC time, and 1290.213 seconds non-GC time. ]
+  99.15% CPU
+  37 lambdas converted
+  3,599,088,940,166 processor cycles
+  473,591,862,416 bytes consed
+  
+Evaluation took:
+  1355.970 seconds of real time
+  1355.001008 seconds of total run time (1350.636672 user, 4.364336 system)
+  [ Run times consist of 51.226 seconds GC time, and 1303.776 seconds non-GC time. ]
+  99.93% CPU
+  37 lambdas converted
+  3,607,107,025,569 processor cycles
+  473,610,267,120 bytes consed
+  
+Evaluation took:
+  1336.442 seconds of real time
+  1334.637104 seconds of total run time (1330.380751 user, 4.256353 system)
+  [ Run times consist of 51.255 seconds GC time, and 1283.383 seconds non-GC time. ]
+  99.86% CPU
+  37 lambdas converted
+  3,555,136,500,185 processor cycles
+  473,590,627,152 bytes consed
+  
+Evaluation took:
+  1398.085 seconds of real time
+  1396.821650 seconds of total run time (1391.285492 user, 5.536158 system)
+  [ Run times consist of 52.057 seconds GC time, and 1344.765 seconds non-GC time. ]
+  99.91% CPU
+  37 lambdas converted
+  3,719,132,181,618 processor cycles
+  473,590,438,368 bytes consed
+  
+Evaluation took:
+  1366.902 seconds of real time
+  1364.593550 seconds of total run time (1360.616155 user, 3.977395 system)
+  [ Run times consist of 50.103 seconds GC time, and 1314.491 seconds non-GC time. ]
+  99.83% CPU
+  37 lambdas converted
+  3,636,148,710,641 processor cycles
+  473,554,245,040 bytes consed
+  
+Evaluation took:
+  1540.432 seconds of real time
+  1539.720927 seconds of total run time (1532.213068 user, 7.507859 system)
+  [ Run times consist of 74.111 seconds GC time, and 1465.610 seconds non-GC time. ]
+  99.95% CPU
+  37 lambdas converted
+  4,609,509,934,714 processor cycles
+  473,594,611,328 bytes consed
+  
+Evaluation took:
+  1674.278 seconds of real time
+  1671.882834 seconds of total run time (1662.545254 user, 9.337580 system)
+  [ Run times consist of 87.547 seconds GC time, and 1584.336 seconds non-GC time. ]
+  99.86% CPU
+  37 lambdas converted
+  5,010,115,500,954 processor cycles
+  473,588,094,864 bytes consed
+  
+Evaluation took:
+  1676.892 seconds of real time
+  1671.847841 seconds of total run time (1662.080326 user, 9.767515 system)
+  [ Run times consist of 87.197 seconds GC time, and 1584.651 seconds non-GC time. ]
+  99.70% CPU
+  37 lambdas converted
+  5,017,939,296,115 processor cycles
+  473,610,180,416 bytes consed
+  
+Evaluation took:
+  1701.861 seconds of real time
+  1699.648613 seconds of total run time (1690.265040 user, 9.383573 system)
+  [ Run times consist of 87.413 seconds GC time, and 1612.236 seconds non-GC time. ]
+  99.87% CPU
+  37 lambdas converted
+  5,092,646,831,091 processor cycles
+  473,589,289,120 bytes consed
+  
+Evaluation took:
+  1718.709 seconds of real time
+  1715.420217 seconds of total run time (1705.500725 user, 9.919492 system)
+  [ Run times consist of 86.873 seconds GC time, and 1628.548 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  5,143,062,526,568 processor cycles
+  473,608,109,264 bytes consed
+  
+Evaluation took:
+  1722.800 seconds of real time
+  1721.078356 seconds of total run time (1711.000888 user, 10.077468 system)
+  [ Run times consist of 89.330 seconds GC time, and 1631.749 seconds non-GC time. ]
+  99.90% CPU
+  37 lambdas converted
+  5,155,306,716,351 processor cycles
+  473,582,582,608 bytes consed
+  
+Evaluation took:
+  1736.350 seconds of real time
+  1735.509163 seconds of total run time (1726.480535 user, 9.028628 system)
+  [ Run times consist of 86.192 seconds GC time, and 1649.318 seconds non-GC time. ]
+  99.95% CPU
+  37 lambdas converted
+  5,195,834,372,405 processor cycles
+  473,584,274,816 bytes consed
+  
+Evaluation took:
+  3304.252 seconds of real time
+  3279.409454 seconds of total run time (3266.369436 user, 13.040018 system)
+  [ Run times consist of 156.633 seconds GC time, and 3122.777 seconds non-GC time. ]
+  99.25% CPU
+  37 lambdas converted
+  5,298,748,982,142 processor cycles
+  473,587,504,432 bytes consed
+  
+Evaluation took:
+  1736.559 seconds of real time
+  1733.809421 seconds of total run time (1723.983914 user, 9.825507 system)
+  [ Run times consist of 88.608 seconds GC time, and 1645.202 seconds non-GC time. ]
+  99.84% CPU
+  37 lambdas converted
+  5,196,477,616,380 processor cycles
+  473,600,842,336 bytes consed
+  
+Evaluation took:
+  1738.264 seconds of real time
+  1734.593302 seconds of total run time (1724.393852 user, 10.199450 system)
+  [ Run times consist of 89.432 seconds GC time, and 1645.162 seconds non-GC time. ]
+  99.79% CPU
+  37 lambdas converted
+  5,201,465,111,109 processor cycles
+  473,592,163,616 bytes consed
+  
+Evaluation took:
+  1746.098 seconds of real time
+  1739.662531 seconds of total run time (1729.626057 user, 10.036474 system)
+  [ Run times consist of 88.835 seconds GC time, and 1650.828 seconds non-GC time. ]
+  99.63% CPU
+  37 lambdas converted
+  5,225,026,549,603 processor cycles
+  473,579,937,952 bytes consed
+  
+Evaluation took:
+  1759.045 seconds of real time
+  1753.986354 seconds of total run time (1743.337973 user, 10.648381 system)
+  [ Run times consist of 93.131 seconds GC time, and 1660.856 seconds non-GC time. ]
+  99.71% CPU
+  37 lambdas converted
+  5,263,741,888,625 processor cycles
+  473,568,743,936 bytes consed
+  
+Evaluation took:
+  1753.015 seconds of real time
+  1744.024868 seconds of total run time (1734.122374 user, 9.902494 system)
+  [ Run times consist of 88.563 seconds GC time, and 1655.462 seconds non-GC time. ]
+  99.49% CPU
+  37 lambdas converted
+  5,245,724,033,717 processor cycles
+  473,610,085,424 bytes consed
+  
+Evaluation took:
+  1753.015 seconds of real time
+  1745.527640 seconds of total run time (1735.588151 user, 9.939489 system)
+  [ Run times consist of 90.883 seconds GC time, and 1654.645 seconds non-GC time. ]
+  99.57% CPU
+  37 lambdas converted
+  5,245,604,487,855 processor cycles
+  473,615,597,440 bytes consed
+  
+Evaluation took:
+  1767.437 seconds of real time
+  1755.366145 seconds of total run time (1744.678769 user, 10.687376 system)
+  [ Run times consist of 93.036 seconds GC time, and 1662.331 seconds non-GC time. ]
+  99.32% CPU
+  37 lambdas converted
+  5,288,852,233,165 processor cycles
+  473,587,323,248 bytes consed
+  
+Evaluation took:
+  1771.266 seconds of real time
+  1765.011678 seconds of total run time (1754.834225 user, 10.177453 system)
+  [ Run times consist of 91.464 seconds GC time, and 1673.548 seconds non-GC time. ]
+  99.65% CPU
+  37 lambdas converted
+  5,300,318,698,407 processor cycles
+  473,607,336,320 bytes consed
+  
+Evaluation took:
+  1760.547 seconds of real time
+  1749.063102 seconds of total run time (1739.302586 user, 9.760516 system)
+  [ Run times consist of 87.659 seconds GC time, and 1661.405 seconds non-GC time. ]
+  99.35% CPU
+  37 lambdas converted
+  5,268,193,383,015 processor cycles
+  473,564,144,336 bytes consed
+  
+Evaluation took:
+  1760.942 seconds of real time
+  1754.530271 seconds of total run time (1744.223838 user, 10.306433 system)
+  [ Run times consist of 87.624 seconds GC time, and 1666.907 seconds non-GC time. ]
+  99.64% CPU
+  37 lambdas converted
+  5,269,375,456,349 processor cycles
+  473,588,468,368 bytes consed
+  
+Evaluation took:
+  1764.077 seconds of real time
+  1754.536270 seconds of total run time (1744.345819 user, 10.190451 system)
+  [ Run times consist of 90.096 seconds GC time, and 1664.441 seconds non-GC time. ]
+  99.46% CPU
+  37 lambdas converted
+  5,278,753,518,939 processor cycles
+  473,595,051,776 bytes consed
+  
+Evaluation took:
+  1766.550 seconds of real time
+  1758.437677 seconds of total run time (1748.496188 user, 9.941489 system)
+  [ Run times consist of 88.995 seconds GC time, and 1669.443 seconds non-GC time. ]
+  99.54% CPU
+  37 lambdas converted
+  5,286,105,350,255 processor cycles
+  473,591,826,080 bytes consed
+  
+Evaluation took:
+  1776.655 seconds of real time
+  1769.674969 seconds of total run time (1758.283700 user, 11.391269 system)
+  [ Run times consist of 94.105 seconds GC time, and 1675.570 seconds non-GC time. ]
+  99.61% CPU
+  37 lambdas converted
+  5,316,355,103,188 processor cycles
+  473,605,215,536 bytes consed
+  
+Evaluation took:
+  1770.030 seconds of real time
+  1768.771106 seconds of total run time (1758.714635 user, 10.056471 system)
+  [ Run times consist of 88.845 seconds GC time, and 1679.927 seconds non-GC time. ]
+  99.93% CPU
+  37 lambdas converted
+  5,296,639,739,256 processor cycles
+  473,592,017,760 bytes consed
+  
+Evaluation took:
+  1784.941 seconds of real time
+  1777.449787 seconds of total run time (1766.412465 user, 11.037322 system)
+  [ Run times consist of 92.057 seconds GC time, and 1685.393 seconds non-GC time. ]
+  99.58% CPU
+  37 lambdas converted
+  5,341,231,843,088 processor cycles
+  473,610,037,600 bytes consed
+  
+Evaluation took:
+  1786.972 seconds of real time
+  1781.840120 seconds of total run time (1772.164590 user, 9.675530 system)
+  [ Run times consist of 91.674 seconds GC time, and 1690.167 seconds non-GC time. ]
+  99.71% CPU
+  37 lambdas converted
+  5,347,227,509,473 processor cycles
+  473,568,860,288 bytes consed
+  
+Evaluation took:
+  1793.351 seconds of real time
+  1790.032873 seconds of total run time (1780.083386 user, 9.949487 system)
+  [ Run times consist of 99.013 seconds GC time, and 1691.020 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  5,366,338,758,612 processor cycles
+  473,597,307,984 bytes consed
+  
+Evaluation took:
+  1808.786 seconds of real time
+  1802.773936 seconds of total run time (1792.012572 user, 10.761364 system)
+  [ Run times consist of 94.898 seconds GC time, and 1707.876 seconds non-GC time. ]
+  99.67% CPU
+  37 lambdas converted
+  5,412,528,975,003 processor cycles
+  473,577,805,424 bytes consed
+  
+Evaluation took:
+  1833.854 seconds of real time
+  1830.277755 seconds of total run time (1819.199439 user, 11.078316 system)
+  [ Run times consist of 96.873 seconds GC time, and 1733.405 seconds non-GC time. ]
+  99.81% CPU
+  37 lambdas converted
+  5,487,634,991,686 processor cycles
+  473,585,072,048 bytes consed
+  
+Evaluation took:
+  1826.028 seconds of real time
+  1819.667369 seconds of total run time (1808.149120 user, 11.518249 system)
+  [ Run times consist of 99.927 seconds GC time, and 1719.741 seconds non-GC time. ]
+  99.65% CPU
+  37 lambdas converted
+  5,464,177,804,602 processor cycles
+  473,586,557,248 bytes consed
+  
+Evaluation took:
+  1825.756 seconds of real time
+  1817.039767 seconds of total run time (1805.881464 user, 11.158303 system)
+  [ Run times consist of 97.973 seconds GC time, and 1719.067 seconds non-GC time. ]
+  99.52% CPU
+  37 lambdas converted
+  5,463,363,838,148 processor cycles
+  473,612,253,776 bytes consed
+  
+Evaluation took:
+  1833.918 seconds of real time
+  1828.844972 seconds of total run time (1817.212741 user, 11.632231 system)
+  [ Run times consist of 99.356 seconds GC time, and 1729.489 seconds non-GC time. ]
+  99.72% CPU
+  37 lambdas converted
+  5,487,732,693,772 processor cycles
+  473,589,002,880 bytes consed
+  
+Evaluation took:
+  1849.015 seconds of real time
+  1846.214332 seconds of total run time (1834.845061 user, 11.369271 system)
+  [ Run times consist of 96.856 seconds GC time, and 1749.359 seconds non-GC time. ]
+  99.85% CPU
+  37 lambdas converted
+  5,533,000,905,608 processor cycles
+  473,574,360,016 bytes consed
+  
+Evaluation took:
+  1874.232 seconds of real time
+  1864.546545 seconds of total run time (1852.665352 user, 11.881193 system)
+  [ Run times consist of 100.925 seconds GC time, and 1763.622 seconds non-GC time. ]
+  99.48% CPU
+  37 lambdas converted
+  5,608,373,579,975 processor cycles
+  473,590,645,200 bytes consed
+  
+Evaluation took:
+  1880.645 seconds of real time
+  1875.265917 seconds of total run time (1863.313734 user, 11.952183 system)
+  [ Run times consist of 101.723 seconds GC time, and 1773.543 seconds non-GC time. ]
+  99.71% CPU
+  37 lambdas converted
+  5,627,564,607,600 processor cycles
+  473,591,520,976 bytes consed
+  
+Evaluation took:
+  1935.404 seconds of real time
+  1929.185720 seconds of total run time (1917.331522 user, 11.854198 system)
+  [ Run times consist of 109.494 seconds GC time, and 1819.692 seconds non-GC time. ]
+  99.68% CPU
+  37 lambdas converted
+  5,791,408,899,005 processor cycles
+  473,604,221,776 bytes consed
+  
+Evaluation took:
+  1929.253 seconds of real time
+  1923.733547 seconds of total run time (1911.022480 user, 12.711067 system)
+  [ Run times consist of 106.766 seconds GC time, and 1816.968 seconds non-GC time. ]
+  99.71% CPU
+  37 lambdas converted
+  5,773,146,484,325 processor cycles
+  473,610,050,704 bytes consed
+  
+Evaluation took:
+  1930.989 seconds of real time
+  1925.866223 seconds of total run time (1913.417116 user, 12.449107 system)
+  [ Run times consist of 104.186 seconds GC time, and 1821.681 seconds non-GC time. ]
+  99.73% CPU
+  37 lambdas converted
+  5,778,211,387,929 processor cycles
+  473,550,725,072 bytes consed
+  
+Evaluation took:
+  1942.947 seconds of real time
+  1937.860400 seconds of total run time (1925.726245 user, 12.134155 system)
+  [ Run times consist of 108.270 seconds GC time, and 1829.591 seconds non-GC time. ]
+  99.74% CPU
+  37 lambdas converted
+  5,813,978,690,790 processor cycles
+  473,541,635,984 bytes consed
+  
+Evaluation took:
+  1937.381 seconds of real time
+  1930.347543 seconds of total run time (1917.798450 user, 12.549093 system)
+  [ Run times consist of 108.587 seconds GC time, and 1821.761 seconds non-GC time. ]
+  99.64% CPU
+  37 lambdas converted
+  5,797,471,279,957 processor cycles
+  473,615,238,768 bytes consed
+  
+Evaluation took:
+  1941.701 seconds of real time
+  1930.469524 seconds of total run time (1918.354366 user, 12.115158 system)
+  [ Run times consist of 103.942 seconds GC time, and 1826.528 seconds non-GC time. ]
+  99.42% CPU
+  37 lambdas converted
+  5,810,397,305,391 processor cycles
+  473,554,657,040 bytes consed
+  
+Evaluation took:
+  1955.357 seconds of real time
+  1948.420795 seconds of total run time (1935.639738 user, 12.781057 system)
+  [ Run times consist of 108.701 seconds GC time, and 1839.720 seconds non-GC time. ]
+  99.65% CPU
+  37 lambdas converted
+  5,851,115,009,935 processor cycles
+  473,606,951,936 bytes consed
+  
+Evaluation took:
+  1955.703 seconds of real time
+  1950.377498 seconds of total run time (1938.076368 user, 12.301130 system)
+  [ Run times consist of 109.749 seconds GC time, and 1840.629 seconds non-GC time. ]
+  99.73% CPU
+  37 lambdas converted
+  5,852,149,383,573 processor cycles
+  473,580,774,368 bytes consed
+  
+Evaluation took:
+  1967.538 seconds of real time
+  1955.674693 seconds of total run time (1943.569533 user, 12.105160 system)
+  [ Run times consist of 110.014 seconds GC time, and 1845.661 seconds non-GC time. ]
+  99.40% CPU
+  37 lambdas converted
+  5,887,563,833,662 processor cycles
+  473,550,443,808 bytes consed
+  
+Evaluation took:
+  3241.091 seconds of real time
+  3226.453504 seconds of total run time (3213.847421 user, 12.606083 system)
+  [ Run times consist of 156.934 seconds GC time, and 3069.520 seconds non-GC time. ]
+  99.55% CPU
+  37 lambdas converted
+  5,197,467,754,803 processor cycles
+  473,586,772,016 bytes consed
+  
+Evaluation took:
+  3293.408 seconds of real time
+  3275.593034 seconds of total run time (3262.495025 user, 13.098009 system)
+  [ Run times consist of 159.089 seconds GC time, and 3116.505 seconds non-GC time. ]
+  99.46% CPU
+  37 lambdas converted
+  5,281,397,224,977 processor cycles
+  473,595,547,488 bytes consed
+  
+Evaluation took:
+  3320.179 seconds of real time
+  3301.393112 seconds of total run time (3289.149973 user, 12.243139 system)
+  [ Run times consist of 160.689 seconds GC time, and 3140.705 seconds non-GC time. ]
+  99.43% CPU
+  37 lambdas converted
+  5,324,297,058,801 processor cycles
+  473,567,849,360 bytes consed
+  

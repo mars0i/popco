@@ -1,0 +1,30 @@
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=4:00:00,vf=1000M
+# starting and ending indices of identical jobs to run:
+########### -t 71-100
+# max number of jobs at any one time:
+#$ -tc 100
+#$ -e crime3x$JOB_IDerr.txt
+#$ -o crime3x$JOB_IDout.txt
+#$ -m as
+#$ -M mabrams@uab.edu
+
+if [ -z "$1" ]; then
+	echo usage: $0 scriptTail >&2
+	echo scriptTail is what comes between crime3 and .lisp, and should be a dirname under data/crime3 >&2
+	exit 1
+fi
+
+scriptTail=$1
+
+echo -n 'start: ' 1>&2 ; date 1>&2
+echo -n 'start: '      ; date
+
+cd $HOME/coh/popco
+time sbcl --eval "'(defvar *data-dir* \"../data/crime3/$scriptTail\")'" --load start --eval '(defun report-progress-to-console () )' --load crime/crime3$scriptTail.lisp
+
+echo -n 'end: ' 1>&2 ; date 1>&2
+echo -n 'end: '      ; date

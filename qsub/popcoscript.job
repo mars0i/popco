@@ -1,0 +1,32 @@
+#!/bin/bash
+# generic popco job submitter
+# Usage: qsub -t 1-N -v dir=<dir under popco>,base=<basename of script>  $0
+# i.e. dir is the name of the directory within the popco directory where the lisp base is located
+# base is the basename of the lisp script, i.e. without a path and without .lisp
+
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=6:00:00,vf=1000M
+# max number of jobs at any one time:
+#$ -tc 100
+#$ -e popcoscript$JOB_IDerr.txt
+#$ -o popcoscript$JOB_IDout.txt
+#$ -m as
+#$ -M marshall@logical.net
+
+echo dir=$dir base=$base
+echo -n 'start: '      ; date
+echo -n 'start: ' 1>&2 ; date 1>&2
+
+# If directory where we'll put the output doesn't exist, create it:
+if [ ! -d ~/data/$dir/$base ]; then
+  mkdir -v -p ~/data/$dir/$base 
+fi
+
+cd $HOME/coh/popco
+echo
+echo running this commandline:
+echo time sbcl --eval "(defvar *data-dir* \"../data/$dir/$base\")" --load start --eval '(defun report-progress-to-console () )' --load $dir/$base
+echo
+time sbcl --eval "(defvar *data-dir* \"../data/$dir/$base\")" --load start --eval '(defun report-progress-to-console () )' --load $dir/$base

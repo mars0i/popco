@@ -1,0 +1,12 @@
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=10:00:00,vf=10G
+#$ -e errfindruns$JOB_ID.txt
+#$ -o outfindruns$JOB_ID.txt
+#$ -m eas
+#$ -M marshall@logical.net
+
+pwd
+time ~/jobs/findRunsWithDisagreementForCrime3socnet5.sh

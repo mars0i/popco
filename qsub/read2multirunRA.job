@@ -1,0 +1,16 @@
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=10:00:00,vf=10G
+#$ -e errRead2mra$JOB_ID.txt
+#$ -o outRead2mra$JOB_ID.txt
+#$ -m eas
+#$ -M marshall@logical.net
+
+cd $UABGRID_SCRATCH/data
+pwd
+# usage: ~/bin/read2multirunRA.sh data-dir mra-name 'c("csv1","csv2",...)'
+# or:    ~/bin/read2multirunRA.sh data-dir mra-name "`echo *.csv | files2vec`"
+# (Don't forget the outer quotes.)`
+time ~/bin/read2multirunRA.sh $1 $2 $3

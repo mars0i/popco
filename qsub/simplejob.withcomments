@@ -1,0 +1,19 @@
+#!/bin/bash
+[flags on following lines are passed to the scheduler]
+#$ -cwd [run in curr wd]
+#$ -V [export inital env vars]
+#$ -S /bin/bash
+# For example, to request 4 hours of run time (vs. default 15 mins)
+# and 2 GB per slot (use M for megabytes, and G for gigabytes):
+#$ -l h_rt=04:00:00,vf=2G
+# starting and ending indices of identical jobs to run:
+#$ -t 1-4
+# max number of jobs at any one time:
+#$ -tc 16
+#$ -e err.txt  [name of stderr log file]
+#$ -o out.txt  [name of stdout log file]
+#$ -m be [send email on beginning and end of run]
+#$ -M mabrams@uab.edu,yann@uab.edu [where to send it]
+/bin/date
+/bin/sleep 20
+/bin/date

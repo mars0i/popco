@@ -1,0 +1,21 @@
+#!/bin/bash
+#$ -cwd
+#$ -V
+#$ -S /bin/bash
+#$ -l h_rt=10:00:00,vf=10G
+#$ -e errRead2mra.txt
+#$ -o outRead2mra.txt
+#$ -m eas
+#$ -M mabrams@uab.edu
+
+echo -n 'start: ' 1>&2 ; date 1>&2
+echo -n 'start: '      ; date
+
+cd $UABGRID_SCRATCH/data
+pwd
+# usage: ~/bin/read2multirunRA.sh data-dir mra-name 'c("csv1","csv2",...)'
+# Don't forget to put single quotes around the second argument!
+~/bin/read2multirunRA.sh $1 $2 $3
+
+echo -n 'end: ' 1>&2 ; date 1>&2
+echo -n 'end: '      ; date

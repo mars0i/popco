@@ -1,0 +1,12 @@
+#!/bin/sh
+# This submits a job which submits a script
+# Why would I do that?
+# Because I want to run it as a batch job, but I want to delay the start,
+# so I'm using 'at', and 'at' needs a script.  There's probably a better way.
+
+cd $UABGRID_SCRATCH/data
+
+# note the funny quotes on the last item
+echo yo
+qsub ~/jobs/read2multirunRA.job crime2c2pundits.mra "'`echo *.csv | files2vec`'"
+echo ya

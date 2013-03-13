@@ -1,0 +1,11 @@
+Please try to construct jobs (or tasks for array jobs) that will finish
+in hours, rather than days or weeks.
+
+The default max runtime for jobs is 15 minutes. To override, request
+the an appropriate max runtime using the 'h_rt' resource request. 
+
+Also make sure to specify how much memory will be needed for each job
+slot. For example, to request 4 hours of run time and 2 GB per slot
+(use M for megabytes, and G for gigabytes) add this to your job script
+
+#$ -l h_rt=04:00:00,vf=2G
