@@ -77,7 +77,7 @@
   "Returns a list of converser-pairs (lists with SPEAKER as the car and a listener as the cdr).
 The number of pairs returned will be the minimum of the speaker's 'NUM-LISTENERS and the length
 of his GET-CONVERSERS list."
-  (let* ((randomized-conversers (randomize (get-conversers speaker)))
+  (let* ((randomized-conversers (copy-shuffle (get-conversers speaker)))
          (num-people (length randomized-conversers))
          (num-listening (get speaker 'num-listeners))
          (num-conversers (min num-listening num-people))

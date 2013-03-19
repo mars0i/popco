@@ -98,6 +98,21 @@
 (defun random-subset (size superset)
   (random-subset-aux size superset ()))
 
+;;; Fisher-Yates/Durstenfeld/Knuth shuffle algorithm for randomizing a sequence.
+;;; Note that unlike Thagard's randomize, this does *no* consing.
+;;; However, it is *destructive*: It modifies the list in place.
+;;; So you'll want to get a fresh list with copy-list in some cases.
+;;; Got this from http://compgroups.net/comp.lang.lisp/how-best-to-randomize-a-list/703642
+
+(defun shuffle (seq)
+  (let ((n (length seq)))
+    (dotimes (i n seq) ; from i=0 to i=n, returning seq at the end
+      (rotatef (elt seq i) (elt seq (+ i (random (- n i))))))))
+      ; swap whatever's in the ith place with what's in a random location
+
+(defun copy-shuffle (seq)
+  (shuffle (copy-list seq)))
+
 
 ;; SAFE SORT FUNCTIONS
 ;; The built in Lisp functions sort and stable-sort are destructive--they can modify
