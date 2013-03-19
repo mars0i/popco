@@ -60,7 +60,7 @@
 (init-pop)
 (print (get 'folks 'members))
 
-;(setf *max-pop-ticks* 5000)
-(setf *max-pop-ticks* 8000)
+(setf *max-pop-ticks* 5000)
+;(setf *max-pop-ticks* 8000)
 (popco)
 (quit)
