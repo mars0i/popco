@@ -400,8 +400,8 @@
     )
   )
 
-; RANDOMIZE rewrites a list in random order
-
+;; RANDOMIZE rewrites a list in random order
+;; DEPRECATED: Use shuffle in popco-utils.lisp instead.
 (defun randomize (list)
   (do ((lst list )
        (num-list nil) ; association list
