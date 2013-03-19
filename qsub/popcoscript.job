@@ -9,7 +9,7 @@
 #$ -S /bin/bash
 #$ -l h_rt=6:00:00,vf=1000M
 # max number of jobs at any one time:
-#$ -tc 100
+#$ -tc 200
 #$ -e popcoscript$JOB_IDerr.txt
 #$ -o popcoscript$JOB_IDout.txt
 #$ -m as
