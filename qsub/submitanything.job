@@ -9,4 +9,5 @@
 #$ -M marshall@logical.net
 
 pwd
+
 time "$@"

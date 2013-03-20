@@ -1,5 +1,17 @@
 qsub
 qdel
+qsub -N yaya  gives your job an informative name 'yaya'
+qsub -hold_jid 9035365     makes it wait until job 9035365 completes successfully
+there's also 
+	qsub -hold_jid_ad ...  
+I think, which allows waiting until an "array of jobs" --i.e. what you start with e.g. -t 1-100 -- is finished.
+But I don't know the syntax yet.
+
 qstat
 qstat -ext
-qsub -depend=
+qstat -r
+qstat -r -ext
+qstat -f  lists all processors and what's running in them, including your jobs
+
+example:
+qsub -hold_jid 9035365 -N pt2v2df /home/mabrams/jobs/submitanything.job /home/mabrams/jobs/findDisagreementAndMakeDataframesCrime3socnet5.sh socnet5pt2with150runsV2 5000

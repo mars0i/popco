@@ -7,4 +7,4 @@ if [ -z "$csvvec" -o -z "$1" ]; then
 	exit 1
 fi
 
-qsub ~/jobs/read2multirunRA.job `pwd` $1 "$csvvec"
+qsub -N "$1" ~/jobs/read2multirunRA.job `pwd` $1 "$csvvec"
