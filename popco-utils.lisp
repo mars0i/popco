@@ -98,20 +98,23 @@
 (defun random-subset (size superset)
   (random-subset-aux size superset ()))
 
+;;; SHUFFLE 
 ;;; Fisher-Yates/Durstenfeld/Knuth shuffle algorithm for randomizing a sequence.
-;;; Note that unlike Thagard's randomize, this does *no* consing.
-;;; However, it is *destructive*: It modifies the list in place.
-;;; So you'll want to get a fresh list with copy-list in some cases.
+;;; THIS FUNCTION IS *DESTRUCTIVE*: IT MODIFIES THE LIST IN PLACE.
+;;; So you may want to get a fresh list with copy-list.
+;;; Note that unlike Thagard's randomize (now randomize-deprecated), this does *no* consing.  
+;;; (If you copy-list, you'll cons, but a lot less.)
+;;; Shuffle is more than twice as fast as Thagard's randomize(-deprecated) in sbcl 1.0.50 on 
+;;; a list of 10K integers, and copy-list on a list of 10K integers is instantaneous.
 ;;; Got this from http://compgroups.net/comp.lang.lisp/how-best-to-randomize-a-list/703642
-
-(defun shuffle (seq)
+(defun knuth-shuffle (seq)
   (let ((n (length seq)))
     (dotimes (i n seq) ; from i=0 to i=n, returning seq at the end
       (rotatef (elt seq i) (elt seq (+ i (random (- n i))))))))
       ; swap whatever's in the ith place with what's in a random location
 
-(defun copy-shuffle (seq)
-  (shuffle (copy-list seq)))
+(defun randomize (seq) 
+  (knuth-shuffle (copy-list seq)))
 
 
 ;; SAFE SORT FUNCTIONS
