@@ -1,5 +1,15 @@
 #!/bin/sh
 
+if [ -z "$2" ]; then
+	echo usage: $0 basedatastruname tick [tick ...] 2>&1
+	echo e.g.: $0 socnet5sh 4000 5000
+	exit 1
+fi
+
+base="$1"
+shift
+ticks="$@"
+
 
 R --no-save << END
 source("~/pop/R/df2ra.R")
@@ -21,11 +31,11 @@ findruns <- function(mra, tick) {
   print("\n")
 }
 
-load("socnet5s.mra.rdata")
+load("$base.mra.rdata")
 
-dimnames(socnet5s.mra)[-3]
+dimnames($base.mra)[-3]
 
-for (tick in c(5000,6000,7000,8000)) {
-  findruns(socnet5s.mra, tick)
+for (tick in c($ticks)) {
+  findruns($base.mra, tick)
 }
 END
