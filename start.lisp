@@ -1,22 +1,16 @@
 ;---------------------------------------------------------------------
 ; FILE : POPCO's start.lisp (modified version of PT's COHERE-START.lisp)
-; PURPOSE : Load all coherence files
 ; PROGRAMMER: Paul Thagard; modified by Marshall Abrams
 ; CREATED : 5-1-1995
-; NOTES: POPCO v.1 2011
-; Based on:
+; NOTES: POPCO v.2 2013
+; Based on COHERE:
 ; Version 3.0 with HOTCO, 10-97
 ; Ported to G3 PowerPC, 4-98.
 ; HOTCO 2, 6-2000.
 ; WEB version available 3-2001.
-;
 ;Copyright(c) Paul Thagard
 ; University of Waterloo. 1995, 1997, 2000, 2001.
 ; With modifications by Marshall Abrams 2011, 2012
-
-;---------------------------------------------------------------------
-; Load all the files necessary to operate COHERE:
-;---------------------------------------------------------------------
 
 ; *********************************************************************
 
@@ -77,14 +71,12 @@
 ;(print "Loading POPCO")
 ;(myload "logistic")
 (myload "popco")
-(print "Main POPCO routines loaded (popco.lisp).")
-
+(format t "Main POPCO routines loaded (popco.lisp).~%")
 (setq *asymptote* .0001)
 (myload "HT1989params")
-(format t "Network and ACME parameters set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.~%~%")
-
-;(print-parameters)
+(format t "~%Network and ACME parameters have been set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.~%")
 
 (setf *silent-run?* t)
 
-(format t "~%COHERE+POPCO ready.~%")
+;(print-parameters)
+(format t "COHERE+POPCO ready.~%")
