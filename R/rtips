@@ -1,5 +1,7 @@
 R tips:
 
+for (bs in c("virus","virus-talk","beast","beast-talk")){for (dom in c("CV","CB")){cat(bs,dom,"pvalue =",ks.boot(df[df$bias==bs,dom],dfa[dfa$bias==bs,dom],nboots=1000)$ks.boot.pvalue,"\n")}}
+
 # make a bunch of PDF files of activation plots
 # this one is for a 2-pundit run, so I skip the first two persons, begin with #3, who's named "P01",
 # then graph 1000 ticks.  This is from RUN351493575, which is the 40th run in mra3b2p.
