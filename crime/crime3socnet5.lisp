@@ -3,7 +3,7 @@
 ;;;; Two distinct subpops who mostly don't communicate with each other, 
 ;;;; but have different biases, and both listen to the same pundit.
 ;;;;
-;;;; THIS MODEL DIFFERS FROM crime3socnet[34].lisp BY USING LARGER SUBPOPS,
+;;;; THIS MODEL DIFFERS FROM crime3socnet4.lisp BY USING LARGER SUBPOPS,
 ;;;; and a larger population overall.  However, I kept the proportion
 ;;;; of population members willing to talk to members of the other
 ;;;; population the same.  This doesn't clearly make the effect of
