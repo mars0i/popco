@@ -62,6 +62,24 @@ stripRunPaths <- function(mra) {
 
 #------------------------------------------------------
 
+# Returns true iff these two dataframes have identical rownames, after possibly removing an extra character added for uniqueness
+congruentRuns2dfs <- function(df1, df2) {
+  all(substr(dimnames(df1)[[1]],1,12) == substr(dimnames(df2)[[1]],1,12))
+}
+
+# Same as above but for two biases in same df
+congruentRuns1df <- function(df, bias1, bias2) {
+  congruentRuns2dfs(df[df$bias==bias1 & df$rawsum=="raw",], df[df$bias==bias2 & df$rawsum=="raw",])
+}
+
+# Subtract runs means wrt one bias from those wrt the other
+# the two parts of the dfs must be congruent - i.e. runs in same order
+biasdiffs <- function(df, bias1, bias2, doms) {
+  df[df$rawsum=="raw" & df$bias==bias1, doms] - df[df$rawsum=="raw" & df$bias==bias2, doms]
+}
+
+#------------------------------------------------------
+
 # This function can be used to create buckets into which activation avgs can be sorted e.g. for a histogram.
 # Given a vector of evenly-spaced "foci"--points to which activation averages will usually 
 # converge--return a vector of points shifted half the distance between two foci, with
