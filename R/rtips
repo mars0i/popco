@@ -2,6 +2,8 @@ R tips:
 
 summary(obj) gives you basic stats: min, max, mean, median, etc.
 
+?"Memory-limits"
+
 ..................
 
 for (bs in c("virus","virus-talk","beast","beast-talk")){for (dom in c("CV","CB")){cat(bs,dom,"pvalue =",ks.boot(df[df$bias==bs,dom],dfa[dfa$bias==bs,dom],nboots=1000)$ks.boot.pvalue,"\n")}}
