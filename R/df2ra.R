@@ -80,7 +80,7 @@ biasDiffs <- function(df, bias1, bias2, doms) {
 
 # If you want bias diffs from several different data sets using the same biases and domains,
 # it's convenient to create a function that encodes those biases and domains, so that you
-# don't have to keep specifying them as parameters.
+# don't have to keep specifying them as parameters.  [This is not currying, strictly speaking.]
 curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias1, bias2, doms)} }
 
 #------------------------------------------------------
