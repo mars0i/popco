@@ -74,9 +74,14 @@ congruentRuns1df <- function(df, bias1, bias2) {
 
 # Subtract runs means wrt one bias from those wrt the other
 # the two parts of the dfs must be congruent - i.e. runs in same order
-biasdiffs <- function(df, bias1, bias2, doms) {
+biasDiffs <- function(df, bias1, bias2, doms) {
   df[df$rawsum=="raw" & df$bias==bias1, doms] - df[df$rawsum=="raw" & df$bias==bias2, doms]
 }
+
+# If you want bias diffs from several different data sets using the same biases and domains,
+# it's convenient to create a function that encodes those biases and domains, so that you
+# don't have to keep specifying them as parameters.
+curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias1, bias2, doms)} }
 
 #------------------------------------------------------
 
