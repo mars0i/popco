@@ -48,6 +48,10 @@ xyMeanActivnPlot <- function(form, data, yfoci=seq(-1,1,.2), xfoci=seq(-1,1,.2),
          ...)  # groups argument might be passed here
 }
 
+# tips:
+# How to control font size in the panel label bars:
+# xyMeanActivnPlot(CV~CB|desc, df[df$model!="crime3socnet2",], yfoci=cv.foci, xfoci=cb.foci, par.strip.text=list(cex=.85))
+
 
 addJitter <- function(trellobj=trellis.last.object(), amount=.025) {update(trellobj, jitter.x=T, jitter.y=T, amount=amount)}
 

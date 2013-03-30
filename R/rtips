@@ -1,5 +1,13 @@
 R tips:
 
+...........................................................
+
+How to control font size in the panel label bars:
+
+xyMeanActivnPlot(CV~CB|desc, df[df$model!="crime3socnet2",], yfoci=cv.foci, xfoci=cb.foci, par.strip.text=list(cex=.85))
+
+...........................................................
+
 summary(obj) gives you basic stats: min, max, mean, median, etc.
 
 ?"Memory-limits"
