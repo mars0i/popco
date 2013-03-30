@@ -83,6 +83,14 @@ biasDiffs <- function(df, bias1, bias2, doms) {
 # don't have to keep specifying them as parameters.  [This is not currying, strictly speaking.]
 curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias1, bias2, doms)} }
 
+# applies a curryBiasDiffs function (bdfn), adding a model lable and a longer description, and by default setting rawsum=="raw"
+# DOESNT WORK
+applyBiasDiffsWithId <- function(bdfn, df, model, desc){
+  newdf <- cbind(bdfn(df), model=model, desc=desc, rawsum="raw")
+  newdf <- rbind(newdf, data.frame(colMeans(newdf[,1:2]), model=model, desc=desc, rawsum="mean")) # NOT RIGHT
+  newdf
+}
+
 #------------------------------------------------------
 
 # This function can be used to create buckets into which activation avgs can be sorted e.g. for a histogram.
