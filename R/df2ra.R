@@ -75,7 +75,12 @@ congruentRuns1df <- function(df, bias1, bias2) {
 # Subtract runs means wrt one bias from those wrt the other
 # the two parts of the dfs must be congruent - i.e. runs in same order
 biasDiffs <- function(df, bias1, bias2, doms) {
-  df[df$rawsum=="raw" & df$bias==bias1, doms] - df[df$rawsum=="raw" & df$bias==bias2, doms]
+  newdf <- df[df$rawsum=="raw" & df$bias==bias1, doms] - df[df$rawsum=="raw" & df$bias==bias2, doms]
+  newdf$rawsum <- "raw"
+  newdf <- rbind(newdf, c(sapply(newdf[,doms], mean), rawsum="mean"))
+  newdf[,doms[1]] <- as.numeric(newdf[,doms[1]])  # rbind coerced everything to string by intermediate conversion to matrix
+  newdf[,doms[2]] <- as.numeric(newdf[,doms[2]])  # so undo that
+  newdf
 }
 
 # If you want bias diffs from several different data sets using the same biases and domains,
@@ -85,11 +90,11 @@ curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias
 
 # applies a curryBiasDiffs function (bdfn), adding a model lable and a longer description, and by default setting rawsum=="raw"
 # DOESNT WORK
-applyBiasDiffsWithId <- function(bdfn, df, model, desc){
-  newdf <- cbind(bdfn(df), model=model, desc=desc, rawsum="raw")
-  newdf <- rbind(newdf, data.frame(colMeans(newdf[,1:2]), model=model, desc=desc, rawsum="mean")) # NOT RIGHT
-  newdf
-}
+#applyBiasDiffsWithId <- function(bdfn, df, model, desc){
+#  newdf <- cbind(bdfn(df), model=model, desc=desc, rawsum="raw")
+#  newdf <- rbind(newdf, data.frame(colMeans(newdf[,1:2]), model=model, desc=desc, rawsum="mean")) # NOT RIGHT
+#  newdf
+#}
 
 #------------------------------------------------------
 
