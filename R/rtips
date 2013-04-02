@@ -2,9 +2,28 @@ R tips:
 
 ...........................................................
 
-# not sure if this is what I want:
-bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)))
+# I think this is what I want:
+bwplot(CB ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0)
+# When coef = 0, the whiskers will extend to the max and min of the data.
+# [coef = 1.5 by default, I think, which means that each whisker extends to the last data
+# point that's within 1.5 times the distance from 25th to 75th percentile from the median.
+# and then additional points are plotted explicitly as outliers (addJitter() won't separate them).]
 
+# note change ylim to xlim if horizontal=F
+
+# two plots in one window:
+plot(bwplot(CV ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0), split=c(1,1,2,1))
+plot(bwplot(CB ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0), split=c(2,1,2,1), newpage=F)
+
+# attempt to add mean:
+bwplot(CV ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=mean(socnet5with300runst5000.df$CV), pch="x")})
+
+# more notes on bwplots:
+# middle dot or line is the median
+# ends of box are 25th and 75th percentile
+
+# I don't think this is what I want:
+bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)))
 
 plot(bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)), pch="|"), split=c(1,1,2,1))
 plot(bwplot(CV ~ CB.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)), pch="|"), split=c(2,1,2,1), newpage=F)
