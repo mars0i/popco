@@ -2,6 +2,15 @@ R tips:
 
 ...........................................................
 
+# not sure if this is what I want:
+bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)))
+
+
+plot(bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)), pch="|"), split=c(1,1,2,1))
+plot(bwplot(CV ~ CB.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)), pch="|"), split=c(2,1,2,1), newpage=F)
+
+...........................................................
+
 How to control font size in the panel label bars:
 
 xyMeanActivnPlot(CV~CB|desc, df[df$model!="crime3socnet2",], yfoci=cv.foci, xfoci=cb.foci, par.strip.text=list(cex=.85))
@@ -52,8 +61,10 @@ index.cond=list(c(1,4,3,2))
 -----------------
 
 Add factors to the dataframe e.g. like this:
-crime3p1t5000.df$cv.fac <- cut(crime3p1t5000.df$CV, foci2factors(cv.foci))
+crime3p1t5000.df$cv.fac <- cut(crime3p1t5000.df$CV, foci2intervals(cv.foci))
 (You might need the more recent version in df2ra.R that's not yet in the package?)
+
+This can now be done with addFactors2df()
 
 crime2_2pundits.tab <- table(crime2_2pundits.df[crime2_2pundits.df$rawsum=="raw",c("cb.fac","cv.fac","bias")])
 levelplot(crime2_2pundits.tab, shrink = c(0.7, 1), aspect="fill")

@@ -107,6 +107,12 @@ foci2intervals <- function(foci){
   c(-1, foci[1]-dif/2, foci+dif/2, 1)
 }
 
+addFactors2df <- function(df, col, foci) {
+  newcol <- paste0(col, ".fac")
+  df[,newcol] <- cut(df[,col], foci2intervals(cv.foci))
+  df
+}
+
 # given a dataframe of e.g. run means, with columns propn domain 1, propn domain 2, bias,
 # produce a dataframe of frequencies indexed by propn domain cut intervals, and bias:
 # NOTE: must have a column called "rawsum". Only rows with value "raw" will be processed.
