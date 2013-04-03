@@ -2,6 +2,37 @@ R tips:
 
 ...........................................................
 
+# Suppose you want to do one of the "two plots" in one window bwplot combinations below,
+# but you want to have strip labels as when you use "| conditioningvar"?  Since e.g.
+# CV and CB in my crime/beast/virus datasets are different columns
+# rather than categorical values within a single column, you can't
+# do this without reorganizing the data.  You'd think.
+# But in fact, Lattice has voodoo to do this!
+bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T)
+# Notes:
+# See p. 168 of the Lattice book for some details.  The "+" on the left says, roughly,
+# combine the data from both vars in one panel.  If you just use "+" without "outer=T",
+# then I think the values from each column are simply added for each row.  But if you use
+# "outer=T", Lattice tries to separate the two values in some way, within each panel.
+# In a barchart, this means you get stacked blocks, as in figs 10.1 and 10.2. 
+# "outer=T" tells Lattice that you want to use the combination of the two variables
+# as if it were a conditioning variable (i.e. the one after "|", normally).
+# Cool! Beautiful.
+
+# with some nice labels:
+bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), ylab="Per-run mean activations", xlab="Bias due to analogy", horizontal=F, pch="|", coef=0, outer=T)
+
+# To compare the method below with the method above in a single window:
+plot(bwplot(CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CV"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CV"])), pch=19, cex=.65, col="red")}), split=c(1,1,3,1))
+plot(bwplot(CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CB"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CB"])), pch=19, cex=.65, col="red")}), split=c(3,1,3,1), newpage=F)
+plot(bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T), split=c(2,1,3,1), newpage=F)
+
+# OK, now I'm trying to add dots for the means, as below.  This attempt doesn't work; I'm just getting the CB values in both panels, it appears:
+yo <- function(df, bias, dom){mean(df[df$rawsum=="raw" & df$bias==bias, dom])}
+bwplot(CB +CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(yo(df,"beast","CB"), yo(df,"virus","CB"), yo(df,"beast","CV"), yo(df,"virus","CV")), pch=19, cex=.65, col="red")})
+
+...........................................................
+
 # I think this is what I want:
 bwplot(CB ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0)
 # When coef = 0, the whiskers will extend to the max and min of the data.
