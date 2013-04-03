@@ -15,12 +15,47 @@ bwplot(CB ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|
 plot(bwplot(CV ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0), split=c(1,1,2,1))
 plot(bwplot(CB ~ bias, socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0), split=c(2,1,2,1), newpage=F)
 
-# attempt to add mean:
-bwplot(CV ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=mean(socnet5with300runst5000.df$CV), pch="x")})
+# add means
+# note that you have to know the order of the biases to do this:
+bwplot(CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0,
+       panel=function(data, ...){
+         panel.bwplot(data=data,...)
+	 panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CV"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CV"])), pch=19, cex=.65, col="red")
+       })
+
+# or:
+bwplot(CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0,
+       panel=function(data, ...){
+         panel.bwplot(data=data,...)
+	 mean1 <- mean(df[df$rawsum=="raw" & df$bias=="beast","CV"])
+	 mean2 <- mean(df[df$rawsum=="raw" & df$bias=="virus","CV"])
+	 panel.points(x=c(mean1, mean2), pch=19, cex=.65, col="red")
+       })
+
+# putting it all together:
+plot(bwplot(CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CV"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CV"])), pch=19, cex=.65, col="red")}), split=c(1,1,2,1))
+plot(bwplot(CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CB"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CB"])), pch=19, cex=.65, col="red")}), split=c(2,1,2,1), newpage=F)
+# same thing, but with notches:
+plot(bwplot(CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, notch=T, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CV"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CV"])), pch=19, cex=.65, col="red")}), split=c(1,1,2,1))
+plot(bwplot(CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, notch=T, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(mean(df[df$rawsum=="raw" & df$bias=="beast","CB"]), mean(df[df$rawsum=="raw" & df$bias=="virus","CB"])), pch=19, cex=.65, col="red")}), split=c(2,1,2,1), newpage=F)
+> 
 
 # more notes on bwplots:
 # middle dot or line is the median
 # ends of box are 25th and 75th percentile
+
+# re notches: Wikipedia says:
+# Notches are useful in offering a rough guide to significance of
+# difference of medians; if the notches of two boxes do not overlap,
+# this offers evidence of a statistically significant difference
+# between the medians.[1] The width of the notches is proportional
+# to the interquartile range of the sample and inversely proportional
+# to the square root of the size of the sample. However, there is
+# uncertainty about the most appropriate multiplier (as this may vary
+# depending on the similarity of the variances of the samples).[1]
+# One convention is to use +/-1.58*IQR/sqrt(n).[3]
+
+.......................................
 
 # I don't think this is what I want:
 bwplot(CB ~ CV.fac|bias, socnet5with300runst5000.df, horizontal=F, scales=list(x=list(rot=90)))
