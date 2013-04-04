@@ -29,7 +29,7 @@ plot(bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0
 
 # OK, now I'm trying to add dots for the means, as below.  This attempt doesn't work; I'm just getting the CB values in both panels, it appears:
 yo <- function(df, bias, dom){mean(df[df$rawsum=="raw" & df$bias==bias, dom])}
-bwplot(CB +CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(yo(df,"beast","CB"), yo(df,"virus","CB"), yo(df,"beast","CV"), yo(df,"virus","CV")), pch=19, cex=.65, col="red")})
+bwplot(CB + CV ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(data, ...){panel.bwplot(data=data,...);panel.points(x=c(yo(df,"beast","CB"), yo(df,"virus","CB"), yo(df,"beast","CV"), yo(df,"virus","CV")), pch=19, cex=.65, col="red")})
 
 ...........................................................
 
