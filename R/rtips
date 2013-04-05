@@ -2,6 +2,59 @@ R tips:
 
 ...........................................................
 
+# violin plot:
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), outer=T, panel = panel.violin)
+
+# box-whisker plot overlaid on violin plot, with added yellow mean:
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red")), panel=function(x, y, ...){panel.violin(x, y, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="yellow")})
+
+# a violin plot with added median (blue dot) and mean (red diamond):
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", outer=T, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red"), box.dot=list(col="red")), panel=function(x, y, ...){panel.violin(x, y, ...); panel.points(tapply(y, factor(x), FUN = median), pch=20, cex=1, col="blue"); panel.points(tapply(y, factor(x), FUN = mean), pch=18, cex=1, col="red")})
+
+...........................................................
+
+# It's interesting to compare boxwhisker, violin plots, and their
+# combination with a single set of data.  Here the box-w plot conveys
+# a difference between the biases more clearly (rightly or wrongly)
+# than does the violin plot, but obscures the fact that one of the
+# distributions is bimodal, with the median at one mode.
+# The combined plot has both advantages ... sortof.  I think the
+# violins distract from the effect of the boxes, and again (rightly or
+# wrongly) somewhat detract from the effect of difference conveyed by
+# the boxes.  
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red")), panel=function(x, y, ...){panel.violin(x, y, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="blue")})
+dev.new()
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(x, y, ...){panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red") })
+dev.new()
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", outer=T, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red"), box.dot=list(col="red")), panel=function(x, y, ...){panel.violin(x, y, ...); panel.points(tapply(y, factor(x), FUN = median), pch=20, cex=1, col="blue"); panel.points(tapply(y, factor(x), FUN = mean), pch=18, cex=1, col="red")})
+# Maybe a good way to do it would be to cause the violin
+# to be a very faint, maybe gray underlay behind a very clear (maybe
+# black) box-whisker plot.  Like this:
+# Default b-w color:
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(x, y, ...){panel.violin(x, y, col="gray95", border="gray95", ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red")})
+# Black b-w color:
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings=list(box.rectangle=list(col="black"), box.umbrella=list(col="black")), panel=function(x, y, ...){panel.violin(x, y, col="gray95", border="gray95", ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red")})
+
+...........................................................
+
+# from
+# http://stackoverflow.com/questions/10219288/r-boxplot-color-according-to-factor
+# Illustrates how to set colors for parts of a bwplot:
+bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings = list(box.umbrella=list(col= c("red", "green", "blue")), box.dot=list(col= c("red", "green", "blue")), box.rectangle = list(col= c("red", "green", "blue")) ),  panel=function(x, y, ...){panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red")})
+
+# i.e. that extra arg is:
+par.settings = list( box.umbrella=list(col= c("red", "green", "blue")), 
+                     box.dot=list(col= c("red", "green", "blue")), 
+                     box.rectangle = list(col= c("red", "green", "blue")) )                    
+
+# note the col parameter only affects the circles/dots.
+
+# Also note use of fill:
+bwplot(Y ~ INDFACT | CLUSFACT, data=mydata, layout=c(2,1),
+        par.settings = list(box.rectangle = list(fill= rep(c('red','blue','green'),2)))
+
+...........................................................
+
 # Suppose you want to do one of the "two plots" in one window bwplot combinations below,
 # but you want to have strip labels as when you use "| conditioningvar"?  Since e.g.
 # CV and CB in my crime/beast/virus datasets are different columns
