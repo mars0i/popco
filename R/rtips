@@ -18,10 +18,16 @@ bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal
 # a difference between the biases more clearly (rightly or wrongly)
 # than does the violin plot, but obscures the fact that one of the
 # distributions is bimodal, with the median at one mode.
+# [Ah, actually, it's not actually bimodal from my point of view.
+# It's just that in that distribution, the mean falls between two
+# convergence values, whereas in the others, it doesn't.  So it
+# looks bimodal or not, but that's not really a significant
+# difference.  It also means that the median is kind of queered.]
 # The combined plot has both advantages ... sortof.  I think the
 # violins distract from the effect of the boxes, and again (rightly or
 # wrongly) somewhat detract from the effect of difference conveyed by
 # the boxes.  
+# um, in these I really out to remove the means from the dataframe first:
 bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red")), panel=function(x, y, ...){panel.violin(x, y, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="blue")})
 dev.new()
 bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, panel=function(x, y, ...){panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red") })
