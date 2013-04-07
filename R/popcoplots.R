@@ -4,6 +4,52 @@
 # mra <- read2multirunRA(csvs) 
 
 ##########################################
+# tools for debugging panel functions, etc.
+
+# panel.setPanelArgs
+# assigns whatever is passed to the panel function to 
+# top level variable PanelArgs, with one list of arguments
+# for every panel.
+# USAGE: *first* define PanelArgs as a list at the top level:
+# PanelArgs <- list()
+# if you don't do that, this function will have no effect.
+panel.setPanelArgs <- function(...){
+  PanelArgs[[panel.number()]] <<- list(...)
+}
+
+# example:
+# bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df[socnet5with300runst5000.df$rawsum=="raw",],
+#                        ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T,
+#                        par.settings=list(box.rectangle=list(col="black"),
+#                        box.umbrella=list(col="black")),
+#                        panel=panel.setPanelArgs)
+# produces:
+# > str(PanelArgs)
+# List of 2
+#  $ :List of 6
+#   ..$ x         : Factor w/ 2 levels "beast","virus": 1 1 1 1 1 1 1 1 1 1 ...
+#   ..$ y         : num [1:600] 0.207 0.2064 0.0692 0.208 -0.0698 ...
+#   ..$ pch       : chr "|"
+#   ..$ coef      : num 0
+#   ..$ box.ratio : num 1
+#   ..$ horizontal: logi FALSE
+#  $ :List of 6
+#   ..$ x         : Factor w/ 2 levels "beast","virus": 1 1 1 1 1 1 1 1 1 1 ...
+#   ..$ y         : num [1:600] 0.000133 -0.001456 -0.15072 -0.149572 0.000551 ...
+#   ..$ pch       : chr "|"
+#   ..$ coef      : num 0
+#   ..$ box.ratio : num 1
+#   ..$ horizontal: logi FALSE
+# >
+# Note that in both top-level list elements, x is the same, and contains all 600 "beast"/"virus" factor entries.
+# y differs: The first list contains the 600 CV values, and the second contains the 600 CB values.
+# Each list corresponds to a distinct call to the panel function.
+# A bwplot or violin plot using this form will normally create two panels, one for CV and the other for CB,
+# i.e. one for each call to the panel function, I believe.  In each panel, there will be two figures,
+# corresponding to the two bias factors.
+# 
+
+##########################################
 # experiments: working toward centered histograms in lattice:
 
 # get a sequence of relative frequencies from a hist object
@@ -34,8 +80,10 @@ symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
 
 # make a symmetrical histogram
 # lattice version
-panel.symhist <- function(center, x, ...) {
-  h <- hist(x, plot=F, ...)
+# If this version works, it will probably break when horizontal=TRUE, in which case I think x and y get switched.
+panel.symhist <- function(center, x, y, ...) {
+# TODO NEED TO SUBSET y by factors in x.
+  h <- hist(y, plot=F, ...)
   relfs <- histrelfs(h)
   breaks <- h$breaks
   panel.centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
