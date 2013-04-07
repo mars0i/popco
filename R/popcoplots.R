@@ -9,11 +9,20 @@
 # get a sequence of relative frequencies from a hist object
 histrelfs <- function(h){ h$counts/sum(h$counts) }
 
-# draw a rectangle vertically centered on center:
+# draw a rectangle vertically centered on center
+# base-graphics version
 centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
   rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
 }
 
+# draw a rectangle vertically centered on center:
+# lattice version
+panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
+  panel.rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
+}
+
+# make a symmetrical histogram
+# base-graphics version
 symhist <- function(center, x, ...) {
   h <- hist(x, plot=F, ...)
   relfs <- histrelfs(h)
@@ -22,6 +31,18 @@ symhist <- function(center, x, ...) {
 }
 
 symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
+
+# make a symmetrical histogram
+# lattice version
+panel.symhist <- function(center, x, ...) {
+  h <- hist(x, plot=F, ...)
+  relfs <- histrelfs(h)
+  breaks <- h$breaks
+  panel.centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
+}
+
+panel.symhist.curry <- function(center) {function(x, ...){panel.symhist(center, x, ...)}}
+
 ##########################################
 
 # activnsAtTickBarchart:
