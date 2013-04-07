@@ -2,6 +2,14 @@ R tips:
 
 ...........................................................
 
+# by adding adjust=n, where n is other than 1, you can modify the
+# "smoothiness" of the violin plots to erase or show multimodality
+# [in the latter case, I would call them "poodle plots".]
+bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df[socnet5with300runst5000.df$rawsum=="raw",], ylim=c(-1,1), horizontal=F, pch="|", coef=0, outer=T, par.settings=list(box.rectangle=list(col="black"), box.umbrella=list(col="black")), panel=function(x, y, ...){panel.violin(x, y, col="pink", border="pink", adjust=.1, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, col="black")}, main="socnet5with300runst5000 (dot=mean)")
+
+
+...........................................................
+
 # violin plot:
 bwplot(CV + CB ~ bias, data=socnet5with300runst5000.df, ylim=c(-1,1), outer=T, panel = panel.violin)
 
