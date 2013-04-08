@@ -102,8 +102,9 @@ curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias
 # Given a vector of evenly-spaced "foci"--points to which activation averages will usually 
 # converge--return a vector of points shifted half the distance between two foci, with
 # -1 and 1 added at the ends instead of whatever close point the shift would create.
+# Assumes that spacing between focal values are the same, except possibly at endpoints.
 foci2intervals <- function(foci){
-  dif <- foci[2]-foci[1]
+  dif <- foci[3]-foci[2]  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
   c(-1, foci[1]-dif/2, foci+dif/2, 1)
 }
 
