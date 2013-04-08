@@ -69,50 +69,54 @@ panel.setPanelArgs <- function(...){
 
 #symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
 
-# get a sequence of relative frequencies from a hist object
-histrelfs <- function(h){ h$counts/sum(h$counts) }
-
 # additional functions used below, such as butlast and butfirst, are in my utils.R .
 
 # draw a rectangle vertically centered on center:
 # lattice version
-panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, horizontal, ...) {
-  # cat("center = ", center, "\n", "xleft = ", xleft, "\n", "ybottom = ", ybottom, "\n", "xright = ", xright, "\n", "ytop = ", ytop, "\n", "horizontal = ", horizontal, "\n\n")
-  if (horizontal) {
-    panel.rect(xleft, center - ybottom/2, xright, center + ytop/2, ...)
-  } else {
-    panel.rect(center - xleft/2, ybottom, center + xright/2, ytop, ...)
-  }
-}
+#panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, horizontal, ...) {
+#  # cat("center = ", center, "\n", "xleft = ", xleft, "\n", "ybottom = ", ybottom, "\n", "xright = ", xright, "\n", "ytop = ", ytop, "\n", "horizontal = ", horizontal, "\n\n")
+#  if (horizontal) {
+#    panel.rect(xleft, center - ybottom/2, xright, center + ytop/2, ...)
+#  } else {
+#    panel.rect(center - xleft/2, ybottom, center + xright/2, ytop, ...)
+#  }
+#}
+
+# get a sequence of relative frequencies from a hist object
+#histrelfs <- function(h){ h$counts/sum(h$counts) }
 
 # make a symmetrical histogram
 # lattice version
-# doesn't yet work for horizontal=T
+# based on Greg Snow's base graphics version in response to my question at:
+# http://stackoverflow.com/questions/15846873/symmetrical-violin-plot-like-histogram
 panel.symhist <- function(x, y, horizontal, ...) {
   if (horizontal) {
-    condvar <- y
-    datavar <- x
+    condvar <- y # conditioning ("independent") variable
+    datavar <- x # data ("dependent") variable
   } else {
     condvar <- x
     datavar <- y
   }
 
   conds <- sort(unique(condvar))
-  # str(conds)
 
+  # loop through the possible values of the conditioning variable
   for (i in seq_along(conds)) {
-    h <- hist(datavar[condvar == conds[i]], plot=F)
-    relfs <- histrelfs(h)
+    h <- hist(datavar[condvar == conds[i]], plot=F) # use base hist(ogram) function to extract some information
     breaks <- h$breaks
+    halfrelfs <- (h$counts/sum(h$counts))/2  # i.e. half of the relative frequency
+    center <- i
+
+    # All of the variables passed to panel.rec will usually be vectors, and panel.rect will therefore make multiple rectangles.
     if (horizontal) {
-      panel.centeredrect(center=i, butlast(breaks), relfs, butfirst(breaks), relfs, horizontal, ...)
+      panel.rect(butlast(breaks), center - halfrelfs, butfirst(breaks), center + halfrelfs, ...)
     } else {
-      panel.centeredrect(center=i, relfs, butlast(breaks), relfs, butfirst(breaks), horizontal, ...)
+      panel.rect(center - halfrelfs, butlast(breaks), center + halfrelfs, butfirst(breaks), ...)
     }
   }
 }
 
-panel.symhist.curry <- function(center) {function(x, y, ...){panel.symhist(center, x, y, ...)}}
+#panel.symhist.curry <- function(center) {function(x, y, ...){panel.symhist(center, x, y, ...)}}
 
 ##########################################
 
