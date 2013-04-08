@@ -81,15 +81,18 @@ symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
 # make a symmetrical histogram
 # lattice version
 # If this version works, it will probably break when horizontal=TRUE, in which case I think x and y get switched.
-panel.symhist <- function(center, x, y, ...) {
-# TODO NEED TO SUBSET y by factors in x.
-  h <- hist(y, plot=F, ...)
-  relfs <- histrelfs(h)
-  breaks <- h$breaks
-  panel.centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
+panel.symhist <- function(center = .5, x, y, ...) {
+  variants <- unique(x)
+
+  for (v in variants) {
+    h <- hist(y[x==v], plot=F)
+    relfs <- histrelfs(h)
+    breaks <- h$breaks
+    panel.centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
+  }
 }
 
-panel.symhist.curry <- function(center) {function(x, ...){panel.symhist(center, x, ...)}}
+panel.symhist.curry <- function(center) {function(x, y, ...){panel.symhist(center, x, y, ...)}}
 
 ##########################################
 
