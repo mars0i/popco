@@ -84,11 +84,11 @@ symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
 panel.symhist <- function(center = .5, x, y, ...) {
   variants <- unique(x)
 
-  for (v in variants) {
-    h <- hist(y[x==v], plot=F)
+  for (i in seq_along(variants)) {
+    h <- hist(y[x == variants[i]], plot=F)
     relfs <- histrelfs(h)
     breaks <- h$breaks
-    panel.centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
+    panel.centeredrect(center=i, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
   }
 }
 
