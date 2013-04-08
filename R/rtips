@@ -61,6 +61,9 @@ par.settings = list( box.umbrella=list(col= c("red", "green", "blue")),
                      box.dot=list(col= c("red", "green", "blue")), 
                      box.rectangle = list(col= c("red", "green", "blue")) )                    
 
+# e.g. to make the whole thing black:
+par.settings = list(box.umbrella=list(col= "black"), box.dot=list(col= "black"), box.rectangle = list(col= "black") )
+
 # note the col parameter only affects the circles/dots.
 
 # Also note use of fill:

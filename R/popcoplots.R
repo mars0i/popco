@@ -52,43 +52,63 @@ panel.setPanelArgs <- function(...){
 ##########################################
 # experiments: working toward centered histograms in lattice:
 
+# draw a rectangle vertically centered on center
+# base-graphics version
+#centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
+#  rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
+#}
+
+# make a symmetrical histogram
+# base-graphics version
+#symhist <- function(center, x, horizontal, ...) {
+#  h <- hist(x, plot=F, ...)
+#  relfs <- histrelfs(h)
+#  breaks <- h$breaks
+#  centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), horizontal)
+#}
+
+#symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
+
 # get a sequence of relative frequencies from a hist object
 histrelfs <- function(h){ h$counts/sum(h$counts) }
 
-# draw a rectangle vertically centered on center
-# base-graphics version
-centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
-  rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
-}
+# additional functions used below, such as butlast and butfirst, are in my utils.R .
 
 # draw a rectangle vertically centered on center:
 # lattice version
-panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
-  panel.rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
+panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, horizontal, ...) {
+  # cat("center = ", center, "\n", "xleft = ", xleft, "\n", "ybottom = ", ybottom, "\n", "xright = ", xright, "\n", "ytop = ", ytop, "\n", "horizontal = ", horizontal, "\n\n")
+  if (horizontal) {
+    panel.rect(xleft, center - ybottom/2, xright, center + ytop/2, ...)
+  } else {
+    panel.rect(center - xleft/2, ybottom, center + xright/2, ytop, ...)
+  }
 }
-
-# make a symmetrical histogram
-# base-graphics version
-symhist <- function(center, x, ...) {
-  h <- hist(x, plot=F, ...)
-  relfs <- histrelfs(h)
-  breaks <- h$breaks
-  centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks))
-}
-
-symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
 
 # make a symmetrical histogram
 # lattice version
-# If this version works, it will probably break when horizontal=TRUE, in which case I think x and y get switched.
-panel.symhist <- function(center = .5, x, y, ...) {
-  variants <- unique(x)
+# doesn't yet work for horizontal=T
+panel.symhist <- function(x, y, horizontal, ...) {
+  if (horizontal) {
+    condvar <- y
+    datavar <- x
+  } else {
+    condvar <- x
+    datavar <- y
+  }
 
-  for (i in seq_along(variants)) {
-    h <- hist(y[x == variants[i]], plot=F)
+  conds <- sort(unique(condvar))
+  # str(conds)
+
+  for (i in seq_along(conds)) {
+    h <- hist(datavar[condvar == conds[i]], plot=F)
     relfs <- histrelfs(h)
     breaks <- h$breaks
-    panel.centeredrect(center=i, relfs, butlast(breaks), relfs, butfirst(breaks), ...)
+    if (horizontal) {
+      panel.centeredrect(center=i, butlast(breaks), relfs, butfirst(breaks), relfs, horizontal, ...)
+    } else {
+      panel.centeredrect(center=i, relfs, butlast(breaks), relfs, butfirst(breaks), horizontal, ...)
+    }
   }
 }
 
