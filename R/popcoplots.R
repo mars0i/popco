@@ -6,15 +6,19 @@
 ##########################################
 # tools for debugging panel functions, etc.
 
-# panel.setPanelArgs
+# panel.assign2panelArgs
 # assigns whatever is passed to the panel function to 
-# top level variable PanelArgs, with one list of arguments
+# top level variable panelArgs, with one list of arguments
 # for every panel.
-# USAGE: *first* define PanelArgs as a list at the top level:
+# USAGE: *first* define panelArgs as a list at the top level:
 # PanelArgs <- list()
 # if you don't do that, this function will have no effect.
-panel.setPanelArgs <- function(...){
-  PanelArgs[[panel.number()]] <<- list(...)
+panel.assign2panelArgs <- function(...){
+  panelArgs[[panel.number()]] <<- list(...)
+}
+
+panel.displayLayoutInfo <- function(...) {
+  cat("row:", current.row(...), "col:", current.column(...), "panel:", panel.number(...), "packet:", packet.number(...), "which.packet:", which.packet(...), "\n")
 }
 
 # example:
