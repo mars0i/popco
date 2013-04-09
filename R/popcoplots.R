@@ -89,12 +89,31 @@ panel.displayLayoutInfo <- function(...) {
 # get a sequence of relative frequencies from a hist object
 #histrelfs <- function(h){ h$counts/sum(h$counts) }
 
-# make a symmetrical histogram
+stripOuterZeros <- function(brks, cnts) { do.call("stripLeftZeros", stripRightZeros(brks, cnts)) }
+
+stripLeftZeros <- function(brks, cnts) {
+  if (brks[1] == 0) {
+    stripLeftZeros(brks[-1], cnts[-1])
+  } else {
+    list(brks, cnts)
+  }
+}
+
+stripRightZeros <- function(brks, cnts) {
+  len <- length(brks)
+  if (brks[len] ==0) {
+    stripRightZeros(brks[-len], cnts[-len])
+  } else {
+    list(brks, cnts)
+  }
+}
+
+# make a centered "Tower of Hanoi" histogram
 # lattice version
 # based on Greg Snow's base graphics version in response to my question at:
 # http://stackoverflow.com/questions/15846873/symmetrical-violin-plot-like-histogram
 # default behavior of breaks is hist()'s rather than histograms()'s default
-panel.hanoihist <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturges" is hist()'s default
+panel.hanoi <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturges" is hist()'s default
 
   if (horizontal) {
     condvar <- y # conditioning ("independent") variable
@@ -112,7 +131,9 @@ panel.hanoihist <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturg
       h <- hist(datavar[condvar == conds[i]], plot=F, breaks) # use base hist(ogram) function to extract some information
 
     bks <- h$breaks
-    halfrelfs <- (h$counts/sum(h$counts))/2  # i.e. half of the relative frequency
+    cnts <- h$counts
+
+    halfrelfs <- (h$counts/sum(cnts))/2  # i.e. half of the relative frequency
     center <- i
 
     # All of the variables passed to panel.rec will usually be vectors, and panel.rect will therefore make multiple rectangles.
