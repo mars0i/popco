@@ -93,12 +93,7 @@ panel.displayLayoutInfo <- function(...) {
 # lattice version
 # based on Greg Snow's base graphics version in response to my question at:
 # http://stackoverflow.com/questions/15846873/symmetrical-violin-plot-like-histogram
-panel.symhist <- function(x, y, horizontal, 
-                          breaks=NULL,
-			  # attempt to duplicate behavior of Lattice's histogram():
-			  #endpoints = extend.limits(range(as.numeric(x), finite = TRUE), prop = 0.04), 
-                          #nint = if (is.factor(x)) nlevels(x) else round(log2(length(x)) + 1),
-			  ...) {
+panel.symhist <- function(x, y, horizontal, breaks="Sturges", ...) {
 
   if (horizontal) {
     condvar <- y # conditioning ("independent") variable
@@ -108,86 +103,73 @@ panel.symhist <- function(x, y, horizontal,
     datavar <- y
   }
 
-cat("breaks pre:", ifelse(is.null(breaks), "NULL", breaks), "\n")
-
-  # attempt to duplicate behavior of Lattice's histogram():
-  if (is.null(breaks)) {
-cat("in first if\n")
-    if (is.factor(datavar)) {
-cat("factor fork: nlevels:", nlevels(datavar), "\n")
-      breaks = seq_len(1 + nlevels(datavar)) - 0.5
-cat("breaks:", breaks, "\n")
-    } else {
-      # these next two defs taken from histogram help page:
-      nint = if (is.factor(x)) nlevels(x) else round(log2(length(x)) + 1)
-      endpoints = extend.limits(range(as.numeric(x), finite = TRUE), prop = 0.04)
-cat("non-factor fork", endpoints, nint, "\n")
-      breaks = do.breaks(endpoints, nint)
-    }
-  }
-
-cat("breaks post:", ifelse(is.null(breaks), "NULL", breaks), "\n")
-
   conds <- sort(unique(condvar))
 
   # loop through the possible values of the conditioning variable
   for (i in seq_along(conds)) {
-    h <- hist(datavar[condvar == conds[i]], plot=F, breaks) # use base hist(ogram) function to extract some information
-    breaks <- h$breaks
+
+    # kludge: haven't yet figured out either hist's or histogram's way of defaulting breaks:
+#    if (is.null(breaks)) {
+#      h <- hist(datavar[condvar == conds[i]], plot=F) # use base hist(ogram) function to extract some information
+#    } else {
+      h <- hist(datavar[condvar == conds[i]], plot=F, breaks) # use base hist(ogram) function to extract some information
+#    }
+
+    bks <- h$breaks
     halfrelfs <- (h$counts/sum(h$counts))/2  # i.e. half of the relative frequency
     center <- i
 
     # All of the variables passed to panel.rec will usually be vectors, and panel.rect will therefore make multiple rectangles.
     if (horizontal) {
-      panel.rect(butlast(breaks), center - halfrelfs, butfirst(breaks), center + halfrelfs, ...)
+      panel.rect(butlast(bks), center - halfrelfs, butfirst(bks), center + halfrelfs, ...)
     } else {
-      panel.rect(center - halfrelfs, butlast(breaks), center + halfrelfs, butfirst(breaks), ...)
+      panel.rect(center - halfrelfs, butlast(bks), center + halfrelfs, butfirst(bks), ...)
     }
   }
 }
 
-# copied from common.R from lattice 0.20-15 source
-extend.limits <-
-    function(lim, length = 1, axs = "r",
-             prop =
-             if (axs == "i") 0
-             else lattice.getOption("axis.padding")$numeric)
-{
-    ## if (!is.numeric(lim)) NA
-    if (all(is.na(lim))) NA_real_ # or lim?
-    else if (is.character(lim) )
-    {
-        c(1, length(lim)) + c(-1, 1) * if (axs == "i") 0.5 else lattice.getOption("axis.padding")$factor
-    }
-    else if (length(lim) == 2)
-    {
-        if (lim[1] > lim[2])
-        {
-            ccall <- match.call()
-            ccall$lim <- rev(lim)
-            ans <- eval.parent(ccall)
-            return (rev(ans))
-        }
-        if (!missing(length) && !missing(prop))
-            stop("'length' and 'prop' cannot both be specified")
-        if (length <= 0) stop("'length' must be positive")
-        if (!missing(length))
-        {
-            prop <- (as.numeric(length) - as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
-        }
-        if (lim[1]==lim[2]) lim + 0.5 * c(-length,length)
-        else
-        {
-            d <- diff(as.numeric(lim))
-            lim + prop * d * c(-1,1)
-        }
-    }
-    else
-    {
-        print(lim)
-        stop("improper length of 'lim'")
-    }
-}
+## copied from common.R from lattice 0.20-15 source
+#extend.limits <-
+#    function(lim, length = 1, axs = "r",
+#             prop =
+#             if (axs == "i") 0
+#             else lattice.getOption("axis.padding")$numeric)
+#{
+#    ## if (!is.numeric(lim)) NA
+#    if (all(is.na(lim))) NA_real_ # or lim?
+#    else if (is.character(lim) )
+#    {
+#        c(1, length(lim)) + c(-1, 1) * if (axs == "i") 0.5 else lattice.getOption("axis.padding")$factor
+#    }
+#    else if (length(lim) == 2)
+#    {
+#        if (lim[1] > lim[2])
+#        {
+#            ccall <- match.call()
+#            ccall$lim <- rev(lim)
+#            ans <- eval.parent(ccall)
+#            return (rev(ans))
+#        }
+#        if (!missing(length) && !missing(prop))
+#            stop("'length' and 'prop' cannot both be specified")
+#        if (length <= 0) stop("'length' must be positive")
+#        if (!missing(length))
+#        {
+#            prop <- (as.numeric(length) - as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
+#        }
+#        if (lim[1]==lim[2]) lim + 0.5 * c(-length,length)
+#        else
+#        {
+#            d <- diff(as.numeric(lim))
+#            lim + prop * d * c(-1,1)
+#        }
+#    }
+#    else
+#    {
+#        print(lim)
+#        stop("improper length of 'lim'")
+#    }
+#}
 
 #panel.symhist.curry <- function(center) {function(x, y, ...){panel.symhist(center, x, y, ...)}}
 
