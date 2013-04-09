@@ -93,7 +93,8 @@ panel.displayLayoutInfo <- function(...) {
 # lattice version
 # based on Greg Snow's base graphics version in response to my question at:
 # http://stackoverflow.com/questions/15846873/symmetrical-violin-plot-like-histogram
-panel.symhist <- function(x, y, horizontal, breaks="Sturges", ...) {
+# default behavior of breaks is hist()'s rather than histograms()'s default
+panel.hanoihist <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturges" is hist()'s default
 
   if (horizontal) {
     condvar <- y # conditioning ("independent") variable
@@ -108,12 +109,7 @@ panel.symhist <- function(x, y, horizontal, breaks="Sturges", ...) {
   # loop through the possible values of the conditioning variable
   for (i in seq_along(conds)) {
 
-    # kludge: haven't yet figured out either hist's or histogram's way of defaulting breaks:
-#    if (is.null(breaks)) {
-#      h <- hist(datavar[condvar == conds[i]], plot=F) # use base hist(ogram) function to extract some information
-#    } else {
       h <- hist(datavar[condvar == conds[i]], plot=F, breaks) # use base hist(ogram) function to extract some information
-#    }
 
     bks <- h$breaks
     halfrelfs <- (h$counts/sum(h$counts))/2  # i.e. half of the relative frequency
