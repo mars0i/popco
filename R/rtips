@@ -12,6 +12,12 @@ bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), pch="|", coef=0, outer=T,
   panel=function(x, y, ...){panel.hanoi(x, y, col="pink", breaks=if(panel.number()==1){cv.ints}else{cb.ints}, ...);
                             panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red")}, par.settings=list(box.rectangle=list(col="blue"), box.umbrella=list(col="blue")))
 
+# hanoi histogram as gray shadow behind blue bwplot with median as black dot, mean as red dot:
+bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), coef=0, outer=T, panel=function(x, y, ...){panel.hanoi(x, y, col="gray90", border="gray90", breaks=if(panel.number()==1){cv.ints}else{cb.ints}, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=1, col="red")}, par.settings=list(box.rectangle=list(col="blue"), box.umbrella=list(col="blue")), main="socnet5with300runst5000", ylab="per-run mean activations")
+
+# like preceding, but with fine-grained buckets to show the sparseness of convergent data, blue histogram, black bwplot.
+bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), coef=0, outer=T, panel=function(x, y, ...){panel.hanoi(x, y, col="blue", border="blue", breaks=seq(-1,1,.02), ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=1, col="red")}, par.settings=list(box.rectangle=list(col="black"), box.umbrella=list(col="black")), main="socnet5with300runst5000", ylab="per-run mean activations")
+
 ...........................................................
 
 # by adding adjust=n, where n is other than 1, you can modify the
