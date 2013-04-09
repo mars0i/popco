@@ -128,6 +128,10 @@ panel.hanoi <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturges" 
   }
 }
 
+
+# This function will generate an error if cnts contains all zeros.  However, 
+# this should not happen in panel.hanoi.  It would mean that you have no data
+# and you'd get an error before getting to the call to this function.
 stripOuterZeros <- function(brks, cnts) { do.call("stripLeftZeros", stripRightZeros(brks, cnts)) }
 
 stripLeftZeros <- function(brks, cnts) {
