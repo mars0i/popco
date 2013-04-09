@@ -89,25 +89,6 @@ panel.displayLayoutInfo <- function(...) {
 # get a sequence of relative frequencies from a hist object
 #histrelfs <- function(h){ h$counts/sum(h$counts) }
 
-stripOuterZeros <- function(brks, cnts) { do.call("stripLeftZeros", stripRightZeros(brks, cnts)) }
-
-stripLeftZeros <- function(brks, cnts) {
-  if (cnts[1] == 0) {
-    stripLeftZeros(brks[-1], cnts[-1])
-  } else {
-    list(brks, cnts)
-  }
-}
-
-stripRightZeros <- function(brks, cnts) {
-  len <- length(cnts)
-  if (cnts[len] ==0) {
-    stripRightZeros(brks[-(len+1)], cnts[-len])
-  } else {
-    list(brks, cnts)
-  }
-}
-
 # make a centered "Tower of Hanoi" histogram
 # lattice version
 # based on Greg Snow's base graphics version in response to my question at:
@@ -146,6 +127,26 @@ panel.hanoi <- function(x, y, horizontal, breaks="Sturges", ...) {  # "Sturges" 
     }
   }
 }
+
+stripOuterZeros <- function(brks, cnts) { do.call("stripLeftZeros", stripRightZeros(brks, cnts)) }
+
+stripLeftZeros <- function(brks, cnts) {
+  if (cnts[1] == 0) {
+    stripLeftZeros(brks[-1], cnts[-1])
+  } else {
+    list(brks, cnts)
+  }
+}
+
+stripRightZeros <- function(brks, cnts) {
+  len <- length(cnts)
+  if (cnts[len] ==0) {
+    stripRightZeros(brks[-(len+1)], cnts[-len])
+  } else {
+    list(brks, cnts)
+  }
+}
+
 
 ## copied from common.R from lattice 0.20-15 source
 #extend.limits <-

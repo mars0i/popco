@@ -69,13 +69,13 @@ congruentRuns2dfs <- function(df1, df2) {
 
 # Same as above but for two biases in same df
 congruentRuns1df <- function(df, bias1, bias2) {
-  congruentRuns2dfs(df[df$bias==bias1 & df$rawsum=="raw",], df[df$bias==bias2 & df$rawsum=="raw",])
+  congruentRuns2dfs(df[df$bias==bias1 && df$rawsum=="raw",], df[df$bias==bias2 && df$rawsum=="raw",])
 }
 
 # Subtract runs means wrt one bias from those wrt the other
 # the two parts of the dfs must be congruent - i.e. runs in same order
 biasDiffs <- function(df, bias1, bias2, doms) {
-  newdf <- df[df$rawsum=="raw" & df$bias==bias1, doms] - df[df$rawsum=="raw" & df$bias==bias2, doms]
+  newdf <- df[df$rawsum=="raw" && df$bias==bias1, doms] - df[df$rawsum=="raw" && df$bias==bias2, doms]
   newdf$rawsum <- "raw"
   newdf <- rbind(newdf, c(sapply(newdf[,doms], mean), rawsum="mean"))
   newdf[,doms[1]] <- as.numeric(newdf[,doms[1]])  # rbind coerced everything to string by intermediate conversion to matrix
