@@ -103,9 +103,21 @@ curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias
 # converge--return a vector of points shifted half the distance between two foci, with
 # -1 and 1 added at the ends instead of whatever close point the shift would create.
 # Assumes that spacing between focal values are the same, except possibly at endpoints.
-foci2intervals <- function(foci){
+foci2intervals <- function(foci, divs=1){
   dif <- foci[3]-foci[2]  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
   c(-1, foci[1]-dif/2, foci+dif/2, 1)
+}
+
+foci2intervals.new <- function(foci, divs=1){
+  dif <- (foci[3]-foci[2])/divs  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
+  ints <- seq(foci[1]-dif/2, foci[length(foci)]+dif/2, dif)
+  if (ints[1] > -1) {
+    ints <- c(-1, ints)
+  }
+  if (ints[length(ints)] < 1) {
+    ints <- c(ints, 1)
+  }
+  ints
 }
 
 # notes toward ehanced version that will subdivide around the focal values:
