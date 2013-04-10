@@ -108,6 +108,9 @@ foci2intervals <- function(foci){
   c(-1, foci[1]-dif/2, foci+dif/2, 1)
 }
 
+# notes toward ehanced version that will subdivide around the focal values:
+# unlist(lapply(butlast(butfirst(cv.ints)), function(x){seq(x,x+0.1376923*4/5,len=5)}))
+
 addFactors2df <- function(df, col, foci) {
   newcol <- paste0(col, ".fac")
   df[,newcol] <- cut(df[,col], foci2intervals(cv.foci))
