@@ -103,12 +103,8 @@ curryBiasDiffs <- function(bias1, bias2, doms) { function(df){biasDiffs(df, bias
 # converge--return a vector of points shifted half the distance between two foci, with
 # -1 and 1 added at the ends instead of whatever close point the shift would create.
 # Assumes that spacing between focal values are the same, except possibly at endpoints.
+# Second argument can be used to divide bucket size by that number, while preserving symmetry around foci.
 foci2intervals <- function(foci, divs=1){
-  dif <- foci[3]-foci[2]  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
-  c(-1, foci[1]-dif/2, foci+dif/2, 1)
-}
-
-foci2intervals.new <- function(foci, divs=1){
   dif <- (foci[3]-foci[2])/divs  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
   ints <- seq(foci[1]-dif/2, foci[length(foci)]+dif/2, dif)
   if (ints[1] > -1) {
@@ -119,6 +115,12 @@ foci2intervals.new <- function(foci, divs=1){
   }
   ints
 }
+
+foci2intervals.old <- function(foci, divs=1){
+  dif <- foci[3]-foci[2]  # start from index 2, in case the first entry doesn't follow the pattern, e.g. it's a -1 that was added in.
+  c(-1, foci[1]-dif/2, foci+dif/2, 1)
+}
+
 
 # notes toward ehanced version that will subdivide around the focal values:
 # unlist(lapply(butlast(butfirst(cv.ints)), function(x){seq(x,x+0.1376923*4/5,len=5)}))

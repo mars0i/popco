@@ -12,6 +12,9 @@ bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), pch="|", coef=0, outer=T,
   panel=function(x, y, ...){panel.hanoi(x, y, col="pink", breaks=if(panel.number()==1){cv.ints}else{cb.ints}, ...);
                             panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.5, col="red")}, par.settings=list(box.rectangle=list(col="blue"), box.umbrella=list(col="blue")))
 
+# breaks customized to each panel, using new foci2intervals, blue/red color scheme:
+bwplot(CV + CB ~ bias, data=d, ylim=c(-1,1), coef=0, outer=T, panel=function(x, y, ...){panel.hanoi(x, y, col="blue", border="transparent", breaks=if(panel.number()==1)foci2intervals(cv.foci, 7) else foci2intervals(cb.foci, 7), ...); panel.bwplot(x, y,...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=.75, col="black")}, par.settings=list(box.rectangle=list(col="red"), box.umbrella=list(col="red"), box.dot=list(col="red")))
+
 # hanoi histogram as gray shadow behind blue bwplot with median as black dot, mean as red dot:
 bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), coef=0, outer=T, panel=function(x, y, ...){panel.hanoi(x, y, col="gray90", border="gray90", breaks=if(panel.number()==1){cv.ints}else{cb.ints}, ...); panel.bwplot(x, y, ...); panel.points(tapply(y, factor(x), FUN = mean), pch=20, cex=1, col="red")}, par.settings=list(box.rectangle=list(col="blue"), box.umbrella=list(col="blue")), main="socnet5with300runst5000", ylab="per-run mean activations")
 
