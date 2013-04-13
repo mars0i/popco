@@ -232,7 +232,7 @@
 ;;; http://lisptips.com/post/43404489000/the-tree-walkers-of-cl
 
 ; Reproduce structure of a two trees, with t's where
-; they match, and left as is where they differ and below.
+; they match, and with the non-matching elements consed together where they differ and below.
 (defun tree-diff (branch1 branch2)
     (cond ((and (atom branch1) (atom branch2)) ; if both atoms
            (if (eq branch1 branch2)            ; and same
@@ -257,7 +257,7 @@
     tree
     (flatten-aux tree '())))
 
-;; there's a lot of appending here--could be more efficient?
+;; There's a lot of appending here--could be more efficient?
 (defun flatten-aux (tree acc)
   (cond ((null tree) acc)
         ((atom tree) (cons tree acc))
@@ -541,12 +541,12 @@
         (cddr constraint)))))
 
 (defun maybe-depersonalize-sym (sym &optional (person *the-person*))
-  (if (generic-sym? sym)
+  (if (or (not (symbolp sym)) (generic-sym? sym))
     sym
     (personal-to-generic-sym sym person)))
 
 (defun maybe-personalize-sym (sym &optional (person *the-person*))
-  (if (personal-sym? sym)
+  (if (or (not (symbolp sym)) (personal-sym? sym))
     sym
     (generic-to-personal-sym sym person)))
 
