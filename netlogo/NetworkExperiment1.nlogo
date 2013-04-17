@@ -8,31 +8,52 @@
 
 globals
 [
-  trust
+  ;trust
+  max-activn
+  min-activn
   stop-threshold
-  activn-spread
+  ready-to-stop
+  node-hue
+  link-color
+  background-color
 ]
 
 turtles-own
 [
-  activation          ;; ranges from -1 to 1
+  activation  ; ranges from min-activn to max-activn
+  next-activation  ; allows parallel updating
+  subnet
 ]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; SETUP
 
 to setup
   clear-all
-  ask patches [set pcolor 73]
-  set trust .1
-  set stop-threshold .1  ; set with slider later
-  set activn-spread 2
+  
+  set ready-to-stop false
+  
+  ;set trust .1
+  set max-activn 1
+  set min-activn -1
+  set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
+  
+  set background-color 73
+  set node-hue 1
+  set link-color white
+
   setup-nodes
-  setup-spatially-clustered-network
-  ask links [ set color white ]
+  setup-network
+
+  ask links [ set color link-color ]
+  ask patches [set pcolor background-color]
+
   reset-ticks
 end
 
 to setup-nodes
   set-default-shape turtles "circle"
-  crt number-of-nodes
+  crt nodes-per-subnet
   [
     ; for visual reasons, we don't put any nodes *too* close to the edges
     setxy (random-xcor * 0.95) (random-ycor * 0.95)
@@ -40,9 +61,17 @@ to setup-nodes
   ]
 end
 
+; start over with the same network
+to reset-cultvars
+  ask turtles [setup-cultvar]
+  clear-all-plots
+  reset-ticks
+  set ready-to-stop false
+end
+
 ; unmodified from "Virus on a Network"--see above
-to setup-spatially-clustered-network
-  let num-links (average-node-degree * number-of-nodes) / 2
+to setup-network
+  let num-links (average-node-degree * nodes-per-subnet) / 2
   while [count links < num-links ]
   [
     ask one-of turtles
@@ -55,16 +84,8 @@ to setup-spatially-clustered-network
   ; make the network look a little prettier
   repeat 10
   [
-    layout-spring turtles links 0.3 (world-width / (sqrt number-of-nodes)) 1
+    layout-spring turtles links 0.3 (world-width / (sqrt nodes-per-subnet)) 1
   ]
-end
-
-to go
-  set activn-spread (max [ activation ] of turtles) - (min [ activation ] of turtles)
-  show activn-spread
-  if (activn-spread < stop-threshold) [stop]
-  spread-cultvar
-  tick
 end
 
 to setup-cultvar
@@ -72,25 +93,63 @@ to setup-cultvar
   set color (activn-to-color activation)
 end
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; RUN
+
+to go
+  if (ready-to-stop) [stop]
+  transmit-cultvars
+  if (activns-settled) [set ready-to-stop true] ; compares activation with next-activation, so must run between transmit-cultvars and update-activns
+  update-activns                                ; on the other hand, we do want to complete the activation updating process even if about to stop
+  tick
+end
+
+to-report activns-settled
+  let max-change (max [abs (activation - next-activation)] of turtles) ; must be called between communication and updating activation
+  report stop-threshold > max-change
+end
+
+to transmit-cultvars
+  ask turtles
+    [ let cultvar-activn activation
+      ask link-neighbors
+        [ if random-float 50 < (100 * (abs cultvar-activn))
+            [ receive-cultvar cultvar-activn ] ] ]
+end
+
+; RECEIVE-CULTVAR
+; Let an incoming cultvar affect strength of receiver's cultvar.
+; The effect is scaled by the value of trust.  Also:
+; If incoming-activn is positive, it will move receiver's activn in that direction;
+; if negative, it will push in negative direction. However, the degree of push will
+; be scaled by how far the current activation is from the extremum in the direction
+; of push.  If the distance is large, the incoming-activn will have a large effect.
+; If the distance is small, then incoming-activn's effect will be small, so that it's
+; harder to get to the extrema.  This is not really an S-curve (maybe it should be)
+; since going back to the opposite end is faster than going to the near extremum.
+to receive-cultvar [incoming-activn]
+  let dist-from-extremum
+    ifelse-value (incoming-activn <= 0)
+                 [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
+                 [max-activn - activation]  ; if incoming activen pushes in positive direction, get distance from max
+  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
+  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+end
+
+to update-activns
+  ask turtles
+    [set activation next-activation
+     set color (activn-to-color activation)]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GENERAL-USE ROUTINES
+
 to-report activn-to-color [activn]
   let hue 1 ; 1 = reds
   let zero-one-activn (activn + 1) / 2
   let zero-nine-activn round (9 * zero-one-activn)
   report (hue * zero-nine-activn) + 10
-end
-
-to spread-cultvar
-  show "need to add S-thresholding to spread-cultvar"
-  ask turtles
-    [ let my-activn activation
-      ask link-neighbors
-        [ if random-float 50 < (100 * (abs activation))
-            [ become-enculturated my-activn ] ] ]
-end
-
-to become-enculturated [incoming-activn]
-  set activation (activation + (incoming-activn * trust))
-  set color (activn-to-color activation)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -121,10 +180,10 @@ ticks
 30.0
 
 BUTTON
-25
-125
-120
-165
+24
+163
+80
+197
 NIL
 setup
 NIL
@@ -138,10 +197,10 @@ NIL
 1
 
 BUTTON
-135
-125
-230
-165
+149
+163
+205
+197
 NIL
 go
 T
@@ -155,33 +214,35 @@ NIL
 1
 
 PLOT
-5
-325
+6
+370
 260
-489
-Network Status
+490
+average cultvar activations
 time
-spread
+activn
 0.0
 52.0
-0.0
-2.0
+-1.0
+1.0
 true
 true
 "" ""
 PENS
-"spread" 1.0 0 -955883 true "" "plot activn-spread"
+"avg" 1.0 0 -16777216 true "" "plot (mean [activation] of turtles)"
+"pos" 1.0 0 -5298144 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
+"neg" 1.0 0 -13345367 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
 
 SLIDER
 25
 15
-230
-48
-number-of-nodes
-number-of-nodes
+233
+49
+nodes-per-subnet
+nodes-per-subnet
 10
 300
-10
+160
 5
 1
 NIL
@@ -190,24 +251,24 @@ HORIZONTAL
 SLIDER
 25
 50
-230
-83
+234
+84
 average-node-degree
 average-node-degree
 1
-number-of-nodes - 1
-5
+nodes-per-subnet - 1
+7
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-96
-173
-160
-207
-NIL
+82
+163
+146
+197
+go once
 go
 NIL
 1
@@ -217,6 +278,107 @@ NIL
 NIL
 NIL
 NIL
+1
+
+SLIDER
+739
+10
+918
+44
+number-of-subnets
+number-of-subnets
+1
+10
+1
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+25
+123
+233
+157
+stop-if-no-change-exponent
+stop-if-no-change-exponent
+1
+10
+3
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+24
+200
+140
+234
+NIL
+reset-cultvars
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+145
+206
+240
+240
+<- start over\nwith same net.
+11
+0.0
+1
+
+PLOT
+5
+247
+259
+367
+cultvar frequencies
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+true
+"" ""
+PENS
+"pos" 1.0 0 -5298144 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
+"neg" 1.0 0 -14070903 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
+
+SLIDER
+26
+87
+234
+121
+trust
+trust
+.01
+.9
+0.1
+.01
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+745
+45
+882
+62
+currently unused
+11
+0.0
 1
 
 @#$#@#$#@
@@ -594,5 +756,5 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 @#$#@#$#@
-0
+1
 @#$#@#$#@
