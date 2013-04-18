@@ -130,9 +130,9 @@ end
 ; THIS VERSION caps dist-from-extremum at 1.
 to receive-cultvar [incoming-activn]
   let dist-from-extremum
-    max(1, ifelse-value (incoming-activn <= 0)
-                        [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
-                        [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
+    max (list 1 ifelse-value (incoming-activn <= 0)
+                             [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
+                             [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
   let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
 end
@@ -247,12 +247,12 @@ SLIDER
 25
 15
 233
-49
+48
 nodes-per-subnet
 nodes-per-subnet
 10
 300
-160
+100
 5
 1
 NIL
@@ -262,11 +262,11 @@ SLIDER
 25
 50
 234
-84
+83
 average-node-degree
 average-node-degree
 1
-nodes-per-subnet - 1
+min (list 50 (nodes-per-subnet - 1))
 7
 1
 1
@@ -294,7 +294,7 @@ SLIDER
 739
 10
 918
-44
+43
 number-of-subnets
 number-of-subnets
 1
@@ -309,7 +309,7 @@ SLIDER
 25
 123
 233
-157
+156
 stop-if-no-change-exponent
 stop-if-no-change-exponent
 1
@@ -370,11 +370,11 @@ SLIDER
 26
 87
 234
-121
+120
 trust
 trust
 .01
-.9
+1
 0.1
 .01
 1
@@ -385,7 +385,7 @@ TEXTBOX
 745
 45
 882
-62
+63
 currently unused
 11
 0.0
