@@ -14,6 +14,8 @@ globals
   stop-threshold
   ready-to-stop
   node-hue
+  max-turtle-color
+  min-turtle-color
   link-color
   background-color
 ]
@@ -38,9 +40,12 @@ to setup
   set min-activn -1
   set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
   
-  set background-color 73
-  set node-hue 1
-  set link-color white
+  ;set background-color 73 ; a blue-green
+  set background-color 58
+  ;set node-hue 1
+  set max-turtle-color 255 ; orangey red
+  set min-turtle-color 145 ; a blue
+  set link-color black
 
   setup-nodes
   setup-network
@@ -156,6 +161,12 @@ end
 ;; GENERAL-USE ROUTINES
 
 to-report activn-to-color [activn]
+  let zero-one-activn (activn + 1) / 2 ; shift up one, normalize to [0,1]
+  let newcolor approximate-hsb (min-turtle-color + (max-turtle-color - min-turtle-color) * zero-one-activn) 200 200
+  report newcolor
+end
+
+to-report activn-to-color-old [activn]
   let hue 1 ; 1 = reds
   let zero-one-activn (activn + 1) / 2
   let zero-nine-activn round (9 * zero-one-activn)
@@ -252,7 +263,7 @@ nodes-per-subnet
 nodes-per-subnet
 10
 300
-100
+195
 5
 1
 NIL
