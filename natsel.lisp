@@ -8,7 +8,10 @@
 ;;;; Vers:      1.0.0 08/2012 kmh - initial coding
 ;;;;            2.0.0 01/2013 kmh - deleted the model; just functions now.
 
-
+;;;; TODO:
+;;;; Possibly add simple ways to default social network structure from parents into offspring.
+;;;; Add some basic fitness functons (possibly in a separate files).
+;;;; Add code to main loop to cause birth and death as a function of fitness, and/or randomly.
 
 
 (defun remove-from-group (person group)
@@ -28,7 +31,6 @@
   (mapc #'death (get population 'members))
   t)
 
-
 ;;Takes the parent's 'input and makes a new person from it, initializing
 ;;the person into *the-population*
 ;;
@@ -37,10 +39,22 @@
 ;;
 ;;Could make the name be an input into the function, but geneologies wouldn't be 
 ;;as regulated... which I guess isn't really a problem if we trust the user...
-;; PROBABLY NOT RIGHT FOR CURRENT CODE YET
+;; CURRENT VERSION DOES NOT COPY SOCIAL NETWORK STRUCTURE.  SHOULD IT?
+;; AND SHOULD CHILDREN BE LINKED TO THEIR PARENT?  WHAT ABOUT THEIR SIBLINGS?
+;; MAYBE THESE SHOULD BE OPTIONS OR SHOULD BE DONE IN WRAPPER FUNCTIONS THAT CALL THIS ONE.
+;; MAYBE NOT RIGHT IN OTHER WAYS FOR CURRENT CODE YET, TOO.
 (defun birth (parent)
   (let ((new-person (gentemp "P")))
     (make-person new-person (get parent 'group) nil (get parent 'input))
     (setf (get new-person 'parent) parent)
     (create-net new-person) ;;to initialise the new person
     new-person))
+
+;; Note that birth makes the offspring of the same parent indeed functionally identical, as you'd expect.
+;; Here p1 and p2 are offspring of bf01 in crime3socnet4netlogo.lisp:
+;; (tree-diff 
+;;   (maptree #'(lambda (s) (maybe-depersonalize-sym s 'p1)) (symbol-plist 'p1))
+;;   (maptree #'(lambda (s) (maybe-depersonalize-sym s 'p2)) (symbol-plist 'p2)))
+;; This creates a tree in which each element is T, indicating identity, except for some non-identical floats with identical printed representations.
+;; If you make an offspring of a newborn parent, they will also be functionally the same except for the parent reference.  For non-newborns,
+;; the story is different.
