@@ -127,7 +127,17 @@ end
 ; If the distance is small, then incoming-activn's effect will be small, so that it's
 ; harder to get to the extrema.  This is not really an S-curve (maybe it should be)
 ; since going back to the opposite end is faster than going to the near extremum.
+; THIS VERSION caps dist-from-extremum at 1.
 to receive-cultvar [incoming-activn]
+  let dist-from-extremum
+    max(1, ifelse-value (incoming-activn <= 0)
+                        [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
+                        [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
+  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
+  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+end
+
+to old-receive-cultvar [incoming-activn]
   let dist-from-extremum
     ifelse-value (incoming-activn <= 0)
                  [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
