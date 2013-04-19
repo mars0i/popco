@@ -194,12 +194,17 @@ to-report activn-to-color-horizontal [activn]
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
-; NetLogo's standard-deviation is the sample std dev, i.e. dividing var by n-1 rather than n.
-; This function undoes the correction, to give a proper population stddev function.
-; Result is barely different for reasonable number of nodes, but still ....
+; NetLogo's standard-deviation and variance are sample functions, i.e. dividing 
+; by n-1 rather than n.
+; These functions undo the sample correction to give a proper population variance and 
+; standard deviation. Varely different for reasonable number of nodes, but still ....
 to-report stdev [lis]
+  report  sqrt (var lis)
+end
+
+to-report var [lis]
   let n length lis
-  report  (standard-deviation lis) * sqrt ((n - 1) / n)
+  report (variance lis) * (n - 1) / n
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -292,7 +297,7 @@ nodes-per-subnet
 nodes-per-subnet
 10
 300
-25
+200
 5
 1
 NIL
@@ -307,7 +312,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-6
+7
 1
 1
 NIL
@@ -339,7 +344,7 @@ stop-if-no-change-exponent
 stop-if-no-change-exponent
 1
 10
-10
+3
 1
 1
 NIL
@@ -377,7 +382,7 @@ PLOT
 247
 259
 367
-cultvar frequencies
+cultvar freqs & activn stats
 NIL
 NIL
 0.0
@@ -390,8 +395,7 @@ true
 PENS
 "pos" 1.0 0 -9276814 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
 "neg" 1.0 0 -16777216 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
-"stdev" 1.0 0 -14070903 true "" "plot (stdev [activation] of turtles)"
-"pen-3" 1.0 2 -8053223 true "" "plot (standard-deviation [activation] of turtles)"
+"var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
 26
@@ -402,7 +406,7 @@ trust
 trust
 .01
 1
-0.53
+0.1
 .01
 1
 NIL
