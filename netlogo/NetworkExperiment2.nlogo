@@ -221,10 +221,10 @@ end
 GRAPHICS-WINDOW
 265
 10
-726
-492
-20
-20
+1169
+932
+40
+40
 11.0
 1
 10
@@ -235,10 +235,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--20
-20
--20
-20
+-40
+40
+-40
+40
 1
 1
 1
@@ -307,8 +307,8 @@ SLIDER
 nodes-per-subnet
 nodes-per-subnet
 10
-300
-200
+1000
+1000
 5
 1
 NIL
@@ -323,7 +323,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-7
+5
 1
 1
 NIL
@@ -417,17 +417,17 @@ trust
 trust
 .01
 1
-0.1
+0.83
 .01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-732
-10
-957
-43
+8
+498
+233
+531
 probability-of-transmitting
 probability-of-transmitting
 .05
@@ -795,7 +795,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.4
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
