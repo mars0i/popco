@@ -13,9 +13,9 @@ globals
   min-activn
   stop-threshold
   ready-to-stop
-  node-hue
-  max-turtle-color
-  min-turtle-color
+  netlogo-turtle-hue    ; for netlogo activn-to-color mapping
+  max-hsb-turtle-color  ; for hsb activn-to-color mapping
+  min-hsb-turtle-color
   link-color
   background-color
 ]
@@ -40,12 +40,17 @@ to setup
   set min-activn -1
   set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
   
-  ;set background-color 73 ; a blue-green
-  set background-color 58
-  ;set node-hue 1
-  set max-turtle-color 255 ; orangey red
-  set min-turtle-color 145 ; a blue
-  set link-color black
+  set background-color 73 ; a blue-green
+  ;set background-color 58 ; pale green
+  ;set background-color 0 ; black
+  set netlogo-turtle-hue 1
+  ;set max-hsb-turtle-color 255 ; orangey red
+  ;set min-hsb-turtle-color 145 ; a blue
+  ;set link-color black
+  set max-hsb-turtle-color 100
+  set min-hsb-turtle-color 0
+  ;set link-color white
+  set link-color gray
 
   setup-nodes
   setup-network
@@ -161,25 +166,28 @@ end
 ;; GENERAL-USE ROUTINES
 
 to-report activn-to-color [activn]
+  report activn-to-vertical-netlogo-color activn
+end
+
+to-report activn-to-color-hsb [activn]
   let zero-one-activn (activn + 1) / 2 ; shift up one, normalize to [0,1]
-  let newcolor approximate-hsb (min-turtle-color + (max-turtle-color - min-turtle-color) * zero-one-activn) 200 200
+  let newcolor approximate-hsb (min-hsb-turtle-color + (max-hsb-turtle-color - min-hsb-turtle-color) * zero-one-activn) 200 200
   report newcolor
 end
 
-to-report activn-to-color-old [activn]
-  let hue 1 ; 1 = reds
+to-report activn-to-vertical-netlogo-color [activn]
   let zero-one-activn (activn + 1) / 2
   let zero-nine-activn round (9 * zero-one-activn)
-  report (hue * zero-nine-activn) + 10
+  report (netlogo-turtle-hue * zero-nine-activn) + 10
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-265
-10
-726
-492
-20
-20
+262
+8
+946
+708
+30
+30
 11.0
 1
 10
@@ -190,10 +198,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--20
-20
--20
-20
+-30
+30
+-30
+30
 1
 1
 1
@@ -262,8 +270,8 @@ SLIDER
 nodes-per-subnet
 nodes-per-subnet
 10
-300
-195
+1000
+500
 5
 1
 NIL
@@ -277,8 +285,8 @@ SLIDER
 average-node-degree
 average-node-degree
 1
-min (list 50 (nodes-per-subnet - 1))
-7
+nodes-per-subnet - 1
+50
 1
 1
 NIL
@@ -300,21 +308,6 @@ NIL
 NIL
 NIL
 1
-
-SLIDER
-739
-10
-918
-43
-number-of-subnets
-number-of-subnets
-1
-10
-1
-1
-1
-NIL
-HORIZONTAL
 
 SLIDER
 25
@@ -386,21 +379,11 @@ trust
 trust
 .01
 1
-0.1
+0.02
 .01
 1
 NIL
 HORIZONTAL
-
-TEXTBOX
-745
-45
-882
-63
-currently unused
-11
-0.0
-1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -759,7 +742,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.4
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
