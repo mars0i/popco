@@ -53,7 +53,7 @@ to setup
   set netlogo-turtle-hue 0
   set max-hsb-turtle-color 255 ; orangey red
   set min-hsb-turtle-color 145 ; a blue
-  set link-color black
+  set link-color 123
 
   setup-nodes
   setup-network
@@ -124,21 +124,17 @@ end
 
 to transmit-cultvars
   ask turtles
-    [ let cultvar-activn activation
-      ask link-neighbors
-        [ if (probability-of-transmitting * random-float 100) < (100 * (abs cultvar-activn))
-            [ receive-cultvar cultvar-activn ] ] ]
+    [let message cultvar-to-message activation
+     ask link-neighbors
+       [if transmit-cultvar? message 
+           [receive-cultvar message]]]
 end
 
 to-report transmit-cultvar? [activn]
-  report true
+  report (random-float 100) < (100 * (abs activn))
 end
 
 to-report cultvar-to-message [activn]
-  report activn
-end
-
-to-report message-to-cultvar [activn]
   report activn
 end
 
@@ -153,22 +149,24 @@ end
 ; harder to get to the extrema.  This is not really an S-curve (maybe it should be)
 ; since going back to the opposite end is faster than going to the near extremum.
 ; THIS VERSION caps dist-from-extremum at 1.
-to receive-cultvar [incoming-activn]
+to receive-cultvar [message]
+  let incoming-activn message-to-cultvar message
   let dist-from-extremum
-    max (list 1 ifelse-value (incoming-activn <= 0)
+    max (list 1 ifelse-value (incoming-activn < 0)
                              [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
                              [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
-  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
+  let candidate-activn (activation + (incoming-activn * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
 end
 
-to old-receive-cultvar [incoming-activn]
-  let dist-from-extremum
-    ifelse-value (incoming-activn <= 0)
-                 [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
-                 [max-activn - activation]  ; if incoming activen pushes in positive direction, get distance from max
-  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
-  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+; activation-scaled version, like early versions of this program
+;to-report message-to-cultvar [activn]
+;  report activn * trust
+;end
+
+; no scaling: trust is the incremental value, like in POPCO
+to-report message-to-cultvar [activn]
+  report (sign-of activn) * trust
 end
 
 to update-activns
@@ -203,26 +201,31 @@ to-report activn-to-color-horizontal [activn]
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
+to-report sign-of [x]
+  report ifelse-value (x >= 0) [1] [-1]
+end
+
 ; NetLogo's standard-deviation and variance are sample functions, i.e. dividing 
 ; by n-1 rather than n.
 ; These functions undo the sample correction to give a proper population variance and 
-; standard deviation. Varely different for reasonable number of nodes, but still ....
-to-report stdev [lis]
-  report  sqrt (var lis)
-end
 
 to-report var [lis]
   let n length lis
   report (variance lis) * (n - 1) / n
 end
+
+; standard deviation. Varely different for reasonable number of nodes, but still ....
+;to-report stdev [lis]
+;  report  sqrt (var lis)
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 265
 10
-1014
-780
-33
-33
+947
+713
+30
+30
 11.0
 1
 10
@@ -233,10 +236,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--33
-33
--33
-33
+-30
+30
+-30
+30
 1
 1
 1
@@ -306,7 +309,7 @@ nodes-per-subnet
 nodes-per-subnet
 10
 1000
-1000
+370
 5
 1
 NIL
@@ -321,7 +324,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-5
+7
 1
 1
 NIL
@@ -415,23 +418,8 @@ trust
 trust
 .01
 1
-0.83
+0.05
 .01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-8
-498
-233
-531
-probability-of-transmitting
-probability-of-transmitting
-.05
-1
-0.5
-.05
 1
 NIL
 HORIZONTAL
