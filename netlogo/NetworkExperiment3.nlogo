@@ -161,7 +161,7 @@ end
 to receive-cultvar [message]
   let incoming-activn message-to-cultvar message
   let dist-from-extremum
-    max (list 1 ifelse-value (incoming-activn < 0)
+    max (list 1 ifelse-value (incoming-activn <= 0)
                              [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
                              [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
   let candidate-activn (activation + (incoming-activn * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
@@ -328,7 +328,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-500
+1000
 5
 1
 NIL
@@ -343,7 +343,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-15
+50
 1
 1
 NIL
@@ -452,7 +452,7 @@ prob-of-transmission-bias
 prob-of-transmission-bias
 -1
 1
-0
+0.15
 .01
 1
 NIL
@@ -470,9 +470,9 @@ black
 
 TEXTBOX
 3
-132
+130
 27
-152
+150
 white
 9
 0.0
