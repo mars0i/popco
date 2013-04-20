@@ -140,7 +140,7 @@ end
 ; larger than the absolute value of the activation. [IS THAT OK?] (This is all done on a scale of 100,
 ; since NetLogo only provides random integers.)
 to-report transmit-cultvar? [activn]
-  report (100 * (abs (activn + bias))) > (random-float 100)
+  report (100 * (abs (activn + prob-of-transmission-bias))) > (random-float 100)
 end
 
 to-report cultvar-to-message [activn]
@@ -191,7 +191,7 @@ end
 ;; GENERAL-USE ROUTINES
 
 to-report activn-to-color [activn]
-  report activn-to-color-horizontal activn
+  report activn-to-color-horizontal-reverse activn
 end
 
 to-report activn-to-color-hsb [activn]
@@ -210,6 +210,13 @@ to-report activn-to-color-horizontal [activn]
   let zero-one-activn (activn + 1) / 2
   let zero-ten-activn round (10 * zero-one-activn)
   let almost-color netlogo-turtle-hue + zero-ten-activn
+  report ifelse-value (almost-color = 10) [9.9] [almost-color]
+end
+
+to-report activn-to-color-horizontal-reverse [activn]
+  let zero-one-activn (activn + 1) / 2
+  let zero-ten-activn round (10 * zero-one-activn)
+  let almost-color netlogo-turtle-hue + 10 - zero-ten-activn   ; "+ 10 -" rather than "+" reverses colors
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
@@ -308,9 +315,9 @@ true
 true
 "" ""
 PENS
-"avg" 1.0 0 -10873583 true "" "plot (mean [activation] of turtles)"
-"pos" 1.0 0 -7500403 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
-"neg" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
+"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
+"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
+"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
 27
@@ -336,7 +343,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-25
+15
 1
 1
 NIL
@@ -406,7 +413,7 @@ PLOT
 247
 259
 367
-cultvar freqs & activn stats
+cultvar freqs & pop variance
 NIL
 NIL
 0.0
@@ -417,8 +424,8 @@ true
 true
 "" ""
 PENS
-"pos" 1.0 0 -9276814 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
-"neg" 1.0 0 -16777216 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
+"Bl" 1.0 0 -16777216 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
+"Wh" 1.0 0 -5987164 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
@@ -441,33 +448,33 @@ SLIDER
 117
 236
 151
-bias
-bias
+prob-of-transmission-bias
+prob-of-transmission-bias
 -1
 1
-0.2
-.05
+0
+.01
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-240
-128
-256
-148
-W
-11
+239
+129
+264
+149
+black
+9
 0.0
 1
 
 TEXTBOX
-17
-129
-33
-148
-B
-11
+3
+132
+27
+152
+white
+9
 0.0
 1
 
