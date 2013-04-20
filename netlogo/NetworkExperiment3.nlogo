@@ -19,9 +19,9 @@ globals
   min-activn
   stop-threshold
   ready-to-stop
-  node-hue
-  max-turtle-color
-  min-turtle-color
+  netlogo-turtle-hue
+  max-hsb-turtle-color
+  min-hsb-turtle-color
   link-color
   background-color
 ]
@@ -50,9 +50,9 @@ to setup
   ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
   ;set background-color 58
-  ;set node-hue 1
-  set max-turtle-color 255 ; orangey red
-  set min-turtle-color 145 ; a blue
+  set netlogo-turtle-hue 0
+  set max-hsb-turtle-color 255 ; orangey red
+  set min-hsb-turtle-color 145 ; a blue
   set link-color black
 
   setup-nodes
@@ -186,22 +186,20 @@ end
 
 to-report activn-to-color-hsb [activn]
   let zero-one-activn (activn + 1) / 2 ; shift up one, normalize to [0,1]
-  let newcolor approximate-hsb (min-turtle-color + (max-turtle-color - min-turtle-color) * zero-one-activn) 200 200
+  let newcolor approximate-hsb (min-hsb-turtle-color + (max-hsb-turtle-color - min-hsb-turtle-color) * zero-one-activn) 200 200
   report newcolor
 end
 
 to-report activn-to-color-vertical [activn]
-  let hue 1 ; 1 = reds
   let zero-one-activn (activn + 1) / 2
   let zero-nine-activn round (9 * zero-one-activn)
-  report (hue * zero-nine-activn) + 10
+  report (netlogo-turtle-hue * zero-nine-activn) + 10
 end
 
 to-report activn-to-color-horizontal [activn]
-  let hue 0 ; black/gray/white
   let zero-one-activn (activn + 1) / 2
   let zero-ten-activn round (10 * zero-one-activn)
-  let almost-color hue + zero-ten-activn
+  let almost-color netlogo-turtle-hue + zero-ten-activn
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
@@ -221,10 +219,10 @@ end
 GRAPHICS-WINDOW
 265
 10
-1169
-932
-40
-40
+1014
+780
+33
+33
 11.0
 1
 10
@@ -235,10 +233,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--40
-40
--40
-40
+-33
+33
+-33
+33
 1
 1
 1
@@ -795,7 +793,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.2
+NetLogo 5.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
