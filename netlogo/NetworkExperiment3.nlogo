@@ -259,10 +259,10 @@ ticks
 30.0
 
 BUTTON
-5
-150
-61
-184
+27
+152
+83
+186
 NIL
 setup
 NIL
@@ -276,10 +276,10 @@ NIL
 1
 
 BUTTON
-130
-150
+152
+152
+208
 186
-184
 NIL
 go
 T
@@ -313,10 +313,10 @@ PENS
 "neg" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
 
 SLIDER
-5
-10
-213
-43
+27
+12
+235
+45
 number-of-nodes
 number-of-nodes
 10
@@ -328,25 +328,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-45
-214
-78
+27
+47
+236
+80
 average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-10
+25
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-63
-150
-127
-184
+85
+152
+149
+186
 go once
 go
 NIL
@@ -375,10 +375,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-5
-187
-121
-221
+27
+189
+143
+223
 NIL
 reset-cultvars
 NIL
@@ -392,10 +392,10 @@ NIL
 1
 
 TEXTBOX
-126
-193
-221
-227
+148
+195
+243
+229
 <- start over\nwith same net.
 11
 0.0
@@ -422,10 +422,10 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
-5
-80
-213
-113
+27
+82
+235
+115
 trust
 trust
 .01
@@ -437,19 +437,39 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-115
-214
-148
+27
+117
+236
+151
 bias
 bias
 -1
 1
-0
+0.2
 .05
 1
 NIL
 HORIZONTAL
+
+TEXTBOX
+240
+128
+256
+148
+W
+11
+0.0
+1
+
+TEXTBOX
+17
+129
+33
+148
+B
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
