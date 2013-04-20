@@ -1,4 +1,4 @@
-; NetworkExperiment2.nlogo
+; NetworkExperiment3.nlogo
 ; Marshall Abrams' based on:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. 
@@ -8,7 +8,7 @@
 
 ; Globals set by user:
 ;   trust
-;   nodes-per-subnet
+;   number-of-nodes
 ;   average-node-degree
 ;   stop-if-no-change-exponent
 ;   probability-of-transmitting
@@ -30,7 +30,6 @@ turtles-own
 [
   activation  ; ranges from min-activn to max-activn
   next-activation  ; allows parallel updating
-  subnet
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,7 +65,7 @@ end
 
 to setup-nodes
   set-default-shape turtles "circle"
-  crt nodes-per-subnet
+  crt number-of-nodes
   [
     ; for visual reasons, we don't put any nodes *too* close to the edges
     setxy (random-xcor * 0.95) (random-ycor * 0.95)
@@ -82,9 +81,9 @@ to reset-cultvars
   set ready-to-stop false
 end
 
-; unmodified from "Virus on a Network"--see above
+; mostly from "Virus on a Network"--see above
 to setup-network
-  let num-links (average-node-degree * nodes-per-subnet) / 2
+  let num-links (average-node-degree * number-of-nodes) / 2
   while [count links < num-links ]
   [
     ask one-of turtles
@@ -97,7 +96,7 @@ to setup-network
   ; make the network look a little prettier
   repeat 10
   [
-    layout-spring turtles links 0.3 (world-width / (sqrt nodes-per-subnet)) 1
+    layout-spring turtles links 0.1 (world-width / (sqrt number-of-nodes)) 1 ; 3rd arg was 0.3 originally
   ]
 end
 
@@ -166,7 +165,8 @@ end
 
 ; no scaling: trust is the incremental value, like in POPCO
 to-report message-to-cultvar [activn]
-  report (sign-of activn) * trust
+  let sign sign-of activn
+  report (sign * trust) + bias
 end
 
 to update-activns
@@ -222,8 +222,8 @@ end
 GRAPHICS-WINDOW
 265
 10
-947
-713
+946
+712
 30
 30
 11.0
@@ -305,11 +305,11 @@ SLIDER
 15
 233
 48
-nodes-per-subnet
-nodes-per-subnet
+number-of-nodes
+number-of-nodes
 10
 1000
-370
+500
 5
 1
 NIL
@@ -323,8 +323,8 @@ SLIDER
 average-node-degree
 average-node-degree
 1
-min (list 50 (nodes-per-subnet - 1))
-7
+min (list 50 (number-of-nodes - 1))
+10
 1
 1
 NIL
@@ -348,10 +348,10 @@ NIL
 1
 
 SLIDER
-25
-123
-233
-156
+6
+496
+214
+529
 stop-if-no-change-exponent
 stop-if-no-change-exponent
 1
@@ -418,7 +418,22 @@ trust
 trust
 .01
 1
-0.06
+0.05
+.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+27
+124
+236
+158
+bias
+bias
+-.2
+.2
+0
 .01
 1
 NIL
