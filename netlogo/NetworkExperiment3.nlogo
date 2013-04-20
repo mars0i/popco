@@ -129,8 +129,18 @@ to transmit-cultvars
            [receive-cultvar message]]]
 end
 
+; Decide probabilistically whether to report your cultvar to an individual:
+; Roughly, the absolute value of your activation is treated as a probability: When bias = 0,
+; a random number between 0 and 1 is selected, and if your absolute activation is above that,
+; you transmit to the receiver.  When bias is nonzero, the sum of activation and bias is used instead.
+; i.e. for large activations, if bias has the same sign as activation, it increases the probability of
+; transmission; if they have opposite signs, the probability is reduced. The result may be
+; > 1, in which case the effect is the same as if it were 1.  For small absolute activations,
+; adding bias to the activation may flip the sign and produce a number whose absolute value is
+; larger than the absolute value of the activation. [IS THAT OK?] (This is all done on a scale of 100,
+; since NetLogo only provides random integers.)
 to-report transmit-cultvar? [activn]
-  report (random-float 100) < (100 * (abs activn))
+  report (100 * (abs (activn + bias))) > (random-float 100)
 end
 
 to-report cultvar-to-message [activn]
@@ -158,16 +168,18 @@ to receive-cultvar [message]
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
 end
 
-; activation-scaled version, like early versions of this program
-;to-report message-to-cultvar [activn]
-;  report activn * trust
-;end
-
 ; no scaling: trust is the incremental value, like in POPCO
 to-report message-to-cultvar [activn]
   let sign sign-of activn
-  report (sign * trust) + bias
+  report (sign * trust)
 end
+
+; activation-scaled version, like early versions of this program
+;to-report message-to-cultvar [activn]
+;  report activn * trust
+;  ; or:
+;  report activn * trust + bias
+;end
 
 to update-activns
   ask turtles
@@ -247,10 +259,10 @@ ticks
 30.0
 
 BUTTON
-24
-163
-80
-197
+5
+150
+61
+184
 NIL
 setup
 NIL
@@ -264,10 +276,10 @@ NIL
 1
 
 BUTTON
-149
-163
-205
-197
+130
+150
+186
+184
 NIL
 go
 T
@@ -301,10 +313,10 @@ PENS
 "neg" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
 
 SLIDER
-25
-15
-233
-48
+5
+10
+213
+43
 number-of-nodes
 number-of-nodes
 10
@@ -316,10 +328,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-25
-50
-234
-83
+5
+45
+214
+78
 average-node-degree
 average-node-degree
 1
@@ -331,10 +343,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-82
-163
-146
-197
+63
+150
+127
+184
 go once
 go
 NIL
@@ -363,10 +375,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-24
-200
-140
-234
+5
+187
+121
+221
 NIL
 reset-cultvars
 NIL
@@ -380,10 +392,10 @@ NIL
 1
 
 TEXTBOX
-145
-206
-240
-240
+126
+193
+221
+227
 <- start over\nwith same net.
 11
 0.0
@@ -410,10 +422,10 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
-26
-87
-234
-120
+5
+80
+213
+113
 trust
 trust
 .01
@@ -425,16 +437,16 @@ NIL
 HORIZONTAL
 
 SLIDER
-27
-124
-236
-158
+5
+115
+214
+148
 bias
 bias
--.2
-.2
+-1
+1
 0
-.01
+.05
 1
 NIL
 HORIZONTAL
