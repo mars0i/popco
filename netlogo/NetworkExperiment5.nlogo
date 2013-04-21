@@ -7,7 +7,7 @@
 ; Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
 
 ; Globals set by user:
-;   trust
+;   trust-mean
 ;   number-of-nodes
 ;   average-node-degree
 ;   stop-if-no-change-exponent
@@ -38,7 +38,6 @@ to setup
   
   set ready-to-stop false
   
-  ;set trust .1
   set max-activn 1
   set min-activn -1
   set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
@@ -167,15 +166,8 @@ end
 ; no scaling: trust is the incremental value, like in POPCO
 to-report message-to-cultvar [activn]
   let sign sign-of activn
-  report (sign * trust)
+  report (sign * (random-normal trust-mean trust-stdev))
 end
-
-; activation-scaled version, like early versions of this program
-;to-report message-to-cultvar [activn]
-;  report activn * trust
-;  ; or:
-;  report activn * trust + bias
-;end
 
 to update-activns
   ask turtles
@@ -239,10 +231,10 @@ ticks
 30.0
 
 BUTTON
-39
-152
-95
-186
+46
+205
+102
+239
 NIL
 setup
 NIL
@@ -256,10 +248,10 @@ NIL
 1
 
 BUTTON
-164
-152
-220
-186
+170
+205
+226
+239
 NIL
 go
 T
@@ -273,10 +265,10 @@ NIL
 1
 
 PLOT
-6
-370
-260
-490
+14
+424
+268
+544
 average cultvar activations
 time
 activn
@@ -323,10 +315,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-97
-152
-161
-186
+104
+205
+168
+239
 go once
 go
 NIL
@@ -340,10 +332,10 @@ NIL
 1
 
 SLIDER
-30
-496
-238
-529
+37
+549
+245
+582
 stop-if-no-change-exponent
 stop-if-no-change-exponent
 1
@@ -355,10 +347,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-39
-189
-155
-223
+46
+243
+162
+277
 NIL
 reset-cultvars
 NIL
@@ -372,20 +364,20 @@ NIL
 1
 
 TEXTBOX
-160
-195
-255
-229
+167
+248
+262
+282
 <- start over\nwith same net.
 11
 0.0
 1
 
 PLOT
-5
-247
-259
-367
+13
+302
+267
+422
 cultvar freqs & pop variance
 NIL
 NIL
@@ -406,8 +398,8 @@ SLIDER
 83
 247
 116
-trust
-trust
+trust-mean
+trust-mean
 .01
 1
 0.05
@@ -418,14 +410,14 @@ HORIZONTAL
 
 SLIDER
 39
-117
+153
 248
-150
+186
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
 1
-0.28
+0
 .01
 1
 NIL
@@ -433,9 +425,9 @@ HORIZONTAL
 
 TEXTBOX
 253
-129
+165
 290
-149
+185
 black
 10
 0.0
@@ -443,13 +435,28 @@ black
 
 TEXTBOX
 6
-130
+166
 42
-150
+186
 white
 10
 0.0
 1
+
+SLIDER
+39
+118
+248
+152
+trust-stdev
+trust-stdev
+0
+1
+0
+.01
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
