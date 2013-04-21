@@ -20,10 +20,9 @@ globals
   stop-threshold
   ready-to-stop
   netlogo-turtle-hue
-  max-hsb-turtle-color
-  min-hsb-turtle-color
   link-color
   background-color
+  yo
 ]
 
 turtles-own
@@ -50,8 +49,6 @@ to setup
   set background-color 17 ; peach
   ;set background-color 58
   set netlogo-turtle-hue 0
-  set max-hsb-turtle-color 255 ; orangey red
-  set min-hsb-turtle-color 145 ; a blue
   set link-color 123
 
   setup-nodes
@@ -149,24 +146,24 @@ end
 
 ; RECEIVE-CULTVAR
 ; Let an incoming cultvar affect strength of receiver's cultvar.
+; FOR USE INSIDE A TURTLE.
 ; The effect is scaled by the value of trust.  Also:
 ; If incoming-activn is positive, it will move receiver's activn in that direction;
 ; if negative, it will push in negative direction. However, the degree of push will
 ; be scaled by how far the current activation is from the extremum in the direction
 ; of push.  If the distance is large, the incoming-activn will have a large effect.
 ; If the distance is small, then incoming-activn's effect will be small, so that it's
-; harder to get to the extrema.  This is not really an S-curve (maybe it should be)
-; since going back to the opposite end is faster than going to the near extremum.
-; THIS VERSION caps dist-from-extremum at 1.
+; harder to get to the extrema.
 to receive-cultvar [message]
   let incoming-activn message-to-cultvar message
   let dist-from-extremum
     max (list 1 ifelse-value (incoming-activn <= 0)
                              [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
                              [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
-  let candidate-activn (activation + (incoming-activn * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
-  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+  ; DOESN'T WORK RIGHT:
+  set next-activation sigmoid (activation + incoming-activn)
 end
+  
 
 ; no scaling: trust is the incremental value, like in POPCO
 to-report message-to-cultvar [activn]
@@ -194,25 +191,6 @@ to-report activn-to-color [activn]
   report activn-to-color-horizontal-reverse activn
 end
 
-to-report activn-to-color-hsb [activn]
-  let zero-one-activn (activn + 1) / 2 ; shift up one, normalize to [0,1]
-  let newcolor approximate-hsb (min-hsb-turtle-color + (max-hsb-turtle-color - min-hsb-turtle-color) * zero-one-activn) 200 200
-  report newcolor
-end
-
-to-report activn-to-color-vertical [activn]
-  let zero-one-activn (activn + 1) / 2
-  let zero-nine-activn round (9 * zero-one-activn)
-  report (netlogo-turtle-hue * zero-nine-activn) + 10
-end
-
-to-report activn-to-color-horizontal [activn]
-  let zero-one-activn (activn + 1) / 2
-  let zero-ten-activn round (10 * zero-one-activn)
-  let almost-color netlogo-turtle-hue + zero-ten-activn
-  report ifelse-value (almost-color = 10) [9.9] [almost-color]
-end
-
 to-report activn-to-color-horizontal-reverse [activn]
   let zero-one-activn (activn + 1) / 2
   let zero-ten-activn round (10 * zero-one-activn)
@@ -220,8 +198,34 @@ to-report activn-to-color-horizontal-reverse [activn]
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
+;to-report activn-to-color-horizontal [activn]
+;  let zero-one-activn (activn + 1) / 2
+;  let zero-ten-activn round (10 * zero-one-activn)
+;  let almost-color netlogo-turtle-hue + zero-ten-activn
+;  report ifelse-value (almost-color = 10) [9.9] [almost-color]
+;end
+
+
 to-report sign-of [x]
   report ifelse-value (x >= 0) [1] [-1]
+end
+
+; A useful sigmoid that maps [-1,1] into [-1,1] with nice tapering off near -1 and 1.
+; inputs outside of this range are mapped to the -1 or 1.
+; See http://math.stackexchange.com/questions/367078/computationally-simple-sigmoid-with-specific-slopes-at-specific-points
+to-report sigmoid [x]
+  if-else (x > 1) [report 1][   ; Function approaches -1, 1 at the extremes, but
+  if-else (x < -1) [report -1][ ; is undefined at -1 and 1, so handle this case directly.
+    let k 2                     ; Now x can be assumed to lie in (-1, 1).
+    let m .2
+    report tanh ((k * x) / ((1 - x ^ 2) ^ m))
+  ]]
+end
+
+; see e.g. http://en.wikipedia.org/wiki/Hyperbolic_function for this definition
+to-report tanh [x]
+  let exp2x exp(2 * x)
+  report (exp2x - 1)/(exp2x + 1)
 end
 
 ; NetLogo's standard-deviation and variance are sample functions, i.e. dividing 
@@ -328,7 +332,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-500
+350
 5
 1
 NIL
