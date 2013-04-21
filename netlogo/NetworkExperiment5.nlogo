@@ -1,7 +1,4 @@
-;; NetworkExperiment1a.nlogo
-;; Version with mods that got merged with NetworkExperiment1.nlogo into
-;; NetworkExperiment2.nlogo
-
+; NetworkExperiment3.nlogo
 ; Marshall Abrams' based on:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. 
@@ -9,29 +6,28 @@
 ; Center for Connected Learning and Computer-Based Modeling, 
 ; Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
 
+; Globals set by user:
+;   trust
+;   number-of-nodes
+;   average-node-degree
+;   stop-if-no-change-exponent
+;   probability-of-transmitting
+  
 globals
 [
-  ;trust
   max-activn
   min-activn
   stop-threshold
   ready-to-stop
-  node-hue
-  max-turtle-color
-  min-turtle-color
+  netlogo-turtle-hue
   link-color
   background-color
-  
-  atc-hsb-task
-  atc-horizontal-task
-  atc-vertical-task
 ]
 
 turtles-own
 [
   activation  ; ranges from min-activn to max-activn
   next-activation  ; allows parallel updating
-  subnet
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -46,31 +42,26 @@ to setup
   set max-activn 1
   set min-activn -1
   set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
+  ;set probability-of-transmitting .5
   
   ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
   ;set background-color 58
-  ;set node-hue 1
-  set max-turtle-color 255 ; orangey red
-  set min-turtle-color 145 ; a blue
-  set link-color black
+  set netlogo-turtle-hue 0
+  set link-color 123
 
   setup-nodes
   setup-network
 
   ask links [ set color link-color ]
   ask patches [set pcolor background-color]
-  
-  set atc-hsb-task task activn-to-color-hsb 
-  set atc-horizontal-task task activn-to-color-horizontal
-  set atc-vertical-task task activn-to-color-vertical
 
   reset-ticks
 end
 
 to setup-nodes
   set-default-shape turtles "circle"
-  crt nodes-per-subnet
+  crt number-of-nodes
   [
     ; for visual reasons, we don't put any nodes *too* close to the edges
     setxy (random-xcor * 0.95) (random-ycor * 0.95)
@@ -86,9 +77,9 @@ to reset-cultvars
   set ready-to-stop false
 end
 
-; unmodified from "Virus on a Network"--see above
+; mostly from "Virus on a Network"--see above
 to setup-network
-  let num-links (average-node-degree * nodes-per-subnet) / 2
+  let num-links (average-node-degree * number-of-nodes) / 2
   while [count links < num-links ]
   [
     ask one-of turtles
@@ -101,7 +92,7 @@ to setup-network
   ; make the network look a little prettier
   repeat 10
   [
-    layout-spring turtles links 0.3 (world-width / (sqrt nodes-per-subnet)) 1
+    layout-spring turtles links 0.1 (world-width / (sqrt number-of-nodes)) 1 ; 3rd arg was 0.3 originally
   ]
 end
 
@@ -128,40 +119,63 @@ end
 
 to transmit-cultvars
   ask turtles
-    [ let cultvar-activn activation
-      ask link-neighbors
-        [ if random-float 50 < (100 * (abs cultvar-activn))
-            [ receive-cultvar cultvar-activn ] ] ]
+    [let message cultvar-to-message activation
+     ask link-neighbors
+       [if transmit-cultvar? message 
+           [receive-cultvar message]]]
+end
+
+; Decide probabilistically whether to report your cultvar to an individual:
+; Roughly, the absolute value of your activation is treated as a probability: When bias = 0,
+; a random number between 0 and 1 is selected, and if your absolute activation is above that,
+; you transmit to the receiver.  When bias is nonzero, the sum of activation and bias is used instead.
+; i.e. for large activations, if bias has the same sign as activation, it increases the probability of
+; transmission; if they have opposite signs, the probability is reduced. The result may be
+; > 1, in which case the effect is the same as if it were 1.  For small absolute activations,
+; adding bias to the activation may flip the sign and produce a number whose absolute value is
+; larger than the absolute value of the activation. [IS THAT OK?]
+to-report transmit-cultvar? [activn]
+  report (abs (activn + prob-of-transmission-bias)) > (random-float 1)
+end
+
+to-report cultvar-to-message [activn]
+  report activn
 end
 
 ; RECEIVE-CULTVAR
 ; Let an incoming cultvar affect strength of receiver's cultvar.
-; The effect is scaled by the value of trust.  Also:
 ; If incoming-activn is positive, it will move receiver's activn in that direction;
 ; if negative, it will push in negative direction. However, the degree of push will
 ; be scaled by how far the current activation is from the extremum in the direction
 ; of push.  If the distance is large, the incoming-activn will have a large effect.
 ; If the distance is small, then incoming-activn's effect will be small, so that it's
-; harder to get to the extrema.  This is not really an S-curve (maybe it should be)
-; since going back to the opposite end is faster than going to the near extremum.
-; THIS VERSION caps dist-from-extremum at 1.
-to receive-cultvar [incoming-activn]
-  let dist-from-extremum
-    max (list 1 ifelse-value (incoming-activn <= 0)
-                             [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
-                             [max-activn - activation]) ; if incoming activen pushes in positive direction, get distance from max
-  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
+; harder to get to the extrema. The method used to do this is often used to update
+; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313). 
+to receive-cultvar [message]
+  let incoming-activn (message-to-cultvar message)
+  let candidate-activn (activation + (incoming-activn * (dist-from-extremum incoming-activn activation))) ; sign will come from incoming-activn; scaling factors are positive
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
 end
 
-to old-receive-cultvar [incoming-activn]
-  let dist-from-extremum
-    ifelse-value (incoming-activn <= 0)
-                 [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
-                 [max-activn - activation]  ; if incoming activen pushes in positive direction, get distance from max
-  let candidate-activn (activation + (incoming-activn * trust * dist-from-extremum)) ; sign will come from incoming-activn; scaling factors are positive
-  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+to-report dist-from-extremum [incoming-activn current-activn]
+  let dist ifelse-value (incoming-activn <= 0)
+                        [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
+                        [max-activn - activation] ; if incoming activen pushes in positive direction, get distance from max
+  report max (list 1 dist)
 end
+
+; no scaling: trust is the incremental value, like in POPCO
+to-report message-to-cultvar [activn]
+  let sign sign-of activn
+  report (sign * trust)
+end
+
+; activation-scaled version, like early versions of this program
+;to-report message-to-cultvar [activn]
+;  report activn * trust
+;  ; or:
+;  report activn * trust + bias
+;end
 
 to update-activns
   ask turtles
@@ -170,53 +184,40 @@ to update-activns
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; GENERAL-USE ROUTINES
+;; UTILITY PROCEDURES
 
 to-report activn-to-color [activn]
-  report activn-to-color-horizontal activn
-end
-
-to-report activn-to-color-hsb [activn]
-  let zero-one-activn (activn + 1) / 2 ; shift up one, normalize to [0,1]
-  let newcolor approximate-hsb (min-turtle-color + (max-turtle-color - min-turtle-color) * zero-one-activn) 200 200
-  report newcolor
-end
-
-to-report activn-to-color-vertical [activn]
-  let hue 1 ; 1 = reds
-  let zero-one-activn (activn + 1) / 2
-  let zero-nine-activn round (9 * zero-one-activn)
-  report (hue * zero-nine-activn) + 10
-end
-
-to-report activn-to-color-horizontal [activn]
-  let hue 0 ; black/gray/white
   let zero-one-activn (activn + 1) / 2
   let zero-ten-activn round (10 * zero-one-activn)
-  let almost-color hue + zero-ten-activn
+  let almost-color netlogo-turtle-hue + 10 - zero-ten-activn   ; change "+ 10 -" to "+" to map colors in NetLogo order, not reverse
   report ifelse-value (almost-color = 10) [9.9] [almost-color]
+end
+
+to-report sign-of [x]
+  report ifelse-value (x >= 0) [1] [-1]
 end
 
 ; NetLogo's standard-deviation and variance are sample functions, i.e. dividing 
 ; by n-1 rather than n.
 ; These functions undo the sample correction to give a proper population variance and 
-; standard deviation. Varely different for reasonable number of nodes, but still ....
-to-report stdev [lis]
-  report  sqrt (var lis)
-end
 
 to-report var [lis]
   let n length lis
   report (variance lis) * (n - 1) / n
 end
+
+; standard deviation. Varely different for reasonable number of nodes, but still ....
+;to-report stdev [lis]
+;  report  sqrt (var lis)
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-265
-10
-726
-492
-20
-20
+288
+12
+969
+714
+30
+30
 11.0
 1
 10
@@ -227,10 +228,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--20
-20
--20
-20
+-30
+30
+-30
+30
 1
 1
 1
@@ -238,10 +239,10 @@ ticks
 30.0
 
 BUTTON
-24
-163
-80
-197
+39
+152
+95
+186
 NIL
 setup
 NIL
@@ -255,10 +256,10 @@ NIL
 1
 
 BUTTON
-149
-163
-205
-197
+164
+152
+220
+186
 NIL
 go
 T
@@ -287,45 +288,45 @@ true
 true
 "" ""
 PENS
-"avg" 1.0 0 -10873583 true "" "plot (mean [activation] of turtles)"
-"pos" 1.0 0 -7500403 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
-"neg" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
+"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
+"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
+"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
-25
-15
-233
-48
-nodes-per-subnet
-nodes-per-subnet
+39
+12
+247
+45
+number-of-nodes
+number-of-nodes
 10
-300
-200
+1000
+500
 5
 1
 NIL
 HORIZONTAL
 
 SLIDER
-25
-50
-234
-83
+39
+47
+248
+80
 average-node-degree
 average-node-degree
 1
-min (list 50 (nodes-per-subnet - 1))
-7
+min (list 50 (number-of-nodes - 1))
+15
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-82
-163
-146
-197
+97
+152
+161
+186
 go once
 go
 NIL
@@ -339,10 +340,10 @@ NIL
 1
 
 SLIDER
-25
-123
-233
-156
+30
+496
+238
+529
 stop-if-no-change-exponent
 stop-if-no-change-exponent
 1
@@ -354,10 +355,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-24
-200
-140
-234
+39
+189
+155
+223
 NIL
 reset-cultvars
 NIL
@@ -371,10 +372,10 @@ NIL
 1
 
 TEXTBOX
-145
-206
-240
-240
+160
+195
+255
+229
 <- start over\nwith same net.
 11
 0.0
@@ -385,7 +386,7 @@ PLOT
 247
 259
 367
-cultvar freqs & activn stats
+cultvar freqs & pop variance
 NIL
 NIL
 0.0
@@ -396,24 +397,59 @@ true
 true
 "" ""
 PENS
-"pos" 1.0 0 -9276814 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
-"neg" 1.0 0 -16777216 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
+"Bl" 1.0 0 -16777216 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
+"Wh" 1.0 0 -5987164 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
-26
-87
-234
-120
+39
+83
+247
+116
 trust
 trust
 .01
 1
-0.1
+0.05
 .01
 1
 NIL
 HORIZONTAL
+
+SLIDER
+39
+117
+248
+150
+prob-of-transmission-bias
+prob-of-transmission-bias
+-1
+1
+0.28
+.01
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+253
+129
+290
+149
+black
+10
+0.0
+1
+
+TEXTBOX
+6
+130
+42
+150
+white
+10
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -1,4 +1,7 @@
-; NetworkExperiment3.nlogo
+; NetworkExperiment4.nlogo
+; Version which tried to use a sigmoid function to adjust change
+; in activation.  Didn't do it right.  Doesn't behave nicely.
+;
 ; Marshall Abrams' based on:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. 
