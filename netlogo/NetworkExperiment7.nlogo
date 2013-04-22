@@ -25,6 +25,9 @@ globals
   clustering-coefficient               ;; the clustering coefficient of the network; this is the
                                        ;; average of clustering coefficients of all turtles
   average-path-length                  ;; average path length of the network
+  infinity                             ;; a very large number.
+                                       ;; used to denote distance between two turtles which
+                                       ;; don't have a connected or unconnected path between them
 ]
 
 turtles-own
@@ -32,6 +35,7 @@ turtles-own
   activation       ; ranges from min-activn to max-activn
   next-activation  ; allows parallel updating
   node-clustering-coefficient
+  distance-from-other-turtles   ;; list of distances of this node from other turtles
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -56,6 +60,11 @@ to setup
   create-nodes
   create-network
   layout-network
+  
+  if calculate-network-properties? [
+    calculate-path-lengths
+    find-clustering-coefficient
+  ]
 
   reset-ticks
 end
@@ -189,6 +198,165 @@ to update-activns
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PATH LENGTH AND CLUSTERING COEFFICIENT CALCULATIONS
+
+;; calculate-path-lengths reports true if the network is connected,
+;;   and reports false if the network is disconnected.
+;; (In the disconnected case, the average path length does not make sense,
+;;   or perhaps may be considered infinite)
+to calculate-path-lengths
+
+  ;; set up a variable so we can report if the network is disconnected
+  let connected? true
+
+  ;; find the path lengths in the network
+  find-path-lengths
+
+  let num-connected-pairs sum [length remove infinity (remove 0 distance-from-other-turtles)] of turtles
+
+  ;; In a connected network on N nodes, we should have N(N-1) measurements of distances between pairs,
+  ;; and none of those distances should be infinity.
+  ;; If there were any "infinity" length paths between nodes, then the network is disconnected.
+  ;; In that case, calculating the average-path-length doesn't really make sense.
+  ifelse ( num-connected-pairs != (count turtles * (count turtles - 1) ))
+  [
+      set average-path-length infinity
+      ;; report that the network is not connected
+      set connected? false
+  ]
+  [
+    set average-path-length (sum [sum distance-from-other-turtles] of turtles) / (num-connected-pairs)
+  ]
+  ;; find the clustering coefficient and add to the aggregate for all iterations
+  ;find-clustering-coefficient
+
+  ;; report whether the network is connected or not
+  ;report connected?
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Clustering computations ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to-report in-neighborhood? [ hood ]
+  report ( member? end1 hood and member? end2 hood )
+end
+
+
+to find-clustering-coefficient
+  ifelse all? turtles [count link-neighbors <= 1]
+  [
+    ;; it is undefined
+    ;; what should this be?
+    set clustering-coefficient 0
+  ]
+  [
+    let total 0
+    ask turtles with [ count link-neighbors <= 1]
+      [ set node-clustering-coefficient "undefined" ]
+    ask turtles with [ count link-neighbors > 1]
+    [
+      let hood link-neighbors
+      set node-clustering-coefficient (2 * count links with [ in-neighborhood? hood ] /
+                                         ((count hood) * (count hood - 1)) )
+      ;; find the sum for the value at turtles
+      set total total + node-clustering-coefficient
+    ]
+    ;; take the average
+    set clustering-coefficient total / count turtles with [count link-neighbors > 1]
+  ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Path length computations ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Implements the Floyd Warshall algorithm for All Pairs Shortest Paths
+;; It is a dynamic programming algorithm which builds bigger solutions
+;; from the solutions of smaller subproblems using memoization that
+;; is storing the results.
+;; It keeps finding incrementally if there is shorter path through
+;; the kth node.
+;; Since it iterates over all turtles through k,
+;; so at the end we get the shortest possible path for each i and j.
+
+to find-path-lengths
+  ;; reset the distance list
+  ask turtles
+  [
+    set distance-from-other-turtles []
+  ]
+
+  let i 0
+  let j 0
+  let k 0
+  let node1 one-of turtles
+  let node2 one-of turtles
+  let node-count count turtles
+  ;; initialize the distance lists
+  while [i < node-count]
+  [
+    set j 0
+    while [j < node-count]
+    [
+      set node1 turtle i
+      set node2 turtle j
+      ;; zero from a node to itself
+      ifelse i = j
+      [
+        ask node1 [
+          set distance-from-other-turtles lput 0 distance-from-other-turtles
+        ]
+      ]
+      [
+        ;; 1 from a node to it's neighbor
+        ifelse [ link-neighbor? node1 ] of node2
+        [
+          ask node1 [
+            set distance-from-other-turtles lput 1 distance-from-other-turtles
+          ]
+        ]
+        ;; infinite to everyone else
+        [
+          ask node1 [
+            set distance-from-other-turtles lput infinity distance-from-other-turtles
+          ]
+        ]
+      ]
+      set j j + 1
+    ]
+    set i i + 1
+  ]
+  set i 0
+  set j 0
+  let dummy 0
+  while [k < node-count]
+  [
+    set i 0
+    while [i < node-count]
+    [
+      set j 0
+      while [j < node-count]
+      [
+        ;; alternate path length through kth node
+        set dummy ( (item k [distance-from-other-turtles] of turtle i) +
+                    (item j [distance-from-other-turtles] of turtle k))
+        ;; is the alternate path shorter?
+        if dummy < (item j [distance-from-other-turtles] of turtle i)
+        [
+          ask turtle i [
+            set distance-from-other-turtles replace-item j distance-from-other-turtles dummy
+          ]
+        ]
+        set j j + 1
+      ]
+      set i i + 1
+    ]
+    set k k + 1
+  ]
+
+end
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
 to-report activn-to-color [activn]
@@ -321,7 +489,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-25
+15
 1
 1
 NIL
@@ -473,6 +641,39 @@ false
 "" ""
 PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" ""
+
+MONITOR
+989
+194
+1136
+240
+NIL
+clustering-coefficient
+3
+1
+11
+
+MONITOR
+1139
+194
+1281
+240
+NIL
+average-path-length
+3
+1
+11
+
+SWITCH
+989
+156
+1231
+190
+calculate-network-properties?
+calculate-network-properties?
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
