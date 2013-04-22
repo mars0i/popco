@@ -1,4 +1,4 @@
-; NetworkExperiment3.nlogo
+; NetworkExperiment5.nlogo
 ; Marshall Abrams' based on:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. 
@@ -15,18 +15,18 @@
   
 globals
 [
-  max-activn
-  min-activn
-  stop-threshold
-  ready-to-stop
-  netlogo-turtle-hue
-  link-color
-  background-color
+  max-activn       ; maximum possible node activation, i.e. degree of confidence/commitment, prob of transmission, etc.
+  min-activn       ; minimum possible node activation. negative to indicate confidence/commitment in the opposite cultvar.
+  stop-threshold   ; if every node's activation change from previous tick is < this, go procedure automatically stops.
+  ready-to-stop    ; transmit result of activn change test before update-activns proc to after it runs.
+  netlogo-turtle-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
+  link-color       ; obvious
+  background-color ; obvious
 ]
 
 turtles-own
 [
-  activation  ; ranges from min-activn to max-activn
+  activation       ; ranges from min-activn to max-activn
   next-activation  ; allows parallel updating
 ]
 
@@ -40,8 +40,7 @@ to setup
   
   set max-activn 1
   set min-activn -1
-  set stop-threshold 10 ^ (-1 * stop-if-no-change-exponent)
-  ;set probability-of-transmitting .5
+  set stop-threshold 10 ^ -3
   
   ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
@@ -340,21 +339,6 @@ NIL
 NIL
 NIL
 1
-
-SLIDER
-37
-549
-245
-582
-stop-if-no-change-exponent
-stop-if-no-change-exponent
-1
-10
-3
-1
-1
-NIL
-HORIZONTAL
 
 BUTTON
 46
