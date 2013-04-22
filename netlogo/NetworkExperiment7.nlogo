@@ -59,6 +59,8 @@ to setup
   ask patches [set pcolor background-color]
   create-nodes
   create-network
+  if (rewire-for-different-degree-distribution = "reduce large degrees") [reduce-large-degrees]
+  if (rewire-for-different-degree-distribution = "reduce small degrees") [reduce-small-degrees]
   layout-network
   
   if calculate-network-properties? [
@@ -108,6 +110,20 @@ to create-network
     ]
   ]
   ask links [ set color link-color ]
+end
+
+to reduce-large-degrees
+  repeat number-to-rewire-for-different-degree-distribution [
+    if not any? turtles with [count my-links > average-node-degree] [stop]
+    ask one-of turtles with [count my-links > average-node-degree] [ask one-of my-links [die]]
+  ]
+end    
+
+to reduce-small-degrees
+  repeat number-to-rewire-for-different-degree-distribution [
+    if not any? turtles with [count my-links < average-node-degree and count my-links > 0] [stop]
+    ask one-of turtles with [count my-links < average-node-degree and count my-links > 0] [ask one-of my-links [die]]
+  ]
 end
 
 to layout-network
@@ -199,6 +215,7 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PATH LENGTH AND CLUSTERING COEFFICIENT CALCULATIONS
+;; (Mindlessly copied from another model.)
 
 ;; calculate-path-lengths reports true if the network is connected,
 ;;   and reports false if the network is disconnected.
@@ -385,10 +402,10 @@ end
 ;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-288
-12
-969
-714
+285
+10
+966
+712
 30
 30
 11.0
@@ -600,10 +617,10 @@ black
 1
 
 TEXTBOX
-6
-166
-42
-186
+8
+165
+38
+185
 white
 10
 0.0
@@ -625,10 +642,10 @@ NIL
 HORIZONTAL
 
 PLOT
-976
-12
-1230
-152
+973
+10
+1227
+150
 degree distribution
 degree
 # of nodes
@@ -643,10 +660,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" ""
 
 MONITOR
-977
-194
-1124
-240
+974
+192
+1121
+237
 NIL
 clustering-coefficient
 3
@@ -654,10 +671,10 @@ clustering-coefficient
 11
 
 MONITOR
-978
-244
-1123
-290
+975
+242
+1120
+287
 NIL
 average-path-length
 3
@@ -665,13 +682,13 @@ average-path-length
 11
 
 SWITCH
-977
-156
-1219
-190
+974
+154
+1216
+187
 calculate-network-properties?
 calculate-network-properties?
-1
+0
 1
 -1000
 
@@ -684,6 +701,31 @@ TEXTBOX
 11
 0.0
 1
+
+CHOOSER
+967
+313
+1244
+358
+rewire-for-different-degree-distribution
+rewire-for-different-degree-distribution
+"No change" "reduce large degrees" "reduce small degrees"
+2
+
+SLIDER
+967
+368
+1292
+401
+number-to-rewire-for-different-degree-distribution
+number-to-rewire-for-different-degree-distribution
+0
+2000
+100
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
