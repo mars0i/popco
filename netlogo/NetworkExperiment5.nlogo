@@ -49,16 +49,15 @@ to setup
   set netlogo-turtle-hue 0
   set link-color 123
 
-  setup-nodes
-  setup-network
-
-  ask links [ set color link-color ]
   ask patches [set pcolor background-color]
+  create-nodes
+  create-network
+  layout-network
 
   reset-ticks
 end
 
-to setup-nodes
+to create-nodes
   set-default-shape turtles "circle"
   crt number-of-nodes
   [
@@ -77,18 +76,29 @@ to reset-cultvars
 end
 
 ; mostly from "Virus on a Network"--see above
-to setup-network
+; Assign a random number of links randomly between pairs of nodes, making the total number of links such
+; that the average node degree per node is that specified by the user.
+; Algorithm:
+; Keep doing the following until you've created enough links that you have average-node-degree/2 per node:
+; ( /2 since each link adds a degree to two nodes)
+; Choose a random turtle, and create a link to the physically closest turtle to which it's not already linked.
+; Since create-nodes gave turtles random locations, the link is to a random turtle.
+; (Note that these locations will be revised by layout-network.  Their only function is to group turtles
+; randomly--in effect to randomly order turtles by closeness to any given turtle.)
+to create-network
   let num-links (average-node-degree * number-of-nodes) / 2
   while [count links < num-links ]
   [
     ask one-of turtles
     [
-      let choice (min-one-of (other turtles with [not link-neighbor? myself])
-                   [distance myself])
+      let choice (min-one-of (other turtles with [not link-neighbor? myself]) [distance myself])
       if choice != nobody [ create-link-with choice ]
     ]
   ]
-  ; make the network look a little prettier
+  ask links [ set color link-color ]
+end
+
+to layout-network
   repeat 10
   [
     layout-spring turtles links 0.1 (world-width / (sqrt number-of-nodes)) 1 ; 3rd arg was 0.3 originally
@@ -293,7 +303,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-500
+1000
 5
 1
 NIL
@@ -308,7 +318,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-15
+7
 1
 1
 NIL
