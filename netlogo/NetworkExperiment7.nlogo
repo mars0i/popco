@@ -62,7 +62,7 @@ to setup
   layout-network
   
   if calculate-network-properties? [
-    calculate-path-lengths
+    ;calculate-path-lengths
     find-clustering-coefficient
   ]
 
@@ -474,7 +474,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-200
+500
 5
 1
 NIL
@@ -489,7 +489,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-15
+10
 1
 1
 NIL
@@ -643,9 +643,9 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" ""
 
 MONITOR
-989
+977
 194
-1136
+1124
 240
 NIL
 clustering-coefficient
@@ -654,10 +654,10 @@ clustering-coefficient
 11
 
 MONITOR
-1139
-194
-1281
-240
+978
+244
+1123
+290
 NIL
 average-path-length
 3
@@ -665,15 +665,25 @@ average-path-length
 11
 
 SWITCH
-989
+977
 156
-1231
+1219
 190
 calculate-network-properties?
 calculate-network-properties?
-0
+1
 1
 -1000
+
+TEXTBOX
+1125
+260
+1292
+280
+<- currently disabled
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
