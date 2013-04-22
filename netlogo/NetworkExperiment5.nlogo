@@ -302,7 +302,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-1000
+200
 5
 1
 NIL
@@ -317,7 +317,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-7
+25
 1
 1
 NIL
@@ -451,6 +451,24 @@ trust-stdev
 1
 NIL
 HORIZONTAL
+
+PLOT
+15
+547
+269
+687
+degree distribution
+degree
+# of nodes
+1.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" ""
 
 @#$#@#$#@
 ## WHAT IS IT?
