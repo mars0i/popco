@@ -447,11 +447,11 @@ SLIDER
 39
 118
 248
-152
+151
 trust-stdev
 trust-stdev
 0
-1
+.1
 0
 .01
 1
