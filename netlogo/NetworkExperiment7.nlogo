@@ -59,8 +59,6 @@ to setup
   ask patches [set pcolor background-color]
   create-nodes
   create-network
-  if (change-degree-variance = "decrease") [decrease-degree-variance]
-  if (change-degree-variance = "increase") [increase-degree-variance]
   layout-network
   
   if calculate-network-properties? [
@@ -128,13 +126,10 @@ to decrease-degree-variance
          any? turtles with [count my-links < average-node-degree]] [
     set i i + 1
     ask one-of turtles with [count my-links < average-node-degree] [
-      if any? turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links < average-node-degree] [
-        ask one-of turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links < average-node-degree] [
-          create-link-with myself
-        ]
-      ]
+      let choice (min-one-of (other turtles with [not link-neighbor? myself and count my-links < average-node-degree]) [distance myself])
+      if choice != nobody [ create-link-with choice ]
     ]
-  ]      
+  ]
 end    
 
 to increase-degree-variance
@@ -154,11 +149,8 @@ to increase-degree-variance
          any? turtles with [count my-links > average-node-degree]] [
     set i i + 1
     ask one-of turtles with [count my-links > average-node-degree] [
-      if any? turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links > average-node-degree] [
-        ask one-of turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links > average-node-degree] [
-          create-link-with myself
-        ]
-      ]
+      let choice (min-one-of (other turtles with [not link-neighbor? myself and count my-links > average-node-degree]) [distance myself])
+      if choice != nobody [ create-link-with choice ]
     ]
   ]
 end
@@ -467,10 +459,10 @@ ticks
 30.0
 
 BUTTON
-46
-205
-102
-239
+40
+120
+96
+154
 NIL
 setup
 NIL
@@ -484,10 +476,10 @@ NIL
 1
 
 BUTTON
-170
-205
-226
-239
+164
+120
+220
+154
 NIL
 go
 T
@@ -501,10 +493,10 @@ NIL
 1
 
 PLOT
-14
-424
-268
-544
+975
+130
+1229
+250
 average cultvar activations
 time
 activn
@@ -521,10 +513,10 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
-39
-12
-247
-45
+40
+200
+248
+233
 number-of-nodes
 number-of-nodes
 10
@@ -536,25 +528,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-39
-47
-248
-80
+40
+235
+249
+268
 average-node-degree
 average-node-degree
 1
 min (list 50 (number-of-nodes - 1))
-10
+12
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-104
-205
-168
-239
+98
+120
+162
+154
 go once
 go
 NIL
@@ -568,10 +560,10 @@ NIL
 1
 
 BUTTON
-46
-243
-162
-277
+40
+158
+156
+192
 NIL
 reset-cultvars
 NIL
@@ -585,20 +577,20 @@ NIL
 1
 
 TEXTBOX
-167
-248
-262
-282
+161
+163
+256
+197
 <- start over\nwith same net.
 11
 0.0
 1
 
 PLOT
-13
-302
-267
-422
+974
+8
+1228
+128
 cultvar freqs & pop variance
 NIL
 NIL
@@ -615,10 +607,10 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
-39
-83
-247
-116
+40
+10
+248
+43
 trust-mean
 trust-mean
 .01
@@ -630,10 +622,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-39
-153
-248
-186
+40
+80
+249
+113
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
@@ -646,9 +638,9 @@ HORIZONTAL
 
 TEXTBOX
 253
-165
+90
 290
-185
+110
 black
 10
 0.0
@@ -656,19 +648,19 @@ black
 
 TEXTBOX
 8
-165
+90
 38
-185
+110
 white
 10
 0.0
 1
 
 SLIDER
-39
-118
-248
-151
+40
+45
+249
+78
 trust-stdev
 trust-stdev
 0
@@ -680,10 +672,10 @@ NIL
 HORIZONTAL
 
 PLOT
-973
-10
-1227
-150
+975
+250
+1229
+390
 degree distribution
 degree
 # of nodes
@@ -695,13 +687,13 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" ""
+"default" 1.0 1 -16777216 true "" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
 
 MONITOR
-974
-192
-1121
-237
+976
+432
+1123
+477
 NIL
 clustering-coefficient
 3
@@ -709,10 +701,10 @@ clustering-coefficient
 11
 
 MONITOR
-975
-242
-1120
-287
+977
+482
+1122
+527
 NIL
 average-path-length
 3
@@ -720,10 +712,10 @@ average-path-length
 11
 
 SWITCH
-974
-154
-1216
-187
+976
+394
+1218
+427
 calculate-network-properties?
 calculate-network-properties?
 0
@@ -732,38 +724,62 @@ calculate-network-properties?
 
 TEXTBOX
 1125
-260
+495
 1292
-280
+515
 <- currently disabled
 11
 0.0
 1
 
-CHOOSER
-967
-313
-1244
-358
-change-degree-variance
-change-degree-variance
-"no change" "decrease" "increase"
-1
-
 SLIDER
-967
-368
-1292
-401
+40
+285
+250
+318
 number-to-change-degree
 number-to-change-degree
 0
 2000
-400
+200
 5
 1
 NIL
 HORIZONTAL
+
+BUTTON
+40
+320
+232
+353
+decrease-degree-variance
+decrease-degree-variance\nlayout-network
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+40
+355
+232
+388
+increase-degree-variance 
+increase-degree-variance\nlayout-network\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
