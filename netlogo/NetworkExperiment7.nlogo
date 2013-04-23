@@ -59,8 +59,8 @@ to setup
   ask patches [set pcolor background-color]
   create-nodes
   create-network
-  if (rewire-for-different-degree-distribution = "reduce large degrees") [reduce-large-degrees]
-  if (rewire-for-different-degree-distribution = "reduce small degrees") [reduce-small-degrees]
+  if (change-degree-variance = "decrease") [decrease-degree-variance]
+  if (change-degree-variance = "increase") [increase-degree-variance]
   layout-network
   
   if calculate-network-properties? [
@@ -109,28 +109,66 @@ to create-network
       if choice != nobody [ create-link-with choice ]
     ]
   ]
-  ask links [ set color link-color ]
 end
 
-to reduce-large-degrees
-  repeat number-to-rewire-for-different-degree-distribution [
-    if not any? turtles with [count my-links > average-node-degree] [stop]
-    ask one-of turtles with [count my-links > average-node-degree] [ask one-of my-links [die]]
+to decrease-degree-variance
+  let i 0
+  while [i < number-to-change-degree 
+         and 
+         any? turtles with [count my-links > average-node-degree]] [
+     set i i + 1
+     ask one-of turtles with [count my-links > average-node-degree] [
+       ask one-of my-links [die]
+    ]
   ]
+  
+  set i 0
+  while [i < number-to-change-degree 
+         and 
+         any? turtles with [count my-links < average-node-degree]] [
+    set i i + 1
+    ask one-of turtles with [count my-links < average-node-degree] [
+      if any? turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links < average-node-degree] [
+        ask one-of turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links < average-node-degree] [
+          create-link-with myself
+        ]
+      ]
+    ]
+  ]      
 end    
 
-to reduce-small-degrees
-  repeat number-to-rewire-for-different-degree-distribution [
-    if not any? turtles with [count my-links < average-node-degree and count my-links > 0] [stop]
-    ask one-of turtles with [count my-links < average-node-degree and count my-links > 0] [ask one-of my-links [die]]
+to increase-degree-variance
+  let i 0
+  while [i < number-to-change-degree 
+         and 
+         any? turtles with [count my-links < average-node-degree and count my-links > 0]] [
+     set i i + 1
+     ask one-of turtles with [count my-links < average-node-degree and count my-links > 0] [
+       ask one-of my-links [die]
+    ]
+  ]
+  
+  set i 0
+  while [i < number-to-change-degree 
+         and 
+         any? turtles with [count my-links > average-node-degree]] [
+    set i i + 1
+    ask one-of turtles with [count my-links > average-node-degree] [
+      if any? turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links > average-node-degree] [
+        ask one-of turtles with [ (self != myself) and (not link-neighbor? myself) and count my-links > average-node-degree] [
+          create-link-with myself
+        ]
+      ]
+    ]
   ]
 end
 
 to layout-network
-  repeat 10
-  [
+  repeat 10 [
     layout-spring turtles links 0.1 (world-width / (sqrt number-of-nodes)) 1 ; 3rd arg was 0.3 originally
   ]
+  
+  ask links [ set color link-color ]
 end
 
 to setup-cultvar
@@ -707,22 +745,22 @@ CHOOSER
 313
 1244
 358
-rewire-for-different-degree-distribution
-rewire-for-different-degree-distribution
-"No change" "reduce large degrees" "reduce small degrees"
-2
+change-degree-variance
+change-degree-variance
+"no change" "decrease" "increase"
+1
 
 SLIDER
 967
 368
 1292
 401
-number-to-rewire-for-different-degree-distribution
-number-to-rewire-for-different-degree-distribution
+number-to-change-degree
+number-to-change-degree
 0
 2000
-100
-1
+400
+5
 1
 NIL
 HORIZONTAL
