@@ -155,8 +155,46 @@ end
 ;  ask links with [link-subnet = subnet] [ set color link-color ]
 ;end
 
-to layout-networks
-  ;layout-spring 
+; Given a set of nodes, moves them toward/away from the origin 
+; by multipling coordinates by amount,
+; which should be in (0,1) for shrinking, or > 1 for expansion.
+to resize-network [nodes ratio]
+  stretch-network nodes ratio ratio
+end
+
+; Given a set of nodes, stretches/shrinks in x and y dimensions by xratio and yratio, respectively.
+to stretch-network [nodes xratio yratio]
+
+  ask nodes [
+    set xcor (clip-to-x-extrema (xratio * xcor))   ; note inner parens are essential
+    set ycor (clip-to-y-extrema (yratio * ycor))]
+end
+
+; Given a set of nodes, moves them xratio of distance to right/left edge 
+; and yratio up to the top/bottom edge (depending on whether xratio, yratio are positive or negative)
+; ASSUMES that origin is in center, and that world is right-left and up/down symmetric (but not necess that height and width are same).
+to shift-network [nodes xratio yratio]
+  shift-network-by-patches nodes
+                           (xratio * max-pxcor)
+                           (yratio * max-pycor)
+end
+
+; Given a set of nodes, moves them xincrement, yincrement patches to the right and up, respectively.
+to shift-network-by-patches [nodes xincrement yincrement]
+   ask nodes [set xcor (clip-to-x-extrema (xcor + xincrement))  ; note inner parens are essential
+              set ycor (clip-to-y-extrema (ycor + yincrement))]
+end
+
+to-report clip-to-x-extrema [x]
+  if x > max-pxcor [report max-pxcor]
+  if x < min-pxcor [report min-pxcor]
+  report x
+end
+
+to-report clip-to-y-extrema [y]
+  if y > max-pycor [report max-pycor]
+  if y < min-pycor [report min-pycor]
+  report y
 end
 
 ; start over with the same network
@@ -839,7 +877,7 @@ SLIDER
 40
 267
 249
-301
+300
 number-of-subnets
 number-of-subnets
 1
@@ -854,7 +892,7 @@ SLIDER
 63
 466
 201
-500
+499
 subnet-to-modify
 subnet-to-modify
 1
@@ -869,7 +907,7 @@ SLIDER
 40
 303
 248
-337
+336
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
