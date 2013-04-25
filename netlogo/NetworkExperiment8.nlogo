@@ -23,6 +23,7 @@ globals
   node-shapes      ; list of shapes used for nodes in different subnets
   link-color       ; obvious
   inter-link-color ; links that go from one subnet to another
+  inter-node-shape ; nodes that link from one subnet to another
   background-color ; obvious
   clustering-coefficient               ;; the clustering coefficient of the network; this is the
                                        ;; average of clustering coefficients of all turtles
@@ -66,6 +67,7 @@ to setup
   set netlogo-turtle-hue 0
   set link-color 123
   set inter-link-color blue
+  set inter-node-shape "square"
 
   ask patches [set pcolor background-color]
   
@@ -130,22 +132,31 @@ to create-network [subnet]
   ask links[ set color link-color ]
 end
 
+
 to link-subnets
   let subnets n-values number-of-subnets [? + 1] ; list of integers from 1 to number-of-subnets
-  let other-nets subnets
   
   foreach subnets [
     let this-net ?
-    let this-net-inter-nodes n-of inter-nodes-per-subnet turtles with [turtle-subnet = this-net]
+    let other-nets remove this-net subnets ; make list of all of the other subnet ids not seen so far
     
-    set other-nets remove this-net other-nets ; make list of all of the other subnet ids not seen so far
-    
-    ask this-net-inter-nodes [
-      foreach other-nets [
-        create-links-with n-of inter-nodes-per-subnet turtles with [turtle-subnet = ?] [
-          ;set shape "dashed"
-          set thickness 0
-          set color inter-link-color]]]]
+    foreach other-nets [
+      let other-net ?
+      let this-net-inter-nodes min-n-of 
+                                 inter-nodes-per-subnet 
+                                 turtles with [turtle-subnet = this-net] 
+                                 [distance (one-of turtles with [turtle-subnet = other-net])]
+      ask this-net-inter-nodes [
+        create-links-with min-n-of 
+                            inter-nodes-per-subnet
+                            turtles with [turtle-subnet = other-net]
+                            [distance self]
+                          [set color inter-link-color
+                           ask end1 [set shape inter-node-shape]
+                           ask end2 [set shape inter-node-shape]]
+      ]
+    ]
+  ]
 end
 
 to layout-network [nodes]
