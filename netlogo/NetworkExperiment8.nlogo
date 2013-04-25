@@ -58,14 +58,14 @@ to setup
   set min-activn -1
   set stop-threshold 10 ^ -3
   
-  set node-shapes ["circle" "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"]
+  set node-shapes ["circle" "circle" "circle" "circle" "circle" "circle"] ; "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"
   
   ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
   ;set background-color 58
   set netlogo-turtle-hue 0
   set link-color 123
-  set inter-link-color green
+  set inter-link-color blue
 
   ask patches [set pcolor background-color]
   
@@ -75,10 +75,20 @@ to setup
     create-network i
     set i i + 1
   ]
+
+  layout-network turtles
+  resize-network turtles .45
+  
+  let xshifts [-.5  .5  .5 -.5]
+  let yshifts [ .5  .5 -.5 -.5]
+  
+  set i 1
+  while [i <= number-of-subnets] [
+    shift-network turtles with [turtle-subnet = i] (item (i - 1) xshifts) (item (i - 1) yshifts)
+    set i i + 1
+  ]
   
   link-subnets
-  
-  layout-network
   
   if calculate-network-properties? [
     ;calculate-path-lengths
@@ -133,27 +143,17 @@ to link-subnets
     ask this-net-inter-nodes [
       foreach other-nets [
         create-links-with n-of inter-nodes-per-subnet turtles with [turtle-subnet = ?] [
-          set shape "dashed"
-          set thickness 1
+          ;set shape "dashed"
+          set thickness 0
           set color inter-link-color]]]]
 end
 
-to layout-network
-  repeat 100 [
-    layout-spring turtles links 
+to layout-network [nodes]
+  repeat 10 [
+    layout-spring nodes links 
                   0.1 (world-width / sqrt nodes-per-subnet) 1 ; 3rd arg was 0.3 originally
   ]
 end
-
-;to layout-network [subnet]
-;  repeat 10 [
-;    layout-spring turtles with [turtle-subnet = subnet] 
-;                  links with [link-subnet = subnet] 
-;                  0.1 (world-width / (number-of-subnets * sqrt nodes-per-subnet)) 1 ; 3rd arg was 0.3 originally
-;  ]
-;  
-;  ask links with [link-subnet = subnet] [ set color link-color ]
-;end
 
 ; Given a set of nodes, moves them toward/away from the origin 
 ; by multipling coordinates by amount,
@@ -164,7 +164,6 @@ end
 
 ; Given a set of nodes, stretches/shrinks in x and y dimensions by xratio and yratio, respectively.
 to stretch-network [nodes xratio yratio]
-
   ask nodes [
     set xcor (clip-to-x-extrema (xratio * xcor))   ; note inner parens are essential
     set ycor (clip-to-y-extrema (yratio * ycor))]
@@ -845,7 +844,7 @@ BUTTON
 232
 425
 decrease-degree-variance
-decrease-degree-variance subnet-to-modify\nlayout-network
+decrease-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
 1
 T
@@ -862,7 +861,7 @@ BUTTON
 232
 460
 increase-degree-variance 
-increase-degree-variance subnet-to-modify\nlayout-network
+increase-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
 1
 T
@@ -881,8 +880,8 @@ SLIDER
 number-of-subnets
 number-of-subnets
 1
-5
-1
+4
+4
 1
 1
 NIL
