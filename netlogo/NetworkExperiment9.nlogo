@@ -231,11 +231,10 @@ to decrease-degree-variance [subnet]
     set i i + 1
     ask one-of turtles with [turtle-subnet = subnet and count my-links < average-node-degree] [
       let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links < average-node-degree]) [distance myself])
-      if choice != nobody [ create-link-with choice ]
+      if choice != nobody [create-link-with choice [set color link-color
+                                                    set link-subnet subnet]]
     ]
   ]
-
-  ask links with [link-subnet = subnet] [ set color link-color ]
 end    
 
 to increase-degree-variance [subnet]
@@ -256,11 +255,10 @@ to increase-degree-variance [subnet]
     set i i + 1
     ask one-of turtles with [turtle-subnet = subnet and count my-links > average-node-degree] [
       let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links > average-node-degree]) [distance myself])
-      if choice != nobody [ create-link-with choice ]
+      if choice != nobody [create-link-with choice [set color link-color
+                                                    set link-subnet subnet]]
     ]
   ]
-
-  ask links with [link-subnet = subnet] [ set color link-color ]
 end
 
 to setup-cultvar
@@ -284,6 +282,8 @@ to-report activns-settled
   report stop-threshold > max-change
 end
 
+; Transmit to any neighbor if probabilistic decide to transmit along that link.
+; Probability is determined by activation value.
 to transmit-cultvars
   ask turtles
     [let message cultvar-to-message activation
@@ -621,7 +621,7 @@ nodes-per-subnet
 nodes-per-subnet
 10
 1000
-100
+150
 5
 1
 NIL
@@ -730,8 +730,8 @@ prob-of-transmission-bias
 prob-of-transmission-bias
 -1
 1
--0.75
-.01
+0
+.02
 1
 NIL
 HORIZONTAL
@@ -904,8 +904,8 @@ SLIDER
 subnet-to-modify
 subnet-to-modify
 1
-number-of-subnets
-1
+4
+2
 1
 1
 NIL
@@ -915,12 +915,12 @@ SLIDER
 56
 365
 229
-399
+398
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
 10
-2
+4
 1
 1
 NIL
@@ -930,7 +930,7 @@ CHOOSER
 50
 318
 143
-364
+363
 subnet1
 subnet1
 1 2 3 4
@@ -940,7 +940,7 @@ CHOOSER
 145
 318
 238
-364
+363
 subnet2
 subnet2
 1 2 3 4
@@ -961,6 +961,46 @@ NIL
 NIL
 NIL
 NIL
+1
+
+TEXTBOX
+296
+37
+312
+55
+1
+16
+0.0
+1
+
+TEXTBOX
+947
+36
+963
+55
+2
+16
+0.0
+1
+
+TEXTBOX
+945
+686
+961
+704
+3
+16
+0.0
+1
+
+TEXTBOX
+295
+685
+311
+703
+4
+16
+0.0
 1
 
 @#$#@#$#@
