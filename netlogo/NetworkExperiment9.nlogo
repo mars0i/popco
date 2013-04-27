@@ -57,7 +57,7 @@ to setup
   
   set max-activn 1
   set min-activn -1
-  set stop-threshold 10 ^ -3
+  set stop-threshold 10 ^ stop-threshold-exponent
   
   set node-shapes ["circle" "circle" "circle" "circle" "circle" "circle"] ; "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"
   
@@ -270,7 +270,11 @@ end
 ;;; RUN
 
 to go
-  if (ready-to-stop) [stop]
+  if (ready-to-stop) [
+    set ready-to-stop false ; allows trying to restart, perhaps after altering parameters or network
+    stop
+  ]
+  set stop-threshold 10 ^ stop-threshold-exponent ; allows changing this while running
   transmit-cultvars
   if (activns-settled) [set ready-to-stop true] ; compares activation with next-activation, so must run between transmit-cultvars and update-activns
   update-activns                                ; on the other hand, we do want to complete the activation updating process even if about to stop
@@ -613,30 +617,30 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
-40
-200
-248
-233
+39
+306
+247
+339
 nodes-per-subnet
 nodes-per-subnet
-10
+1
 1000
-150
-5
+4
+1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-40
-234
-249
-267
+39
+340
+248
+373
 average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-10
+3
 1
 1
 NIL
@@ -787,7 +791,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
+"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
 
 MONITOR
 976
@@ -882,10 +886,10 @@ NIL
 1
 
 SLIDER
-40
-267
-249
-300
+39
+374
+248
+407
 number-of-subnets
 number-of-subnets
 1
@@ -912,45 +916,45 @@ NIL
 HORIZONTAL
 
 SLIDER
-56
-365
-229
-398
+55
+472
+228
+505
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
 10
-4
+1
 1
 1
 NIL
 HORIZONTAL
 
 CHOOSER
-50
-318
-143
-363
+46
+424
+139
+469
 subnet1
 subnet1
-1 2 3 4
-0
-
-CHOOSER
-145
-318
-238
-363
-subnet2
-subnet2
 1 2 3 4
 1
 
+CHOOSER
+143
+425
+236
+470
+subnet2
+subnet2
+1 2 3 4
+2
+
 BUTTON
 67
-403
+509
 209
-437
+543
 NIL
 create-inter-links
 NIL
@@ -1000,6 +1004,31 @@ TEXTBOX
 703
 4
 16
+0.0
+1
+
+SLIDER
+40
+197
+243
+226
+stop-threshold-exponent
+stop-threshold-exponent
+-20
+0
+-3
+1
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+44
+228
+243
+271
+Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
+11
 0.0
 1
 
