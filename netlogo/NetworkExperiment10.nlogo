@@ -108,13 +108,10 @@ to setup
   let j 0
   let k 0
   while [j < x-subnet-lattice-dim] [
-    print (list "j:" j)
     while [k < y-subnet-lattice-dim] [
-      print (list "k:" k)
       let subnet (k * x-subnet-lattice-dim) + j + 1
-      let xshift min-pxcor + ((j + .5) * x-shift-width)
-      let yshift min-pycor + ((k + .5) * y-shift-width)
-      print (list j k subnet xshift yshift)
+      let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
+      let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
       shift-network-by-patches turtles with [turtle-subnet = subnet] xshift yshift
       set k (k + 1)
     ]
@@ -597,12 +594,12 @@ end
 ;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-285
-10
-966
-712
-30
-30
+232
+12
+1134
+602
+40
+25
 11.0
 1
 10
@@ -613,10 +610,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--30
-30
--30
-30
+-40
+40
+-25
+25
 1
 1
 1
@@ -624,10 +621,10 @@ ticks
 30.0
 
 BUTTON
-40
-120
-96
-154
+0
+140
+56
+174
 NIL
 setup
 NIL
@@ -641,10 +638,10 @@ NIL
 1
 
 BUTTON
-164
-120
-220
-154
+125
+140
+181
+174
 NIL
 go
 T
@@ -658,10 +655,10 @@ NIL
 1
 
 PLOT
-975
-130
-1229
-250
+1155
+133
+1409
+253
 average cultvar activations
 time
 activn
@@ -678,25 +675,25 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
-39
-306
-247
-339
+0
+326
+208
+359
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-100
+116
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-39
-340
-248
-373
+0
+360
+209
+393
 average-node-degree
 average-node-degree
 1
@@ -708,10 +705,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-98
-120
-162
-154
+59
+140
+123
+174
 go once
 go
 NIL
@@ -725,10 +722,10 @@ NIL
 1
 
 BUTTON
-40
-158
-156
-192
+0
+179
+116
+213
 NIL
 reset-cultvars
 NIL
@@ -742,20 +739,20 @@ NIL
 1
 
 TEXTBOX
-161
-163
-256
-197
+121
+183
+208
+218
 <- start over\nwith same net.
 11
 0.0
 1
 
 PLOT
-974
-8
-1228
-128
+1154
+12
+1408
+132
 cultvar freqs & pop variance
 NIL
 NIL
@@ -772,9 +769,9 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
 
 SLIDER
-40
+0
 10
-248
+208
 43
 trust-mean
 trust-mean
@@ -787,44 +784,44 @@ NIL
 HORIZONTAL
 
 SLIDER
-40
-80
-249
-113
+0
+100
+209
+133
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
 1
-0
+0.28
 .02
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-253
-90
-290
-110
+178
+87
+215
+107
 black
 10
 0.0
 1
 
 TEXTBOX
-8
-90
-38
-110
+3
+87
+33
+107
 white
 10
 0.0
 1
 
 SLIDER
-40
+0
 45
-249
+209
 78
 trust-stdev
 trust-stdev
@@ -837,10 +834,10 @@ NIL
 HORIZONTAL
 
 PLOT
-975
-250
-1229
-390
+1155
+253
+1409
+393
 degree distribution
 degree
 # of nodes
@@ -855,10 +852,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
 
 MONITOR
-976
-432
-1123
-477
+1156
+435
+1303
+480
 NIL
 clustering-coefficient
 3
@@ -866,10 +863,10 @@ clustering-coefficient
 11
 
 MONITOR
-977
-482
-1122
-527
+1157
+485
+1302
+530
 NIL
 average-path-length
 3
@@ -877,10 +874,10 @@ average-path-length
 11
 
 SWITCH
-976
-394
-1218
-427
+1156
+397
+1398
+430
 calculate-network-properties?
 calculate-network-properties?
 1
@@ -888,20 +885,20 @@ calculate-network-properties?
 -1000
 
 TEXTBOX
-1125
-495
-1292
-515
+1305
+498
+1428
+518
 <- currently disabled
 11
 0.0
 1
 
 SLIDER
-977
-537
-1187
-570
+1157
+540
+1367
+573
 number-to-change-degree
 number-to-change-degree
 0
@@ -913,10 +910,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-977
-572
-1169
-605
+1157
+575
+1349
+608
 decrease-degree-variance
 decrease-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
@@ -930,10 +927,10 @@ NIL
 1
 
 BUTTON
-977
-607
-1169
-640
+1157
+610
+1349
+643
 increase-degree-variance 
 increase-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
@@ -947,25 +944,25 @@ NIL
 1
 
 SLIDER
-39
-374
-248
-407
+0
+394
+209
+427
 number-of-subnets
 number-of-subnets
 1
 20
-20
+7
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1000
-646
-1138
-679
+1179
+649
+1317
+682
 subnet-to-modify
 subnet-to-modify
 1
@@ -977,10 +974,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-55
-472
-228
-505
+16
+492
+189
+525
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
@@ -992,30 +989,30 @@ NIL
 HORIZONTAL
 
 CHOOSER
-46
-424
-139
-469
+7
+444
+100
+489
 subnet1
 subnet1
 1 2 3 4
 1
 
 CHOOSER
-143
-425
-236
-470
+103
+445
+196
+490
 subnet2
 subnet2
 1 2 3 4
 2
 
 BUTTON
-67
-509
-209
-543
+28
+530
+170
+564
 NIL
 create-inter-links
 NIL
@@ -1029,10 +1026,10 @@ NIL
 1
 
 SLIDER
-40
-197
-243
-230
+0
+217
+203
+250
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1044,10 +1041,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-44
-228
-243
-271
+5
+249
+204
+292
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
