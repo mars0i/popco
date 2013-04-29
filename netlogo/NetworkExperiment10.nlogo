@@ -20,7 +20,7 @@ globals
   stop-threshold   ; if every node's activation change from previous tick is < this, go procedure automatically stops.
   ready-to-stop    ; transmit result of activn change test before update-activns proc to after it runs.
   netlogo-turtle-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
-  node-shapes      ; list of shapes used for nodes in different subnets
+  node-shape       ; default node shape
   link-color       ; obvious
   inter-link-color ; links that go from one subnet to another
   inter-node-shape ; nodes that link from one subnet to another
@@ -59,7 +59,7 @@ to setup
   set min-activn -1
   set stop-threshold 10 ^ stop-threshold-exponent
   
-  set node-shapes ["circle" "circle" "circle" "circle" "circle" "circle"] ; "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"
+  set node-shape "circle" ; "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"
   
   ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
@@ -81,8 +81,13 @@ to setup
   layout-network turtles
   ; at this point, all of the subnets are on top of each other
   
+  let subnet-lattice-dims (near-factors number-of-subnets)
+  print subnet-lattice-dims
+  let x-stretch .9 / (item 0 subnet-lattice-dims)
+  let y-stretch .9 / (item 1 subnet-lattice-dims)
+ 
   ; NEXT THREE LINES DEPEND ON HOW CANVAS IS DIVIDED UP
-  resize-network turtles .45    ; resize the overlaid subnets as one. we'll split them up in a moment.
+  stretch-network turtles x-stretch y-stretch  ; resize the overlaid subnets as one. we'll split them up in a moment.
   let xshifts [-.5  .5  .5 -.5]
   let yshifts [ .5  .5 -.5 -.5]
   ; I think what I'm doing here is getting all combinations of increments, positive and negative, in x and y
@@ -94,11 +99,11 @@ to setup
   ; initial shift is positive or negative.  Note this requires distinguishing +0 from -0, in effect.
   
   ; shift each subnet into its new location:
-  set i 1
-  while [i <= number-of-subnets] [
-    shift-network turtles with [turtle-subnet = i] (item (i - 1) xshifts) (item (i - 1) yshifts)
-    set i i + 1
-  ]
+  ;set i 1
+  ;while [i <= number-of-subnets] [
+  ;  shift-network turtles with [turtle-subnet = i] (item (i - 1) xshifts) (item (i - 1) yshifts)
+  ;  set i i + 1
+  ;]
   
   ;link-subnets
   
@@ -111,7 +116,7 @@ to setup
 end
 
 to create-nodes [subnet]
-  set-default-shape turtles item (subnet - 1) node-shapes
+  set-default-shape turtles node-shape
   crt nodes-per-subnet
   [
     ; for visual reasons, we don't put any nodes *too* close to the edges
@@ -522,6 +527,8 @@ end
 
 ; Finds middle-factors of n if there are factors > 1; otherwise returns middle-factors of n + 1.
 to-report near-factors [n]
+  if n = 1 [report [1 1]]  ; special case
+  if n = 2 [report [2 1]]  ; special case
   let facs middle-factors n
   if-else (first facs) = 1 
     [report middle-factors (n + 1)]
@@ -924,8 +931,8 @@ SLIDER
 number-of-subnets
 number-of-subnets
 1
-4
-4
+20
+16
 1
 1
 NIL
@@ -996,46 +1003,6 @@ NIL
 NIL
 NIL
 NIL
-1
-
-TEXTBOX
-296
-37
-312
-55
-1
-16
-0.0
-1
-
-TEXTBOX
-947
-36
-963
-55
-2
-16
-0.0
-1
-
-TEXTBOX
-945
-686
-961
-704
-3
-16
-0.0
-1
-
-TEXTBOX
-295
-685
-311
-703
-4
-16
-0.0
 1
 
 SLIDER
