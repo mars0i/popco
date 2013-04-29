@@ -83,13 +83,16 @@ to setup
   
   let subnet-lattice-dims (near-factors number-of-subnets)
   print subnet-lattice-dims
-  let x-stretch .9 / (item 0 subnet-lattice-dims)
-  let y-stretch .9 / (item 1 subnet-lattice-dims)
+  let x-subnet-lattice-dim item 0 subnet-lattice-dims
+  let y-subnet-lattice-dim item 1 subnet-lattice-dims
+  let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
+  let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
  
   ; NEXT THREE LINES DEPEND ON HOW CANVAS IS DIVIDED UP
-  stretch-network turtles x-stretch y-stretch  ; resize the overlaid subnets as one. we'll split them up in a moment.
-  let xshifts [-.5  .5  .5 -.5]
-  let yshifts [ .5  .5 -.5 -.5]
+  stretch-network turtles .9 * x-subnet-lattice-unit .9 * y-subnet-lattice-unit  ; resize the overlaid subnets as one. we'll split them up in a moment.
+  
+  ;let xshifts [-.5  .5  .5 -.5]
+  ;let yshifts [ .5  .5 -.5 -.5]
   ; I think what I'm doing here is getting all combinations of increments, positive and negative, in x and y
   ; The idea is to shift the distance to the edge of the new box, and then half its width.  For four boxes, each
   ; is adjacent to the origin, so the first part of the shift is zero.
@@ -97,7 +100,26 @@ to setup
   ; Take all poss combinations of to-the-box shifts (and these depend on the factoring of number of
   ; subnets), and then add .5 * box-width/height or -.5 * box-width/height, depending on whether the 
   ; initial shift is positive or negative.  Note this requires distinguishing +0 from -0, in effect.
-  
+
+  let x-width max-pxcor - min-pxcor
+  let y-width max-pycor - min-pycor
+  let j 0
+  let k 0
+  while [j < x-subnet-lattice-dim] [
+    print (list "j:" j)
+    while [k < y-subnet-lattice-dim] [
+      print (list "k:" k)
+      let subnet (k * x-subnet-lattice-dim) + j + 1
+      let xshift min-pxcor + (j * x-width * x-subnet-lattice-unit)
+      let yshift min-pycor + (k * y-width * y-subnet-lattice-unit)
+      ;print (list j k subnet xshift yshift)
+      shift-network turtles with [turtle-subnet = subnet] xshift yshift
+      set k (k + 1)
+    ]
+    set k 0
+    set j (j + 1)
+  ]
+
   ; shift each subnet into its new location:
   ;set i 1
   ;while [i <= number-of-subnets] [
@@ -663,7 +685,7 @@ nodes-per-subnet
 nodes-per-subnet
 1
 1000
-150
+14
 1
 1
 NIL
@@ -678,7 +700,7 @@ average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-10
+12
 1
 1
 NIL
@@ -932,7 +954,7 @@ number-of-subnets
 number-of-subnets
 1
 20
-16
+1
 1
 1
 NIL
