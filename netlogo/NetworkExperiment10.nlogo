@@ -83,28 +83,29 @@ to setup
   ; at this point, all of the subnets are on top of each other
   
   let subnet-lattice-dims (near-factors number-of-subnets)
-  print subnet-lattice-dims
-  let x-subnet-lattice-dim item 0 subnet-lattice-dims
-  let y-subnet-lattice-dim item 1 subnet-lattice-dims
+  let subnet-lattice-dim1 item 0 subnet-lattice-dims
+  let subnet-lattice-dim2 item 1 subnet-lattice-dims
+  
+  ; subnet-lattice-dim1 is always <= subnet-lattice-dim2. 
+  ; Here we choose whether there should be more subnets in the x or y dimension,
+  ; depending on whether the world is larger in one direction or the other. 
+  let x-subnet-lattice-dim "not yet"
+  let y-subnet-lattice-dim "not yet"
+  if-else max-pxcor < max-pycor [ 
+    set x-subnet-lattice-dim subnet-lattice-dim1
+    set y-subnet-lattice-dim subnet-lattice-dim2
+  ][
+    set x-subnet-lattice-dim subnet-lattice-dim2
+    set y-subnet-lattice-dim subnet-lattice-dim1
+  ]
+
   let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
   let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
  
-  ; NEXT THREE LINES DEPEND ON HOW CANVAS IS DIVIDED UP
-  stretch-network turtles .9 * x-subnet-lattice-unit .9 * y-subnet-lattice-unit  ; resize the overlaid subnets as one. we'll split them up in a moment.
-  
-  ;let xshifts [-.5  .5  .5 -.5]
-  ;let yshifts [ .5  .5 -.5 -.5]
-  ; I think what I'm doing here is getting all combinations of increments, positive and negative, in x and y
-  ; The idea is to shift the distance to the edge of the new box, and then half its width.  For four boxes, each
-  ; is adjacent to the origin, so the first part of the shift is zero.
-  ; So maybe an algorithm is something like:
-  ; Take all poss combinations of to-the-box shifts (and these depend on the factoring of number of
-  ; subnets), and then add .5 * box-width/height or -.5 * box-width/height, depending on whether the 
-  ; initial shift is positive or negative.  Note this requires distinguishing +0 from -0, in effect.
+  stretch-network turtles (.9 * x-subnet-lattice-unit) (.9 * y-subnet-lattice-unit)  ; resize the overlaid subnets as one. we'll split them up in a moment.
 
   let x-shift-width (x-subnet-lattice-unit * (max-pxcor - min-pxcor))
   let y-shift-width (y-subnet-lattice-unit * (max-pycor - min-pycor))
-  print (list "shift-widths:" x-shift-width y-shift-width)
   let j 0
   let k 0
   while [j < x-subnet-lattice-dim] [
@@ -119,15 +120,6 @@ to setup
     set j (j + 1)
   ]
 
-  ; shift each subnet into its new location:
-  ;set i 1
-  ;while [i <= number-of-subnets] [
-  ;  shift-network turtles with [turtle-subnet = i] (item (i - 1) xshifts) (item (i - 1) yshifts)
-  ;  set i i + 1
-  ;]
-  
-  ;link-subnets
-  
   if calculate-network-properties? [
     ;calculate-path-lengths
     find-clustering-coefficient
@@ -148,7 +140,10 @@ end
 
 ; mostly from "Virus on a Network"--see above
 ; Assign a random number of links randomly between pairs of nodes, making the total number of links such
-; that the average node degree per node is that specified by the user.
+; that the average node degree per node is that specified by the user.  But try to link to physically
+; near nodes.  This is therefore not an Erdos-Renyi binomial/Possion network, since pairs of
+; nodes don't have equal probability of being linked: Closer nodes are overwhelmingly more likely to be linked.
+; [But maybe the degree distribution is neverthless typical for an E-R net?  Don't know.]
 ; Algorithm:
 ; Keep doing the following until you've created enough links that you have average-node-degree/2 per node:
 ; ( /2 since each link adds a degree to two nodes)
@@ -594,9 +589,9 @@ end
 ;end
 @#$#@#$#@
 GRAPHICS-WINDOW
-232
-12
-1134
+215
+10
+1116
 602
 40
 25
@@ -655,10 +650,10 @@ NIL
 1
 
 PLOT
-1155
-133
-1409
-253
+1120
+130
+1374
+250
 average cultvar activations
 time
 activn
@@ -683,7 +678,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-116
+150
 1
 1
 NIL
@@ -749,10 +744,10 @@ TEXTBOX
 1
 
 PLOT
-1154
-12
-1408
-132
+1119
+9
+1373
+129
 cultvar freqs & pop variance
 NIL
 NIL
@@ -771,7 +766,7 @@ PENS
 SLIDER
 0
 10
-208
+210
 43
 trust-mean
 trust-mean
@@ -792,7 +787,7 @@ prob-of-transmission-bias
 prob-of-transmission-bias
 -1
 1
-0.28
+0
 .02
 1
 NIL
@@ -821,7 +816,7 @@ white
 SLIDER
 0
 45
-209
+210
 78
 trust-stdev
 trust-stdev
@@ -834,10 +829,10 @@ NIL
 HORIZONTAL
 
 PLOT
-1155
-253
-1409
-393
+1120
+250
+1374
+390
 degree distribution
 degree
 # of nodes
@@ -852,10 +847,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
 
 MONITOR
-1156
-435
-1303
-480
+1121
+432
+1268
+477
 NIL
 clustering-coefficient
 3
@@ -863,10 +858,10 @@ clustering-coefficient
 11
 
 MONITOR
-1157
-485
-1302
-530
+1122
+482
+1267
+527
 NIL
 average-path-length
 3
@@ -874,10 +869,10 @@ average-path-length
 11
 
 SWITCH
-1156
-397
-1398
-430
+1121
+394
+1363
+427
 calculate-network-properties?
 calculate-network-properties?
 1
@@ -885,20 +880,20 @@ calculate-network-properties?
 -1000
 
 TEXTBOX
-1305
-498
-1428
-518
+1270
+495
+1393
+515
 <- currently disabled
 11
 0.0
 1
 
 SLIDER
-1157
-540
-1367
-573
+1122
+537
+1332
+570
 number-to-change-degree
 number-to-change-degree
 0
@@ -910,10 +905,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-1157
-575
-1349
-608
+1122
+572
+1314
+605
 decrease-degree-variance
 decrease-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
@@ -927,10 +922,10 @@ NIL
 1
 
 BUTTON
-1157
-610
-1349
-643
+1122
+607
+1314
+640
 increase-degree-variance 
 increase-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
 NIL
@@ -952,17 +947,17 @@ number-of-subnets
 number-of-subnets
 1
 20
-7
+1
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1179
-649
-1317
-682
+1144
+646
+1282
+679
 subnet-to-modify
 subnet-to-modify
 1
@@ -982,7 +977,7 @@ inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
 10
-1
+4
 1
 1
 NIL
@@ -995,8 +990,8 @@ CHOOSER
 489
 subnet1
 subnet1
-1 2 3 4
-1
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+3
 
 CHOOSER
 103
@@ -1005,13 +1000,13 @@ CHOOSER
 490
 subnet2
 subnet2
-1 2 3 4
-2
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+4
 
 BUTTON
-28
+30
 530
-170
+172
 564
 NIL
 create-inter-links
@@ -1034,7 +1029,7 @@ stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
--1
+-3
 1
 1
 NIL
@@ -1059,11 +1054,15 @@ This is a model of spread of conflicting beliefs or other cultural variants on a
 
 Each person (node) has a degree of confidence.  1 indicates full confidence in the "black" proposition.  -1 indicates full confidence in its negation.  Degrees of confidence are not transmitted.  Instead, the degree of confidence (activation) determines the probability that a belief will be communicated.
 
-On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its network neighbors, with probability equal to the absolute value of the degree of confidence plus prob-of-transmission-bias.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a Normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.  See the definition of receive-utterance for details.
+On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its (undirected) network neighbors, with probability equal to the absolute value of the degree of confidence plus prob-of-transmission-bias.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a Normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.  See the definition of receive-utterance for details.
+
+You create multiple "subnetworks" which will be unconnected unless you create "inter-links" between them.  Inter-links are a different color than within-subnet links, but all links function identically.  Similarly, nodes connected to inter-links change shape, but this does not change their functioning.
+
+Each subnetwork is created randomly in order to make the total number of links such that the average node degree per node is that specified by the user.  However, the network-creation algorithm tries to link to nodes which are located near each other.  This means that the node chosen for linking is random, since locations are random.  However, the result is not an Erdos-Renyi binomial/Possion network, since pairs of nodes don't have equal probability of being linked: Closer nodes are overwhelmingly more likely to be linked.
 
 ## HOW TO USE IT
 
-Most of the GUI controls should be easy to understand through experimentation.  
+Most of the GUI controls should be easy to understand with a little bit of experimentation.  
 
 The inter-nodes and inter-links controls are used to add links between subnets which otherwise would be unconnected.  inter-nodes-per-subnet determines the number of nodes
 in subnet1 and subnet2 that will be connected to each other each time create-inter-links is pushed.  When the button is pushed, each of the "inter-nodes" from subnet1 is linked to each of the inter-nodes from subnet2.  (If you want to create singly linked inter-nodes instead, set inter-nodes-per-subnet to 1, and push the button as many times as needed.)
@@ -1071,7 +1070,7 @@ in subnet1 and subnet2 that will be connected to each other each time create-int
 
 ## THINGS TO NOTICE
 
-The spread of black or white beliefs is influenced by how well connected different nodes are.  A set of nodes with many interconnections can reinforce similarity, even in the f
+The spread of black or white beliefs is influenced by how well connected different nodes are.  A set of nodes with many interconnections can reinforce similarity among its members, even in the face of a bias toward an alternative cultural variant.
 @#$#@#$#@
 default
 true
