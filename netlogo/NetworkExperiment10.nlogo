@@ -79,47 +79,8 @@ to setup
     set i i + 1
   ]
 
-  layout-network turtles
-  ; at this point, all of the subnets are on top of each other
+  layout-network
   
-  let subnet-lattice-dims (near-factors number-of-subnets)
-  let subnet-lattice-dim1 item 0 subnet-lattice-dims
-  let subnet-lattice-dim2 item 1 subnet-lattice-dims
-  
-  ; subnet-lattice-dim1 is always <= subnet-lattice-dim2. 
-  ; Here we choose whether there should be more subnets in the x or y dimension,
-  ; depending on whether the world is larger in one direction or the other. 
-  let x-subnet-lattice-dim "not yet"
-  let y-subnet-lattice-dim "not yet"
-  if-else max-pxcor < max-pycor [ 
-    set x-subnet-lattice-dim subnet-lattice-dim1
-    set y-subnet-lattice-dim subnet-lattice-dim2
-  ][
-    set x-subnet-lattice-dim subnet-lattice-dim2
-    set y-subnet-lattice-dim subnet-lattice-dim1
-  ]
-
-  let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
-  let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
- 
-  stretch-network turtles (.9 * x-subnet-lattice-unit) (.9 * y-subnet-lattice-unit)  ; resize the overlaid subnets as one. we'll split them up in a moment.
-
-  let x-shift-width (x-subnet-lattice-unit * (max-pxcor - min-pxcor))
-  let y-shift-width (y-subnet-lattice-unit * (max-pycor - min-pycor))
-  let j 0
-  let k 0
-  while [j < x-subnet-lattice-dim] [
-    while [k < y-subnet-lattice-dim] [
-      let subnet (k * x-subnet-lattice-dim) + j + 1
-      let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
-      let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
-      shift-network-by-patches turtles with [turtle-subnet = subnet] xshift yshift
-      set k (k + 1)
-    ]
-    set k 0
-    set j (j + 1)
-  ]
-
   if calculate-network-properties? [
     ;calculate-path-lengths
     find-clustering-coefficient
@@ -149,7 +110,7 @@ end
 ; ( /2 since each link adds a degree to two nodes)
 ; Choose a random turtle, and create a link to the physically closest turtle to which it's not already linked.
 ; Since create-nodes gave turtles random locations, the link is to a random turtle.
-; (Note that these locations will be revised by layout-network.  Their only function is to group turtles
+; (Note that these locations will be revised by initial-layout-network.  Their only function is to group turtles
 ; randomly--in effect to randomly order turtles by closeness to any given turtle.)
 to create-network [subnet]
   let num-links (average-node-degree * nodes-per-subnet) / 2
@@ -186,11 +147,56 @@ to link-close-nodes [n nodes1 nodes2]
   ask from-nodes2 [set shape inter-node-shape]
 end
 
+to layout-network
+  initial-layout-network turtles
+  ; at this point, all of the subnets are on top of each other
+  place-subnets
+end
 
-to layout-network [nodes]
+to initial-layout-network [nodes]
   repeat 10 [
     layout-spring nodes links 
                   0.1 (world-width / sqrt nodes-per-subnet) 1 ; 3rd arg was 0.3 originally
+  ]
+end
+
+to place-subnets
+  let subnet-lattice-dims (near-factors number-of-subnets)
+  let subnet-lattice-dim1 item 0 subnet-lattice-dims
+  let subnet-lattice-dim2 item 1 subnet-lattice-dims
+  
+  ; subnet-lattice-dim1 is always <= subnet-lattice-dim2. 
+  ; Here we choose whether there should be more subnets in the x or y dimension,
+  ; depending on whether the world is larger in one direction or the other. 
+  let x-subnet-lattice-dim "not yet"
+  let y-subnet-lattice-dim "not yet"
+  if-else max-pxcor < max-pycor [ 
+    set x-subnet-lattice-dim subnet-lattice-dim1
+    set y-subnet-lattice-dim subnet-lattice-dim2
+  ][
+    set x-subnet-lattice-dim subnet-lattice-dim2
+    set y-subnet-lattice-dim subnet-lattice-dim1
+  ]
+
+  let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
+  let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
+ 
+  stretch-network turtles (.9 * x-subnet-lattice-unit) (.9 * y-subnet-lattice-unit)  ; resize the overlaid subnets as one. we'll split them up in a moment.
+
+  let x-shift-width (x-subnet-lattice-unit * (max-pxcor - min-pxcor))
+  let y-shift-width (y-subnet-lattice-unit * (max-pycor - min-pycor))
+  let j 0
+  let k 0
+  while [j < x-subnet-lattice-dim] [
+    while [k < y-subnet-lattice-dim] [
+      let subnet (k * x-subnet-lattice-dim) + j + 1
+      let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
+      let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
+      shift-network-by-patches turtles with [turtle-subnet = subnet] xshift yshift
+      set k (k + 1)
+    ]
+    set k 0
+    set j (j + 1)
   ]
 end
 
@@ -671,14 +677,14 @@ PENS
 
 SLIDER
 0
-326
+300
 208
-359
+333
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-150
+4
 1
 1
 NIL
@@ -686,14 +692,14 @@ HORIZONTAL
 
 SLIDER
 0
-360
+334
 209
-393
+367
 average-node-degree
 average-node-degree
 1
 min (list 50 (nodes-per-subnet - 1))
-10
+3
 1
 1
 NIL
@@ -910,7 +916,7 @@ BUTTON
 1314
 605
 decrease-degree-variance
-decrease-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
+decrease-degree-variance subnet-to-modify
 NIL
 1
 T
@@ -927,7 +933,7 @@ BUTTON
 1314
 640
 increase-degree-variance 
-increase-degree-variance subnet-to-modify\nlayout-network turtles with [turtle-subnet = subnet-to-modify]
+increase-degree-variance subnet-to-modify
 NIL
 1
 T
@@ -940,14 +946,14 @@ NIL
 
 SLIDER
 0
-394
+368
 209
-427
+401
 number-of-subnets
 number-of-subnets
 1
 20
-1
+4
 1
 1
 NIL
@@ -970,14 +976,14 @@ HORIZONTAL
 
 SLIDER
 16
-492
+466
 189
-525
+499
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
 10
-4
+1
 1
 1
 NIL
@@ -985,9 +991,9 @@ HORIZONTAL
 
 CHOOSER
 7
-444
+418
 100
-489
+463
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
@@ -995,9 +1001,9 @@ subnet1
 
 CHOOSER
 103
-445
+419
 196
-490
+464
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
@@ -1005,9 +1011,9 @@ subnet2
 
 BUTTON
 30
-530
+504
 172
-564
+538
 NIL
 create-inter-links
 NIL
@@ -1029,7 +1035,7 @@ stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
--3
+0
 1
 1
 NIL
@@ -1043,6 +1049,23 @@ TEXTBOX
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
+1
+
+BUTTON
+45
+539
+147
+572
+redo layout
+layout-network
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
