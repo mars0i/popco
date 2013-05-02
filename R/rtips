@@ -1,6 +1,35 @@
 R tips:
 
 ...........................................................
+# Unfortunately, the documentation for the built-in R cov function
+# is nearly unintelligible, but in fact it works as you'd expect,
+# with the qualification that it's a sample covariance, so the division
+# is by n-1, not n.  You have to convert it by multiplying by (n-1)/n to
+# get the regular covariance.  Here's an illustration with 100 points.
+
+> p
+  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [70] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+> q
+  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [70] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+> cov(p,q)
+[1] 0.1616162
+# now I define my own covariance function:
+> mycov <- function(x,y){mean((x - mean(x)) * (y - mean(y)))}
+> mycov(p,q)
+[1] 0.16
+> (100/99) * mycov(p,q)
+[1] 0.1616162
+> (99/100) * cov(p,q)
+[1] 0.16
+# also note:
+> cov(p,q)/(sd(p)*sd(q))
+[1] 1
+> cor(p,q)
+[1] 1
+
+...........................................................
 
 # with new panel.hanoi, with breaks customized to each panel, and bwplot
 bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), pch="|", coef=0, outer=T,
