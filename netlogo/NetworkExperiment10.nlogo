@@ -676,30 +676,30 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
-0
-300
-208
-333
+-5
+225
+205
+258
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-4
+300
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-0
-334
-209
-367
+-5
+259
+204
+292
 average-node-degree
 average-node-degree
 1
-min (list 50 (nodes-per-subnet - 1))
-3
+min (list 500 (nodes-per-subnet - 1))
+15
 1
 1
 NIL
@@ -945,15 +945,15 @@ NIL
 1
 
 SLIDER
-0
-368
-209
-401
+-5
+293
+204
+326
 number-of-subnets
 number-of-subnets
 1
 20
-4
+1
 1
 1
 NIL
@@ -975,10 +975,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-16
-466
-189
-499
+11
+386
+184
+419
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
@@ -990,30 +990,30 @@ NIL
 HORIZONTAL
 
 CHOOSER
-7
-418
-100
-463
+2
+338
+95
+383
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 3
 
 CHOOSER
-103
-419
-196
-464
+98
+339
+191
+384
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 4
 
 BUTTON
-30
-504
-172
-538
+25
+424
+167
+458
 NIL
 create-inter-links
 NIL
@@ -1028,14 +1028,14 @@ NIL
 
 SLIDER
 0
-217
+510
 203
-250
+543
 stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
-0
+-3
 1
 1
 NIL
@@ -1043,21 +1043,38 @@ HORIZONTAL
 
 TEXTBOX
 5
-249
+542
 204
-292
+585
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
 1
 
 BUTTON
-45
-539
-147
-572
+0
+460
+102
+493
 redo layout
 layout-network
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+105
+460
+207
+493
+circle layout
+layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
 1
 T
