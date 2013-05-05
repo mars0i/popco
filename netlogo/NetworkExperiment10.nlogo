@@ -546,6 +546,22 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
+
+to-report mean-degree [nodes]
+  report mean [count link-neighbors] of turtles
+end
+
+to-report stdev-degree [nodes]
+  report stdev [count link-neighbors] of turtles
+end
+
+; NOT SURE THIS IS WORKING RIGHT:
+; supposed to returns link-neighbors of nodes whose degree is greater than stdevs standard deviations above the mean degree
+to-report high-degree-nodes [nodes stdevs]
+  let min-degree (mean-degree nodes) + (stdevs * (stdev-degree nodes))
+  report turtle-set [link-neighbors] of turtles with [count link-neighbors > min-degree]
+end
+
 ; Finds middle-factors of n if there are factors > 1; otherwise returns middle-factors of n + 1.
 to-report near-factors [n]
   if n = 1 [report [1 1]]  ; special case
@@ -589,10 +605,9 @@ to-report var [lis]
   report (variance lis) * (n - 1) / n
 end
 
-; standard deviation. Varely different for reasonable number of nodes, but still ....
-;to-report stdev [lis]
-;  report  sqrt (var lis)
-;end
+to-report stdev [lis]
+  report sqrt (var lis)
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 215
@@ -881,7 +896,7 @@ SWITCH
 427
 calculate-network-properties?
 calculate-network-properties?
-1
+0
 1
 -1000
 
