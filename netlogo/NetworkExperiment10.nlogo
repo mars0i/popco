@@ -559,7 +559,11 @@ end
 ; supposed to returns link-neighbors of nodes whose degree is greater than stdevs standard deviations above the mean degree
 to-report high-degree-nodes [nodes stdevs]
   let min-degree (mean-degree nodes) + (stdevs * (stdev-degree nodes))
-  report turtle-set [link-neighbors] of turtles with [count link-neighbors > min-degree]
+  report turtles with [count link-neighbors > min-degree]
+end
+
+to-report k-one-neighbors [nodes]
+  report turtle-set [link-neighbors] of nodes
 end
 
 ; Finds middle-factors of n if there are factors > 1; otherwise returns middle-factors of n + 1.
