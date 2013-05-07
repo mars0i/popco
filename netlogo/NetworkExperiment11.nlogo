@@ -31,6 +31,7 @@ globals
   infinity                             ;; a very large number.
                                        ;; used to denote distance between two turtles which
                                        ;; don't have a connected or unconnected path between them
+  showing-degrees  ; true when we are displaying node degrees
 ]
 
 turtles-own
@@ -69,6 +70,7 @@ to setup
   set link-color 123
   set inter-link-color yellow
   set inter-node-shape "square"
+  set showing-degrees false
 
   ask patches [set pcolor background-color]
 
@@ -312,6 +314,18 @@ to setup-cultvar
   set color (activn-to-color activation)
 end
 
+to toggle-degree-display
+  if-else showing-degrees [
+    ask turtles [set label ""]
+    set showing-degrees false
+  ][
+    ask turtles [set label count link-neighbors 
+                 set label-color ifelse-value (activation < .3) [black] [white]]
+    set showing-degrees true
+  ]
+end
+
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; RUN
 
@@ -390,7 +404,9 @@ end
 to update-activns
   ask turtles
     [set activation next-activation
-     set color (activn-to-color activation)]
+     set color (activn-to-color activation)
+     if showing-degrees [
+       set label-color ifelse-value (activation < .3) [black] [white]]]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -650,7 +666,7 @@ GRAPHICS-WINDOW
 25
 11.0
 1
-10
+9
 1
 1
 1
@@ -1079,6 +1095,23 @@ BUTTON
 493
 circle layout
 layout-circle turtles (.95 * min (list max-pxcor max-pycor))
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+1121
+396
+1292
+430
+NIL
+toggle-degree-display
 NIL
 1
 T
