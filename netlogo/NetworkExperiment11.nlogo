@@ -118,6 +118,21 @@ to create-network [subnet]
   ask links[ set color link-color ]
 end
 
+; attempt to parameretize how likely it is to create communities
+; doesn't work yet
+to alt-create-network [subnet max-distance degree-vars]
+  let num-links (average-node-degree * nodes-per-subnet) / 2
+  while [count links with [link-subnet = subnet] < num-links ][
+    ask one-of turtles with [turtle-subnet = subnet] [
+      let poss-neighbors other turtles with [turtle-subnet = subnet and not link-neighbor? myself and distance myself < max-distance]
+      let poss-neighbors-degree-mean  mean-degree poss-neighbors
+      let poss-neighbors-degree-var var-degree poss-neighbors
+      let choice one-of poss-neighbors with [count link-neighbors < (poss-neighbors-degree-mean + ((random 2) - 1) * poss-neighbors-degree-var * degree-vars)]
+      if choice != nobody [ create-link-with choice [set link-subnet subnet]]
+    ]
+  ]
+  ask links[ set color link-color ]
+end
 
 to create-inter-links
   if (subnet1 != subnet2) [
@@ -541,6 +556,11 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
+to-report degree-of-node [node]
+  let degree "not yet set"
+  ask node [set degree count link-neighbors]
+  report degree
+end
 
 to-report mean-degree [nodes]
   report mean [count link-neighbors] of turtles
@@ -548,6 +568,10 @@ end
 
 to-report stdev-degree [nodes]
   report stdev [count link-neighbors] of turtles
+end
+
+to-report var-degree [nodes]
+  report var [count link-neighbors] of turtles
 end
 
 ; observer> ask turtles with [count link-neighbors = min [count link-neighbors] of turtles] [print who]
