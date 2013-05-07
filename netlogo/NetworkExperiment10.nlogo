@@ -555,6 +555,15 @@ to-report stdev-degree [nodes]
   report stdev [count link-neighbors] of turtles
 end
 
+; observer> ask turtles with [count link-neighbors = min [count link-neighbors] of turtles] [print who]
+; observer> show [link-neighbors] of turtles with [link-neighbor? turtle 172]
+; observer: [(agentset, 8 turtles) (agentset, 17 turtles) (agentset, 16 turtles) (agentset, 14 turtles) (agentset, 10 turtles) (agentset, 9 turtles)]
+; observer>  ask turtle-set [link-neighbors] of turtles with [link-neighbor? turtle 172] [set color yellow]
+; observer> ask turtle-set [link-neighbors] of turtle-set [link-neighbors] of turtles with [link-neighbor? turtle 172] [set color red]
+; observer> ask (turtles with [link-neighbor? turtle 172]) [set color blue]  ; neighbors of 172
+; observer> ask (turtle-set [link-neighbors] of turtles with [link-neighbor? turtle 172]) with [who != 172]  [set color green] ; neighbors of neighbors of 172, excluding 172
+
+
 ; NOT SURE THIS IS WORKING RIGHT:
 ; supposed to returns link-neighbors of nodes whose degree is greater than stdevs standard deviations above the mean degree
 to-report high-degree-nodes [nodes stdevs]
@@ -703,7 +712,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-300
+200
 1
 1
 NIL
