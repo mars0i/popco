@@ -319,7 +319,8 @@ to toggle-degree-display
     ask turtles [set label ""]
     set showing-degrees false
   ][
-    ask turtles [set label count link-neighbors 
+    ask turtles [;set label sum [count link-neighbors] of link-neighbors
+                 set label count link-neighbors 
                  set label-color ifelse-value (activation < .3) [black] [white]]
     set showing-degrees true
   ]
