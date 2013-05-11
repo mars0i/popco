@@ -314,6 +314,14 @@ to setup-cultvar
   set color (activn-to-color activation)
 end
 
+to make-activns-extreme
+  ask turtles
+    [if-else activation >= 0
+       [set activation 1]
+       [set activation -1]
+     set color (activn-to-color activation)]
+end
+
 to toggle-degree-display
   if-else showing-degrees [
     ask turtles [set label ""]
@@ -687,9 +695,9 @@ ticks
 
 BUTTON
 0
-140
+155
 56
-174
+189
 NIL
 setup
 NIL
@@ -703,10 +711,10 @@ NIL
 1
 
 BUTTON
-125
-140
-181
-174
+126
+155
+182
+189
 NIL
 go
 T
@@ -740,10 +748,10 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
--5
-225
-205
-258
+-1
+272
+209
+305
 nodes-per-subnet
 nodes-per-subnet
 4
@@ -755,10 +763,10 @@ NIL
 HORIZONTAL
 
 SLIDER
--5
-259
-204
-292
+-1
+306
+208
+339
 average-node-degree
 average-node-degree
 1
@@ -770,10 +778,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-59
-140
-123
-174
+60
+155
+124
+189
 go once
 go
 NIL
@@ -788,9 +796,9 @@ NIL
 
 BUTTON
 0
-179
+195
 116
-213
+229
 NIL
 reset-cultvars
 NIL
@@ -804,10 +812,10 @@ NIL
 1
 
 TEXTBOX
-121
-183
-208
-218
+122
+198
+209
+233
 <- start over\nwith same net.
 11
 0.0
@@ -966,10 +974,10 @@ NIL
 1
 
 SLIDER
--5
-293
-204
-326
+-1
+339
+208
+372
 number-of-subnets
 number-of-subnets
 1
@@ -996,10 +1004,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-11
-386
-184
-419
+15
+433
+188
+466
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
@@ -1011,30 +1019,30 @@ NIL
 HORIZONTAL
 
 CHOOSER
-2
-338
-95
-383
+8
+386
+101
+431
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 3
 
 CHOOSER
-98
-339
-191
-384
+103
+386
+196
+431
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 4
 
 BUTTON
-25
-424
-167
-458
+29
+470
+171
+504
 NIL
 create-inter-links
 NIL
@@ -1048,10 +1056,10 @@ NIL
 1
 
 SLIDER
-0
-510
-203
-543
+1123
+443
+1326
+476
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1063,20 +1071,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-5
-542
-204
-585
+1128
+475
+1327
+518
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
 1
 
 BUTTON
-0
-460
-102
-493
+5
+506
+107
+539
 redo layout
 layout-network
 NIL
@@ -1090,10 +1098,10 @@ NIL
 1
 
 BUTTON
-105
-460
-207
-493
+107
+506
+209
+539
 circle layout
 layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
@@ -1113,6 +1121,33 @@ BUTTON
 430
 NIL
 toggle-degree-display
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+2
+139
+169
+159
+POPCO-style transmission:
+11
+0.0
+1
+
+BUTTON
+0
+230
+169
+264
+make-activns-extreme
+make-activns-extreme
 NIL
 1
 T
