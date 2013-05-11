@@ -12,6 +12,9 @@
 ;   trust-mean           ; mean activation passed to receiver
 ;   trust-stdev          ; standard deviation of normal distribution around mean
 ;   prob-of-transmission-bias ; allows transmission to be biased so that black or white is more likely to transmit
+;   subnet1, subnet2
+
+extensions [matrix]
   
 globals
 [
@@ -22,7 +25,7 @@ globals
   netlogo-turtle-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
   node-shape       ; default node shape
   link-color       ; obvious
-  inter-link-color ; links that go from one subnet to another
+  inter-link-subnets-color ; links that go from one subnet to another
   inter-node-shape ; nodes that link from one subnet to another
   background-color ; obvious
   clustering-coefficient               ;; the clustering coefficient of the network; this is the
@@ -32,6 +35,7 @@ globals
                                        ;; used to denote distance between two turtles which
                                        ;; don't have a connected or unconnected path between them
   showing-degrees  ; true when we are displaying node degrees
+  subnets-matrix   ; matrix of subnet id's showing how they're layed out in the world
 ]
 
 turtles-own
@@ -68,7 +72,7 @@ to setup
   ;set background-color 58
   set netlogo-turtle-hue 0
   set link-color 123
-  set inter-link-color yellow
+  set inter-link-subnets-color yellow
   set inter-node-shape "square"
   set showing-degrees false
 
@@ -122,24 +126,24 @@ end
 
 ; attempt to parameretize how likely it is to create communities
 ; doesn't work yet
-to alt-create-network [subnet max-distance degree-vars]
-  let num-links (average-node-degree * nodes-per-subnet) / 2
-  while [count links with [link-subnet = subnet] < num-links ][
-    ask one-of turtles with [turtle-subnet = subnet] [
-      let poss-neighbors other turtles with [turtle-subnet = subnet and not link-neighbor? myself and distance myself < max-distance]
-      let poss-neighbors-degree-mean  mean-degree poss-neighbors
-      let poss-neighbors-degree-var var-degree poss-neighbors
-      let choice one-of poss-neighbors with [count link-neighbors < (poss-neighbors-degree-mean + ((random 2) - 1) * poss-neighbors-degree-var * degree-vars)]
-      if choice != nobody [ create-link-with choice [set link-subnet subnet]]
-    ]
-  ]
-  ask links[ set color link-color ]
-end
+;to alt-create-network [subnet max-distance degree-vars]
+;  let num-links (average-node-degree * nodes-per-subnet) / 2
+;  while [count links with [link-subnet = subnet] < num-links ][
+;    ask one-of turtles with [turtle-subnet = subnet] [
+;      let poss-neighbors other turtles with [turtle-subnet = subnet and not link-neighbor? myself and distance myself < max-distance]
+;      let poss-neighbors-degree-mean  mean-degree poss-neighbors
+;      let poss-neighbors-degree-var var-degree poss-neighbors
+;      let choice one-of poss-neighbors with [count link-neighbors < (poss-neighbors-degree-mean + ((random 2) - 1) * poss-neighbors-degree-var * degree-vars)]
+;      if choice != nobody [ create-link-with choice [set link-subnet subnet]]
+;    ]
+;  ]
+;  ask links[ set color link-color ]
+;end
 
-to create-inter-links
-  if (subnet1 != subnet2) [
-    let nodes1 turtles with [turtle-subnet = subnet1] 
-    let nodes2 turtles with [turtle-subnet = subnet2]
+to inter-link-subnets [subn1 subn2]
+  if (subn1 != subn2) [
+    let nodes1 turtles with [turtle-subnet = subn1] 
+    let nodes2 turtles with [turtle-subnet = subn2]
     if (any? nodes1 and any? nodes2) [
       link-close-nodes inter-nodes-per-subnet nodes1 nodes2
     ]
@@ -154,7 +158,7 @@ end
 to link-close-nodes [n nodes1 nodes2]
   let from-nodes1 min-n-of n nodes1 [distance one-of nodes2]      ; find the nearest nodes to an arbitrary member of the second set
   let from-nodes2 min-n-of n nodes2 [distance one-of from-nodes1] ; now find the nearest nodes to one of the ones in the first set
-  ask from-nodes1 [create-links-with from-nodes2 [set color inter-link-color]]
+  ask from-nodes1 [create-links-with from-nodes2 [set color inter-link-subnets-color]]
   ask from-nodes1 [set shape inter-node-shape]
   ask from-nodes2 [set shape inter-node-shape]
 end
@@ -189,6 +193,9 @@ to place-subnets
     set x-subnet-lattice-dim subnet-lattice-dim2
     set y-subnet-lattice-dim subnet-lattice-dim1
   ]
+  
+  ; initialize global matrix that will summarize the layout.  note which is x and y: matrix rows are y, and cols are x.
+  set subnets-matrix matrix:make-constant y-subnet-lattice-dim x-subnet-lattice-dim 0
 
   let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
   let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
@@ -205,10 +212,45 @@ to place-subnets
       let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
       let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
       shift-network-by-patches turtles with [turtle-subnet = subnet] xshift yshift
+      matrix:set subnets-matrix k j subnet ; store name of this subnet in matrix location corresponding to location in world
       set k (k + 1)
     ]
     set k 0
     set j (j + 1)
+  ]
+end
+
+to link-near-subnets
+  let dims matrix:dimensions subnets-matrix
+  let rows item 0 dims
+  let cols item 1 dims
+
+  ; link horizontally
+  let row-index 0
+  let col-index 0
+  while [row-index < rows] [
+    while [col-index < cols - 1] [
+      let subn1 matrix:get subnets-matrix row-index col-index
+      let subn2 matrix:get subnets-matrix row-index (col-index + 1)
+      inter-link-subnets subn1 subn2
+      set col-index col-index + 1
+    ]
+    set row-index row-index + 1
+    set col-index 0
+  ]
+
+  ; link vertically
+  set row-index 0
+  set col-index 0
+  while [col-index < cols] [
+    while [row-index < rows - 1] [
+      let subn1 matrix:get subnets-matrix row-index col-index
+      let subn2 matrix:get subnets-matrix (row-index + 1) col-index
+      inter-link-subnets subn1 subn2
+      set row-index row-index + 1
+    ]
+    set col-index col-index + 1
+    set row-index 0
   ]
 end
 
@@ -261,53 +303,53 @@ to reset-cultvars
   set ready-to-stop false
 end
 
-to decrease-degree-variance [subnet]
-  let i 0
-  while [i < number-to-change-degree 
-         and 
-         any? turtles with [turtle-subnet = subnet and count my-links > average-node-degree]] [
-     set i i + 1
-     ask one-of turtles with [turtle-subnet = subnet and count my-links > average-node-degree] [
-       ask one-of my-links [die]
-    ]
-  ]
-  
-  set i 0
-  while [i < number-to-change-degree 
-         and 
-         any? turtles with [turtle-subnet = subnet and count my-links < average-node-degree]] [
-    set i i + 1
-    ask one-of turtles with [turtle-subnet = subnet and count my-links < average-node-degree] [
-      let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links < average-node-degree]) [distance myself])
-      if choice != nobody [create-link-with choice [set color link-color
-                                                    set link-subnet subnet]]
-    ]
-  ]
-end    
-
-to increase-degree-variance [subnet]
-  let i 0
-  while [i < number-to-change-degree 
-         and 
-         any? turtles with [turtle-subnet = subnet and count my-links < average-node-degree and count my-links > 0]] [
-     set i i + 1
-     ask one-of turtles with [turtle-subnet = subnet and count my-links < average-node-degree and count my-links > 0] [
-       ask one-of my-links [die]
-    ]
-  ]
-  
-  set i 0
-  while [i < number-to-change-degree 
-         and 
-         any? turtles with [turtle-subnet = subnet and count my-links > average-node-degree]] [
-    set i i + 1
-    ask one-of turtles with [turtle-subnet = subnet and count my-links > average-node-degree] [
-      let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links > average-node-degree]) [distance myself])
-      if choice != nobody [create-link-with choice [set color link-color
-                                                    set link-subnet subnet]]
-    ]
-  ]
-end
+;to decrease-degree-variance [subnet]
+;  let i 0
+;  while [i < number-to-change-degree 
+;         and 
+;         any? turtles with [turtle-subnet = subnet and count my-links > average-node-degree]] [
+;     set i i + 1
+;     ask one-of turtles with [turtle-subnet = subnet and count my-links > average-node-degree] [
+;       ask one-of my-links [die]
+;    ]
+;  ]
+;  
+;  set i 0
+;  while [i < number-to-change-degree 
+;         and 
+;         any? turtles with [turtle-subnet = subnet and count my-links < average-node-degree]] [
+;    set i i + 1
+;    ask one-of turtles with [turtle-subnet = subnet and count my-links < average-node-degree] [
+;      let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links < average-node-degree]) [distance myself])
+;      if choice != nobody [create-link-with choice [set color link-color
+;                                                    set link-subnet subnet]]
+;    ]
+;  ]
+;end    
+;
+;to increase-degree-variance [subnet]
+;  let i 0
+;  while [i < number-to-change-degree 
+;         and 
+;         any? turtles with [turtle-subnet = subnet and count my-links < average-node-degree and count my-links > 0]] [
+;     set i i + 1
+;     ask one-of turtles with [turtle-subnet = subnet and count my-links < average-node-degree and count my-links > 0] [
+;       ask one-of my-links [die]
+;    ]
+;  ]
+;  
+;  set i 0
+;  while [i < number-to-change-degree 
+;         and 
+;         any? turtles with [turtle-subnet = subnet and count my-links > average-node-degree]] [
+;    set i i + 1
+;    ask one-of turtles with [turtle-subnet = subnet and count my-links > average-node-degree] [
+;      let choice (min-one-of (other turtles with [turtle-subnet = subnet and not link-neighbor? myself and count my-links > average-node-degree]) [distance myself])
+;      if choice != nobody [create-link-with choice [set color link-color
+;                                                    set link-subnet subnet]]
+;    ]
+;  ]
+;end
 
 to setup-cultvar
   set activation ((random-float 2) - 1)
@@ -720,9 +762,9 @@ to-report stdev [lis]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-215
+210
 10
-1116
+1111
 602
 40
 25
@@ -781,9 +823,9 @@ NIL
 1
 
 PLOT
-1120
+1115
 130
-1374
+1325
 250
 average cultvar activations
 time
@@ -801,25 +843,25 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
 
 SLIDER
--3
-448
-207
-481
+1115
+390
+1325
+423
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-300
+100
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
--3
-483
-206
-516
+1115
+425
+1324
+458
 average-node-degree
 average-node-degree
 1
@@ -875,9 +917,9 @@ TEXTBOX
 1
 
 PLOT
-1119
+1114
 9
-1373
+1324
 129
 cultvar freqs & pop variance
 NIL
@@ -897,7 +939,7 @@ PENS
 SLIDER
 0
 10
-210
+205
 43
 trust-mean
 trust-mean
@@ -912,7 +954,7 @@ HORIZONTAL
 SLIDER
 0
 100
-209
+205
 133
 prob-of-transmission-bias
 prob-of-transmission-bias
@@ -947,7 +989,7 @@ white
 SLIDER
 0
 45
-210
+205
 78
 trust-stdev
 trust-stdev
@@ -960,9 +1002,9 @@ NIL
 HORIZONTAL
 
 PLOT
-1120
+1115
 250
-1374
+1325
 390
 degree distribution
 degree
@@ -978,59 +1020,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
 
 SLIDER
-1122
-585
-1332
-618
-number-to-change-degree
-number-to-change-degree
-0
-2000
-200
-5
-1
-NIL
-HORIZONTAL
-
-BUTTON
-1122
-619
-1314
-652
-decrease-degree-variance
-decrease-degree-variance subnet-to-modify
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-1122
-655
-1314
-688
-increase-degree-variance 
-increase-degree-variance subnet-to-modify
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
--3
-516
-206
-549
+1115
+458
+1324
+491
 number-of-subnets
 number-of-subnets
 1
@@ -1042,62 +1035,47 @@ NIL
 HORIZONTAL
 
 SLIDER
-1144
-694
-1282
-727
-subnet-to-modify
-subnet-to-modify
-1
-4
+1115
+540
+1279
+573
+inter-nodes-per-subnet
+inter-nodes-per-subnet
+0
+10
 2
 1
 1
 NIL
 HORIZONTAL
 
-SLIDER
-13
-599
-186
-632
-inter-nodes-per-subnet
-inter-nodes-per-subnet
-0
-10
-1
-1
-1
-NIL
-HORIZONTAL
-
 CHOOSER
-6
-553
-99
-598
+1115
+495
+1208
+540
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 3
 
 CHOOSER
-100
-553
-193
-598
+1208
+495
+1300
+540
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 4
 
 BUTTON
-27
-637
-169
-671
-NIL
-create-inter-links
+1115
+575
+1182
+609
+link-em
+inter-link-subnets subnet1 subnet2\n; subnet1 and subnet2 are globals defined\n; by gui elements.
 NIL
 1
 T
@@ -1109,10 +1087,10 @@ NIL
 1
 
 SLIDER
-1122
-489
-1325
-522
+2
+543
+205
+576
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1124,20 +1102,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-1127
-522
-1326
-565
+7
+575
+206
+618
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
 1
 
 BUTTON
-1120
-435
-1222
-468
+-1
+488
+101
+521
 redo layout
 layout-network
 NIL
@@ -1151,10 +1129,10 @@ NIL
 1
 
 BUTTON
-1223
-435
-1325
-468
+103
+488
+205
+521
 circle layout
 layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
@@ -1168,10 +1146,10 @@ NIL
 1
 
 BUTTON
-1121
-396
-1292
-430
+0
+449
+171
+483
 NIL
 toggle-degree-display
 NIL
@@ -1212,9 +1190,9 @@ NIL
 1
 
 SLIDER
--3
+0
 135
-211
+205
 168
 morris-switch-threshold
 morris-switch-threshold
@@ -1271,10 +1249,10 @@ Morris-style transmission:
 1
 
 BUTTON
--2
-359
-162
-393
+0
+360
+164
+394
 NIL
 morris-reset-cultvars
 NIL
@@ -1307,10 +1285,27 @@ NIL
 BUTTON
 120
 395
-212
+205
 428
 extremize
 make-activns-extreme
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+1185
+575
+1294
+609
+NIL
+link-near-subnets
 NIL
 1
 T
