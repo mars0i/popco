@@ -1,4 +1,4 @@
-; NetworkExperiment10.nlogo
+; NetworkExperiment13.nlogo
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -65,6 +65,7 @@ to setup
   set ready-to-stop false
   
   set selected no-turtles ; stores persons selected by mouse action
+  set-default-shape sides "line"
   
   set max-activn 1
   set min-activn -1
@@ -595,7 +596,7 @@ to make-side [x1 y1 x2 y2]
   ;; for each side, one thin line shape is created at the mid point of each segment
   ;; of the bounding box and scaled to the proper length
   create-sides 1 [
-    set color gray
+    set color green
     setxy (x1 + x2) / 2
           (y1 + y2) / 2
     facexy x1 y1
@@ -944,9 +945,9 @@ true
 true
 "" ""
 PENS
-"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of turtles)"
-"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of turtles)"
-"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of turtles)"
+"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of persons)"
+"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of persons)"
+"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of persons)"
 
 SLIDER
 1115
@@ -1038,9 +1039,9 @@ true
 true
 "" ""
 PENS
-"Bl" 1.0 0 -16777216 true "" "plot ((count turtles with [activation > 0])/(count turtles))"
-"Wh" 1.0 0 -5987164 true "" "plot ((count turtles with [activation < 0])/(count turtles))"
-"var" 1.0 0 -8053223 true "" "plot (var [activation] of turtles)"
+"Bl" 1.0 0 -16777216 true "" "plot ((count persons with [activation > 0])/(count persons))"
+"Wh" 1.0 0 -5987164 true "" "plot ((count persons with [activation < 0])/(count persons))"
+"var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
 
 SLIDER
 0
@@ -1123,7 +1124,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles" "let max-degree max [count link-neighbors] of turtles\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of turtles"
+"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons" "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons"
 
 SLIDER
 1115
@@ -1413,6 +1414,23 @@ BUTTON
 NIL
 link-near-subnets
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+110
+288
+209
+322
+NIL
+go-grouping
+T
 1
 T
 OBSERVER
