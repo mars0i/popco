@@ -28,15 +28,17 @@ globals
   inter-link-subnets-color ; links that go from one subnet to another
   inter-node-shape ; nodes that link from one subnet to another
   background-color ; obvious
-  clustering-coefficient               ;; the clustering coefficient of the network; this is the
-                                       ;; average of clustering coefficients of all persons
-  average-path-length                  ;; average path length of the network
-  infinity                             ;; a very large number.
-                                       ;; used to denote distance between two persons which
-                                       ;; don't have a connected or unconnected path between them
-  showing-degrees  ; true when we are displaying node degrees
-  subnets-matrix   ; matrix of subnet id's showing how they're layed out in the world
-  selected        ; for marking etc with mouse
+  clustering-coefficient               ; the clustering coefficient of the network; this is the
+                                       ; average of clustering coefficients of all persons
+  average-path-length                  ; average path length of the network
+  infinity                             ; a very large number.
+                                       ; used to denote distance between two persons which
+                                       ; don't have a connected or unconnected path between them
+  showing-degrees                      ; true when we are displaying node degrees
+  subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
+  
+  ;curr-community-min-cohesion  ; minimum cohesion needed as criterion for community formation
+  curr-community-anchor   ; node around which we investigate communities
 ]
 
 breed [sides side]
@@ -64,7 +66,6 @@ to setup
   
   set ready-to-stop false
   
-  set selected no-turtles ; stores persons selected by mouse action
   set-default-shape sides "line"
   
   set max-activn 1
@@ -510,9 +511,6 @@ to morris-transmit-cultvars
            [set next-activation -1]]]
 end
 
-to morris-assess-neighbors [sign]
-end
-
 to morris-reset-cultvars
   reset-cultvars
   make-activns-extreme
@@ -528,14 +526,72 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; GROUP MARKING AND COHESION CALCULATION
 
+to-report node-cohesion [node community]
+  let num-neighbs 0
+  let num-community-neighbs 0
+  ask node
+    [set num-neighbs count link-neighbors
+     set num-community-neighbs num-neighbors-in-community community]
+  report num-community-neighbs / num-neighbs
+end
+
+to-report num-neighbors-in-community [community]
+  report count link-neighbors with [member? self community]
+end
+
+to-report community-cohesion [community]
+  report min [node-cohesion self community] of community
+end
+
+to show-community
+  let community find-community curr-community-anchor min-community-cohesion
+  ask community
+    [;set color blue
+     let comm-neighbs num-neighbors-in-community community
+     let neighbs count link-neighbors
+     set label ifelse-value (neighbs = comm-neighbs)
+                            [1]
+                            [(word comm-neighbs "/" neighbs)]]
+end
+
+to hide-community
+  ask persons
+    [set color (activn-to-color activation)
+     set label ""]
+end
+
+; crudely expands out from anchor in all neighbor directions.  i.e. doesn't try various combinations of
+; link-neighbors, which could be costly.  e.g. when there are 20 link-neighbors, that's 1M different combinations
+; potentially for each node already in the community.
+to-report find-community [anchor min-cohesion]
+  report find-community-aux (turtle-set anchor) min-cohesion
+end
+
+to-report find-community-aux [candidate-community min-cohesion]
+  if (candidate-community = persons) [report persons] 
+
+  if-else (community-cohesion candidate-community) >= min-cohesion [
+    report candidate-community 
+  ][
+    report find-community-aux (turtle-set candidate-community ([link-neighbors] of candidate-community)) min-cohesion
+  ]
+end
+
 to choose-community-anchor
+  ; originally from Mouse Drag One Code Example model
   if mouse-down? [
     let candidate min-one-of turtles [distancexy mouse-xcor mouse-ycor]
     if [distancexy mouse-xcor mouse-ycor] of candidate < 1 [
       ;; The WATCH primitive puts a "halo" around the watched turtle.
       watch candidate
       while [mouse-down?] [
- 
+       ;; If we don't force the view to update, the user won't
+        ;; be able to see the turtle moving around.
+        display
+        ;; The SUBJECT primitive reports the turtle being watched.
+        set curr-community-anchor subject
+        ;ask subject [set shape "target"]
+        ask subject [setxy mouse-xcor mouse-ycor]
       ]
       ;; Undoes the effects of WATCH.  Can be abbreviated RP.
       reset-perspective
@@ -1119,10 +1175,10 @@ NIL
 1
 
 SLIDER
-2
-543
-205
-576
+210
+600
+413
+633
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1134,20 +1190,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-7
-575
-206
-618
+415
+600
+614
+643
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
 1
 
 BUTTON
-0
-470
-102
-503
+910
+600
+1012
+633
 redo layout
 layout-network
 NIL
@@ -1161,10 +1217,10 @@ NIL
 1
 
 BUTTON
-104
-470
-206
-503
+1009
+600
+1111
+633
 circle layout
 layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
@@ -1178,11 +1234,11 @@ NIL
 1
 
 BUTTON
-1
-431
-172
-465
-NIL
+810
+600
+910
+633
+display degrees
 toggle-degree-display
 NIL
 1
@@ -1361,12 +1417,61 @@ symmetric?
 
 BUTTON
 0
-505
+485
 170
-538
+518
 NIL
 choose-community-anchor
 T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+0
+450
+205
+483
+min-community-cohesion
+min-community-cohesion
+0
+1
+0.305
+.005
+1
+NIL
+HORIZONTAL
+
+BUTTON
+0
+520
+105
+553
+NIL
+show-community\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+105
+520
+205
+553
+NIL
+hide-community
+NIL
 1
 T
 OBSERVER
