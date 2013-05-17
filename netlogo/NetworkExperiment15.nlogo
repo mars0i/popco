@@ -311,6 +311,7 @@ to reset-cultvars
   set ready-to-stop false
 end
 
+
 to setup-cultvar
   set activation ((random-float 2) - 1)
   set color (activn-to-color activation)
@@ -498,9 +499,7 @@ end
 to show-community
   let community find-community curr-community-anchor min-community-cohesion
   ask community
-    [if-else activation > -.25
-       [set label-color white]
-       [set label-color black]
+    [;set color blue
      let comm-neighbs num-neighbors-in-community community
      let neighbs count link-neighbors
      set label ifelse-value (neighbs = comm-neighbs)
@@ -521,13 +520,20 @@ to-report find-community [anchor min-cohesion]
   report find-community-aux (turtle-set anchor) min-cohesion
 end
 
-to-report find-community-aux [candidate-community min-cohesion]
-  if (candidate-community = persons) [report persons] 
+to-report find-community-aux [community min-cohesion]
+  if (community = persons) [report community] 
 
-  if-else (community-cohesion candidate-community) >= min-cohesion [
-    report candidate-community 
+  ; In theory we could check each neighbor node's cohesion wrt all possible additions of neighbors.
+  ; The number of such combinations may be large--e.g. for 20 neighbors, 1M combinations.  So
+  ; we instead check (a) the addition of all neighbors to the group, and (b) additions of individual neighbors.
+  let neighbs (turtle-set [link-neighbors] of community)
+  let new-members (turtle-set neighbs with [ ( (node-cohesion self (turtle-set neighbs community) ) >= min-cohesion ) ] )
+  if any? new-members [set new-members neighbs with [node-cohesion self (turtle-set self community) >= min-cohesion]]
+  
+  if-else not any? new-members [
+    report community
   ][
-    report find-community-aux (turtle-set candidate-community ([link-neighbors] of candidate-community)) min-cohesion
+    report find-community-aux (turtle-set new-members community) min-cohesion
   ]
 end
 
@@ -1371,9 +1377,9 @@ symmetric?
 
 BUTTON
 0
-520
+485
 170
-553
+518
 NIL
 choose-community-anchor
 T
@@ -1395,7 +1401,7 @@ min-community-cohesion
 min-community-cohesion
 0
 1
-0.475
+0.3
 .005
 1
 NIL
@@ -1403,9 +1409,9 @@ HORIZONTAL
 
 BUTTON
 0
-485
+520
 105
-518
+553
 NIL
 show-community\n
 NIL
@@ -1420,9 +1426,9 @@ NIL
 
 BUTTON
 105
-485
+520
 205
-518
+553
 NIL
 hide-community
 NIL
