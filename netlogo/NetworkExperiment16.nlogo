@@ -17,7 +17,7 @@
 ;   prob-of-transmission-bias ; allows transmission to be biased so that black or white is more likely to transmit
 ;   subnet1, subnet2
 
-extensions [matrix]
+extensions [matrix nw]
   
 globals
 [
@@ -512,7 +512,7 @@ to show-community
 ;                            [(word comm-neighbs "/" neighbs)]]
 end
 
-to hide-community
+to reset-colors
   ask persons
     [set color (activn-to-color activation)
      set label ""]
@@ -556,9 +556,9 @@ to-report init-node-list [nodes]
   report node-list
 end
 
-to-report make-Laplacean [nodes]
-  let num-nodes count nodes
-  let node-list init-node-list nodes
+; Generate the Laplacean matrix of nodes
+to-report make-Laplacean [node-list]
+  let num-nodes length node-list
   let laplacean matrix:make-constant num-nodes num-nodes 0
   
   foreach node-list [
@@ -580,11 +580,25 @@ to-report make-Laplacean [nodes]
   report laplacean
 end
 
-; second eigenvalue:
-; item 1 matrix:real-eigenvalues make-Laplacean persons
-; second eigenvector
-; matrix:get-column (matrix:eigenvectors make-Laplacean persons) 1
+; Return second-smallest eigenvector of the Laplacean matrix of nodes
+to-report Laplacean-2nd-eigenvector [node-list]
+  report matrix:get-column (matrix:eigenvectors make-Laplacean node-list) 1
+end
 
+to-report sort-nodes-by-2nd-eigenvector [node-list evec]
+  report sort-by 
+           [ (item ([index] of ?1) evec) > (item ([index] of ?2) evec) ]
+           node-list
+end
+
+; NOT DONE
+to-report graph-partition [nodes]
+  ; get first (floor n1-proportion * nodes-per-subnet) nodes from 
+  ; sort-nodes-by-2nd-eigenvector (Laplacean-2nd-eigenvector (init-node-list nodes))
+  ; then check the second and calculate cut size and then do it over in the
+  ; opposite order, and report whichever pair of lists makes the cut size smaller.
+end
+  
 ;to-report make-degree-vector [nodes]
 ;  report matrix:from-column-list (list map [[count link-neighbors] of ?] sort nodes)
 ;end
@@ -775,7 +789,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-50
+300
 1
 1
 NIL
@@ -1251,28 +1265,45 @@ symmetric?
 1
 -1000
 
+BUTTON
+0
+435
+107
+468
+NIL
+reset-colors
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 SLIDER
 0
-450
-205
-483
-min-community-cohesion
-min-community-cohesion
-0
+475
+160
+508
+num-k-means-clusters
+num-k-means-clusters
 1
-0.475
-.005
+50
+4
+1
 1
 NIL
 HORIZONTAL
 
 BUTTON
 0
-485
-105
-518
-NIL
-show-community\n
+510
+142
+543
+k-means-clusters
+nw:set-snapshot persons links foreach nw:k-means-clusters num-k-means-clusters 500 .01 [let col (random 256) foreach ? [ask ? [set color col]]]
 NIL
 1
 T
@@ -1283,22 +1314,20 @@ NIL
 NIL
 1
 
-BUTTON
-105
-485
-205
-518
-NIL
-hide-community
-NIL
+SLIDER
+0
+555
+130
+588
+n1-proportion
+n1-proportion
+0
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
+0.5
+.01
 1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
