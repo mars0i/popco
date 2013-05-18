@@ -1,4 +1,7 @@
-; NetworkExperiment14.nlogo
+; NetworkExperiment16.nlogo
+; MATRIX EXPERIMENTS
+; MATRIX EXPERIMENTS
+; MATRIX EXPERIMENTS
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -51,6 +54,7 @@ persons-own
   node-clustering-coefficient
   distance-from-other-persons   ;; list of distances of this node from other persons
   person-subnet
+  index ; temporary variable for matrix configuration
 ]
 
 links-own
@@ -496,16 +500,16 @@ to-report community-cohesion [community]
 end
 
 to show-community
-  let community find-community curr-community-anchor min-community-cohesion
-  ask community
-    [if-else activation > -.25
-       [set label-color white]
-       [set label-color black]
-     let comm-neighbs num-neighbors-in-community community
-     let neighbs count link-neighbors
-     set label ifelse-value (neighbs = comm-neighbs)
-                            [1]
-                            [(word comm-neighbs "/" neighbs)]]
+;  let community find-community curr-community-anchor min-community-cohesion
+;  ask community
+;    [if-else activation > -.25
+;       [set label-color white]
+;       [set label-color black]
+;     let comm-neighbs num-neighbors-in-community community
+;     let neighbs count link-neighbors
+;     set label ifelse-value (neighbs = comm-neighbs)
+;                            [1]
+;                            [(word comm-neighbs "/" neighbs)]]
 end
 
 to hide-community
@@ -531,190 +535,60 @@ to-report find-community-aux [candidate-community min-cohesion]
   ]
 end
 
-to choose-community-anchor
-  ; originally from Mouse Drag One Code Example model
-  if mouse-down? [
-    let candidate min-one-of turtles [distancexy mouse-xcor mouse-ycor]
-    if [distancexy mouse-xcor mouse-ycor] of candidate < 1 [
-      ;; The WATCH primitive puts a "halo" around the watched turtle.
-      watch candidate
-      while [mouse-down?] [
-       ;; If we don't force the view to update, the user won't
-        ;; be able to see the turtle moving around.
-        display
-        ;; The SUBJECT primitive reports the turtle being watched.
-        set curr-community-anchor subject
-        ;ask subject [set shape "target"]
-        ask subject [setxy mouse-xcor mouse-ycor]
-      ]
-      ;; Undoes the effects of WATCH.  Can be abbreviated RP.
-      reset-perspective
-    ]
-  ]
-end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PATH LENGTH AND CLUSTERING COEFFICIENT CALCULATIONS
-;; (Mindlessly copied from another model.)
+;; MATRIX PROCEDURES
 
-;; calculate-path-lengths reports true if the network is connected,
-;;   and reports false if the network is disconnected.
-;; (In the disconnected case, the average path length does not make sense,
-;;   or perhaps may be considered infinite)
-to calculate-path-lengths
-
-  ;; set up a variable so we can report if the network is disconnected
-  let connected? true
-
-  ;; find the path lengths in the network
-  find-path-lengths
-
-  let num-connected-pairs sum [length remove infinity (remove 0 distance-from-other-persons)] of persons
-
-  ;; In a connected network on N nodes, we should have N(N-1) measurements of distances between pairs,
-  ;; and none of those distances should be infinity.
-  ;; If there were any "infinity" length paths between nodes, then the network is disconnected.
-  ;; In that case, calculating the average-path-length doesn't really make sense.
-  ifelse ( num-connected-pairs != (count persons * (count persons - 1) ))
-  [
-      set average-path-length infinity
-      ;; report that the network is not connected
-      set connected? false
-  ]
-  [
-    set average-path-length (sum [sum distance-from-other-persons] of persons) / (num-connected-pairs)
-  ]
-  ;; find the clustering coefficient and add to the aggregate for all iterations
-  ;find-clustering-coefficient
-
-  ;; report whether the network is connected or not
-  ;report connected?
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Clustering computations ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-to-report in-neighborhood? [ hood ]
-  report ( member? end1 hood and member? end2 hood )
-end
-
-
-to find-clustering-coefficient
-  ifelse all? persons [count link-neighbors <= 1]
-  [
-    ;; it is undefined
-    ;; what should this be?
-    set clustering-coefficient 0
-  ]
-  [
-    let total 0
-    ask persons with [ count link-neighbors <= 1]
-      [ set node-clustering-coefficient "undefined" ]
-    ask persons with [ count link-neighbors > 1]
-    [
-      let hood link-neighbors
-      set node-clustering-coefficient (2 * count links with [ in-neighborhood? hood ] /
-                                         ((count hood) * (count hood - 1)) )
-      ;; find the sum for the value at persons
-      set total total + node-clustering-coefficient
-    ]
-    ;; take the average
-    set clustering-coefficient total / count persons with [count link-neighbors > 1]
-  ]
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Path length computations ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Implements the Floyd Warshall algorithm for All Pairs Shortest Paths
-;; It is a dynamic programming algorithm which builds bigger solutions
-;; from the solutions of smaller subproblems using memoization that
-;; is storing the results.
-;; It keeps finding incrementally if there is shorter path through
-;; the kth node.
-;; Since it iterates over all persons through k,
-;; so at the end we get the shortest possible path for each i and j.
-
-to find-path-lengths
-  ;; reset the distance list
-  ask persons
-  [
-    set distance-from-other-persons []
-  ]
+to-report init-node-list [nodes]
+  let node-list sort nodes
 
   let i 0
-  let j 0
-  let k 0
-  let node1 one-of persons
-  let node2 one-of persons
-  let node-count count persons
-  ;; initialize the distance lists
-  while [i < node-count]
-  [
-    set j 0
-    while [j < node-count]
-    [
-      set node1 person i
-      set node2 person j
-      ;; zero from a node to itself
-      ifelse i = j
-      [
-        ask node1 [
-          set distance-from-other-persons lput 0 distance-from-other-persons
-        ]
-      ]
-      [
-        ;; 1 from a node to it's neighbor
-        ifelse [ link-neighbor? node1 ] of node2
-        [
-          ask node1 [
-            set distance-from-other-persons lput 1 distance-from-other-persons
-          ]
-        ]
-        ;; infinite to everyone else
-        [
-          ask node1 [
-            set distance-from-other-persons lput infinity distance-from-other-persons
-          ]
-        ]
-      ]
-      set j j + 1
-    ]
-    set i i + 1
+  foreach node-list [
+    ask ? [set index i]  ; don't assume that we've got all of the who numbers--make our own
+    set i i + 1 
   ]
-  set i 0
-  set j 0
-  let dummy 0
-  while [k < node-count]
-  [
-    set i 0
-    while [i < node-count]
-    [
-      set j 0
-      while [j < node-count]
-      [
-        ;; alternate path length through kth node
-        set dummy ( (item k [distance-from-other-persons] of person i) +
-                    (item j [distance-from-other-persons] of person k))
-        ;; is the alternate path shorter?
-        if dummy < (item j [distance-from-other-persons] of person i)
-        [
-          ask person i [
-            set distance-from-other-persons replace-item j distance-from-other-persons dummy
-          ]
-        ]
-        set j j + 1
-      ]
-      set i i + 1
-    ]
-    set k k + 1
-  ]
-
+  
+  report node-list
 end
+
+to-report make-Laplacean [nodes]
+  let num-nodes count nodes
+  let node-list init-node-list nodes
+  let laplacean matrix:make-constant num-nodes num-nodes 0
+  
+  foreach node-list [
+    let i 0
+    ask ? [set i index]
+    matrix:set laplacean i i ([count link-neighbors] of ?)
+  ]
+  
+  ask links [
+    let index1 0
+    let index2 0
+    ask end1 [set index1 index]
+    ask end2 [set index2 index]
+    
+    matrix:set laplacean index1 index2 -1
+    matrix:set laplacean index2 index1 -1
+  ]
+  
+  report laplacean
+end
+
+; second eigenvalue:
+; item 1 matrix:real-eigenvalues make-Laplacean persons
+; second eigenvector
+; matrix:get-column (matrix:eigenvectors make-Laplacean persons) 1
+
+;to-report make-degree-vector [nodes]
+;  report matrix:from-column-list (list map [[count link-neighbors] of ?] sort nodes)
+;end
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
@@ -801,6 +675,14 @@ end
 
 to-report stdev [lis]
   report sqrt (var lis)
+end
+
+to yo
+  let counts [] 
+  foreach (sort turtles) [
+    set counts lput ([count link-neighbors] of ?) counts
+  ]
+  show counts
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -893,7 +775,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-350
+50
 1
 1
 NIL
@@ -1368,23 +1250,6 @@ symmetric?
 1
 1
 -1000
-
-BUTTON
-0
-520
-170
-553
-NIL
-choose-community-anchor
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 SLIDER
 0
