@@ -37,7 +37,7 @@ globals
   infinity                             ; a very large number.
                                        ; used to denote distance between two persons which
                                        ; don't have a connected or unconnected path between them
-  showing-degrees                      ; true when we are displaying node degrees
+  nodes-showing-numbers?                      ; true when we are displaying node degrees
   subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
   
   ;curr-community-min-cohesion  ; minimum cohesion needed as criterion for community formation
@@ -86,7 +86,7 @@ to setup
   set link-color 123
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
-  set showing-degrees false
+  set nodes-showing-numbers? false
 
   ask patches [set pcolor background-color]
 
@@ -321,14 +321,25 @@ to setup-cultvar
 end
 
 to toggle-degree-display
-  if-else showing-degrees [
+  if-else nodes-showing-numbers? [
     ask persons [set label ""]
-    set showing-degrees false
+    set nodes-showing-numbers? false
   ][
     ask persons [;set label sum [count link-neighbors] of link-neighbors
                  set label count link-neighbors 
                  set label-color ifelse-value (activation < .3) [black] [white]]
-    set showing-degrees true
+    set nodes-showing-numbers? true
+  ]
+end
+
+to toggle-who-display
+  if-else nodes-showing-numbers? [
+    ask persons [set label ""]
+    set nodes-showing-numbers? false
+  ][
+    ask persons [set label who 
+                 set label-color ifelse-value (activation < .3) [black] [white]]
+    set nodes-showing-numbers? true
   ]
 end
 
@@ -413,7 +424,7 @@ to update-activns
   ask persons
     [set activation next-activation
      set color (activn-to-color activation)
-     if showing-degrees [
+     if nodes-showing-numbers? [
        set label-color ifelse-value (activation < .3) [black] [white]]]
 end
 
@@ -538,7 +549,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; MATRIX PROCEDURES
+;; MATRIX-BASED PARTITIONING PROCEDURES
 
 to-report init-node-list [nodes]
   let node-list sort nodes
@@ -582,7 +593,17 @@ to-report Laplacean-2nd-eigenvector [node-list]
 end
 
 to-report sort-nodes-by-2nd-eigenvector [node-list evec]
-  report sort-by [ (item ([index] of ?1) evec) < (item ([index] of ?2) evec) ] node-list
+  report sort-by [ (item ([index] of ?1) evec) > (item ([index] of ?2) evec) ] node-list
+end
+
+; report links that go to persons outside of agentset nodes:
+to extra-links [nodes]
+  report (turtle-set [link-neighbors] of nodes) with [not member? self nodes]
+end
+
+to-report cut-set [nodes1 nodes2]
+  ;link-set [my-links] of nodes1 
+  ;report (turtle-set [link-neighbors] of nodes1) with [member? self nodes2]
 end
 
 ; NOT DONE
@@ -592,8 +613,10 @@ to-report graph-partition [nodes]
   ;let num-n2 num-nodes - num-n1
   let node-list init-node-list nodes
   let sorted-nodes sort-nodes-by-2nd-eigenvector node-list (Laplacean-2nd-eigenvector node-list)
-  let set1 sublist sorted-nodes 0 num-n1
-  let set2 sublist sorted-nodes num-n1 num-nodes
+  
+  let first-n1-nodes sublist sorted-nodes 0 num-n1
+  let last-n1-nodes sublist sorted-nodes 0 num-n1
+
   
   ; get first (floor n1-proportion * nodes-per-subnet) nodes from 
   ; sort-nodes-by-2nd-eigenvector (Laplacean-2nd-eigenvector (init-node-list nodes))
@@ -791,7 +814,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-300
+14
 1
 1
 NIL
@@ -806,7 +829,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-15
+4
 1
 1
 NIL
@@ -1330,6 +1353,23 @@ n1-proportion
 1
 NIL
 HORIZONTAL
+
+BUTTON
+695
+600
+812
+633
+display node #
+toggle-who-display
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
