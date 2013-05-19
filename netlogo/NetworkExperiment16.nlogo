@@ -535,11 +535,7 @@ to-report find-community-aux [candidate-community min-cohesion]
   ]
 end
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MATRIX PROCEDURES
@@ -586,13 +582,19 @@ to-report Laplacean-2nd-eigenvector [node-list]
 end
 
 to-report sort-nodes-by-2nd-eigenvector [node-list evec]
-  report sort-by 
-           [ (item ([index] of ?1) evec) > (item ([index] of ?2) evec) ]
-           node-list
+  report sort-by [ (item ([index] of ?1) evec) < (item ([index] of ?2) evec) ] node-list
 end
 
 ; NOT DONE
 to-report graph-partition [nodes]
+  let num-nodes length nodes
+  let num-n1 floor (n1-proportion * num-nodes)
+  ;let num-n2 num-nodes - num-n1
+  let node-list init-node-list nodes
+  let sorted-nodes sort-nodes-by-2nd-eigenvector node-list (Laplacean-2nd-eigenvector node-list)
+  let set1 sublist sorted-nodes 0 num-n1
+  let set2 sublist sorted-nodes num-n1 num-nodes
+  
   ; get first (floor n1-proportion * nodes-per-subnet) nodes from 
   ; sort-nodes-by-2nd-eigenvector (Laplacean-2nd-eigenvector (init-node-list nodes))
   ; then check the second and calculate cut size and then do it over in the
@@ -1291,7 +1293,7 @@ num-k-means-clusters
 num-k-means-clusters
 1
 50
-4
+8
 1
 1
 NIL
