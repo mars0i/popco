@@ -549,11 +549,50 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; MATRIX-BASED PARTITIONING PROCEDURES
+;; MATRIX-BASED PARTITIONING PROCEDURE
+;; Procedure make-network-partition below artitions a network into two 
+;; subnets so as to have a small cut set -- i.e.
+;; so as to have close to the fewest number of links between the
+;; subnets, as possible.  You get to choose how large the subnets are. 
+;; Implements algorithm on p. 369 of 
+;; Networks: An Introduction
+;; by M.E.J. Newman
+;; Oxford University Press 2010
 
+; Partition a set of nodes into two sets so as to try to minimize the number of links between them.
+; Implements Newman 2010 p. 369.
+; Needs percentage in first subnet, n1-proportion, to be set in the gui.
+to-report make-network-partition [nodes]
+  let node-list init-node-list nodes  ; make list of nodes with internal indexes of their order - to maintain matrix row/col order
+  let sorted-nodes sort-node-list-by-order-list node-list (Laplacean-2nd-eigenvector node-list) ; order nodes by 2nd eigenvector of Laplacean matrix
+
+  ; get partition size quantities
+  let num-nodes count nodes
+  let num-n1 floor (n1-proportion * num-nodes)  ; size of first partition set. n1-proportion should be set in the gui.
+  let num-n2 num-nodes - num-n1                 ; size of other set
+  
+  ; first try splitting into beginning vs end nodes in order of values in the second eigenvector
+  let n1a sublist sorted-nodes 0 num-n1
+  let n2a sublist sorted-nodes num-n1 num-nodes ; result has length num-n2
+  let cutset-a-size count cut-set (turtle-set n1a) (turtle-set n2a)
+
+  ; then try splitting into end vs beginning nodes in order of values in the second eigenvector
+  let n1b sublist sorted-nodes num-n2 num-nodes  ; result has length num-n1
+  let n2b sublist sorted-nodes 0 num-n2
+  let cutset-b-size count cut-set (turtle-set n1b) (turtle-set n2b)
+  
+  ; now pick whichever partition has a smaller cut size
+  if-else cutset-a-size <= cutset-b-size
+    [report (list n1a n2a)]
+    [report (list n1b n2b)]
+end
+
+; This gives each node in nodes an index number.
+; The indexes are arbitrary, but will be used to index rows and columns 
+; in an N x N matrix, where N is the size of nodes.  The indexes will be in
+; who order, but we can't use who numbers, since some could be missing.
 to-report init-node-list [nodes]
   let node-list sort nodes
-
   let i 0
   foreach node-list [
     ask ? [set index i]  ; don't assume that we've got all of the who numbers--make our own
@@ -563,17 +602,23 @@ to-report init-node-list [nodes]
   report node-list
 end
 
-; Generate the Laplacean matrix of nodes
+; Generate the Laplacean matrix of a node-list created by init-node-list.
+; A Laplacean is an N x N matrix, where N is length of node-list.
+; Position (i,i) on the diagonal contains the degree of the node with index i.
+; For i != j, position (i,j) contains -1 if nodes i and j are linked, and
+; 0 otherwise.  See e.g. Newman 2010 for details. 
 to-report make-Laplacean [node-list]
   let num-nodes length node-list
-  let laplacean matrix:make-constant num-nodes num-nodes 0
+  let laplacean matrix:make-constant num-nodes num-nodes 0 ; init a matrix with default values
   
+  ; List degrees of nodes along the diagonal:
   foreach node-list [
     let i 0
     ask ? [set i index]
     matrix:set laplacean i i ([count link-neighbors] of ?)
   ]
   
+  ; Record links by putting -1's at locations corresponding to the two ends:
   ask links [
     let index1 0
     let index2 0
@@ -581,52 +626,36 @@ to-report make-Laplacean [node-list]
     ask end2 [set index2 index]
     
     matrix:set laplacean index1 index2 -1
-    matrix:set laplacean index2 index1 -1
+    matrix:set laplacean index2 index1 -1  ; the matrix is symmetric--we have to do it both ways.
   ]
   
   report laplacean
 end
 
-; Return second-smallest eigenvector of the Laplacean matrix of nodes
+; Return second-smallest eigenvector of the Laplacean matrix of nodes.
+; This has information about a good approximation of the smallest cut set.
 to-report Laplacean-2nd-eigenvector [node-list]
   report matrix:get-column (matrix:eigenvectors make-Laplacean node-list) 1
 end
 
-to-report sort-nodes-by-2nd-eigenvector [node-list evec]
-  report sort-by [ (item ([index] of ?1) evec) > (item ([index] of ?2) evec) ] node-list
+; Given a node-list, i.e. a list of nodes with index variables set, sort them by
+; comparing what the index values index in a second list.  i.e. reorder the node-list
+; according to their corresponding values in the second list.
+; Use this to reorder nodes by the relative sizes of values in an eigenvector.
+to-report sort-node-list-by-order-list [node-list order-list]
+  report sort-by [ (item ([index] of ?1) order-list) > (item ([index] of ?2) order-list) ] node-list
 end
 
-; report links that go to persons outside of agentset nodes:
-to extra-links [nodes]
-  report (turtle-set [link-neighbors] of nodes) with [not member? self nodes]
-end
-
+; Get the cut set of all links between two disjoint sets of nodes
 to-report cut-set [nodes1 nodes2]
-  ;link-set [my-links] of nodes1 
-  ;report (turtle-set [link-neighbors] of nodes1) with [member? self nodes2]
+   report (link-set [my-links] of nodes1) with [member? self (link-set [my-links] of nodes2)]
 end
 
-; NOT DONE
-to-report graph-partition [nodes]
-  let num-nodes length nodes
-  let num-n1 floor (n1-proportion * num-nodes)
-  ;let num-n2 num-nodes - num-n1
-  let node-list init-node-list nodes
-  let sorted-nodes sort-nodes-by-2nd-eigenvector node-list (Laplacean-2nd-eigenvector node-list)
-  
-  let first-n1-nodes sublist sorted-nodes 0 num-n1
-  let last-n1-nodes sublist sorted-nodes 0 num-n1
-
-  
-  ; get first (floor n1-proportion * nodes-per-subnet) nodes from 
-  ; sort-nodes-by-2nd-eigenvector (Laplacean-2nd-eigenvector (init-node-list nodes))
-  ; then check the second and calculate cut size and then do it over in the
-  ; opposite order, and report whichever pair of lists makes the cut size smaller.
+to show-network-partition
+  let partition map turtle-set make-network-partition persons 
+  ask (item 0 partition) [set color red] 
+  ask (item 1 partition) [set color blue]
 end
-  
-;to-report make-degree-vector [nodes]
-;  report matrix:from-column-list (list map [[count link-neighbors] of ?] sort nodes)
-;end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
@@ -814,7 +843,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-14
+250
 1
 1
 NIL
@@ -829,7 +858,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-4
+15
 1
 1
 NIL
@@ -1006,7 +1035,7 @@ inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
 10
-2
+4
 1
 1
 NIL
@@ -1020,7 +1049,7 @@ CHOOSER
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-3
+0
 
 CHOOSER
 1208
@@ -1030,7 +1059,7 @@ CHOOSER
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-4
+1
 
 BUTTON
 1115
@@ -1341,14 +1370,14 @@ NIL
 
 SLIDER
 0
-555
+550
 130
-588
+583
 n1-proportion
 n1-proportion
 0
 1
-0.5
+0.14
 .01
 1
 NIL
@@ -1361,6 +1390,23 @@ BUTTON
 633
 display node #
 toggle-who-display
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+10
+585
+117
+618
+partition net
+show-network-partition
 NIL
 1
 T
