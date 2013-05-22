@@ -602,27 +602,45 @@ to-report init-node-list [nodes]
   report node-list
 end
 
+; make list of node degrees in node-list order
+to-report make-degree-list [node-list]
+  report map [[count link-neighbors] of ?] node-list
+end
+
+; turn degree list into a single-row matrix
+to-report degree-list-to-degree-vec [deg-list]
+  report matrix:from-row-list (list deg-list)
+end
+
+; UNTESTED UNTESTED
+to-report make-modularity-mat [node-list]
+  let adj-mat make-adjacency-mat (turtle-set node-list)
+  let deg-vec degree-list-to-degree-vec make-degree-list node-list
+  let sq-deg-mat matrix:times (matrix:transpose deg-vec) deg-vec
+  
+  report matrix:plus adj-mat (matrix:times-scalar sq-deg-mat (-2 * (count links)))
+end
+
 ; Generate the Laplacean matrix of a node-list created by init-node-list.
 ; A Laplacean is an N x N matrix, where N is length of node-list.
 ; Position (i,i) on the diagonal contains the degree of the node with index i.
 ; For i != j, position (i,j) contains -1 if nodes i and j are linked, and
-; 0 otherwise.  See e.g. Newman 2010 for details. 
+; 0 otherwise.  It's a matrix with the degree vector along the diagonal and 
+; zeros elsewhere, minus the adjacency matrix. See e.g. Newman 2010 for details. 
 to-report make-Laplacean [node-list]
-  let num-nodes length node-list
-
-  ; Laplacean is based on negative of the adjacency matrix:
-  let laplacean matrix:times-scalar (make-adjacency-mat (turtle-set node-list)) -1
-
-  ; Add degrees of nodes along the diagonal:
-  foreach node-list [
-    let i 0
-    ask ? [set i index]
-    matrix:set laplacean i i ([count link-neighbors] of ?)
+  let laplacean matrix:times-scalar (make-adjacency-mat (turtle-set node-list)) -1  ; Laplacean is based on negative of the adjacency matrix
+  let deg-list make-degree-list node-list
+  
+  let i 0
+  foreach deg-list [
+    matrix:set laplacean i i ?
+    set i i + 1
   ]
-
+  
   report laplacean
 end
 
+; nodes should already have passed through init-node-list
 to-report make-adjacency-mat [nodes]
   let num-nodes count nodes
   let the-links link-set [my-links] of nodes
@@ -854,7 +872,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-250
+10
 1
 1
 NIL
@@ -869,7 +887,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-15
+5
 1
 1
 NIL
@@ -1388,7 +1406,7 @@ n1-proportion
 n1-proportion
 0
 1
-0.14
+0.45
 .01
 1
 NIL
