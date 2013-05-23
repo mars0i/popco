@@ -1,7 +1,4 @@
-; NetworkExperiment16.nlogo
-; MATRIX EXPERIMENTS
-; MATRIX EXPERIMENTS
-; MATRIX EXPERIMENTS
+; NetworkExperiment17.nlogo
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -40,8 +37,8 @@ globals
   nodes-showing-numbers?                      ; true when we are displaying node degrees
   subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
   
-  ;curr-community-min-cohesion  ; minimum cohesion needed as criterion for community formation
-  curr-community-anchor   ; node around which we investigate communities
+  communities  ; list of lists of nodes representing communities we've found so far
+
 ]
 
 breed [sides side]
@@ -87,6 +84,7 @@ to setup
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
   set nodes-showing-numbers? false
+  set communities []
 
   ask patches [set pcolor background-color]
 
@@ -510,40 +508,10 @@ to-report community-cohesion [community]
   report min [node-cohesion self community] of community
 end
 
-to show-community
-;  let community find-community curr-community-anchor min-community-cohesion
-;  ask community
-;    [if-else activation > -.25
-;       [set label-color white]
-;       [set label-color black]
-;     let comm-neighbs num-neighbors-in-community community
-;     let neighbs count link-neighbors
-;     set label ifelse-value (neighbs = comm-neighbs)
-;                            [1]
-;                            [(word comm-neighbs "/" neighbs)]]
-end
-
 to reset-colors
   ask persons
     [set color (activn-to-color activation)
      set label ""]
-end
-
-; crudely expands out from anchor in all neighbor directions.  i.e. doesn't try various combinations of
-; link-neighbors, which could be costly.  e.g. when there are 20 link-neighbors, that's 1M different combinations
-; potentially for each node already in the community.
-to-report find-community [anchor min-cohesion]
-  report find-community-aux (turtle-set anchor) min-cohesion
-end
-
-to-report find-community-aux [candidate-community min-cohesion]
-  if (candidate-community = persons) [report persons] 
-
-  if-else (community-cohesion candidate-community) >= min-cohesion [
-    report candidate-community 
-  ][
-    report find-community-aux (turtle-set candidate-community ([link-neighbors] of candidate-community)) min-cohesion
-  ]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -585,6 +553,14 @@ to-report make-network-partition [nodes]
   if-else cutset-a-size <= cutset-b-size
     [report (list n1a n2a)]
     [report (list n1b n2b)]
+end
+
+to find-and-store-communities
+  if-else empty? communities [
+    set communities find-two-communities persons
+  ][
+    set communities (sentence (map find-two-communities communities))
+  ]
 end
 
 to-report find-two-communities [nodes]
@@ -704,6 +680,15 @@ to-report cut-set [nodes1 nodes2]
    report (link-set [my-links] of nodes1) with [member? self (link-set [my-links] of nodes2)]
 end
 
+to show-communities
+  foreach communities [
+    let col random 256
+    ask (turtle-set ?) [set color col]
+  ]
+end
+
+
+; deprecated
 to show-node-sets [node-lists]
   let sets map turtle-set node-lists 
   ask (item 0 sets) [set color red] 
@@ -1476,7 +1461,7 @@ BUTTON
 992
 338
 modularity communities
-show-node-sets find-two-communities persons
+find-and-store-communities\nshow-communities
 NIL
 1
 T
