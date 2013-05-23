@@ -612,7 +612,6 @@ to-report degree-list-to-degree-vec [deg-list]
   report matrix:from-row-list (list deg-list)
 end
 
-; UNTESTED UNTESTED
 to-report make-modularity-mat [node-list]
   let adj-mat make-adjacency-mat (turtle-set node-list)
   let deg-vec degree-list-to-degree-vec make-degree-list node-list
