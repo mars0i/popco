@@ -617,8 +617,9 @@ to-report make-modularity-mat [node-list]
   let adj-mat make-adjacency-mat (turtle-set node-list)
   let deg-vec degree-list-to-degree-vec make-degree-list node-list
   let sq-deg-mat matrix:times (matrix:transpose deg-vec) deg-vec
+  let neg-normalized-sq-deg-mat matrix:times-scalar sq-deg-mat (-1 / (2 * count links))
   
-  report matrix:plus adj-mat (matrix:times-scalar sq-deg-mat (-2 * (count links)))
+  report matrix:plus adj-mat neg-normalized-sq-deg-mat
 end
 
 ; Generate the Laplacean matrix of a node-list created by init-node-list.
@@ -872,7 +873,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-10
+6
 1
 1
 NIL
@@ -887,7 +888,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-5
+4
 1
 1
 NIL
