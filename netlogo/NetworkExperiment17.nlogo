@@ -587,6 +587,26 @@ to-report make-network-partition [nodes]
     [report (list n1b n2b)]
 end
 
+to-report find-two-communities [nodes]
+  let node-list init-node-list nodes
+  let eigvec modularity-mat-1st-eigenvector node-list
+  
+  let comm1 []
+  let comm2 []
+  let i 0
+  foreach eigvec [
+    let this-node item i node-list
+    if-else ? >= 0 [
+      set comm1 fput this-node comm1
+    ][
+      set comm2 fput this-node comm2
+    ]
+    set i i + 1
+  ]
+  
+  report (list comm1 comm2)
+end
+
 ; This gives each node in nodes an index number.
 ; The indexes are arbitrary, but will be used to index rows and columns 
 ; in an N x N matrix, where N is the size of nodes.  The indexes will be in
@@ -610,6 +630,10 @@ end
 ; turn degree list into a single-row matrix
 to-report degree-list-to-degree-vec [deg-list]
   report matrix:from-row-list (list deg-list)
+end
+
+to-report modularity-mat-1st-eigenvector [node-list]
+  report matrix:get-column (matrix:eigenvectors make-modularity-mat node-list) (length node-list - 1)
 end
 
 to-report make-modularity-mat [node-list]
@@ -680,10 +704,10 @@ to-report cut-set [nodes1 nodes2]
    report (link-set [my-links] of nodes1) with [member? self (link-set [my-links] of nodes2)]
 end
 
-to show-network-partition
-  let partition map turtle-set make-network-partition persons 
-  ask (item 0 partition) [set color red] 
-  ask (item 1 partition) [set color blue]
+to show-node-sets [node-lists]
+  let sets map turtle-set node-lists 
+  ask (item 0 sets) [set color red] 
+  ask (item 1 sets) [set color blue]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -785,11 +809,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-1111
-602
-40
-25
-11.0
+810
+631
+29
+29
+10.0
 1
 9
 1
@@ -799,10 +823,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--40
-40
--25
-25
+-29
+29
+-29
+29
 1
 1
 1
@@ -844,9 +868,9 @@ NIL
 1
 
 PLOT
-1115
+1030
 130
-1325
+1240
 250
 average cultvar activations
 time
@@ -864,30 +888,30 @@ PENS
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of persons)"
 
 SLIDER
-1115
-390
-1325
-423
+815
+80
+1025
+113
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-6
+200
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1115
-425
-1324
-458
+815
+115
+1024
+148
 average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-4
+15
 1
 1
 NIL
@@ -938,9 +962,9 @@ TEXTBOX
 1
 
 PLOT
-1114
+1029
 9
-1324
+1239
 129
 cultvar freqs & pop variance
 NIL
@@ -1023,9 +1047,9 @@ NIL
 HORIZONTAL
 
 PLOT
-1115
+1030
 250
-1325
+1240
 390
 degree distribution
 degree
@@ -1041,10 +1065,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons" "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons"
 
 SLIDER
-1115
-458
-1324
-491
+815
+148
+1024
+181
 number-of-subnets
 number-of-subnets
 1
@@ -1056,10 +1080,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1115
-540
-1279
-573
+815
+230
+979
+263
 inter-nodes-per-subnet
 inter-nodes-per-subnet
 0
@@ -1071,30 +1095,30 @@ NIL
 HORIZONTAL
 
 CHOOSER
-1115
-495
-1208
-540
+815
+185
+908
+230
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 0
 
 CHOOSER
-1208
-495
-1300
-540
+908
+185
+1000
+230
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 1
 
 BUTTON
-1115
-575
-1182
-609
+815
+265
+882
+299
 link-em
 inter-link-subnets subnet1 subnet2\n; subnet1 and subnet2 are globals defined\n; by gui elements.
 NIL
@@ -1108,10 +1132,10 @@ NIL
 1
 
 SLIDER
-210
-600
-413
-633
+815
+550
+1018
+583
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1123,20 +1147,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-415
-600
-614
-643
+820
+585
+1019
+628
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
 1
 
 BUTTON
-910
-600
-1012
-633
+815
+515
+917
+548
 redo layout
 layout-network
 NIL
@@ -1150,10 +1174,10 @@ NIL
 1
 
 BUTTON
-1009
-600
-1111
-633
+920
+515
+1022
+548
 circle layout
 layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
@@ -1167,10 +1191,10 @@ NIL
 1
 
 BUTTON
-810
-600
-910
-633
+815
+45
+915
+78
 display degrees
 toggle-degree-display
 NIL
@@ -1321,10 +1345,10 @@ NIL
 1
 
 BUTTON
-1185
-575
-1294
-609
+885
+265
+994
+299
 NIL
 link-near-subnets
 NIL
@@ -1344,15 +1368,15 @@ SWITCH
 323
 symmetric?
 symmetric?
-1
+0
 1
 -1000
 
 BUTTON
-0
-435
-107
-468
+925
+380
+1015
+413
 NIL
 reset-colors
 NIL
@@ -1366,10 +1390,10 @@ NIL
 1
 
 SLIDER
-0
-475
-160
-508
+815
+420
+975
+453
 num-k-means-clusters
 num-k-means-clusters
 1
@@ -1381,10 +1405,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-0
-510
-142
-543
+815
+455
+957
+488
 k-means-clusters
 nw:set-snapshot persons links foreach nw:k-means-clusters num-k-means-clusters 500 .01 [let col (random 256) foreach ? [ask ? [set color col]]]
 NIL
@@ -1398,25 +1422,25 @@ NIL
 1
 
 SLIDER
-0
-550
-130
-583
+815
+345
+945
+378
 n1-proportion
 n1-proportion
 0
 1
-0.45
+0.5
 .01
 1
 NIL
 HORIZONTAL
 
 BUTTON
-695
-600
-812
-633
+815
+10
+932
+43
 display node #
 toggle-who-display
 NIL
@@ -1430,12 +1454,29 @@ NIL
 1
 
 BUTTON
-10
-585
-117
-618
+815
+380
+922
+413
 partition net
-show-network-partition
+show-node-sets make-network-partition persons
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+815
+305
+992
+338
+modularity communities
+show-node-sets find-two-communities persons
 NIL
 1
 T
