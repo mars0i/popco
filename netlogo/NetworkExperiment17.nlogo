@@ -52,6 +52,7 @@ persons-own
   distance-from-other-persons   ;; list of distances of this node from other persons
   person-subnet
   index ; temporary variable for matrix configuration
+  my-community ; temporary variable for cohesion reporting
 ]
 
 links-own
@@ -318,6 +319,28 @@ to setup-cultvar
   set color (activn-to-color activation)
 end
 
+to toggle-cohesion-display
+  if-else nodes-showing-numbers? [
+    ask persons [set label ""]
+    set nodes-showing-numbers? false
+  ][
+    ; first tell each node what its community is:
+    foreach communities [
+      let this-community ?
+      foreach this-community [
+        ask ? [set my-community this-community]
+      ]
+    ]
+    
+    ask persons [let coh precision (node-cohesion self my-community) 2 ; round to 2 dec places
+                 let coh-string (word coh) ; make into string
+                 if coh < 1 [set coh-string substring coh-string 1 (length coh-string)] ; strip initial 0
+                 set label coh-string
+                 set label-color ifelse-value (activation < .3) [black] [white]]
+    set nodes-showing-numbers? true
+  ]
+end
+
 to toggle-degree-display
   if-else nodes-showing-numbers? [
     ask persons [set label ""]
@@ -559,8 +582,10 @@ to find-and-store-communities
   if-else empty? communities [
     set communities find-two-communities persons
   ][
-    set communities (sentence (map find-two-communities communities))
+    set communities (reduce sentence (map find-two-communities communities)) ; 'reduce sentence ...' turns a list of lists of lists into a list of lists
   ]
+  
+  set communities remove [] communities ; remove empty communities
 end
 
 to-report find-two-communities [nodes]
@@ -587,7 +612,7 @@ end
 ; The indexes are arbitrary, but will be used to index rows and columns 
 ; in an N x N matrix, where N is the size of nodes.  The indexes will be in
 ; who order, but we can't use who numbers, since some could be missing.
-to-report init-node-list [nodes]
+to-report init-node-list [nodes]  ; nodes could be either a list or an agentset
   let node-list sort nodes
   let i 0
   foreach node-list [
@@ -640,10 +665,10 @@ to-report make-Laplacean [node-list]
   report laplacean
 end
 
-; nodes should already have passed through init-node-list
+; nodes should already have passed through init-node-list, i.e. they should have index numbers
 to-report make-adjacency-mat [nodes]
   let num-nodes count nodes
-  let the-links link-set [my-links] of nodes
+  let the-links link-set [my-links with [member? other-end nodes]] of nodes ; if we're only looking at a subnet, ignore links outside of it
   
   let a-mat matrix:make-constant num-nodes num-nodes 0 ; init a matrix with default values
   
@@ -1176,11 +1201,11 @@ NIL
 1
 
 BUTTON
-815
-45
-915
-78
-display degrees
+880
+25
+945
+58
+degrees
 toggle-degree-display
 NIL
 1
@@ -1423,10 +1448,10 @@ HORIZONTAL
 
 BUTTON
 815
-10
-932
-43
-display node #
+25
+880
+58
+node #
 toggle-who-display
 NIL
 1
@@ -1458,7 +1483,7 @@ NIL
 BUTTON
 815
 305
-992
+955
 338
 modularity communities
 find-and-store-communities\nshow-communities
@@ -1470,6 +1495,50 @@ NIL
 NIL
 NIL
 NIL
+1
+
+BUTTON
+955
+305
+1010
+338
+recolor
+show-communities
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+945
+25
+1010
+58
+cohesion
+toggle-cohesion-display
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+815
+10
+855
+28
+Show:
+11
+0.0
 1
 
 @#$#@#$#@
