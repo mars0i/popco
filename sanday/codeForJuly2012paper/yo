@@ -1,0 +1,10 @@
+(defun make-blind-person (name &optional addl-target-propn)
+  (let ((addl-target-propn-list (if addl-target-propn `(,addl-target-propn) nil)))  ; quick hack to make inserting one propn or nothing at all below simple
+    (make-person name 'folks '()
+                 `((make-struc 'target 'problem '(start (,@generic-origin-propns ,@sky-origin-propns ,@EARTH-ORIGIN-PROPNS ,@addl-target-propn-list)))
+                   (make-struc 'source 'problem '(start (,@parenting-propns ,@hunting-propns)))
+                   ,@semantic-relations)
+                 `(,@pragmatic-relations)
+                 '())))
+
+

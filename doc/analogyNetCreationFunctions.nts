@@ -1,0 +1,52 @@
+notes on creation of the analogy net, possibly obsolete :
+
+	constraint-map calls make-constraint-net
+
+1.	make-constraint-net calls make-units-for-fields on 2 strucs (no weight arg)
+	make-units-for-fields calls make-hyp-units on 2 strucs and a field name ('start)
+	make-hyp-units, which refers to strucs as probs,
+		loops through messages in that field of 1st struc arg,
+		calling make-hyp-units-for-msg on each, also 2nd struc's messages
+	make-hyp-units-for-msg 
+		loops through the messages in the 2nd struc,
+		calling make-hyp-units on the message from the first struc, each from 2nd struc
+	make-hyp-unit is where the rubber meets the road...
+		checks for type-compatibility of messages (e.g. number of args)
+			some special stuff if using ARCS
+		creates the predicate map node 
+			DOES NOT CREATE IT IF ALREADY EXISTS
+			but also doesn't add to its 'concerns field
+		creates the proposition map node
+			DOES NOT CREATE IT IF ALREADY EXISTS
+			but also doesn't add to its 'concerns field
+			or call record-hypothesis
+		links prop map node to pred map node by calling MAKE-SYM-LINK
+			UNCONDITIONALLY
+		calls MAKE-OBJ-UNITS on the arguments from both messages
+		  to make the obj map nodes
+		  CLOBBERS ACTIVATIONS?
+		MAKE-EXCIT-LINKS with prop map node and object map nodes
+		MAKE-EXCIT-LINKS with pred map node and object map nodes
+		does a lot of recording of interconnections
+	make-excit-links (in echo.lisp) just loops through units
+		in the second argument and calls make-sym-link 
+		in network.lisp each time.
+	make-sym-link contains a test to make sure that the link
+		between the units is not already < 0.  It will clobber weights
+		>= 0, but not < 0.  This is done with a call to
+		>weight-of-link-between
+	weight-of-link-between gets the weight from an alist in
+		the links-from property of one of the units, but
+		defaults to returning 0 if there is no such value.
+        OH WAIT THAT'S ABOUT LINK WEIGHTS, NOT ACTIVATIONS.
+
+        It looks like make-obj-unit doesn't clobber activations or
+        re-record old units.
+
+        SUMMARY: I THINK MAYBE I CAN JUST RUN CONSTRAINT-MAPS ON AN
+        ENHANCED PAIR OF STRUCTURES WITHOUT MESSING UP ACTIVATIONS.
+        IF WEIGHTS WERE TO BE VARIABLE, THEY'D GET CLOBBERED IN SOME
+        CASES BUT I'M NOT DOING THAT.
+
+2.	make-constraint-net repeatedly calls inhibit-multiple-mappings
+        DOES THIS CAUSE ANY TROUBLE?  I SUSPECT NOT...

@@ -1,0 +1,18 @@
+starts in popco.lisp update-proposition-net
+which calls update-assoc-from-unit in acme-infer
+which calls update-assoc
+which calls set-assoc-weight-from-activn
+which calls set-assoc-weight
+which calls calc-assoc-weight 
+and set-symlink-weight in network.lisp
+
+set-symlink-weight does no summing or modification of the weight
+the calculation of the weight is done by calc-assoc-weight.
+the map node's activation is passed in to this in parameter degree
+and currently 11/2012, when normalize-degree is a noop,
+calc-assoc-weight just scales by multiplying the activation
+if positive, by *propn-excit-weight* = .2
+if negative, by *propn-inhib-weight* = .025 i.e. 1/8 of the excit weight
+Note that since abs value of activation can't exceed 1, the resulting
+abs val link weight will also be < 1, in fact < .2.
+

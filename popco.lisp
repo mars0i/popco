@@ -637,8 +637,8 @@
 
 (defun create-nets (population)
   (mapc #'create-net (get population 'members))
-  (mark-persons-items-old population) ; previous step marked all items new, but we didn't need to know that.
-  (record-poss-personal-propns-in-pop population)
+  (mark-persons-items-old population) ; previous step marked all items new, but we didn't want to know that.
+  (record-poss-personal-propns-in-pop population) ; prepare for output to csv file
   population)
 
 ;; Currently a person's input field should contain a list of Lisp code
@@ -683,7 +683,7 @@
 ; constraint-map from acme.lisp does most of the real work here
 (defun update-analogy-net (person)
   (setf *the-person* person) ; [redund when called from create-net]
-  (mapc (lambda (targ)     ; applies constraint-map to all pairs of target, source analogs
+  (mapc (lambda (targ)     ; applies constraint-map to all pairs of target, source analogs (usually just one of each)
           (mapc (lambda (src) (constraint-map targ src))
                 (source-analog-strucs-of-person person)))  ; note *the-person* has to be set properly
         (target-analog-strucs-of-person person))           ;  even though person is passed in here

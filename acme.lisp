@@ -188,7 +188,7 @@
 
 ; *****************************
 
-; CONC-FROM-STRUC lists all the concepts in a structure.
+; CONC-FROM-STRUC lists all the concepts (i.e. PREDICATES) in a structure.
 ; 10-03-2011 changed personal-pred-from-propn back to pred-from-propn
 ;   after I changed a corresponding line in make-propns -MA
 (defun conc-from-struc (struc)
@@ -373,10 +373,11 @@
   (unless *silent-run?* (my-print '"Constructing analogical mapping between "
                                   personal-struc1 '" and " personal-struc2 
                                   " for person " *the-person*))
+
+  ; Find and store all of the predicates used by person's propositions:
   ; note objects and concepts for sake of clear-net:
   ; the objects are now taken care of in make-obj-unit - GHN 6/21/88
-  ; Q: IS THIS REDUNDANT GIVEN MAKE-PROPNS?  -MA 11/2011
-  ; IS IT INEFFICIENT?
+  ; Q: IS THIS REDUNDANT GIVEN MAKE-PROPNS?  -MA 11/2011 ; IS IT INEFFICIENT?
   (setf (get *the-person* 'all-preds) (union (conc-from-struc personal-struc1)
                                              (conc-from-struc personal-struc2)))
   ; note: (get *the-person* 'all-propositions) set up by make-struc
@@ -652,7 +653,7 @@
                  (t (setf object-units (make-obj-units (get-args msg1) ; Vanilla get-args
                                                          (get-args msg2) ; is correct here.
                                                          *init-activ*))
-                    (make-excit-links new-propn-unit  ; make-excit-links just iterates make-symlink
+                    (make-excit-links new-propn-unit  ; make-excit-links in echo.lisp just iterates make-symlink
                                       object-units
                                       *excit-weight*)
                     (if *link-concepts-objects?*
@@ -1139,6 +1140,29 @@
 ; For pragmatics sake, it treats queries differently, forming
 ; excitatory rather than inhibitory links.
 
+;;; This fixes a bug which mixes up source and target components when
+;;; considering inhibitory connections. For example, num5=num3 was
+;;; inhibited by num6=num5.
+
+; *THE-PERSON* MUST BE SET PROPERLY
+(defun inhibit-multiple-mappings (list-of-objs-or-concs weight)
+  (do ((lst (remove-nil-dup list-of-objs-or-concs) (cdr lst))) ; remove-nil-dup removes nil's and duplicates
+      ; exit:
+    ((null lst) (get *the-person* 'total-links))
+    (if (atom-begins (car lst) #\?) ; query
+      (excit-queries (car lst))
+      ; otherwise:
+      ; make negatively-weighted links between map units for competing mapping hypotheses:
+      (progn
+       (make-inhib-links
+        (no-queries ; strips out any queries
+         (get-firsts (car lst) (get (car lst) 'constraint-hyps))) ; get map units in which obj-or-conc participates on the left side
+        weight)
+       (make-inhib-links
+        (no-queries ; strips out any queries
+         (get-seconds (car lst) (get (car lst) 'constraint-hyps))) ; get map units in which obj-or-conc participates on the right side
+        weight)))))
+
 ; The original, old version, which is erroneous, is commented out.
 ; Eric Melz's newer version follows.
 
@@ -1156,27 +1180,6 @@
 ; )
 ;)
 
-;;; This fixes a bug which mixes up source and target components when
-;;; considering inhibitory connections. For example, num5=num3 was
-;;; inhibited by num6=num5.
-
-; *THE-PERSON* MUST BE SET PROPERLY
-(defun inhibit-multiple-mappings (list-of-objs-or-concs weight)
-  (do ((lst (remove-nil-dup list-of-objs-or-concs) (cdr lst)))
-      ; exit:
-    ((null lst) (get *the-person* 'total-links))
-    (if (atom-begins (car lst) #\?) ; query
-      (excit-queries (car lst))
-      ; otherwise:
-      (progn
-       (make-inhib-links
-        (no-queries
-         (get-firsts (car lst) (get (car lst) 'constraint-hyps)))
-        weight)
-       (make-inhib-links
-        (no-queries
-         (get-seconds (car lst) (get (car lst) 'constraint-hyps)))
-        weight)))))
 
 ; **************************
 ; PRAGMATICS:
@@ -1395,7 +1398,10 @@
 ;;; adding an extra "filter" to the form (get conc-or-obj 'constraint-hyps),
 ;;; namely, it only retrieves units in which conc-or-obj is the first element
 ;;; of the mapping unit.
-
+;;; notes:
+;;; conc-or-obj is a predicate or argument symbol.
+;;; units is a list of acme map units, e.g. from the 'constraint-hyps property of conc-or-obj.
+;;; Note that the 'concerns property of a map unit lists the two symbols which are mapped by it.
 (defun get-firsts (conc-or-obj units)
   (let ((ret nil))
     (dolist (unit units)
