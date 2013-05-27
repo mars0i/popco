@@ -318,7 +318,7 @@
        (setf *current-inhib* inhib))
     ;(declare (type (float) excit inhib wt activn))
     (setf wt (float (cdar links)))
-    (setf activn (max *output-threshold* (activation (caar links))))
+    (setf activn (max *output-threshold* (activation (caar links)))) ; *output-threshold* is usually 0.
     (if (> wt 0.0)
         (setf excit (+ excit (* wt activn)))
       ; else wt is inhibitory:

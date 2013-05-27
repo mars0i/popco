@@ -8,14 +8,15 @@ do when called in this call tree.
 Overview:
 starts in popco.lisp update-proposition-net
 which calls update-assoc-from-unit in acme-infer
-which calls update-assoc
-        which calls set-assoc-weight-from-activn
-                which calls set-assoc-weight
-                which calls calc-assoc-weight 
-                and set-symlink-weight in network.lisp
-        or calls associate-ana
-                which calls associate
-                which calls make-symlink and note-unit (twice)
+        which calls update-assoc
+                which calls set-assoc-weight-from-activn
+                        which calls set-assoc-weight
+                        which calls calc-assoc-weight 
+                        and set-symlink-weight in network.lisp
+                or calls associate-ana
+                        which calls associate
+                        which calls make-symlink and note-unit (twice)
+and invoke-semantic-iffs-for-propn-map-units
 
 Notes:
 set-symlink-weight does no summing or modification of the weight
@@ -35,7 +36,7 @@ update-proposition-nets:
 update-proposition-net: 
 	For each proposition map-unit in person, call update-assoc-from-unit.
 	Then call invoke-semantic-iffs-for-propn-map-units, passing in all proposition
-	  map-units, and person.
+	  map-units, and person. (see below)
 
         Notes:
 	Make/update proposition links from proposition-map-units, then
@@ -151,3 +152,9 @@ amounts depending on whether it's positive or negative.
 And that's really what all of the stuff above boils down to:
 The process sets the belief net link weight to the scaled version
 of the map node activation, creating the link if necessary.
+
+Oh, except that semantic-iffs are added back in.
+
+invoke-semantic-iffs-for-propn-map-units:
+Simply adds semantic-iff values back into belief node links, clipping to -1 and 1
+if necessary.  (I'm not going to walk through its call tree here.)
