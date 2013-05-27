@@ -71,9 +71,23 @@
                    (mapcar #'make-converser-pairs (get population 'members)))
             population)))
 
+;; Guts of choose-conversers
+;; New end of May 2013 version
+(defun make-converser-pairs (speaker)
+  "Returns a list of converser-pairs (lists with SPEAKER as the car and a listener as the cdr).
+The number of pairs returned will be the minimum of the speaker's 'NUM-LISTENERS and the length
+of his GET-CONVERSERS list."
+  (let* ((poss-conversers (get-conversers speaker))
+         (num-people (length poss-conversers))
+         (num-listening (get speaker 'num-listeners))
+         (actual-conversers (if (< num-listening num-people)
+                              (subseq (randomize poss-conversers) 0 num-listening) ; select first num-listening persons in randomized list of possible conversers
+                              poss-conversers))) ; if we're not selecting a subset, then there's no reason to randomize
+    (mapcar #'(lambda (listener) (list speaker listener)) actual-conversers)))
 
 ;; Guts of choose-conversers
-(defun make-converser-pairs (speaker)
+;; Original KH version
+(defun old-make-converser-pairs (speaker)
   "Returns a list of converser-pairs (lists with SPEAKER as the car and a listener as the cdr).
 The number of pairs returned will be the minimum of the speaker's 'NUM-LISTENERS and the length
 of his GET-CONVERSERS list."
@@ -81,10 +95,9 @@ of his GET-CONVERSERS list."
          (num-people (length randomized-conversers))
          (num-listening (get speaker 'num-listeners))
          (num-conversers (min num-listening num-people))
-         (actual-conversers (last randomized-conversers num-conversers)) ; CHANGE LAST TO e.g. SUBSEQ
+         (actual-conversers (last randomized-conversers num-conversers)) ; could be replaced with SUBSEQ
          (speaker-list (make-list num-conversers :initial-element speaker)))
     (mapcar #'list speaker-list actual-conversers)))
-
 
 (defun get-conversers (person)
   "Returns a list of all the people PERSON talks to."
