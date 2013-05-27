@@ -52,9 +52,10 @@
 ; without the optional argument--i.e. any "legacy" code will work as 
 ; before. -MA 9/2011
 ; This is exactly PT's function slightly recoded. -MA 11/2011
-(defun associate (feature1
-                  feature2
-                  &optional (degree 1) (activ1 *init-activ*) (activ2 *init-activ*)
+(defun associate (feature1  ; e.g. a belief/proposition node
+                  feature2  ; ditto
+                  &optional (degree 1) ; e.g. activn of related map node
+                            (activ1 *init-activ*) (activ2 *init-activ*) ; activns of first two args
                             (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
   (print-si feature1 " is associated with " feature2 " to degree " degree)
   (make-symlink feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight))

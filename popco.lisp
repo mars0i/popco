@@ -715,6 +715,7 @@
   (setf (get unit 'dont-sum-weights) t))
 
 ; make/update proposition links from proposition-map-units
+; SEE doc/ruleForUpdatingPropnLinksFromMapNodes for a description of this whole process 5/2103.
 (defun update-proposition-nets (population)
   (mapc #'update-proposition-net (get population 'members))
   population)
@@ -722,13 +723,14 @@
 ; Make/update proposition links from proposition-map-units, then reinvoke 
 ; relevant semantic-iffs, since they get clobbered when we update links from map units.
 ; [NOTE that when we update a proposition link from a map unit, we *want* to forget the
-;  weight set from map units on previous iteractions.  It no longer matters.  But we *do*
-;  want to remember past semantic-iff; they should be summed in.  The present strategy is
+;  weight that was set from map units on previous iteractions.  It no longer matters.  But we *do*
+;  want to remember past semantic-iff's; they should be summed in.  The present strategy is
 ;  simply to go get the specification of the semantic-iff again and reapply it.]
 ; [Also NOTE: That *may* simply reinvoke a semantic-iff that was created in receive-utterance
 ; because a new proposition suddenly made it applicable, but then immediately gets clobbered 
 ; here before it can be used.  However, some of the semantic-iffs created there will not correspond
-; to the map-unit-influenced ones we deal with here.  So it's simpler to create all semantic-iffs
+; to the map-unit-influenced ones we deal with here--i.e. they might not have been clobbered 
+; by the previous step in update-proposition-net.  So it's simpler to create all semantic-iffs
 ; relevant to a new proposition there, even if a few of them might get recreated moments later here.]
 (defun update-proposition-net (person)
   (when *do-update-propn-nets*
