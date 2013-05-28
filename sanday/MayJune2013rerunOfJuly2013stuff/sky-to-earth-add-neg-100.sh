@@ -5,7 +5,7 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
-numRunsPerParams=1
+#numRunsPerParams=1
 addlTicks=5000
 
 cd $HOME/popco
@@ -17,8 +17,8 @@ echo running 100-person population with flipping, including neg flip
 echo
 
 numToFlip=$1
-runNum=1
-while [ $runNum -le $numRunsPerParams ]; do
+runNum=$RANDOM   # magical bash random number variable
+#while [ $runNum -le $numRunsPerParams ]; do
         time sbcl --script sanday/sky-to-earth-add-neg.lisp $extraPersons $addlTicks $numToFlip "s2eAddNeg${extraPersons}extra${addlTicks}addl${numToFlip}flippedRun$runNum"
-        runNum=$(($runNum+1))
-done
+#        runNum=$(($runNum+1))
+#done
