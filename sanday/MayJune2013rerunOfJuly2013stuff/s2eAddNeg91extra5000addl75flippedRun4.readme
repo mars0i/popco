@@ -1,0 +1,64 @@
+As of May 2013 I have put (what I think is) the code that generated the
+Sanday figures in popco/sanday/codeForJuly2012paper .
+
+I believe that the data for graphic files s2eAddNeg91extra5000addl75flippedRun4* were generated
+by
+	sky-to-earth-add-neg-100.sh
+Given the name of the data files and the graphic files, I think I ran it thus:
+	sky-to-earth-add-neg-100.sh 75
+which sets some variables and then runs
+	sbcl.executable --script sanday/sky-to-earth-add-neg.lisp
+with some command line params.
+This Lisp script loads popco, then loads 
+	parenting18untilCollect5.lisp
+and then calls the function
+	sky-to-earth-add-neg
+defined in that last Lisp file, with arguments collected from the Unix
+command line by SBCL.
+
+Here's sky-to-earth-add-neg:
+
+;; SKY-TO-EARTH-POP-ADD-NEG 
+;; Start with persons who know sky origin, parenting, hunting, and possibly one earth origin propn.
+;; Start with salience on hunting.
+;; Once someone collects all of the earth origin propns, drop all salience, give num-to-flip parenting salience and anti-hunting salience.
+(defun sky-to-earth-add-neg (num-extra-persons addl-ticks num-to-flip output-basename &optional (do-drop-salience t))
+  (collect-and-continue-run 
+    #'make-earthless-person 
+    earth-origin-propns 
+    num-extra-persons 
+    20 
+    addl-ticks 
+    num-to-flip 
+    #'parentize-person 
+    #'dehunterize-person 
+    output-basename 
+    do-drop-salience))
+
+Here's the beginning of collect-and-continue-run:
+
+;; COLLECT-AND-CONTINUE-RUN 
+;; Create persons with make-person-fn, making at least as many as there are propositions in 
+;; propns-to-distrib, each getting one of those propns.  Make num-extra-persons additional
+;; persons without any extra propositions from propns-to-distrib, also with make-person-fn.
+;; Run until at least one person has all of the propns in propns-to-distrib.
+;; Then drop salience and add back salience to num-to-flip randomly chosen persons using 
+;; flip-fn (required), as well as anti-flip-fn if not nil.  See functions above for illustrations.
+;; NetLogo and csv data will be stored in filenames constructed from output-basename.  
+(defun collect-and-continue-run 
+   (make-person-fn 
+    propns-to-distrib 
+    num-extra-persons 
+    burn-in-ticks 
+    addl-ticks 
+    num-to-flip 
+    flip-fn 
+    anti-flip-fn 
+    output-basename 
+    &optional (do-drop-salience t))
+...)
+
+(Jeez--I should work for Microsoft.)
+
+Note sky-to-earth-add-neg-runs.lisp is exactly the same as
+sky-to-earth-add-neg.lisp.
