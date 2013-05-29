@@ -6,7 +6,7 @@
 (load "sanday/casm052013/parenting18analogsAsBiases2")     ; library
 (load "sanday/casm052013/parenting18JuneJuly2012persons")  ; library
 
-(setf *data-dir* "data/huntingsoc")
+;(setf *data-dir* "data/huntingsoc")
 
 (setf *do-report-to-netlogo* nil)
 ; don't move graph around in telguess:

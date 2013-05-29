@@ -10,5 +10,7 @@
 #$ -M marshall@logical.net
 
 pwd
+cd ~/pop
+pwd
 
 time "$@"
