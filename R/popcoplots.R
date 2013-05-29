@@ -53,42 +53,6 @@ panel.displayLayoutInfo <- function(...) {
 # corresponding to the two bias factors.
 # 
 
-##########################################
-# experiments: working toward centered histograms in lattice:
-
-# draw a rectangle vertically centered on center
-# base-graphics version
-#centeredrect <- function(center, xleft, ybottom, xright, ytop, ...) {
-#  rect(center-xleft/2, ybottom, center+xright/2, ytop, ...)
-#}
-
-# make a symmetrical histogram
-# base-graphics version
-#symhist <- function(center, x, horizontal, ...) {
-#  h <- hist(x, plot=F, ...)
-#  relfs <- histrelfs(h)
-#  breaks <- h$breaks
-#  centeredrect(center, relfs, butlast(breaks), relfs, butfirst(breaks), horizontal)
-#}
-
-#symhist.curry <- function(center) {function(x, ...){symhist(center, x, ...)}}
-
-# additional functions used below, such as butlast and butfirst, are in my utils.R .
-
-# draw a rectangle vertically centered on center:
-# lattice version
-#panel.centeredrect <- function(center, xleft, ybottom, xright, ytop, horizontal, ...) {
-#  # cat("center = ", center, "\n", "xleft = ", xleft, "\n", "ybottom = ", ybottom, "\n", "xright = ", xright, "\n", "ytop = ", ytop, "\n", "horizontal = ", horizontal, "\n\n")
-#  if (horizontal) {
-#    panel.rect(xleft, center - ybottom/2, xright, center + ytop/2, ...)
-#  } else {
-#    panel.rect(center - xleft/2, ybottom, center + xright/2, ytop, ...)
-#  }
-#}
-
-# get a sequence of relative frequencies from a hist object
-#histrelfs <- function(h){ h$counts/sum(h$counts) }
-
 # make a centered "Tower of Hanoi" histogram
 # lattice version
 # based on Greg Snow's base graphics version in response to my question at:
@@ -150,52 +114,6 @@ stripRightZeros <- function(brks, cnts) {
     list(brks, cnts)
   }
 }
-
-
-## copied from common.R from lattice 0.20-15 source
-#extend.limits <-
-#    function(lim, length = 1, axs = "r",
-#             prop =
-#             if (axs == "i") 0
-#             else lattice.getOption("axis.padding")$numeric)
-#{
-#    ## if (!is.numeric(lim)) NA
-#    if (all(is.na(lim))) NA_real_ # or lim?
-#    else if (is.character(lim) )
-#    {
-#        c(1, length(lim)) + c(-1, 1) * if (axs == "i") 0.5 else lattice.getOption("axis.padding")$factor
-#    }
-#    else if (length(lim) == 2)
-#    {
-#        if (lim[1] > lim[2])
-#        {
-#            ccall <- match.call()
-#            ccall$lim <- rev(lim)
-#            ans <- eval.parent(ccall)
-#            return (rev(ans))
-#        }
-#        if (!missing(length) && !missing(prop))
-#            stop("'length' and 'prop' cannot both be specified")
-#        if (length <= 0) stop("'length' must be positive")
-#        if (!missing(length))
-#        {
-#            prop <- (as.numeric(length) - as.numeric(diff(lim))) / (2 * as.numeric(diff(lim)))
-#        }
-#        if (lim[1]==lim[2]) lim + 0.5 * c(-length,length)
-#        else
-#        {
-#            d <- diff(as.numeric(lim))
-#            lim + prop * d * c(-1,1)
-#        }
-#    }
-#    else
-#    {
-#        print(lim)
-#        stop("improper length of 'lim'")
-#    }
-#}
-
-#panel.symhist.curry <- function(center) {function(x, y, ...){panel.symhist(center, x, y, ...)}}
 
 ##########################################
 
