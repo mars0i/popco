@@ -4,6 +4,8 @@
 ; and then possibly change salience relations.
 ; Based on parenting18d.lisp
 
+; NOTE: If you're wondering what causes the Netlogo snapshot files to be
+; created, it's caused by popco-until calling run-population repeatedly.
 
 ; many of these params will be overrident in (sequence)
 
