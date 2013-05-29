@@ -404,6 +404,7 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
   df
 }
 
+
 # Given a list [i.e. with list(), not c()] of multi-run arrays, and a list or vector of strings
 # to use as names of the bias of each array, and two prefix strings for propositions, calls
 # multiRA2meanDF repeatedly on the arrays using the two prefix strings, and then combines the
