@@ -320,7 +320,7 @@
   (setf *propns-csv-output-name* (concatenate 'string "../data/" output-basename "PropnData.csv"))
   (setf *random-state-file* (concatenate 'string "../data/" output-basename "RandomState.lisp"))
   (setf *time-runs* t)
-  (setf *do-report-to-netlogo* t)
+  (setf *do-report-to-netlogo* nil)
   (setf *do-report-propns-to-csv* t)
 
   ; make earth-origin persons that also each have a distinct member of sky-origin-propns
