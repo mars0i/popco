@@ -62,6 +62,64 @@ stripRunPaths <- function(mra) {
 
 #------------------------------------------------------
 
+# possibly rewrite to speed up using data.tables:
+# http://stackoverflow.com/questions/11486369/growing-a-data-frame-in-a-memory-efficient-manner/11486400#11486400
+multiRA2PersonPropnDF <- function(mra) {
+  # what I want is to one column of data, maybe with tick indexes for xyplot's sake
+  # but with a domain column, a propn column, and a person column.
+
+  dnames <- dimnames(mra)
+  persons <- dnames[[1]]
+  propns <- dnames[[2]]
+  ticks <- dnames[[3]]
+  runs <- dnames[[4]]
+
+  domsInPropnOrder<- sub("_.*", "", propns) # list of domain names in the same order as propns they came from
+
+  cat("ticks: ", ticks, "\n")
+  cat("runs: ", runs, "\n")
+  cat("persons: ", persons, "\n")
+  cat("propns: ", propns, "\n")
+  cat("domsInPropnOrder: ", domsInPropnOrder, "\n")
+
+  npersons <- length(persons)
+  npropns <- length(propns)
+  nticks <- length(ticks)
+  nruns <- length(runs)
+
+  #cat(npersons, npropns, nticks, runs)
+  dummynums <- rep(NA_real_, nticks)
+  dummystrings <- rep(NA_character_, nticks)
+
+  # preallocate. sorta.
+  newdf <- data.frame(activn=dummynums,
+                      person=dummystrings,
+                      dom=dummystrings,
+                      propn=dummystrings,
+                      run=dummystrings,
+                      tick=dummynums,
+		      stringsAsFactors=FALSE) # otherwise R complains we add new strings
+
+  cat("Making dataframe with", npersons * npropns * nticks * nruns, "rows ...\n")
+
+  i <- 0
+  for (rn in 1:nruns) {
+    for (pr in 1:npersons) {
+      for (ppn in 1:npropns) {
+        for (tck in 1:nticks) {
+	  i <- i + 1 # row index
+          newdf[i,] <- c(mra[pr,ppn,tck,rn], persons[pr], domsInPropnOrder[ppn], propns[ppn], runs[rn], tck)
+	  if (i %% 1000 == 0) {cat(i, "")} # don't let user get lonely, but don't be obnoxious
+        }
+      }
+    }
+  }
+
+  newdf
+}
+
+#------------------------------------------------------
+
 # Returns true iff these two dataframes have identical rownames, after possibly removing an extra character added for uniqueness
 congruentRuns2dfs <- function(df1, df2) {
   all(substr(dimnames(df1)[[1]],1,12) == substr(dimnames(df2)[[1]],1,12))
