@@ -62,12 +62,11 @@ stripRunPaths <- function(mra) {
 
 #------------------------------------------------------
 
-# possibly rewrite to speed up using data.tables:
-# http://stackoverflow.com/questions/11486369/growing-a-data-frame-in-a-memory-efficient-manner/11486400#11486400
-multiRA2PersonPropnDF <- function(mra) {
-  # what I want is to one column of data, maybe with tick indexes for xyplot's sake
-  # but with a domain column, a propn column, and a person column.
-
+# Turn a (probably subsetted) multiple-run RA into a dataframe suitable
+# for plotting with xyplot.  Note that this can quickly generate *a lot*
+# of rows.  If interval > 1, then sample data every interval ticks to generate the dataframe.
+# [have tried rewrite to speed up using data.tables, but they are very finicky.  see df2raDataTable.R]
+multiRA2PersonPropnDF <- function(mra, interval=1) {
   dnames <- dimnames(mra)
   persons <- dnames[[1]]
   propns <- dnames[[2]]
@@ -76,16 +75,11 @@ multiRA2PersonPropnDF <- function(mra) {
 
   domsInPropnOrder<- sub("_.*", "", propns) # list of domain names in the same order as propns they came from
 
-  cat("ticks: ", ticks, "\n")
-  cat("runs: ", runs, "\n")
-  cat("persons: ", persons, "\n")
-  cat("propns: ", propns, "\n")
-  cat("domsInPropnOrder: ", domsInPropnOrder, "\n")
-
-  npersons <- length(persons)
-  npropns <- length(propns)
-  nticks <- length(ticks)
-  nruns <- length(runs)
+  dims <- dim(mra)
+  npersons <- dims[1]
+  npropns <- dims[2]
+  nticks <- dims[3]
+  nruns <- dims[4]
 
   #cat(npersons, npropns, nticks, runs)
   dummynums <- rep(NA_real_, nticks)
@@ -100,13 +94,13 @@ multiRA2PersonPropnDF <- function(mra) {
                       tick=dummynums,
 		      stringsAsFactors=FALSE) # otherwise R complains we add new strings
 
-  cat("Making dataframe with", npersons * npropns * nticks * nruns, "rows ...\n")
+  cat("Making dataframe with", (npersons * npropns * nticks * nruns) / interval, "rows ...\n")
 
   i <- 0
   for (rn in 1:nruns) {
     for (pr in 1:npersons) {
       for (ppn in 1:npropns) {
-        for (tck in 1:nticks) {
+        for (tck in seq(1,nticks,interval)) {
 	  i <- i + 1 # row index
           newdf[i,] <- c(mra[pr,ppn,tck,rn], persons[pr], domsInPropnOrder[ppn], propns[ppn], runs[rn], tck)
 	  if (i %% 1000 == 0) {cat(i, "")} # don't let user get lonely, but don't be obnoxious

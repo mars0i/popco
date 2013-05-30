@@ -31,6 +31,11 @@ R tips:
 
 ...........................................................
 
+# using lattice for run of the mill plots:
+xyplot(activn~tick|dom, groups=propn, data=yo100, ylim=c(-1,1), xlim=c(1,101), pch=".", type="l")
+
+...........................................................
+
 # with new panel.hanoi, with breaks customized to each panel, and bwplot
 bwplot(CV + CB ~ bias, data=df, ylim=c(-1,1), pch="|", coef=0, outer=T,
   panel=function(...){panel.hanoi(col="pink", breaks=if(panel.number()==1){cv.ints}else{cb.ints}, ...);
