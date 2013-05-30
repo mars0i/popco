@@ -1,0 +1,40 @@
+5/30/2013
+plan for redoing models for the casm "moderate role" resubmit
+
+The plan is based on splitting up the old 2-stage model.
+
+0. Pre-model: Show that I can get the bar chart from a single person.
+
+
+1. Everyone starts with all propns (this differs from before).
+Hunting is perceived.  Nothing else is.  Though I suppose I could
+disperceive parenting.  But didn't do that in the runs so far.
+
+Run 2000 ticks, show that sky god wins.
+I now have 50 100-person runs of this.
+
+I also have 50 100-person runs of the obvious.
+So that I could mention that that works.
+
+
+1*: Maybe also do some little bits of tracing and snapshotting of
+networks for one agent in this model.
+
+
+2. Start with:
+Everyone has hunting, parenting, sky god, with hunting perceived.
+Let it run for say 1000 ticks just like that.  sky god should be
+pretty strong by then.
+
+Then add 8 persons with individual earth god propns, or add those
+propns to 8 people.  Then run for 500 or 1000 ticks.  In the past,
+it takes 300-1000 ticks for there to be one person who has them all,
+but usually by then a lot have a lot of them.  Maybe 1000?
+
+Then switch the saliences.
+
+Then another ... how many?  I ran for 5000 ticks after this point
+before.
+
+Maybe it would be simpler to just run it like I did before,
+but with the salience switch fixed at 1000 ticks.  Yeah.
