@@ -38,3 +38,10 @@ before.
 
 Maybe it would be simpler to just run it like I did before,
 but with the salience switch fixed at 1000 ticks.  Yeah.
+
+OK, it's called earthorigindiffuses.lisp.
+starts with 92 no-earth people, 8 single-earth people, and all
+perceive hunting.
+Then at tick 1000, hunting salience is flipped to anti-salience in all
+f them, and everyone gets parenting salience.
+Then it goes for another (only) 2000 ticks.
