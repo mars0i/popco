@@ -3,7 +3,7 @@
 #$ -V
 #$ -tc 200
 #$ -S /bin/bash
-#$ -l h_rt=10:00:00,vf=10G
+#$ -l h_rt=12:00:00,vf=10G
 #$ -e err$JOB_ID.txt
 #$ -o out$JOB_ID.txt
 #$ -m eas
