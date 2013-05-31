@@ -456,6 +456,30 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
   df
 }
 
+# Compress a normal mra by replacing the proposition activations with averages over propositions in each domain.
+multiRA2personMeansRA <- function(multiRA, doms, lastTick=dim(multiRA)[3], firstTick=lastTick) {
+  mra <- stripRunPaths(multiRA)
+
+  numdoms <- length(doms)
+  meanmra.dims <- dim(mra)
+  meanmra.dims[2] <- numdoms # replace number of propns with number of doms
+  meanmra <- array(0, meanmra.dims)
+
+  for (i in numdoms) {
+    # c(1,3,4) as an argument to apply means average *only* over propositions 
+    # (within the domain), not over persons (1), ticks (3), or runs (4):
+    # Then assign the result to domain i.
+    meanmra[,i,,] <- apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], doms[i]), c(1,3,4), mean)
+  }
+
+  dimnames(meanmra) <- list(person=dimnames(meanmra)[[1]],
+                            dom=dimnames(meanmra)[[2]],
+			    tick=dimnames(meanmra)[[3]],
+			    run=dimnames(meanmra)[[4]])
+
+  meanmra
+}
+
 
 # Given a list [i.e. with list(), not c()] of multi-run arrays, and a list or vector of strings
 # to use as names of the bias of each array, and two prefix strings for propositions, calls
