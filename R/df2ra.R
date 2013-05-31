@@ -65,6 +65,7 @@ stripRunPaths <- function(mra) {
 # Turn a (probably subsetted) multiple-run RA into a dataframe suitable
 # for plotting with xyplot.  Note that this can quickly generate *a lot*
 # of rows.  If interval > 1, then sample data every interval ticks to generate the dataframe.
+# Despite the name of this function, you can also use it with mras that replace propns with domain averages.
 # [have tried rewrite to speed up using data.tables, but they are very finicky.  see df2raDataTable.R]
 multiRA2PersonPropnDF <- function(mra, interval=1) {
   dnames <- dimnames(mra)
@@ -458,24 +459,31 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
 
 # Compress a normal mra by replacing the proposition activations with averages over propositions in each domain.
 multiRA2personMeansRA <- function(multiRA, doms, lastTick=dim(multiRA)[3], firstTick=lastTick) {
+
   mra <- stripRunPaths(multiRA)
+  dimnms <- dimnames(mra)
 
   numdoms <- length(doms)
+
+  # construct dimensions of new array:
   meanmra.dims <- dim(mra)
   meanmra.dims[2] <- numdoms # replace number of propns with number of doms
-  meanmra <- array(0, meanmra.dims)
+  meanmra.dims[3] <- lastTick - firstTick + 1 # adjust ticks dimension
 
-  for (i in numdoms) {
+  meanmra <- array(0, meanmra.dims) # make empty array
+
+  for (i in 1:numdoms) {
     # c(1,3,4) as an argument to apply means average *only* over propositions 
     # (within the domain), not over persons (1), ticks (3), or runs (4):
     # Then assign the result to domain i.
     meanmra[,i,,] <- apply(multiRA2punditFreeDomRA(mra[,,firstTick:lastTick,,drop=F], doms[i]), c(1,3,4), mean)
   }
 
-  dimnames(meanmra) <- list(person=dimnames(meanmra)[[1]],
-                            dom=dimnames(meanmra)[[2]],
-			    tick=dimnames(meanmra)[[3]],
-			    run=dimnames(meanmra)[[4]])
+  # add in dimension names
+  dimnames(meanmra) <- list(person=dimnms[[1]],
+                            dom=doms,
+			    tick=firstTick:lastTick,     # makes ticks into numbers rather than strings, I guess
+			    run=dimnms[[4]])
 
   meanmra
 }
