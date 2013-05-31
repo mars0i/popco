@@ -458,7 +458,7 @@ multiRA2meanDF <- function(multiRA, dom1, dom2, lastTick=dim(multiRA)[3], firstT
 }
 
 # Compress a normal mra by replacing the proposition activations with averages over propositions in each domain.
-multiRA2personMeansRA <- function(multiRA, doms, lastTick=dim(multiRA)[3], firstTick=lastTick) {
+multiRA2domMeanRA <- function(multiRA, doms, lastTick=dim(multiRA)[3], firstTick=1) {
 
   mra <- stripRunPaths(multiRA)
   dimnms <- dimnames(mra)
