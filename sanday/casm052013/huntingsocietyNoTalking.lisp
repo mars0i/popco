@@ -15,7 +15,7 @@
 (setf *do-converse* nil)
 
 (make-know-all-see-hunting 'template)
-(n-persons-with-name 'template 'h 100)
+(n-persons-with-name 'template 'h 1)
 (kill 'template)
 
 (init-pop)
