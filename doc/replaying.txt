@@ -8,3 +8,8 @@ This file contains Lisp code to reset the random state (seed)
 to what it was on run that generated it.  So to replay the run:
 	popco ../data/RUN123456789.lisp mymodelscript.lisp
 That's it.
+
+However, if you're not using the popco script, and running
+popco directly with sbcl, then the trick is that the
+RUNblahblah.lisp has to be loaded *after* start.lisp
+but before other scripts that might start using the randomness.

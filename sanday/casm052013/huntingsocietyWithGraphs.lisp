@@ -1,7 +1,7 @@
 
 (load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "start") ; popco
-(defun report-progress-to-console ()) ; make this into a no-op - for batch jobs
+;(defun report-progress-to-console ()) ; make this into a no-op - for batch jobs
 
 (load "sanday/casm052013/parenting18analogsAsBiases2")     ; library
 (load "sanday/casm052013/parenting18JuneJuly2012persons")  ; library

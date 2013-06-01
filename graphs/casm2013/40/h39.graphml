@@ -1533,18 +1533,18 @@
                <node id="O_HUMAN_ALIVE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">9.386304324210888</data>
-			<data key="guess-node-width">9.386304324210888</data>
-			<data key="guess-node-activation">0.6386304324210889</data>
+			<data key="guess-node-height">10.158981462741469</data>
+			<data key="guess-node-width">10.158981462741469</data>
+			<data key="guess-node-activation">0.7158981462741469</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OE_PROTOHUMAN_INSIDE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">8.36759839834857</data>
-			<data key="guess-node-width">8.36759839834857</data>
-			<data key="guess-node-activation">-0.5367598398348569</data>
+			<data key="guess-node-height">7.016340372020426</data>
+			<data key="guess-node-width">7.016340372020426</data>
+			<data key="guess-node-activation">-0.40163403720204255</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1560,27 +1560,27 @@
                <node id="OE_GOD_CREATES_HUMAN_FROM_WITHIN">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">10.476420793122616</data>
-			<data key="guess-node-width">10.476420793122616</data>
-			<data key="guess-node-activation">-0.7476420793122616</data>
+			<data key="guess-node-height">10.740627259713342</data>
+			<data key="guess-node-width">10.740627259713342</data>
+			<data key="guess-node-activation">-0.7740627259713342</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OE_GOD_CREATES_NATURALLY">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">9.366727051384743</data>
-			<data key="guess-node-width">9.366727051384743</data>
-			<data key="guess-node-activation">-0.6366727051384743</data>
+			<data key="guess-node-height">6.619208403840119</data>
+			<data key="guess-node-width">6.619208403840119</data>
+			<data key="guess-node-activation">-0.36192084038401195</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OE_GOD_HELPS_HUMAN">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">8.110132365026534</data>
-			<data key="guess-node-width">8.110132365026534</data>
-			<data key="guess-node-activation">-0.5110132365026534</data>
+			<data key="guess-node-height">8.111851422075874</data>
+			<data key="guess-node-width">8.111851422075874</data>
+			<data key="guess-node-activation">-0.5111851422075875</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1596,126 +1596,126 @@
                <node id="OE_NOTHING">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">4.990869318992731</data>
-			<data key="guess-node-width">4.990869318992731</data>
-			<data key="guess-node-activation">-0.19908693189927304</data>
+			<data key="guess-node-height">4.781047875499667</data>
+			<data key="guess-node-width">4.781047875499667</data>
+			<data key="guess-node-activation">-0.1781047875499667</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OE_EARTHLY_GOD">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">10.565395098271953</data>
-			<data key="guess-node-width">10.565395098271953</data>
-			<data key="guess-node-activation">-0.7565395098271952</data>
+			<data key="guess-node-height">10.780601439960018</data>
+			<data key="guess-node-width">10.780601439960018</data>
+			<data key="guess-node-activation">-0.7780601439960018</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_GOD_CREATES_HUMAN_FROM_OBJECT">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">9.166164469602105</data>
-			<data key="guess-node-width">9.166164469602105</data>
-			<data key="guess-node-activation">0.6166164469602106</data>
+			<data key="guess-node-height">9.166146294086163</data>
+			<data key="guess-node-width">9.166146294086163</data>
+			<data key="guess-node-activation">0.6166146294086163</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_GOD_CREATES_MYSTERIOUSLY">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">4.605132622068016</data>
-			<data key="guess-node-width">4.605132622068016</data>
-			<data key="guess-node-activation">0.16051326220680162</data>
+			<data key="guess-node-height">4.14984095314246</data>
+			<data key="guess-node-width">4.14984095314246</data>
+			<data key="guess-node-activation">0.11498409531424603</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_HUMAN_OFFENDS_GOD">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">7.005615667360927</data>
-			<data key="guess-node-width">7.005615667360927</data>
-			<data key="guess-node-activation">0.4005615667360927</data>
+			<data key="guess-node-height">8.364549406517607</data>
+			<data key="guess-node-width">8.364549406517607</data>
+			<data key="guess-node-activation">0.5364549406517607</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_GOD_HARMS_HUMAN">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">7.389679356204159</data>
-			<data key="guess-node-width">7.389679356204159</data>
-			<data key="guess-node-activation">0.43896793562041586</data>
+			<data key="guess-node-height">6.529294215912454</data>
+			<data key="guess-node-width">6.529294215912454</data>
+			<data key="guess-node-activation">0.3529294215912454</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_OFFENSE_CAUSES_PUNISHMENT">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">9.392049205453953</data>
-			<data key="guess-node-width">9.392049205453953</data>
-			<data key="guess-node-activation">0.6392049205453952</data>
+			<data key="guess-node-height">7.888894753752048</data>
+			<data key="guess-node-width">7.888894753752048</data>
+			<data key="guess-node-activation">0.4888894753752048</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_HUMAN_SUPPLICATES">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">5.991438349694416</data>
-			<data key="guess-node-width">5.991438349694416</data>
-			<data key="guess-node-activation">0.2991438349694416</data>
+			<data key="guess-node-height">7.038553671800863</data>
+			<data key="guess-node-width">7.038553671800863</data>
+			<data key="guess-node-activation">0.4038553671800863</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_GOD_HELPS_HUMAN">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">7.524983472319098</data>
-			<data key="guess-node-width">7.524983472319098</data>
-			<data key="guess-node-activation">0.4524983472319098</data>
+			<data key="guess-node-height">6.540534088053656</data>
+			<data key="guess-node-width">6.540534088053656</data>
+			<data key="guess-node-activation">0.3540534088053656</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_GOD_REWARDS">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">7.892889145586739</data>
-			<data key="guess-node-width">7.892889145586739</data>
-			<data key="guess-node-activation">0.48928891455867396</data>
+			<data key="guess-node-height">9.849078411623935</data>
+			<data key="guess-node-width">9.849078411623935</data>
+			<data key="guess-node-activation">0.6849078411623936</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="OS_HEAVENLY_GOD">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">7.319686062054454</data>
-			<data key="guess-node-width">7.319686062054454</data>
-			<data key="guess-node-activation">0.4319686062054454</data>
+			<data key="guess-node-height">6.177802023739963</data>
+			<data key="guess-node-width">6.177802023739963</data>
+			<data key="guess-node-activation">0.3177802023739963</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="P_CHILD_ALIVE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">9.127998056188957</data>
-			<data key="guess-node-width">9.127998056188957</data>
-			<data key="guess-node-activation">0.6127998056188957</data>
+			<data key="guess-node-height">7.2736473707369</data>
+			<data key="guess-node-width">7.2736473707369</data>
+			<data key="guess-node-activation">0.42736473707369</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="P_CHILD_CLOSE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">5.06377031244451</data>
-			<data key="guess-node-width">5.06377031244451</data>
-			<data key="guess-node-activation">-0.206377031244451</data>
+			<data key="guess-node-height">7.346284405615799</data>
+			<data key="guess-node-width">7.346284405615799</data>
+			<data key="guess-node-activation">-0.43462844056157995</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="P_PROTOCHILD_INSIDE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">8.633241560316215</data>
-			<data key="guess-node-width">8.633241560316215</data>
-			<data key="guess-node-activation">-0.5633241560316214</data>
+			<data key="guess-node-height">5.284803606074421</data>
+			<data key="guess-node-width">5.284803606074421</data>
+			<data key="guess-node-activation">-0.2284803606074421</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1749,9 +1749,9 @@
                <node id="P_WOMAN_HELPS_CHILD">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">4.988953444423235</data>
-			<data key="guess-node-width">4.988953444423235</data>
-			<data key="guess-node-activation">-0.19889534444232343</data>
+			<data key="guess-node-height">5.136240762345113</data>
+			<data key="guess-node-width">5.136240762345113</data>
+			<data key="guess-node-activation">-0.2136240762345113</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1767,27 +1767,27 @@
                <node id="P_NOTHING">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">navyblue</data>
-			<data key="guess-node-height">4.216102282378276</data>
-			<data key="guess-node-width">4.216102282378276</data>
-			<data key="guess-node-activation">-0.12161022823782759</data>
+			<data key="guess-node-height">4.274533881882315</data>
+			<data key="guess-node-width">4.274533881882315</data>
+			<data key="guess-node-activation">-0.12745338818823143</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_MAN_POWER">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">12.008466287138285</data>
-			<data key="guess-node-width">12.008466287138285</data>
-			<data key="guess-node-activation">0.9008466287138285</data>
+			<data key="guess-node-height">12.020273284425143</data>
+			<data key="guess-node-width">12.020273284425143</data>
+			<data key="guess-node-activation">0.9020273284425143</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_GAME_POWER_SOURCE">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">12.05975460856421</data>
-			<data key="guess-node-width">12.05975460856421</data>
-			<data key="guess-node-activation">0.905975460856421</data>
+			<data key="guess-node-height">12.059754396591138</data>
+			<data key="guess-node-width">12.059754396591138</data>
+			<data key="guess-node-activation">0.9059754396591139</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1803,63 +1803,63 @@
                <node id="H_MAN_ENDANGERS_GAME">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.641328153834278</data>
-			<data key="guess-node-width">11.641328153834278</data>
-			<data key="guess-node-activation">0.8641328153834278</data>
+			<data key="guess-node-height">11.744315442679621</data>
+			<data key="guess-node-width">11.744315442679621</data>
+			<data key="guess-node-activation">0.8744315442679622</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_GAME_HARMS_MAN">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.778332521925652</data>
-			<data key="guess-node-width">11.778332521925652</data>
-			<data key="guess-node-activation">0.8778332521925651</data>
+			<data key="guess-node-height">11.709533491153854</data>
+			<data key="guess-node-width">11.709533491153854</data>
+			<data key="guess-node-activation">0.8709533491153854</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_HUNTING_IS_DANGEROUS">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.985630414272439</data>
-			<data key="guess-node-width">11.985630414272439</data>
-			<data key="guess-node-activation">0.8985630414272439</data>
+			<data key="guess-node-height">11.935869063964615</data>
+			<data key="guess-node-width">11.935869063964615</data>
+			<data key="guess-node-activation">0.8935869063964615</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_SKILLFUL_HUNTING">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.618831674704289</data>
-			<data key="guess-node-width">11.618831674704289</data>
-			<data key="guess-node-activation">0.8618831674704289</data>
+			<data key="guess-node-height">11.716996861441492</data>
+			<data key="guess-node-width">11.716996861441492</data>
+			<data key="guess-node-activation">0.8716996861441493</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_GAME_PROVIDES">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.782091988101147</data>
-			<data key="guess-node-width">11.782091988101147</data>
-			<data key="guess-node-activation">0.8782091988101146</data>
+			<data key="guess-node-height">11.709765191431893</data>
+			<data key="guess-node-width">11.709765191431893</data>
+			<data key="guess-node-activation">0.8709765191431894</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_HUNTING_REWARDS_SKILL">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.943715775485687</data>
-			<data key="guess-node-width">11.943715775485687</data>
-			<data key="guess-node-activation">0.8943715775485687</data>
+			<data key="guess-node-height">11.990626120156533</data>
+			<data key="guess-node-width">11.990626120156533</data>
+			<data key="guess-node-activation">0.8990626120156533</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
                <node id="H_GAME_DISTANT">
 		        <data key="guess-node-visible">true</data> <!-- override default set above -->
 			<data key="guess-node-color">yellow</data>
-			<data key="guess-node-height">11.748963359480165</data>
-			<data key="guess-node-width">11.748963359480165</data>
-			<data key="guess-node-activation">0.8748963359480165</data>
+			<data key="guess-node-height">11.679724520425328</data>
+			<data key="guess-node-width">11.679724520425328</data>
+			<data key="guess-node-activation">0.8679724520425328</data>
 			<data key="guess-node-concerns1"></data>
 			<data key="guess-node-concerns2"></data>
                 </node>
@@ -1933,18 +1933,11 @@
 		        <data key="guess-edge-weight">1.0</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
-		<edge source="P_PROTOCHILD_INSIDE" target="SALIENT">
+		<edge source="P_CHILD_CLOSE" target="SALIENT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">1.5</data>
-		        <data key="guess-edge-weight">-0.15</data>
-			<data key="guess-edge-weight-source"></data>
-		</edge>
-		<edge source="P_CHILD_ALIVE" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">1.0</data>
-		        <data key="guess-edge-weight">0.1</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">-0.05</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OS_HEAVENLY_GOD" target="H_GAME_DISTANT">
@@ -2003,13 +1996,6 @@
 		        <data key="guess-edge-weight">-0.010274151589998238</data>
 			<data key="guess-edge-weight-source">OS_HEAVENLY_GOD_m_P_CHILD_CLOSE</data>
 		</edge>
-		<edge source="OS_HEAVENLY_GOD" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">0.05</data>
-			<data key="guess-edge-weight-source"></data>
-		</edge>
 		<edge source="OS_GOD_REWARDS" target="H_HUNTING_REWARDS_SKILL">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
@@ -2027,8 +2013,8 @@
 		<edge source="OS_GOD_REWARDS" target="SALIENT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">0.05</data>
+		        <data key="guess-edge-width">1.5</data>
+		        <data key="guess-edge-weight">0.15</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OS_GOD_HELPS_HUMAN" target="H_GAME_DISTANT">
@@ -2087,13 +2073,6 @@
 		        <data key="guess-edge-weight">-0.011049373566004179</data>
 			<data key="guess-edge-weight-source">OS_GOD_HELPS_HUMAN_m_P_CHILD_CLOSE</data>
 		</edge>
-		<edge source="OS_GOD_HELPS_HUMAN" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">1.0</data>
-		        <data key="guess-edge-weight">0.1</data>
-			<data key="guess-edge-weight-source"></data>
-		</edge>
 		<edge source="OS_HUMAN_SUPPLICATES" target="H_GAME_DISTANT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">red</data>
@@ -2150,6 +2129,13 @@
 		        <data key="guess-edge-weight">-0.018560642894159568</data>
 			<data key="guess-edge-weight-source">OS_HUMAN_SUPPLICATES_m_P_CHILD_CLOSE</data>
 		</edge>
+		<edge source="OS_HUMAN_SUPPLICATES" target="SALIENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">green</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">0.05</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
 		<edge source="OS_OFFENSE_CAUSES_PUNISHMENT" target="H_HUNTING_REWARDS_SKILL">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">red</data>
@@ -2163,13 +2149,6 @@
 		        <data key="guess-edge-width">1.4068079471865045</data>
 		        <data key="guess-edge-weight">0.14068079471865044</data>
 			<data key="guess-edge-weight-source">OS_OFFENSE_CAUSES_PUNISHMENT_m_H_HUNTING_IS_DANGEROUS</data>
-		</edge>
-		<edge source="OS_OFFENSE_CAUSES_PUNISHMENT" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">1.0</data>
-		        <data key="guess-edge-weight">0.1</data>
-			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OS_GOD_HARMS_HUMAN" target="H_GAME_DISTANT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
@@ -2226,13 +2205,6 @@
 		        <data key="guess-edge-width">0.1103059264071213</data>
 		        <data key="guess-edge-weight">-0.01103059264071213</data>
 			<data key="guess-edge-weight-source">OS_GOD_HARMS_HUMAN_m_P_CHILD_CLOSE</data>
-		</edge>
-		<edge source="OS_GOD_HARMS_HUMAN" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">0.05</data>
-			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OS_HUMAN_OFFENDS_GOD" target="H_GAME_DISTANT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
@@ -2293,8 +2265,8 @@
 		<edge source="OS_HUMAN_OFFENDS_GOD" target="SALIENT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">0.05</data>
+		        <data key="guess-edge-width">1.5</data>
+		        <data key="guess-edge-weight">0.15</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OS_GOD_CREATES_MYSTERIOUSLY" target="H_MAN_POWER">
@@ -2405,8 +2377,8 @@
 		<edge source="OE_EARTHLY_GOD" target="SALIENT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">-0.05</data>
+		        <data key="guess-edge-width">1.5</data>
+		        <data key="guess-edge-weight">-0.15</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OE_NOTHING" target="H_MAN_POWER">
@@ -2514,13 +2486,6 @@
 		        <data key="guess-edge-weight">-0.5</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
-		<edge source="OE_GOD_CREATES_NATURALLY" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">1.0</data>
-		        <data key="guess-edge-weight">-0.1</data>
-			<data key="guess-edge-weight-source"></data>
-		</edge>
 		<edge source="OE_GOD_CREATES_HUMAN_FROM_WITHIN" target="P_WOMAN_CREATES_CHILD_FROM_WITHIN">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
@@ -2547,6 +2512,13 @@
 		        <data key="guess-edge-color">green</data>
 		        <data key="guess-edge-width">5.0</data>
 		        <data key="guess-edge-weight">0.5</data>
+			<data key="guess-edge-weight-source"></data>
+		</edge>
+		<edge source="OE_GOD_CREATES_HUMAN_FROM_WITHIN" target="SALIENT">
+		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
+		        <data key="guess-edge-color">red</data>
+		        <data key="guess-edge-width">0.5</data>
+		        <data key="guess-edge-weight">-0.05</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="OE_HUMAN_FROM_WITHIN_GOD" target="P_CHILD_FROM_WITHIN_WOMAN">
@@ -2619,13 +2591,6 @@
 		        <data key="guess-edge-weight">-0.018534467937637907</data>
 			<data key="guess-edge-weight-source">OE_PROTOHUMAN_INSIDE_m_P_CHILD_CLOSE</data>
 		</edge>
-		<edge source="OE_PROTOHUMAN_INSIDE" target="SALIENT">
-		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
-		        <data key="guess-edge-color">red</data>
-		        <data key="guess-edge-width">1.0</data>
-		        <data key="guess-edge-weight">-0.1</data>
-			<data key="guess-edge-weight-source"></data>
-		</edge>
 		<edge source="O_HUMAN_ALIVE" target="H_MAN_POWER">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
@@ -2650,8 +2615,8 @@
 		<edge source="O_HUMAN_ALIVE" target="SALIENT">
 		        <data key="guess-edge-visible">true</data> <!-- override default set above -->
 		        <data key="guess-edge-color">green</data>
-		        <data key="guess-edge-width">0.5</data>
-		        <data key="guess-edge-weight">0.05</data>
+		        <data key="guess-edge-width">1.5</data>
+		        <data key="guess-edge-weight">0.15</data>
 			<data key="guess-edge-weight-source"></data>
 		</edge>
 		<edge source="ALIVE_m_ALIVE" target="SPECIAL">
