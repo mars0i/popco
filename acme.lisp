@@ -188,7 +188,7 @@
 
 ; *****************************
 
-; CONC-FROM-STRUC lists all the concepts (i.e. PREDICATES) in a structure.
+; CONC-FROM-STRUC lists all the concepts in a structure.
 ; 10-03-2011 changed personal-pred-from-propn back to pred-from-propn
 ;   after I changed a corresponding line in make-propns -MA
 (defun conc-from-struc (struc)
@@ -373,11 +373,10 @@
   (unless *silent-run?* (my-print '"Constructing analogical mapping between "
                                   personal-struc1 '" and " personal-struc2 
                                   " for person " *the-person*))
-
-  ; Find and store all of the predicates used by person's propositions:
   ; note objects and concepts for sake of clear-net:
   ; the objects are now taken care of in make-obj-unit - GHN 6/21/88
-  ; Q: IS THIS REDUNDANT GIVEN MAKE-PROPNS?  -MA 11/2011 ; IS IT INEFFICIENT?
+  ; Q: IS THIS REDUNDANT GIVEN MAKE-PROPNS?  -MA 11/2011
+  ; IS IT INEFFICIENT?
   (setf (get *the-person* 'all-preds) (union (conc-from-struc personal-struc1)
                                              (conc-from-struc personal-struc2)))
   ; note: (get *the-person* 'all-propositions) set up by make-struc
@@ -413,10 +412,9 @@
 
 ;; To avoid pushing multiple copies of the same constraint,
 ;; test for oldness outside of this function, e.g. using weight-of-link-between = 0.
-;; This allows slightly better efficient in make-symlink. Maybe not worth it ....
+;; This allows slightly better efficient in make-sym-link. Maybe not worth it ....
 (defun mark-constraint-newly-added (unit1 unit2 weight person)
-  ;(format t "mark-constraint-newly-added: ~S ~S ~S ~S~%" unit1 unit2 weight person) ; DEBUG
-  (push `(,unit1 ,unit2 . ,weight) (get person 'newly-added-constraints)))
+    (push `(,unit1 ,unit2 . ,weight) (get person 'newly-added-constraints)))
 
 (defun mark-contraint-newly-removed (unit1 unit2 person)
     (push `(,unit1 ,unit2) (get person 'newly-removed-constraints))) ; don't need weight
@@ -600,7 +598,7 @@
              (my-print "make-hyp-unit: Mapping: " msg1)
              (my-print "                    and " msg2))
            (setf new-conc-unit (catname conc1 conc2))
-           (setf (get new-conc-unit 'unit-type) 'acme) ; added 6/2011 to identify map units as such -MA  ; **SHOULDN'T THIS BE IN THE COND BELOW?**
+           (setf (get new-conc-unit 'unit-type) 'acme) ; added 6/2011 to identify map units as such -MA
            ; if concept unit not already made, create it:
            (cond ( (not-member new-conc-unit (get *the-person* 'all-units)) ; cond 2
                   (mark-map-unit-newly-added new-conc-unit *the-person*) ; MA 4/2012 replaces old pushnew line
@@ -608,7 +606,6 @@
                   (put new-conc-unit 'concerns (list personal-conc1 personal-conc2))
                   ; note creation of unit:
                   (note-unit new-conc-unit)
-                  (pushnew new-conc-unit (get *the-person* 'all-map-units))
                   (setf result (cons new-conc-unit result))
                   ; calculate semantic similarity of concepts
                   ;(format t "conc1: ~S; conc2: ~S~%" conc1 conc2)
@@ -616,9 +613,9 @@
                         (if *use-arcs-semantics?*
                           (sem-sim-arcs conc1 conc2)    ; s/b personal-conc? 
                           (sem-similarity conc1 conc2)))
-                  ;(format t "sem-sim? for ~S and ~S is: ~S" conc1 conc2 sem-sim?) (if (/= sem-sim? 0) (format t " ... making symlink~%") (format t "~%")) ; DEBUG
+                  ;(format t "sem-sim? for ~S and ~S is: ~S" conc1 conc2 sem-sim?) (if (/= sem-sim? 0) (format t " ... making sym-link~%") (format t "~%")) ; DEBUG
                   (if (/= sem-sim? 0)                                   ; if same preds, or marked as similar,
-                    (make-symlink 'special new-conc-unit sem-sim?))  ; then link the pred map node to special
+                    (make-sym-link 'special new-conc-unit sem-sim?))  ; then link the pred map node to special
                   ; record hypotheses about a concept:
                   (record-hypothesis personal-conc1 new-conc-unit)
                   (record-hypothesis personal-conc2 new-conc-unit))); end cond 2
@@ -633,12 +630,11 @@
                   (note-unit new-propn-unit)
                   (mark-map-unit-newly-added new-propn-unit *the-person*) ; MA 4/2012 replaces old pushnew line
                   (pushnew new-propn-unit (get *the-person* 'propn-map-units)) ; added by MA 11/2011 [so won't have to search through all-units when updating propn-propn links]
-                  (pushnew new-propn-unit (get *the-person* 'all-map-units))
                   (record-hypothesis personal-propn1 new-propn-unit)
                   (record-hypothesis personal-propn2 new-propn-unit)
                   (setf result (cons new-propn-unit result))))  ; This is never used? -MA 6/2011
            ; link proposition unit with concept unit:
-           (make-symlink new-propn-unit new-conc-unit *excit-weight*)
+           (make-sym-link new-propn-unit new-conc-unit *excit-weight*)
 
            ; if msg2 from target contains a query, treat specially:
            (cond ( (and *look-for-queries?* ; cond 3
@@ -653,7 +649,7 @@
                  (t (setf object-units (make-obj-units (get-args msg1) ; Vanilla get-args
                                                          (get-args msg2) ; is correct here.
                                                          *init-activ*))
-                    (make-excit-links new-propn-unit  ; make-excit-links in echo.lisp just iterates make-symlink
+                    (make-excit-links new-propn-unit  ; make-excit-links just iterates make-sym-link
                                       object-units
                                       *excit-weight*)
                     (if *link-concepts-objects?*
@@ -793,7 +789,7 @@
               (my-print '"result args " result-args1 result-args2)))
        ; make normal links:
        
-       (make-symlink propn-unit
+       (make-sym-link propn-unit
                       conc-unit
                       *excit-weight*)
        (make-excit-links propn-unit
@@ -878,6 +874,7 @@
         (t *no-sim-weight*)))
 
 ; SIMILAR ; fixed 11-98 PT
+
 ;(defvar *similarities* nil)
 
 ; *THE-PERSON* must be set properly.
@@ -1087,7 +1084,7 @@
       ((null args1)
        (setf units-made (remove-duplicates units-made))
        ;(setf *object-units* (union units-made *object-units*))  ; commented out - having no effect in POPCO -MA 4/2012
-       (if *link-objects?* (make-all-excit-links units-made weight)) ; make-all-excit-links merely calls make-symlink on all poss pairs from units-made
+       (if *link-objects?* (make-all-excit-links units-made weight)) ; make-all-excit-links merely calls make-sym-link on all poss pairs from units-made
        units-made)))
 
 ; *****************************
@@ -1115,7 +1112,6 @@
            (put new-unit 'concerns
                 (list new-obj1 new-obj2))
            (note-unit new-unit) ; sets initial activation and records in 'all-units
-           (push new-unit (get *the-person* 'all-map-units))
            (mark-map-unit-newly-added new-unit *the-person*) ; MA 4/2012 replaces old pushnew line
            (when (and (propn? new-obj1) (propn? new-obj2))
              (pushnew new-unit (get *the-person* 'propn-map-units))) ; added by MA 3/30/12 [if a propn map unit is created here, make-hyp-unit won't try to create it later]
@@ -1136,32 +1132,9 @@
 ; *************************
 ; INHIBIT-MULTIPLE-MAPPINGS sets up inhibitory links among competing
 ; hypotheses about a particular object or concept.
-; Will not clobber excitatory links: see make-symlink.
+; Will not clobber excitatory links: see make-sym-link.
 ; For pragmatics sake, it treats queries differently, forming
 ; excitatory rather than inhibitory links.
-
-;;; This fixes a bug which mixes up source and target components when
-;;; considering inhibitory connections. For example, num5=num3 was
-;;; inhibited by num6=num5.
-
-; *THE-PERSON* MUST BE SET PROPERLY
-(defun inhibit-multiple-mappings (list-of-objs-or-concs weight)
-  (do ((lst (remove-nil-dup list-of-objs-or-concs) (cdr lst))) ; remove-nil-dup removes nil's and duplicates
-      ; exit:
-    ((null lst) (get *the-person* 'total-links))
-    (if (atom-begins (car lst) #\?) ; query
-      (excit-queries (car lst))
-      ; otherwise:
-      ; make negatively-weighted links between map units for competing mapping hypotheses:
-      (progn
-       (make-inhib-links
-        (no-queries ; strips out any queries
-         (get-firsts (car lst) (get (car lst) 'constraint-hyps))) ; get map units in which obj-or-conc participates on the left side
-        weight)
-       (make-inhib-links
-        (no-queries ; strips out any queries
-         (get-seconds (car lst) (get (car lst) 'constraint-hyps))) ; get map units in which obj-or-conc participates on the right side
-        weight)))))
 
 ; The original, old version, which is erroneous, is commented out.
 ; Eric Melz's newer version follows.
@@ -1180,6 +1153,27 @@
 ; )
 ;)
 
+;;; This fixes a bug which mixes up source and target components when
+;;; considering inhibitory connections. For example, num5=num3 was
+;;; inhibited by num6=num5.
+
+; *THE-PERSON* MUST BE SET PROPERLY
+(defun inhibit-multiple-mappings (list-of-objs-or-concs weight)
+  (do ((lst (remove-nil-dup list-of-objs-or-concs) (cdr lst)))
+      ; exit:
+    ((null lst) (get *the-person* 'total-links))
+    (if (atom-begins (car lst) #\?) ; query
+      (excit-queries (car lst))
+      ; otherwise:
+      (progn
+       (make-inhib-links
+        (no-queries
+         (get-firsts (car lst) (get (car lst) 'constraint-hyps)))
+        weight)
+       (make-inhib-links
+        (no-queries
+         (get-seconds (car lst) (get (car lst) 'constraint-hyps)))
+        weight)))))
 
 ; **************************
 ; PRAGMATICS:
@@ -1239,7 +1233,7 @@
     ; repeat:
     (let ((personal-unit (generic-to-personal-sym (car units))))
       (unless *silent-run?* (my-print personal-unit '" is a presumed mapping."))
-      (make-symlink 'pragmatic personal-unit *prag-weight*))))
+      (make-sym-link 'pragmatic personal-unit *prag-weight*))))
 
 (defun desired (lst) (presumed lst))
 
@@ -1398,10 +1392,7 @@
 ;;; adding an extra "filter" to the form (get conc-or-obj 'constraint-hyps),
 ;;; namely, it only retrieves units in which conc-or-obj is the first element
 ;;; of the mapping unit.
-;;; notes:
-;;; conc-or-obj is a predicate or argument symbol.
-;;; units is a list of acme map units, e.g. from the 'constraint-hyps property of conc-or-obj.
-;;; Note that the 'concerns property of a map unit lists the two symbols which are mapped by it.
+
 (defun get-firsts (conc-or-obj units)
   (let ((ret nil))
     (dolist (unit units)
