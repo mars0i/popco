@@ -1,4 +1,4 @@
-; NetworkExperiment17.nlogo
+; NetworkExperiment18.nlogo
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -38,7 +38,6 @@ globals
   subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
   
   communities  ; list of lists of nodes representing communities we've found so far
-
 ]
 
 breed [sides side]
@@ -134,22 +133,6 @@ to create-network [subnet]
   ]
   ask links[ set color link-color ]
 end
-
-; attempt to parameretize how likely it is to create communities
-; doesn't work yet
-;to alt-create-network [subnet max-distance degree-vars]
-;  let num-links (average-node-degree * nodes-per-subnet) / 2
-;  while [count links with [link-subnet = subnet] < num-links ][
-;    ask one-of persons with [person-subnet = subnet] [
-;      let poss-neighbors other persons with [person-subnet = subnet and not link-neighbor? myself and distance myself < max-distance]
-;      let poss-neighbors-degree-mean  mean-degree poss-neighbors
-;      let poss-neighbors-degree-var var-degree poss-neighbors
-;      let choice one-of poss-neighbors with [count link-neighbors < (poss-neighbors-degree-mean + ((random 2) - 1) * poss-neighbors-degree-var * degree-vars)]
-;      if choice != nobody [ create-link-with choice [set link-subnet subnet]]
-;    ]
-;  ]
-;  ask links[ set color link-color ]
-;end
 
 to inter-link-subnets [subn1 subn2]
   if (subn1 != subn2) [
@@ -865,9 +848,9 @@ NIL
 1
 
 BUTTON
-880
+815
 25
-936
+871
 59
 NIL
 go
@@ -932,9 +915,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-815
+870
 25
-879
+934
 59
 go once
 go
@@ -1237,9 +1220,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-815
+910
 80
-920
+1015
 114
 morris-go once
 morris-go
@@ -1254,9 +1237,9 @@ NIL
 1
 
 BUTTON
-920
+815
 80
-1017
+912
 114
 NIL
 morris-go
@@ -1549,8 +1532,8 @@ BUTTON
 390
 115
 423
-NIL
-reset-communities
+reset-communites
+reset-communities\nreset-colors
 NIL
 1
 T
