@@ -51,7 +51,7 @@ persons-own
   distance-from-other-persons   ;; list of distances of this node from other persons
   person-subnet
   index ; temporary variable for matrix configuration
-  my-community ; temporary variable for cohesion reporting
+  my-community ; temporary variable for cohesion reporting and community processing
 ]
 
 links-own
@@ -573,6 +573,7 @@ end
 
 to reset-communities
   set communities []
+  ask persons [set my-community false] ; avoid bugs due to this containing -1 or 1 from before
 end
 
 to-report find-two-communities [nodes]
@@ -586,8 +587,10 @@ to-report find-two-communities [nodes]
     let this-node item i node-list
     if-else ? >= 0 [
       set comm1 fput this-node comm1
+      ask this-node [set my-community 1]
     ][
       set comm2 fput this-node comm2
+      ask this-node [set my-community -1]
     ]
     set i i + 1
   ]
@@ -608,6 +611,20 @@ to-report init-node-list [nodes]  ; nodes could be either a list or an agentset
   ]
   
   report node-list
+end
+
+; Make vector of 1's and -1's representing two communities
+; This is the vector s in Newman.
+; Assumes that my-community in each node has recently been set appropriately by find-two-communities.
+to-report make-communities-vec [node-list]
+  report matrix:from-column-list (list map [[my-community] of ?] node-list)
+end
+
+to-report calc-modularity [mod-mat node-list]
+  let divisor (4 * length node-list)
+  let comms-vec make-communities-vec node-list
+  let mod-sum matrix:get (matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)) 0 0
+  report mod-sum / divisor
 end
 
 ; make list of node degrees in node-list order
