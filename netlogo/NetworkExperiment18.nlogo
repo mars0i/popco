@@ -616,15 +616,61 @@ end
 ; Make vector of 1's and -1's representing two communities
 ; This is the vector s in Newman.
 ; Assumes that my-community in each node has recently been set appropriately by find-two-communities.
+; node-list need not contain the entire population.
 to-report make-communities-vec [node-list]
   report matrix:from-column-list (list map [[my-community] of ?] node-list)
 end
 
-to-report calc-modularity [mod-mat node-list]
-  let divisor (4 * length node-list)
-  let comms-vec make-communities-vec node-list
-  let mod-sum matrix:get (matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)) 0 0
+; MODULARITY and MODULARITH-WITHOUT-SPLIT are wrappers around MODULARITY-FROM-COMMS-VEC:
+
+; MODULARITY: standard modularity calculation for a (sub-)network, assuming that it is divided into
+; two communities.  node-list should be initialized so that each persons' my-communities variable
+; contains either 1 or -1, representing which of the two communities its in.  Note that these values
+; are temporary--they depend on the most recent splitting of this (sub-)network.
+; (This is equation 11.45, p. 376 in Newman.)
+to-report modularity [mod-mat node-list]
+  report modularity-from-comms-vec mod-mat (make-communities-vec node-list)
+end
+
+; MODULARITY-WITHOUT-SPLIT calculates the modularity of a (sub-)network as if it had
+; not been divided into two communities.  This "modularity" is simply the sum of all elements
+; of the modularity matrix, divided by 4 * the number of nodes.  So we do the regular modularity
+; calculation with modularity-from-comms-vec, but pass in a vector of 1's instead of the
+; real community vector of 1's and -1's.  (This is the second term in the expression before the
+; first "=" in the second line of eq. 11.53, along with the outer 1/4m, p. 379 in Newman.)
+to-report modularity-without-split [mod-mat]
+  let num-nodes first matrix:dimensions mod-mat
+  ; next line passes a num-nodes x 1 column vector of 1's, along with mod-mat.
+  report modularity-from-comms-vec mod-mat (matrix:make-constant num-nodes 1 1)
+end
+  
+to-report modularity-from-comms-vec [mod-mat comms-vec]
+  let divisor 4 * (first matrix:dimensions comms-vec)
+  let mod-sum-mat matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)
+  let mod-sum matrix:get mod-sum-mat 0 0 ; prev line produces a 1x1 matrix containing the sum we want.
   report mod-sum / divisor
+end
+
+; MODULARITY-CHANGE
+; This is supposed to implement the first half of line 2 in Newman eq. 11.53, p. 379.
+; That equation is based on the insight that in evaluating the change in modularity
+; due to splitting one of the communities in a two-way split of a network, you only
+; need to compare the effect of the split on the split subnetwork, with that subnet's
+; "modularity" when unsplit.  i.e. you can ignore the other part of the larger network.
+; Our strategy here is to pass in a modularity matrix and node-list for only that
+; subnetwork.
+; QUESTION!!: Is this a correct implementation?? There's something funny here.
+; The sum Bij's in the first two lines of 11.53 would be equal to 0 if all indexes
+; were used (11.41, cf. 11.45).  But I'm treating this as if it were the whole
+; network, so shouldn't they be zero?  So the calculation that I'm doing is not
+; the one in the book. ?  Maybe what I really need is to get the modularity matrix
+; from the entire network--all the persons--and then subset it for just these nodes.
+; But in that case, it will be easier to do with a double loop rather than matrix
+; multiplication.  I also may need to have, at different points, a node-list for all
+; persons, and one for only this subnet, maybe initialized differently.  i.e. in that
+; case I can't use side-effected persons to maintain my 1's and -1's.  ??
+to-report modularity-change [mod-mat node-list]
+  report (modularity mod-mat node-list) - (modularity-without-split mod-mat)
 end
 
 ; make list of node degrees in node-list order
