@@ -1,6 +1,4 @@
-; NetworkExperiment18.nlogo
-; finishes first version of iterative modularity calc, but doesn't
-; use for testing divisions.  and I think it's wrong.
+; NetworkExperiment19.nlogo
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -651,6 +649,18 @@ to-report modularity-from-comms-vec [mod-mat comms-vec]
   let mod-sum-mat matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)
   let mod-sum matrix:get mod-sum-mat 0 0 ; prev line produces a 1x1 matrix containing the sum we want.
   report mod-sum / divisor
+end
+
+to-report restrict-mod-mat [mod-mat node-list]
+  restricted-mat matrix:copy mod-mat
+
+  let i 0
+  foreach node-list [
+    if [my-community of ?] == -1 [
+      matrix:set-row MESSED UP
+    set i i + 1
+  ]
+  
 end
 
 ; MODULARITY-CHANGE
