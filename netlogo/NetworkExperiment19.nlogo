@@ -651,16 +651,26 @@ to-report modularity-from-comms-vec [mod-mat comms-vec]
   report mod-sum / divisor
 end
 
+; restricted-mod-mat
+; One way to sum only those matrix entries that fall within a subset of nodes
+; is to zero out all other entries, and then just sum them all.  This procedure
+; creates such a matrix.  You can do this
+; by setting each entry separately with double indexes and embedded loops,
+; or you can just set all rows and columns corresponding to the extra indexes to zero.
 to-report restrict-mod-mat [mod-mat node-list]
-  restricted-mat matrix:copy mod-mat
+  let zero-list n-values (length node-list) [0] ; list of zeros
+  let restricted-mat matrix:copy mod-mat
 
   let i 0
   foreach node-list [
-    if [my-community of ?] == -1 [
-      matrix:set-row MESSED UP
+    if [my-community] of ? = -1 [
+      matrix:set-row restricted-mat i zero-list
+      matrix:set-column restricted-mat i zero-list
+    ]
     set i i + 1
   ]
   
+  report restricted-mat
 end
 
 ; MODULARITY-CHANGE
