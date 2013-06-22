@@ -1,6 +1,27 @@
+;;; crime3propns.lisp
+;;; The crime3 version of the "crime is a virus/beast" propositions.
+;;; To be included by crime3.lisp.
+;;; This file has the propositonal and semantic contents of
 ;;; crime3.lisp as of 2/20/2013, with everything but the
 ;;; propositions and semantic specs stripped out.
 ;;; For possible embedding in presentations and papers.
+;;; Comments add/altered after 6/22/2013.
+;;; See crime3withnotes.lisp for all of the original comments,
+;;; possible propositions not in use, etc.
+
+; Notational conventions:
+; v-: virus
+; c-: crime
+; cv-: virus-ey crime
+; cb-: beast-ey crime
+; b-: beast
+; X->Y: X causes Y to occur, where X and Y are propositions
+; X->-Y: X prevents Y from occuring, where X and Y are propositions
+; bperson: person in the beast/virus domain
+; cperson: person in the crime domain
+; elts: things subject to viruses or crime in the virusey sense 
+
+; Note that I'm reversing source vs target wrt the sanday simulations:
 
 (defvar virus-propns
   '(
@@ -75,3 +96,11 @@
     (semantic-iff 'cv-rpa 'b-abp -.1)
     (similar 'is-beastly 'is-infected (* -1 *ident-weight*))
    ))
+
+(defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
+
+(defvar virus-propn-syms (mapcar #'third virus-propns))
+(defvar beast-propn-syms (mapcar #'third beast-propns))
+(defvar viral-crime-propn-syms (mapcar #'third viral-crime-propns))
+(defvar beastly-crime-propn-syms (mapcar #'third beastly-crime-propns))
+(defvar crime-propn-syms (mapcar #'third crime-propns))
