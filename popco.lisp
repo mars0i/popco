@@ -840,6 +840,7 @@
 ; Calls to semantic-iff are normally listed as part of the initial-input argument to make-person,
 ; and are then eval'ed in function create-net, thereby storing info about the semantic iff in the 
 ; person for later use.
+; Grepping won't find a real version of "defun semantic-iff"; the next line is the place to look.
 (setf (symbol-function 'semantic-iff) #'generic-semantic-iff)
 
 ; PERSONAL-SEMANTIC-IFF
