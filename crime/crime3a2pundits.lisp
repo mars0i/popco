@@ -1,4 +1,6 @@
-;; crime3b2pundits.lisp
+;; crime3a2pundits.lisp
+;; no bias for any person
+;; pop size 20 + 2 pundits, one positive, one negative
 
 (load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime3")
