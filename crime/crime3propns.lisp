@@ -10,18 +10,11 @@
 ;;; possible propositions not in use, etc.
 
 ; Notational conventions:
-; v-: virus
-; c-: crime
-; cv-: virus-ey crime
-; cb-: beast-ey crime
-; b-: beast
+; v-: virus | c-: crime | cv-: virus-ey crime | cb-: beast-ey crime | b-: beast
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
-; bperson: person in the beast/virus domain
-; cperson: person in the crime domain
+; bperson: person in the beast/virus domain; ; cperson: person in the crime domain
 ; elts: things subject to viruses or crime in the virusey sense 
-
-; Note that I'm reversing source vs target wrt the sanday simulations:
 
 (defvar virus-propns
   '(
