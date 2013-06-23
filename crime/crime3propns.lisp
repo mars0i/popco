@@ -47,11 +47,11 @@
     (recruit (crim-pers at-risk-cpers) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
     (cause (cv-rpa cv-ca) cv-sca->ca) ; 
     (support (at-risk-cpers) cv-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
-    (prevent (cv-sa cv-rpa) cv-sa->-rpa)
-    (cause (cv-sa->-rpa cv-na) cv-sarpa->na)
+    (prevent (cv-sa cv-rpa) cv-sa->-rpa)     ; [HO1]
+    (cause (cv-sa->-rpa cv-na) cv-sarpa->na) ; [HO2]
     (imprison (crim-pers) cv-ip)
     (prevent (cv-ip cv-rpa) cv-ip->-rpa)
-    (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; imprisoning prevents crime
+    (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; imprisoning prevents crime [HO2]
    ))
 
 (defvar beast-propns
@@ -72,7 +72,7 @@
 
 (defvar beastly-crime-propns
   '(
-    (not-criminal (cpers) cb-np)           ; cpers is not a crinimal
+    (not-criminal (cpers) cb-np)           ; person is not a crinimal
     (aggressive (crim-pers) cb-ap)         ; person who's already a criminal is aggressive
     (victimize (crim-pers cpers) cb-vpp)   ; criminal victimizes non-criminal
     (cause (cb-ap cb-vpp) cb-ap->vpp)      ; criminal's aggressiveness causes himer to victimize non-criminal [HO1]
