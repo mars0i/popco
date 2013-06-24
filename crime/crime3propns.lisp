@@ -7,6 +7,8 @@
 ;;; functions, I stripped out candidate propositions that I'd commented out
 ;;; and have not used for a long time.
 ;;; See crime3withnotes.lisp for all of the original comments, possible propositions not in use, etc.
+;;; Note that the virus and crime prevention propositions are especially approximate/abstracted,
+;;; partly because we have no quantifiers.
 
 ; Notational conventions:
 ; Source analog: V-: virus propn | B-: beast propn 
@@ -69,8 +71,8 @@
     (prevent (b-cpb b-abp) b-cpb->-abp)   ; Person capturing beast prevents beast attacking person. [HO1]
     (danger-to (bpers) b-dtp)             ; Person is subject to danger.
     (cause (b-cpb b-dtp) b-cpb->dtp)      ; Person capturing beast is dangerous to person. [HO1]
-   )).
-.
+   ))
+
 (defvar beastly-crime-propns.
   '(
     (not-criminal (cpers) cb-np)           ; Person is not a crinimal.
