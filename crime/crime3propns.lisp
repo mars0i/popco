@@ -12,7 +12,8 @@
 ; Source analog: V-: virus propn | B-: beast propn 
 ; Target analog: CV-: virus-ey crime propn | CB-: beast-ey crime propn
 ; BPERS: person in the beast domain; CPERS: person in the crime domains.
-; PERS-0: person who's already infected | PERS-1: initially uninfected person who might get infected.
+; VPERS-0: person who's already infected | VPERS-1: initially uninfected person who might get infected.
+; CPERS-0: person who's already a criminal | CPERS-1: initially innocent person who might become criminal.
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
 ; HO1: This is a higher-order proposition referencing only first-order propositions
@@ -22,36 +23,36 @@
 
 (defvar virus-propns
   '(
-    (is-infected (pers-0) v-ip)            ; Person 0 has infection.
-    (not-infected (pers-1) v-na)           ; Person 1 lacks infection.
-    (is-infected (pers-1) v-ia)            ; Person 1 has infection.
-    (harms (pers-1) v-ha)                  ; Person 1 is harmed.
+    (is-infected (vpers-0) v-ip)            ; Person 0 has infection.
+    (not-infected (vpers-1) v-na)           ; Person 1 lacks infection.
+    (is-infected (vpers-1) v-ia)            ; Person 1 has infection.
+    (harms (vpers-1) v-ha)                  ; Person 1 is harmed.
     (cause (v-ia v-ha) v-ci->ha)           ; That person 1 has infection is harmful to person 1. [HO1]
-    (infect (pers-0 pers-1) v-ipa)         ; Person 0, who already has infection, infects person 1.
+    (infect (vpers-0 pers-1) v-ipa)         ; Person 0, who already has infection, infects person 1.
     (cause (v-ipa v-ia) v-ipa->ia)         ; The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
-    (inoculate (pers-1) v-ica)             ; Person 1 gets innoculated.
+    (inoculate (vpers-1) v-ica)             ; Person 1 gets innoculated.
     (prevent (v-ica v-ipa) v-ia->-spa)     ; That person 1 is innoculated prevents person 0 from infecting person 1. [HO1]
     (cause (v-ia->-spa v-na) v-iaspa->na)  ; That the innoculating prevents the infecting causes [preserves] person 1 lacking infection. [HO2]
-    (quarantine (pers-0) v-qp)             ; Person 0 is quarantined.
+    (quarantine (vpers-0) v-qp)             ; Person 0 is quarantined.
     (prevent (v-qp v-ipa) v-qp->-spa)      ; That person 0 is quarantined prevents person 0 from infecting person 1.
     (cause (v-qp->-spa  v-na) v-qpspa->na) ; That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
    ))
 
 (defvar viral-crime-propns
   '(
-    (is-criminal (crim-pers) cv-cp) ; person who's already committing crimes
-    (not-criminal (at-risk-cpers) cv-na)      ; person at risk of turning to crime
-    (is-criminal (at-risk-cpers) cv-ca)
-    (harms (at-risk-cpers) cv-ha)
-    (cause (cv-ca cv-ha) cv-ca->hp)         ; becoming a criminal has bad consequences for the individual
-    (recruit (crim-pers at-risk-cpers) cv-rpa) ; criminals recruit, teach, are role models for, cause indirectly new criminals
-    (cause (cv-rpa cv-ca) cv-sca->ca) ; 
-    (support (at-risk-cpers) cv-sa) ; support = financial support, supportive parents, mentors, etc., education, etc.
-    (prevent (cv-sa cv-rpa) cv-sa->-rpa)     ; [HO1]
-    (cause (cv-sa->-rpa cv-na) cv-sarpa->na) ; [HO2]
-    (imprison (crim-pers) cv-ip)
-    (prevent (cv-ip cv-rpa) cv-ip->-rpa)
-    (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; imprisoning prevents crime [HO2]
+    (is-criminal (cpers-0) cv-cp)             ; Person 0 is a criminal.
+    (not-criminal (cpers-1) cv-na)            ; Person 1 is not a criminal (or: is innocent).
+    (is-criminal (cpers-1) cv-ca)             ; Person 1 is a criminal.
+    (harms (cpers-1) cv-ha)                   ; Person 1 is harmed.
+    (cause (cv-ca cv-ha) cv-ca->hp)           ; Person 1 being a criminal is harmful to person 1.
+    (recruit (cpers-0 cpers-1) cv-rpa)        ; Person 0 recruits person 1 into crime.
+    (cause (cv-rpa cv-ca) cv-sca->ca)         ; Person 0 recruiting person 1 causes person 1 to become a criminal. [HO1]
+    (support (cpers-1) cv-sa)                 ; Person 1 is [financially, parentally, socially, educationally, etc.] supported.
+    (prevent (cv-sa cv-rpa) cv-sa->-rpa)      ; Person 1 being supported prevents person 0 from recruiting person 1. [HO1]
+    (cause (cv-sa->-rpa cv-na) cv-sarpa->na)  ; That being supported prevents 1 from being recruited by 0 causes [preserves] 1's innocence. [HO2]
+    (imprison (cpers-0) cv-ip)                ; Person 0 is imprisoned.  [Alternative: is reformed]
+    (prevent (cv-ip cv-rpa) cv-ip->-rpa)      ; Person 0 being imprisoned prevents person 0 from recruiting person 1. [HO1]
+    (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; That O's imprisonment prevents 0 from recruiting 1 causes [preserves] 1's innocence. [HO2]
    ))
 
 (defvar beast-propns
@@ -71,7 +72,7 @@
    )).
 .
 (defvar beastly-crime-propns.
-  '(.
+  '(
     (not-criminal (cpers) cb-np)           ; Person is not a crinimal.
     (aggressive (crim-pers) cb-ap)         ; Person who's already a criminal is aggressive.
     (victimize (crim-pers cpers) cb-vpp)   ; Criminal victimizes non-criminal.
