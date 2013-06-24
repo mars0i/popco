@@ -23,19 +23,19 @@
 
 (defvar virus-propns
   '(
-    (is-infected (vpers-0) v-ip)            ; Person 0 has infection.
-    (not-infected (vpers-1) v-na)           ; Person 1 lacks infection.
-    (is-infected (vpers-1) v-ia)            ; Person 1 has infection.
-    (harms (vpers-1) v-ha)                  ; Person 1 is harmed.
-    (cause (v-ia v-ha) v-ci->ha)           ; That person 1 has infection is harmful to person 1. [HO1]
-    (infect (vpers-0 pers-1) v-ipa)         ; Person 0, who already has infection, infects person 1.
-    (cause (v-ipa v-ia) v-ipa->ia)         ; The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
-    (inoculate (vpers-1) v-ica)             ; Person 1 gets innoculated.
-    (prevent (v-ica v-ipa) v-ia->-spa)     ; That person 1 is innoculated prevents person 0 from infecting person 1. [HO1]
-    (cause (v-ia->-spa v-na) v-iaspa->na)  ; That the innoculating prevents the infecting causes [preserves] person 1 lacking infection. [HO2]
-    (quarantine (vpers-0) v-qp)             ; Person 0 is quarantined.
-    (prevent (v-qp v-ipa) v-qp->-spa)      ; That person 0 is quarantined prevents person 0 from infecting person 1.
-    (cause (v-qp->-spa  v-na) v-qpspa->na) ; That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
+    (is-infected (vpers-0) v-ip)              ; Person 0 has infection.
+    (not-infected (vpers-1) v-na)             ; Person 1 lacks infection.
+    (is-infected (vpers-1) v-ia)              ; Person 1 has infection.
+    (harms (vpers-1) v-ha)                    ; Person 1 is harmed.
+    (cause (v-ia v-ha) v-ci->ha)              ; That person 1 has infection is harmful to person 1. [HO1]
+    (infect (vpers-0 pers-1) v-ipa)           ; Person 0, who already has infection, infects person 1.
+    (cause (v-ipa v-ia) v-ipa->ia)            ; The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
+    (inoculate (vpers-1) v-ica)               ; Person 1 gets innoculated.
+    (prevent (v-ica v-ipa) v-ia->-spa)        ; That person 1 is innoculated prevents person 0 from infecting person 1. [HO1]
+    (cause (v-ia->-spa v-na) v-iaspa->na)     ; That the innoculating prevents the infecting causes [preserves] person 1 lacking infection. [HO2]
+    (quarantine (vpers-0) v-qp)               ; Person 0 is quarantined.
+    (prevent (v-qp v-ipa) v-qp->-spa)         ; That person 0 is quarantined prevents person 0 from infecting person 1.
+    (cause (v-qp->-spa  v-na) v-qpspa->na)    ; That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
    ))
 
 (defvar viral-crime-propns
