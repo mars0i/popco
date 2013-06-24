@@ -11,8 +11,8 @@
 ; Notational conventions:
 ; Source analog: V-: virus propn | B-: beast propn 
 ; Target analog: CV-: virus-ey crime propn | CB-: beast-ey crime propn
-; BPERSON: person in the beast/virus domains; CPERSON: person in the crime domains
-; ELTS: things subject to viruses or crime in the virusey sense 
+; BPERS: person in the beast domain; CPERS: person in the crime domains.
+; PERS-0: person who's already infected | PERS-1: initially uninfected person who might get infected.
 ; X->Y: X causes Y to occur, where X and Y are propositions
 ; X->-Y: X prevents Y from occuring, where X and Y are propositions
 ; HO1: This is a higher-order proposition referencing only first-order propositions
@@ -22,19 +22,19 @@
 
 (defvar virus-propns
   '(
-    (is-infected (prev-infected-elt) v-ip) ; the existence of a previously infected element is assumed
-    (not-infected (at-risk-elt) v-na)  ; at risk element is not infected
-    (is-infected (at-risk-elt) v-ia)   ; at-risk person/thing is infected
-    (harms (at-risk-elt) v-ha)        ; note we have no quantificatiion or true pattern matching
-    (cause (v-ia v-ha) v-ci->ha)
-    (infect (prev-infected-elt at-risk-elt) v-ipa) ; infection spreads from the previously infected to the at-risk
-    (cause (v-ipa v-ia) v-ipa->ia) ; transmission from infected to uninfected causes infection
-    (inoculate (at-risk-elt) v-ica)   ; inoculating the at-risk prevents spread to new individuals (or something with cells?)
-    (prevent (v-ica v-ipa) v-ia->-spa) ; inoculation of uninfected prevents further infection
-    (cause (v-ia->-spa v-na) v-iaspa->na) ; preventing spread of infection causes [preserves] lack of infection in the at-risk
-    (quarantine (prev-infected-elt) v-qp) ; previously infected is quarantined (or cells sequestered, I suppose)
-    (prevent (v-qp v-ipa) v-qp->-spa) ; quarantining the infected prevents spread to new individuals 
-    (cause (v-qp->-spa  v-na) v-qpspa->na)
+    (is-infected (pers-0) v-ip)            ; Person 0 has infection.
+    (not-infected (pers-1) v-na)           ; Person 1 lacks infection.
+    (is-infected (pers-1) v-ia)            ; Person 1 has infection.
+    (harms (pers-1) v-ha)                  ; Person 1 is harmed.
+    (cause (v-ia v-ha) v-ci->ha)           ; That person 1 has infection is harmful to person 1. [HO1]
+    (infect (pers-0 pers-1) v-ipa)         ; Person 0, who already has infection, infects person 1.
+    (cause (v-ipa v-ia) v-ipa->ia)         ; The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
+    (inoculate (pers-1) v-ica)             ; Person 1 gets innoculated.
+    (prevent (v-ica v-ipa) v-ia->-spa)     ; That person 1 is innoculated prevents person 0 from infecting person 1. [HO1]
+    (cause (v-ia->-spa v-na) v-iaspa->na)  ; That the innoculating prevents the infecting causes [preserves] person 1 lacking infection. [HO2]
+    (quarantine (pers-0) v-qp)             ; Person 0 is quarantined.
+    (prevent (v-qp v-ipa) v-qp->-spa)      ; That person 0 is quarantined prevents person 0 from infecting person 1.
+    (cause (v-qp->-spa  v-na) v-qpspa->na) ; That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
    ))
 
 (defvar viral-crime-propns
@@ -56,34 +56,34 @@
 
 (defvar beast-propns
   '(
-    (human (bpers) b-pp)                  ; person is human [should match: (not-criminal (cpers) cb-np)]
-    (aggressive (beast) b-ab)             ; beast is agressive
-    (attack (beast bpers) b-abp)          ; beast attacks person
-    (cause (b-ab b-abp) b-ab->abp)        ; beast's agressiveness causes it to attack person [HO1]
-    (harms (bpers) b-hp)                  ; person is harmed
-    (cause (b-abp b-hp) b-abp->hp)        ; beast attacking human harms person [HO1]
-    (helps (beast) b-hb)                  ; beast is benefited
-    (cause (b-abp b-hb) b-abp->hb)        ; beast attacking person benefits beast [HO1]
-    (capture (bpers beast) b-cpb)         ; person captures beast
-    (prevent (b-cpb b-abp) b-cpb->-abp)   ; person capturing beast prevents beast attacking person [HO1]
-    (danger-to (bpers) b-dtp)             ; person is subject to danger
-    (cause (b-cpb b-dtp) b-cpb->dtp)      ; person capturing beast is dangerous to person [HO1]
-   ))
-
-(defvar beastly-crime-propns
-  '(
-    (not-criminal (cpers) cb-np)           ; person is not a crinimal
-    (aggressive (crim-pers) cb-ap)         ; person who's already a criminal is aggressive
-    (victimize (crim-pers cpers) cb-vpp)   ; criminal victimizes non-criminal
-    (cause (cb-ap cb-vpp) cb-ap->vpp)      ; criminal's aggressiveness causes himer to victimize non-criminal [HO1]
-    (harms (cpers) cb-hcp)                 ; non-criminal is harmed [hp already in use as name]
-    (cause (cb-vpp cb-hcp) cb-vpp->hcp)    ; criminal victimizing non-criminal harms non-criminal [HO1]
-    (helps (crim-pers) cb-hp)              ; criminal is benefited
-    (cause (cb-vpp cb-hp) cb-vpp->hp)      ; criminal victimizing non-criminal benefits criminal [HO1]
-    (capture (cpers crim-pers) cb-cpc)     ; non-criminal captures criminal [cp already in use for crime propn]
-    (prevent (cb-cpc cb-vpp) cb-cpc->-vpp) ; non-criminal capturing criminal prevents criminal from victimizing non-criminal [HO1]
-    (danger-to (cpers) cb-dtp)             ; non-criminal is subject to danger
-    (cause (cb-cpc cb-dtp) cb-cpc->dtp)    ; non-criminal capturing criminal is dangerous to non-criminal [HO1]
+    (human (bpers) b-pp)                  ; Person is human. [should match cb-np]
+    (aggressive (beast) b-ab)             ; Beast is agressive.
+    (attack (beast bpers) b-abp)          ; Beast attacks person.
+    (cause (b-ab b-abp) b-ab->abp)        ; Beast's agressiveness causes it to attack person. [HO1]
+    (harms (bpers) b-hp)                  ; Person is harmed.
+    (cause (b-abp b-hp) b-abp->hp)        ; Beast attacking human harms person. [HO1]
+    (helps (beast) b-hb)                  ; Beast is benefited.
+    (cause (b-abp b-hb) b-abp->hb)        ; Beast attacking person benefits beast. [HO1]
+    (capture (bpers beast) b-cpb)         ; Person captures beast.
+    (prevent (b-cpb b-abp) b-cpb->-abp)   ; Person capturing beast prevents beast attacking person. [HO1]
+    (danger-to (bpers) b-dtp)             ; Person is subject to danger.
+    (cause (b-cpb b-dtp) b-cpb->dtp)      ; Person capturing beast is dangerous to person. [HO1]
+   )).
+.
+(defvar beastly-crime-propns.
+  '(.
+    (not-criminal (cpers) cb-np)           ; Person is not a crinimal.
+    (aggressive (crim-pers) cb-ap)         ; Person who's already a criminal is aggressive.
+    (victimize (crim-pers cpers) cb-vpp)   ; Criminal victimizes non-criminal.
+    (cause (cb-ap cb-vpp) cb-ap->vpp)      ; Criminal's aggressiveness causes himer to victimize non-criminal. [HO1]
+    (harms (cpers) cb-hcp)                 ; Non-criminal is harmed. [hp already in use as name]
+    (cause (cb-vpp cb-hcp) cb-vpp->hcp)    ; Criminal victimizing non-criminal harms non-criminal. [HO1]
+    (helps (crim-pers) cb-hp)              ; Criminal is benefited.
+    (cause (cb-vpp cb-hp) cb-vpp->hp)      ; Criminal victimizing non-criminal benefits criminal. [HO1]
+    (capture (cpers crim-pers) cb-cpc)     ; Non-criminal captures criminal. [notation "cp" has another use]
+    (prevent (cb-cpc cb-vpp) cb-cpc->-vpp) ; Non-criminal capturing criminal prevents criminal from victimizing non-criminal. [HO1]
+    (danger-to (cpers) cb-dtp)             ; Non-criminal is subject to danger.
+    (cause (cb-cpc cb-dtp) cb-cpc->dtp)    ; Non-criminal capturing criminal is dangerous to non-criminal. [HO1]
    ))
 
 (defvar semantic-relations
