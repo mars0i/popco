@@ -23,6 +23,14 @@
 ; HO3: This is a higher-order proposition referencing at least one HO2 proposition
 ; etc.
 
+; NOTE
+; There's a lot of similarity between quarantine/imprison and capture/capture.
+; Also note that Thibodeau and Boroditsky counted arresting, imprisoning, etc.
+; as enforcement--i.e. what beast evokes.  Maybe a better analog of quarantining
+; would be keeping out of your neighborhood, living in a gated community, etc.
+; although you wouldn't necessarily expect those to correlate with prevention
+; measures.
+
 (defvar virus-propns
   '(
     (is-infected (vpers-0) v-ip)              ; Person 0 has infection.
@@ -73,7 +81,7 @@
     (cause (b-cpb b-dtp) b-cpb->dtp)      ; Person capturing beast is dangerous to person. [HO1]
    ))
 
-(defvar beastly-crime-propns.
+(defvar beastly-crime-propns
   '(
     (not-criminal (cpers) cb-np)           ; Person is not a crinimal.
     (aggressive (crim-pers) cb-ap)         ; Person who's already a criminal is aggressive.
