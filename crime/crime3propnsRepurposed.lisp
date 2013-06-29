@@ -1,6 +1,8 @@
 ;;; crime3propnsRepurposed.lisp
 ;;; Revised comments on propositions, treating them as about carnivores and herbivores rather than beasts and viruses
 
+;;; Here we might think of "crime" as some new set of animals to be dealt with in a new environment.
+
 ;; NOTE THIS CONCERNS DISEASE TRANSMISSION. "VIRUS" IS NOT ESSENTIAL.  IT COULD AS WELL BE EVIL SPIRITS.
 (defvar virus-propns
   '(
