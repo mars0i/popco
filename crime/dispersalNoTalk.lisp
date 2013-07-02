@@ -10,6 +10,10 @@
 ;;; Hypothesis: Your response is sensible if and only iff you have available
 ;;; the appropriate source analog.
 
+;;; Tip: Run once to produce a csv file, then process that with read2multirunRA to
+;;; produce an mra (multi-run array) object in R.  Then run activnsAtTickBarchart
+;;; on the mra, e.g. thus: activnsAtTickBarchart(dispersalNoTalk.mra, 300)  .
+
 (load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
 (load "crime/crime3")
 

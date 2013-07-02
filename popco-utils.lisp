@@ -10,6 +10,12 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+; Return copy of list with nth (zero-based) element removed
+(defun rem-nth (n lis)
+  (cond ((null lis) (error "REM-NTH: Trying to remove object past end of list"))
+        ((eq n 0) (cdr lis))
+        (t (cons (car lis) (rem-nth (1- n) (cdr lis))))))
+
 (defun concerns (map-unit)
   (get map-unit 'concerns))
 
