@@ -1,4 +1,4 @@
-; NetworkExperiment19.nlogo
+; CultranDejonet.nlogo
 ; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
 ;
 ; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
@@ -302,28 +302,6 @@ to setup-cultvar
   set color (activn-to-color activation)
 end
 
-to toggle-cohesion-display
-  if-else nodes-showing-numbers? [
-    ask persons [set label ""]
-    set nodes-showing-numbers? false
-  ][
-    ; first tell each node what its community is:
-    foreach communities [
-      let this-community ?
-      foreach this-community [
-        ask ? [set my-community this-community]
-      ]
-    ]
-    
-    ask persons [let coh precision (node-cohesion self my-community) 2 ; round to 2 dec places
-                 let coh-string (word coh) ; make into string
-                 if coh < 1 [set coh-string substring coh-string 1 (length coh-string)] ; strip initial 0
-                 set label coh-string
-                 set label-color ifelse-value (activation < .3) [black] [white]]
-    set nodes-showing-numbers? true
-  ]
-end
-
 to toggle-degree-display
   if-else nodes-showing-numbers? [
     ask persons [set label ""]
@@ -433,16 +411,6 @@ to update-activns
 end
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Morris (2000) model
-;; includes both setup and run functions
-;; uses other code here
-
-to morris-setup
-  setup
-  make-activns-extreme
-end
-
 to make-activns-extreme
   ask persons
     [if-else activation >= 0
@@ -453,66 +421,6 @@ to make-activns-extreme
      set color (activn-to-color activation)]
 end
 
-to morris-go
-  if (ready-to-stop) [
-    set ready-to-stop false ; allows trying to restart, perhaps after altering parameters or network
-    stop
-  ]
-  set stop-threshold 10 ^ stop-threshold-exponent ; allows changing this while running
-  morris-transmit-cultvars
-  if (activns-settled) [set ready-to-stop true] ; compares activation with next-activation, so must run between transmit-cultvars and update-activns
-  update-activns                                ; on the other hand, we do want to complete the activation updating process even if about to stop
-  tick
-end
-
-; modified Morris (2000) style transmission:
-; Just count whether proportion of 1's among neighbors exceeds switch-threshold to see whether to change from -1 to 1.
-; No need to separate into transmit and receive functions. 
-to morris-transmit-cultvars
-  ask persons with [activation < 0]
-    [let num-neighbors count link-neighbors
-     let num-high-neighbors count link-neighbors with [activation > 0]
-     if (num-high-neighbors / num-neighbors >= morris-switch-threshold)
-       [set next-activation 1]]
-   if morris-symmetric?
-     [ask persons with [activation > 0]
-        [let num-neighbors count link-neighbors
-         let num-low-neighbors count link-neighbors with [activation < 0]
-         if (num-low-neighbors / num-neighbors >= morris-switch-threshold)
-           [set next-activation -1]]]
-end
-
-to morris-reset-cultvars
-  reset-cultvars
-  make-activns-extreme
-end
-
-to set-right-half-low
-  ask persons with [xcor > 0]
-    [set activation -1
-     set next-activation -1
-     set color (activn-to-color activation)]
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; COMMUNITY MARKING AND COHESION CALCULATION
-
-to-report node-cohesion [node community]
-  let num-neighbs 0
-  let num-community-neighbs 0
-  ask node
-    [set num-neighbs count link-neighbors
-     set num-community-neighbs num-neighbors-in-community community]
-  report num-community-neighbs / num-neighbs
-end
-
-to-report num-neighbors-in-community [community]
-  report count link-neighbors with [member? self community]
-end
-
-to-report community-cohesion [community]
-  report min [node-cohesion self community] of community
-end
 
 to reset-colors
   ask persons
@@ -523,315 +431,9 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; MATRIX-BASED PARTITIONING PROCEDURE
-;; Procedure make-network-partition below artitions a network into two 
-;; subnets so as to have a small cut set -- i.e.
-;; so as to have close to the fewest number of links between the
-;; subnets, as possible.  You get to choose how large the subnets are. 
-;; Implements algorithm on p. 369 of 
-;; Networks: An Introduction
-;; by M.E.J. Newman
-;; Oxford University Press 2010
-
-; Partition a set of nodes into two sets so as to try to minimize the number of links between them.
-; Implements Newman 2010 p. 369.
-; Needs percentage in first subnet, n1-proportion, to be set in the gui.
-to-report make-network-partition [nodes]
-  let node-list init-node-list nodes  ; make list of nodes with internal indexes of their order - to maintain matrix row/col order
-  let sorted-nodes sort-node-list-by-order-list node-list (Laplacean-2nd-eigenvector node-list) ; order nodes by 2nd eigenvector of Laplacean matrix
-
-  ; get partition size quantities
-  let num-nodes count nodes
-  let num-n1 floor (n1-proportion * num-nodes)  ; size of first partition set. n1-proportion should be set in the gui.
-  let num-n2 num-nodes - num-n1                 ; size of other set
-  
-  ; first try splitting into beginning vs end nodes in order of values in the second eigenvector
-  let n1a sublist sorted-nodes 0 num-n1
-  let n2a sublist sorted-nodes num-n1 num-nodes ; result has length num-n2
-  let cutset-a-size count cut-set (turtle-set n1a) (turtle-set n2a)
-
-  ; then try splitting into end vs beginning nodes in order of values in the second eigenvector
-  let n1b sublist sorted-nodes num-n2 num-nodes  ; result has length num-n1
-  let n2b sublist sorted-nodes 0 num-n2
-  let cutset-b-size count cut-set (turtle-set n1b) (turtle-set n2b)
-  
-  ; now pick whichever partition has a smaller cut size
-  if-else cutset-a-size <= cutset-b-size
-    [report (list n1a n2a)]
-    [report (list n1b n2b)]
-end
-
-to find-and-store-communities
-  if-else empty? communities [
-    set communities find-two-communities persons
-  ][
-    set communities (reduce sentence (map find-two-communities communities)) ; 'reduce sentence ...' turns a list of lists of lists into a list of lists
-  ]
-  
-  set communities remove [] communities ; remove empty communities
-end
-
-to reset-communities
-  set communities []
-  ask persons [set my-community false] ; avoid bugs due to this containing -1 or 1 from before
-end
-
-to-report find-two-communities [nodes]
-  let node-list init-node-list nodes
-  let eigvec modularity-mat-1st-eigenvector node-list
-  
-  let comm1 []
-  let comm2 []
-  let i 0
-  foreach eigvec [
-    let this-node item i node-list
-    if-else ? >= 0 [
-      set comm1 fput this-node comm1
-      ask this-node [set my-community 1]
-    ][
-      set comm2 fput this-node comm2
-      ask this-node [set my-community -1]
-    ]
-    set i i + 1
-  ]
-  
-  report (list comm1 comm2)
-end
-
-; This gives each node in nodes an index number.
-; The indexes are arbitrary, but will be used to index rows and columns 
-; in an N x N matrix, where N is the size of nodes.  The indexes will be in
-; who order, but we can't use who numbers, since some could be missing.
-to-report init-node-list [nodes]  ; nodes could be either a list or an agentset
-  let node-list sort nodes
-  let i 0
-  foreach node-list [
-    ask ? [set index i]  ; don't assume that we've got all of the who numbers--make our own
-    set i i + 1 
-  ]
-  
-  report node-list
-end
-
-; Make vector of 1's and -1's representing two communities
-; This is the vector s in Newman.
-; Assumes that my-community in each node has recently been set appropriately by find-two-communities.
-; node-list need not contain the entire population.
-to-report make-communities-vec [node-list]
-  report matrix:from-column-list (list map [[my-community] of ?] node-list)
-end
-
-; MODULARITY and MODULARITH-WITHOUT-SPLIT are wrappers around MODULARITY-FROM-COMMS-VEC:
-
-; MODULARITY: standard modularity calculation for a (sub-)network, assuming that it is divided into
-; two communities.  node-list should be initialized so that each persons' my-communities variable
-; contains either 1 or -1, representing which of the two communities its in.  Note that these values
-; are temporary--they depend on the most recent splitting of this (sub-)network.
-; (This is equation 11.45, p. 376 in Newman.)
-to-report modularity [mod-mat node-list]
-  report modularity-from-comms-vec mod-mat (make-communities-vec node-list)
-end
-
-; MODULARITY-WITHOUT-SPLIT calculates the modularity of a (sub-)network as if it had
-; not been divided into two communities.  This "modularity" is simply the sum of all elements
-; of the modularity matrix, divided by 4 * the number of nodes.  So we do the regular modularity
-; calculation with modularity-from-comms-vec, but pass in a vector of 1's instead of the
-; real community vector of 1's and -1's.  (This is the second term in the expression before the
-; first "=" in the second line of eq. 11.53, along with the outer 1/4m, p. 379 in Newman.)
-to-report modularity-without-split [mod-mat]
-  let num-nodes first matrix:dimensions mod-mat
-  ; next line passes a num-nodes x 1 column vector of 1's, along with mod-mat.
-  report modularity-from-comms-vec mod-mat (matrix:make-constant num-nodes 1 1)
-end
-  
-to-report modularity-from-comms-vec [mod-mat comms-vec]
-  let divisor 4 * (first matrix:dimensions comms-vec)
-  let mod-sum-mat matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)
-  let mod-sum matrix:get mod-sum-mat 0 0 ; prev line produces a 1x1 matrix containing the sum we want.
-  report mod-sum / divisor
-end
-
-; restricted-mod-mat
-; One way to sum only those matrix entries that fall within a subset of nodes
-; is to zero out all other entries, and then just sum them all.  This procedure
-; creates such a matrix.  You can do this
-; by setting each entry separately with double indexes and embedded loops,
-; or you can just set all rows and columns corresponding to the extra indexes to zero.
-to-report restrict-mod-mat [mod-mat node-list]
-  let zero-list n-values (length node-list) [0] ; list of zeros
-  let restricted-mat matrix:copy mod-mat
-
-  let i 0
-  foreach node-list [
-    if [my-community] of ? = -1 [
-      matrix:set-row restricted-mat i zero-list
-      matrix:set-column restricted-mat i zero-list
-    ]
-    set i i + 1
-  ]
-  
-  report restricted-mat
-end
-
-; MODULARITY-CHANGE
-; This is supposed to implement the first half of line 2 in Newman eq. 11.53, p. 379.
-; That equation is based on the insight that in evaluating the change in modularity
-; due to splitting one of the communities in a two-way split of a network, you only
-; need to compare the effect of the split on the split subnetwork, with that subnet's
-; "modularity" when unsplit.  i.e. you can ignore the other part of the larger network.
-; Our strategy here is to pass in a modularity matrix and node-list for only that
-; subnetwork.
-; QUESTION!!: Is this a correct implementation?? There's something funny here.
-; The sum Bij's in the first two lines of 11.53 would be equal to 0 if all indexes
-; were used (11.41, cf. 11.45).  But I'm treating this as if it were the whole
-; network, so shouldn't they be zero?  So the calculation that I'm doing is not
-; the one in the book. ?  Maybe what I really need is to get the modularity matrix
-; from the entire network--all the persons--and then subset it for just these nodes.
-; But in that case, it will be easier to do with a double loop rather than matrix
-; multiplication.  I also may need to have, at different points, a node-list for all
-; persons, and one for only this subnet, maybe initialized differently.  i.e. in that
-; case I can't use side-effected persons to maintain my 1's and -1's.  ??
-to-report modularity-change [mod-mat node-list]
-  report (modularity mod-mat node-list) - (modularity-without-split mod-mat)
-end
-
-; make list of node degrees in node-list order
-to-report make-degree-list [node-list]
-  report map [[count link-neighbors] of ?] node-list
-end
-
-; turn degree list into a single-row matrix
-to-report degree-list-to-degree-vec [deg-list]
-  report matrix:from-row-list (list deg-list)
-end
-
-to-report modularity-mat-1st-eigenvector [node-list]
-  report matrix:get-column (matrix:eigenvectors make-modularity-mat node-list) (length node-list - 1)
-end
-
-to-report make-modularity-mat [node-list]
-  let adj-mat make-adjacency-mat (turtle-set node-list)
-  let deg-vec degree-list-to-degree-vec make-degree-list node-list
-  let sq-deg-mat matrix:times (matrix:transpose deg-vec) deg-vec
-  let neg-normalized-sq-deg-mat matrix:times-scalar sq-deg-mat (-1 / (2 * count links))
-  
-  report matrix:plus adj-mat neg-normalized-sq-deg-mat
-end
-
-; Generate the Laplacean matrix of a node-list created by init-node-list.
-; A Laplacean is an N x N matrix, where N is length of node-list.
-; Position (i,i) on the diagonal contains the degree of the node with index i.
-; For i != j, position (i,j) contains -1 if nodes i and j are linked, and
-; 0 otherwise.  It's a matrix with the degree vector along the diagonal and 
-; zeros elsewhere, minus the adjacency matrix. See e.g. Newman 2010 for details. 
-to-report make-Laplacean [node-list]
-  let laplacean matrix:times-scalar (make-adjacency-mat (turtle-set node-list)) -1  ; Laplacean is based on negative of the adjacency matrix
-  let deg-list make-degree-list node-list
-  
-  let i 0
-  foreach deg-list [
-    matrix:set laplacean i i ?
-    set i i + 1
-  ]
-  
-  report laplacean
-end
-
-; nodes should already have passed through init-node-list, i.e. they should have index numbers
-to-report make-adjacency-mat [nodes]
-  let num-nodes count nodes
-  let the-links link-set [my-links with [member? other-end nodes]] of nodes ; if we're only looking at a subnet, ignore links outside of it
-  
-  let a-mat matrix:make-constant num-nodes num-nodes 0 ; init a matrix with default values
-  
-  ; Record links by putting 1's at locations corresponding to the two ends:
-  ask the-links [
-    let index1 0
-    let index2 0
-    ask end1 [set index1 index]
-    ask end2 [set index2 index]
-    
-    matrix:set a-mat index1 index2 1
-    matrix:set a-mat index2 index1 1  ; the matrix is symmetric--we have to do it both ways.
-  ]
-  
-  report a-mat
-end
-
-; Return second-smallest eigenvector of the Laplacean matrix of nodes.
-; This has information about a good approximation of the smallest cut set.
-to-report Laplacean-2nd-eigenvector [node-list]
-  report matrix:get-column (matrix:eigenvectors make-Laplacean node-list) 1
-end
-
-; Given a node-list, i.e. a list of nodes with index variables set, sort them by
-; comparing what the index values index in a second list.  i.e. reorder the node-list
-; according to their corresponding values in the second list.
-; Use this to reorder nodes by the relative sizes of values in an eigenvector.
-to-report sort-node-list-by-order-list [node-list order-list]
-  report sort-by [ (item ([index] of ?1) order-list) > (item ([index] of ?2) order-list) ] node-list
-end
-
-; Get the cut set of all links between two disjoint sets of nodes
-to-report cut-set [nodes1 nodes2]
-   report (link-set [my-links] of nodes1) with [member? self (link-set [my-links] of nodes2)]
-end
-
-to show-communities
-  foreach communities [
-    let col random 256
-    ask (turtle-set ?) [set color col]
-  ]
-end
-
-
-; deprecated
-to show-node-sets [node-lists]
-  let sets map turtle-set node-lists 
-  ask (item 0 sets) [set color red] 
-  ask (item 1 sets) [set color blue]
-end
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
-to-report degree-of-node [node]
-  let degree "not yet set"
-  ask node [set degree count link-neighbors]
-  report degree
-end
 
-to-report mean-degree [nodes]
-  report mean [count link-neighbors] of persons
-end
-
-to-report stdev-degree [nodes]
-  report stdev [count link-neighbors] of persons
-end
-
-to-report var-degree [nodes]
-  report var [count link-neighbors] of persons
-end
-
-; observer> ask persons with [count link-neighbors = min [count link-neighbors] of persons] [print who]
-; observer> show [link-neighbors] of persons with [link-neighbor? person 172]
-; observer: [(agentset, 8 persons) (agentset, 17 persons) (agentset, 16 persons) (agentset, 14 persons) (agentset, 10 persons) (agentset, 9 persons)]
-; observer>  ask person-set [link-neighbors] of persons with [link-neighbor? person 172] [set color yellow]
-; observer> ask person-set [link-neighbors] of person-set [link-neighbors] of persons with [link-neighbor? person 172] [set color red]
-; observer> ask (persons with [link-neighbor? person 172]) [set color blue]  ; neighbors of 172
-; observer> ask (person-set [link-neighbors] of persons with [link-neighbor? person 172]) with [who != 172]  [set color green] ; neighbors of neighbors of 172, excluding 172
-
-
-; NOT SURE THIS IS WORKING RIGHT:
-; supposed to returns link-neighbors of nodes whose degree is greater than stdevs standard deviations above the mean degree
-to-report high-degree-nodes [nodes stdevs]
-  let min-degree (mean-degree nodes) + (stdevs * (stdev-degree nodes))
-  report persons with [count link-neighbors > min-degree]
-end
-
-to-report k-one-neighbors [nodes]
-  report turtle-set [link-neighbors] of nodes
-end
 
 ; Finds middle-factors of n if there are factors > 1; otherwise returns middle-factors of n + 1.
 to-report near-factors [n]
@@ -933,10 +535,10 @@ NIL
 1
 
 BUTTON
-815
-25
-871
-59
+0
+335
+56
+369
 NIL
 go
 T
@@ -950,9 +552,9 @@ NIL
 1
 
 PLOT
-1030
+815
 130
-1240
+1025
 250
 average cultvar activations
 time
@@ -1000,10 +602,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-870
-25
-934
-59
+55
+335
+119
+369
 go once
 go
 NIL
@@ -1034,9 +636,9 @@ NIL
 1
 
 PLOT
-1029
+814
 9
-1239
+1024
 129
 cultvar freqs & pop variance
 NIL
@@ -1054,10 +656,10 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
 
 SLIDER
-815
-155
-1020
-188
+0
+390
+205
+423
 trust-mean
 trust-mean
 .01
@@ -1069,10 +671,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-815
-240
-1020
-273
+0
+475
+205
+508
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
@@ -1084,30 +686,30 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-990
-225
-1027
-245
+175
+460
+212
+480
 black
 10
 0.0
 1
 
 TEXTBOX
-815
-225
-845
-245
+5
+460
+35
+480
 white
 10
 0.0
 1
 
 SLIDER
-815
-190
-1020
-223
+0
+425
+205
+458
 trust-stdev
 trust-stdev
 0
@@ -1119,9 +721,9 @@ NIL
 HORIZONTAL
 
 PLOT
-1030
+815
 250
-1240
+1025
 390
 degree distribution
 degree
@@ -1145,7 +747,7 @@ number-of-subnets
 number-of-subnets
 1
 20
-1
+4
 1
 1
 NIL
@@ -1204,10 +806,10 @@ NIL
 1
 
 SLIDER
-815
-550
-1018
-583
+0
+545
+203
+578
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -1219,131 +821,11 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-820
-585
-1019
-628
+5
+580
+204
+623
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
-11
-0.0
-1
-
-BUTTON
-815
-515
-917
-548
-redo layout
-layout-network
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-920
-515
-1022
-548
-circle layout
-layout-circle turtles (.95 * min (list max-pxcor max-pycor))
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-65
-530
-130
-563
-degrees
-toggle-degree-display
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-TEXTBOX
-816
-9
-983
-29
-POPCO-style transmission:
-11
-0.0
-1
-
-SLIDER
-815
-295
-1020
-328
-morris-switch-threshold
-morris-switch-threshold
-0
-.5
-0.35
-.025
-1
-NIL
-HORIZONTAL
-
-BUTTON
-910
-80
-1015
-114
-morris-go once
-morris-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-815
-80
-912
-114
-NIL
-morris-go
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-TEXTBOX
-817
-65
-962
-83
-Morris-style transmission:
 11
 0.0
 1
@@ -1382,166 +864,6 @@ NIL
 NIL
 1
 
-SWITCH
-815
-330
-970
-363
-morris-symmetric?
-morris-symmetric?
-0
-1
--1000
-
-BUTTON
-0
-565
-167
-598
-reset colors to activns
-reset-colors
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-55
-475
-185
-508
-k-means-clusters
-k-means-clusters
-1
-50
-50
-1
-1
-NIL
-HORIZONTAL
-
-BUTTON
-0
-475
-55
-508
-cluster
-nw:set-snapshot persons links foreach nw:k-means-clusters k-means-clusters 500 .01 [let col (random 256) foreach ? [ask ? [set color col]]]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-55
-435
-185
-468
-n1-proportion
-n1-proportion
-0
-1
-0.5
-.01
-1
-NIL
-HORIZONTAL
-
-BUTTON
-0
-530
-65
-563
-node #
-toggle-who-display
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-0
-435
-55
-468
-partition
-show-node-sets make-network-partition persons
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-0
-355
-140
-388
-modularity communities
-find-and-store-communities\nshow-communities
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-115
-390
-170
-423
-recolor
-show-communities
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-130
-530
-195
-563
-cohesion
-toggle-cohesion-display
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 TEXTBOX
 5
 85
@@ -1553,80 +875,13 @@ network structure:
 1
 
 TEXTBOX
-5
-335
-130
-353
-community detection:
-11
-0.0
-1
-
-TEXTBOX
-5
-515
-150
-533
-toggle numeric node info:
-11
-0.0
-1
-
-TEXTBOX
-815
-125
-955
-143
+0
+375
+140
+393
 transmission parameters:
 11
 0.0
-1
-
-TEXTBOX
-815
-140
-890
-158
-popco style:
-11
-0.0
-1
-
-TEXTBOX
-815
-280
-890
-298
-Morris style:
-11
-0.0
-1
-
-TEXTBOX
-815
-500
-905
-518
-not very useful:
-11
-0.0
-1
-
-BUTTON
-0
-390
-115
-423
-reset-communites
-reset-communities\nreset-colors
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
 1
 
 @#$#@#$#@
@@ -1636,11 +891,13 @@ This is a model of spread of conflicting beliefs or other cultural variants on a
 
 ## HOW IT WORKS
 
-Each person (node) has a degree of confidence.  1 indicates full confidence in the "black" proposition.  -1 indicates full confidence in its negation.  Degrees of confidence are not transmitted.  Instead, the degree of confidence (activation) determines the probability that a belief will be communicated.
+Each person (node) has a degree of confidence.  1 indicates full confidence in the "black" proposition.  -1 indicates full confidence in its negation.  Degrees of confidence are not transmitted.  Instead, the degree of confidence (activation) determines the probability that a belief will be communicated.  After all, when people offer assertions to each other, they don't generally indicate their degree of confidence, although there are ways to do that by choice of words and tone of voice.
 
-On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its (undirected) network neighbors, with probability equal to the absolute value of the degree of confidence plus prob-of-transmission-bias.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a Normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.  See the definition of receive-utterance for details.
+On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its (undirected) network neighbors, with probability equal to the absolute value of the degree of confidence plus prob-of-transmission-bias.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a Normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.
 
-You create multiple "subnetworks" which will be unconnected unless you create "inter-links" between them.  Inter-links are a different color than within-subnet links, but all links function identically.  Similarly, nodes connected to inter-links change shape, but this does not change their functioning.
+If the activation coming into a node is positive, it will move receiver's activation in that direction; if negative, it will push in negative direction. However, the degree of push will be scaled by how far the current activation is from the extremum in the direction of push.  If the distance is large, the incoming activation will have a large effect. If the distance is small, then incoming-activn's effect will be small, so that it's harder to get to the extrema. The method used to do this is often used to update nodes in connectionist/neural networks.  Note that this is not Bayesian updating.
+
+You can create multiple "subnetworks" which will be unconnected unless you create "inter-links" between them.  Inter-links are a different color than within-subnet links, but all links function identically.  Similarly, nodes connected to inter-links change shape, but this does not change their functioning.
 
 Each subnetwork is created randomly in order to make the total number of links such that the average node degree per node is that specified by the user.  However, the network-creation algorithm tries to link to nodes which are located near each other.  This means that the node chosen for linking is random, since locations are random.  However, the result is not an Erdos-Renyi binomial/Possion network, since pairs of nodes don't have equal probability of being linked: Closer nodes are overwhelmingly more likely to be linked.
 
@@ -1648,13 +905,24 @@ Each subnetwork is created randomly in order to make the total number of links s
 
 Most of the GUI controls should be easy to understand with a little bit of experimentation.  
 
-The inter-nodes and inter-links controls are used to add links between subnets which otherwise would be unconnected.  inter-nodes-per-subnet determines the number of nodes
-in subnet1 and subnet2 that will be connected to each other each time create-inter-links is pushed.  When the button is pushed, each of the "inter-nodes" from subnet1 is linked to each of the inter-nodes from subnet2.  (If you want to create singly linked inter-nodes instead, set inter-nodes-per-subnet to 1, and push the button as many times as needed.)
+The inter-nodes and inter-links controls are used to add links between subnets which otherwise would be unconnected.  inter-nodes-per-subnet determines the number of nodes in subnet1 and subnet2 that will be connected to each other each time create-inter-links is pushed.  When the button is pushed, each of the "inter-nodes" from subnet1 is linked to each of the inter-nodes from subnet2.  (If you want to create singly linked inter-nodes instead, set inter-nodes-per-subnet to 1, and push the button as many times
+as needed.)
 
 
 ## THINGS TO NOTICE
 
 The spread of black or white beliefs is influenced by how well connected different nodes are.  A set of nodes with many interconnections can reinforce similarity among its members, even in the face of a bias toward an alternative cultural variant.
+
+If a group of nodes has more connections to each other than to "outsiders", it can
+maintain an extreme view even if surrounded by those with the opposite view.
+
+## THINGS TO TRY
+
+Start with average node degree equal to 12 or 15.  Does one color take over the network? Once the network has stopped, or you have stopped it, try clicking "reset-cultvars". The network will be preserved, but the nodes will be given a different set of random beliefs.  What happens this time?  What if you run it many times with the same network structure?
+
+Now try increasing the average node degree to 20, or 30.  Perform the same experiment. What happens?
+
+Now try creating multiple subnetworks.  You can link them using the "link-em" or "link-near-subnets" buttons.  (Experiment with the settings above those buttons.)  Under what conditions can both black and white be preserved on the network?
 @#$#@#$#@
 default
 true
