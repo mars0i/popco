@@ -747,7 +747,7 @@ number-of-subnets
 number-of-subnets
 1
 20
-4
+1
 1
 1
 NIL
@@ -887,7 +887,7 @@ transmission parameters:
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a model of spread of conflicting beliefs or other cultural variants on a network.  It allows experimenting with the effect of different network structures and transmission biases on the distribution of beliefs. 
+This is a model of spread of conflicting beliefs or other cultural variants on a network.  It allows experimenting with the effect of different network structures and transmission biases on the distribution of beliefs. The model suggests that for some forms of cultural transmission, network structure can affect whether cultural variation can be maintained on reasonable time scales.
 
 ## HOW IT WORKS
 
@@ -918,11 +918,15 @@ maintain an extreme view even if surrounded by those with the opposite view.
 
 ## THINGS TO TRY
 
-Start with average node degree equal to 12 or 15.  Does one color take over the network? Once the network has stopped, or you have stopped it, try clicking "reset-cultvars". The network will be preserved, but the nodes will be given a different set of random beliefs.  What happens this time?  What if you run it many times with the same network structure?
+Start with average node degree in the range of 12 to 15.  Does one color take over the network? Once the network has stopped, or you have stopped it, try clicking "reset-cultvars". The network will be preserved, but the nodes will be given a different set of random beliefs.  What happens this time?  What if you run it many times with the same network structure?
 
 Now try increasing the average node degree to 20, or 30.  Perform the same experiment. What happens?
 
-Now try creating multiple subnetworks.  You can link them using the "link-em" or "link-near-subnets" buttons.  (Experiment with the settings above those buttons.)  Under what conditions can both black and white be preserved on the network?
+Go back to your original node degree and run the model until there is a stable pattern.  Now change prob-of-transmission-bias, making the black (1) or white (-1) cultural variant more likely to be transmitted.  What happens?  Is it possible to maintain cultural variation with a nonzero value for this parameter?
+
+Try altering trust-mean or trust-stdev.  What happens?  
+
+Try creating multiple subnetworks.  You can link them using the "link-em" or "link-near-subnets" buttons.  (Experiment with the settings above those buttons.)  Under what conditions can both black and white be preserved on the network?
 @#$#@#$#@
 default
 true
