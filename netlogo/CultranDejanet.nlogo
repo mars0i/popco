@@ -14,7 +14,7 @@
 ;   prob-of-transmission-bias ; allows transmission to be biased so that black or white is more likely to transmit
 ;   subnet1, subnet2
 
-extensions [matrix nw]
+extensions [matrix]
   
 globals
 [
