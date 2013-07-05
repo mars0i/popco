@@ -85,19 +85,28 @@ to setup
   set inter-node-shape "square"
   set nodes-showing-numbers? false
   set communities []
+  ;output-print "vars defined"
 
   ask patches [set pcolor background-color]
+  
+  ;output-print "patches colored"
+  ;output-print (sentence "number-of-subnets = " number-of-subnets)
 
   let i 1
   while [i <= number-of-subnets] [
     create-nodes i
+    ;output-print "nodes created"
     create-network i
+    ;output-print "create-network has run"
     set i i + 1
   ]
+  ;output-print "net created"
 
   layout-network
+  ;output-print "net layed out"
 
   reset-ticks
+  ;output-print "ticks reset"
 end
 
 to create-nodes [subnet]
