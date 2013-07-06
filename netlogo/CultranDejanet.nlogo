@@ -502,10 +502,10 @@ end
 GRAPHICS-WINDOW
 195
 10
-675
-511
-23
-23
+615
+451
+20
+20
 10.0
 1
 9
@@ -516,10 +516,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--23
-23
--23
-23
+-20
+20
+-20
+20
 1
 1
 1
@@ -561,9 +561,9 @@ NIL
 1
 
 PLOT
-675
+615
 130
-885
+825
 250
 average cultvar activations
 time
@@ -645,9 +645,9 @@ NIL
 1
 
 PLOT
-675
+615
 10
-885
+825
 130
 cultvar freqs & pop variance
 NIL
@@ -730,9 +730,9 @@ NIL
 HORIZONTAL
 
 PLOT
-675
+615
 250
-885
+825
 390
 degree distribution
 degree
@@ -749,9 +749,9 @@ PENS
 
 SLIDER
 0
-395
+365
 195
-428
+398
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -763,10 +763,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-5
-430
-204
-473
+0
+400
+199
+443
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
