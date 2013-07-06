@@ -43,4 +43,4 @@
 
 (setf *max-pop-ticks* 300)
 (popco)
-(quit)
+;(quit)

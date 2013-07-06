@@ -4,11 +4,12 @@
 ;;; Here we might think of "crime" as some new set of animals to be dealt with in a new environment.
 
 ;; NOTE THIS CONCERNS DISEASE TRANSMISSION. "VIRUS" IS NOT ESSENTIAL.  IT COULD AS WELL BE EVIL SPIRITS.
+;; (e.g. Lansing _Perfect Order_ describes a kind of witch-ness that is transmitted from one person to another.)
 (defvar virus-propns
   '(
     (is-infected (vpers-0) v-ip)              ; Person 0 has infection.
     (not-infected (vpers-1) v-na)             ; Person 1 lacks infection.
-    (is-infected (vpers-1) v-ia)              ; Person 1 has infection.
+    (is-infected (vpers-1) v-ia)              ; Person 1 has infection. [PREVENTING THIS IS THE GOAL]
     (harms (vpers-1) v-ha)                    ; Person 1 is harmed.
     (cause (v-ia v-ha) v-ci->ha)              ; That person 1 has infection is harmful to person 1. [HO1]
     (infect (vpers-0 pers-1) v-ipa)           ; Person 0, who already has infection, infects person 1.
@@ -26,7 +27,7 @@
     (is-criminal (cpers-0) cv-cp)             ; Garden 0 has been attacked by pests.
     (not-criminal (cpers-1) cv-na)            ; Garden 1 has not been attacked by pests.
     (is-criminal (cpers-1) cv-ca)             ; Garden 1 has been attacked by pests.
-    (harms (cpers-1) cv-ha)                   ; Garden 1 is harmed.
+    (harms (cpers-1) cv-ha)                   ; Garden 1 is harmed. [PREVENTING THIS IS THE GOAL]
     (cause (cv-ca cv-ha) cv-ca->hp)           ; Garden 1 being attacked by pests is harmful to garden 1.
     (recruit (cpers-0 cpers-1) cv-rpa)        ; Pests move from garden 0 to garden 1.
     (cause (cv-rpa cv-ca) cv-sca->ca)         ; Pests moving from garden 0 to garden 1 causes garden 1 to be attacked. [HO1]
@@ -44,7 +45,7 @@
     (aggressive (beast) b-ab)             ; Beast is agressive.
     (attack (beast bpers) b-abp)          ; Beast attacks person.
     (cause (b-ab b-abp) b-ab->abp)        ; Beast's agressiveness causes it to attack person. [HO1]
-    (harms (bpers) b-hp)                  ; Person is harmed.
+    (harms (bpers) b-hp)                  ; Person is harmed. [PREVENTING THIS IS THE GOAL]
     (cause (b-abp b-hp) b-abp->hp)        ; Beast attacking human harms person. [HO1]
     (helps (beast) b-hb)                  ; Beast is benefited.
     (cause (b-abp b-hb) b-abp->hb)        ; Beast attacking person benefits beast. [HO1]
@@ -59,7 +60,7 @@
   '(
     (not-criminal (cpers) cb-np)
     (aggressive (crim-pers) cb-ap)
-    (victimize (crim-pers cpers) cb-vpp)
+    (victimize (crim-pers cpers) cb-vpp)  ; [PREVENTING THIS IS THE GOAL]
     (cause (cb-ap cb-vpp) cb-ap->vpp)
     (harms (cpers) cb-hcp)
     (cause (cb-vpp cb-hcp) cb-vpp->hcp)
