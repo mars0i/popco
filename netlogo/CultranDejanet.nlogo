@@ -14,7 +14,7 @@
 ;   prob-of-transmission-bias ; allows transmission to be biased so that black or white is more likely to transmit
 ;   subnet1, subnet2
 
-extensions [matrix]
+;extensions [matrix]
   
 globals
 [
@@ -93,13 +93,13 @@ to setup
   ;output-print (sentence "number-of-subnets = " number-of-subnets)
 
   let i 1
-  while [i <= number-of-subnets] [
+  ;while [i <= number-of-subnets] [
     create-nodes i
     ;output-print "nodes created"
     create-network i
     ;output-print "create-network has run"
     set i i + 1
-  ]
+  ;]
   ;output-print "net created"
 
   layout-network
@@ -143,15 +143,15 @@ to create-network [subnet]
   ask links[ set color link-color ]
 end
 
-to inter-link-subnets [subn1 subn2]
-  if (subn1 != subn2) [
-    let nodes1 persons with [person-subnet = subn1] 
-    let nodes2 persons with [person-subnet = subn2]
-    if (any? nodes1 and any? nodes2) [
-      link-close-nodes inter-nodes-per-subnet nodes1 nodes2
-    ]
-  ]
-end
+;to inter-link-subnets [subn1 subn2]
+;  if (subn1 != subn2) [
+;    let nodes1 persons with [person-subnet = subn1] 
+;    let nodes2 persons with [person-subnet = subn2]
+;    if (any? nodes1 and any? nodes2) [
+;      link-close-nodes inter-nodes-per-subnet nodes1 nodes2
+;    ]
+;  ]
+;end
 
 
 ; A kind of kludgey but effective way to choose near nodes to link from two subnets
@@ -169,7 +169,7 @@ end
 to layout-network
   initial-layout-network persons
   ; at this point, all of the subnets are on top of each other
-  place-subnets
+  ;place-subnets
 end
 
 to initial-layout-network [nodes]
@@ -179,83 +179,83 @@ to initial-layout-network [nodes]
   ]
 end
 
-to place-subnets
-  let subnet-lattice-dims (near-factors number-of-subnets)
-  let subnet-lattice-dim1 item 0 subnet-lattice-dims
-  let subnet-lattice-dim2 item 1 subnet-lattice-dims
-  
-  ; subnet-lattice-dim1 is always <= subnet-lattice-dim2. 
-  ; Here we choose whether there should be more subnets in the x or y dimension,
-  ; depending on whether the world is larger in one direction or the other. 
-  let x-subnet-lattice-dim "not yet"
-  let y-subnet-lattice-dim "not yet"
-  if-else max-pxcor < max-pycor [ 
-    set x-subnet-lattice-dim subnet-lattice-dim1
-    set y-subnet-lattice-dim subnet-lattice-dim2
-  ][
-    set x-subnet-lattice-dim subnet-lattice-dim2
-    set y-subnet-lattice-dim subnet-lattice-dim1
-  ]
-  
-  ; initialize global matrix that will summarize the layout.  note which is x and y: matrix rows are y, and cols are x.
-  set subnets-matrix matrix:make-constant y-subnet-lattice-dim x-subnet-lattice-dim 0
-
-  let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
-  let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
- 
-  stretch-network persons (.9 * x-subnet-lattice-unit) (.9 * y-subnet-lattice-unit)  ; resize the overlaid subnets as one. we'll split them up in a moment.
-
-  let x-shift-width (x-subnet-lattice-unit * (max-pxcor - min-pxcor))
-  let y-shift-width (y-subnet-lattice-unit * (max-pycor - min-pycor))
-  let j 0
-  let k 0
-  while [j < x-subnet-lattice-dim] [
-    while [k < y-subnet-lattice-dim] [
-      let subnet (k * x-subnet-lattice-dim) + j + 1
-      let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
-      let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
-      shift-network-by-patches persons with [person-subnet = subnet] xshift yshift
-      matrix:set subnets-matrix k j subnet ; store name of this subnet in matrix location corresponding to location in world
-      set k (k + 1)
-    ]
-    set k 0
-    set j (j + 1)
-  ]
-end
-
-to link-near-subnets
-  let dims matrix:dimensions subnets-matrix
-  let rows item 0 dims
-  let cols item 1 dims
-
-  ; link horizontally
-  let row-index 0
-  let col-index 0
-  while [row-index < rows] [
-    while [col-index < cols - 1] [
-      let subn1 matrix:get subnets-matrix row-index col-index
-      let subn2 matrix:get subnets-matrix row-index (col-index + 1)
-      inter-link-subnets subn1 subn2
-      set col-index col-index + 1
-    ]
-    set row-index row-index + 1
-    set col-index 0
-  ]
-
-  ; link vertically
-  set row-index 0
-  set col-index 0
-  while [col-index < cols] [
-    while [row-index < rows - 1] [
-      let subn1 matrix:get subnets-matrix row-index col-index
-      let subn2 matrix:get subnets-matrix (row-index + 1) col-index
-      inter-link-subnets subn1 subn2
-      set row-index row-index + 1
-    ]
-    set col-index col-index + 1
-    set row-index 0
-  ]
-end
+;to place-subnets
+;  let subnet-lattice-dims (near-factors number-of-subnets)
+;  let subnet-lattice-dim1 item 0 subnet-lattice-dims
+;  let subnet-lattice-dim2 item 1 subnet-lattice-dims
+;  
+;  ; subnet-lattice-dim1 is always <= subnet-lattice-dim2. 
+;  ; Here we choose whether there should be more subnets in the x or y dimension,
+;  ; depending on whether the world is larger in one direction or the other. 
+;  let x-subnet-lattice-dim "not yet"
+;  let y-subnet-lattice-dim "not yet"
+;  if-else max-pxcor < max-pycor [ 
+;    set x-subnet-lattice-dim subnet-lattice-dim1
+;    set y-subnet-lattice-dim subnet-lattice-dim2
+;  ][
+;    set x-subnet-lattice-dim subnet-lattice-dim2
+;    set y-subnet-lattice-dim subnet-lattice-dim1
+;  ]
+;  
+;  ; initialize global matrix that will summarize the layout.  note which is x and y: matrix rows are y, and cols are x.
+;  set subnets-matrix matrix:make-constant y-subnet-lattice-dim x-subnet-lattice-dim 0
+;
+;  let x-subnet-lattice-unit 1 / x-subnet-lattice-dim
+;  let y-subnet-lattice-unit 1 / y-subnet-lattice-dim
+; 
+;  stretch-network persons (.9 * x-subnet-lattice-unit) (.9 * y-subnet-lattice-unit)  ; resize the overlaid subnets as one. we'll split them up in a moment.
+;
+;  let x-shift-width (x-subnet-lattice-unit * (max-pxcor - min-pxcor))
+;  let y-shift-width (y-subnet-lattice-unit * (max-pycor - min-pycor))
+;  let j 0
+;  let k 0
+;  while [j < x-subnet-lattice-dim] [
+;    while [k < y-subnet-lattice-dim] [
+;      let subnet (k * x-subnet-lattice-dim) + j + 1
+;      let xshift min-pxcor + ((j + .5) * x-shift-width)  ; subnets are laid out from left to right
+;      let yshift max-pycor - ((k + .5) * y-shift-width)  ; and from top to bottom
+;      shift-network-by-patches persons with [person-subnet = subnet] xshift yshift
+;      matrix:set subnets-matrix k j subnet ; store name of this subnet in matrix location corresponding to location in world
+;      set k (k + 1)
+;    ]
+;    set k 0
+;    set j (j + 1)
+;  ]
+;end
+;
+;to link-near-subnets
+;  let dims matrix:dimensions subnets-matrix
+;  let rows item 0 dims
+;  let cols item 1 dims
+;
+;  ; link horizontally
+;  let row-index 0
+;  let col-index 0
+;  while [row-index < rows] [
+;    while [col-index < cols - 1] [
+;      let subn1 matrix:get subnets-matrix row-index col-index
+;      let subn2 matrix:get subnets-matrix row-index (col-index + 1)
+;      inter-link-subnets subn1 subn2
+;      set col-index col-index + 1
+;    ]
+;    set row-index row-index + 1
+;    set col-index 0
+;  ]
+;
+;  ; link vertically
+;  set row-index 0
+;  set col-index 0
+;  while [col-index < cols] [
+;    while [row-index < rows - 1] [
+;      let subn1 matrix:get subnets-matrix row-index col-index
+;      let subn2 matrix:get subnets-matrix (row-index + 1) col-index
+;      inter-link-subnets subn1 subn2
+;      set row-index row-index + 1
+;    ]
+;    set col-index col-index + 1
+;    set row-index 0
+;  ]
+;end
 
 ; Given a set of nodes, moves them toward/away from the origin 
 ; by multipling coordinates by amount,
@@ -500,9 +500,9 @@ to yo
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+195
 10
-810
+795
 631
 29
 29
@@ -545,9 +545,9 @@ NIL
 
 BUTTON
 0
-335
+185
 56
-369
+219
 NIL
 go
 T
@@ -561,9 +561,9 @@ NIL
 1
 
 PLOT
-815
+795
 130
-1025
+1005
 250
 average cultvar activations
 time
@@ -612,9 +612,9 @@ HORIZONTAL
 
 BUTTON
 55
-335
+185
 119
-369
+219
 go once
 go
 NIL
@@ -645,9 +645,9 @@ NIL
 1
 
 PLOT
-814
+794
 9
-1024
+1004
 129
 cultvar freqs & pop variance
 NIL
@@ -666,9 +666,9 @@ PENS
 
 SLIDER
 0
-390
-205
-423
+240
+195
+273
 trust-mean
 trust-mean
 .01
@@ -681,9 +681,9 @@ HORIZONTAL
 
 SLIDER
 0
-475
-205
-508
+325
+195
+358
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
@@ -695,10 +695,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-175
-460
-212
-480
+165
+310
+202
+330
 black
 10
 0.0
@@ -706,9 +706,9 @@ black
 
 TEXTBOX
 5
-460
+310
 35
-480
+330
 white
 10
 0.0
@@ -716,9 +716,9 @@ white
 
 SLIDER
 0
-425
-205
-458
+275
+195
+308
 trust-stdev
 trust-stdev
 0
@@ -730,9 +730,9 @@ NIL
 HORIZONTAL
 
 PLOT
-815
+795
 250
-1025
+1005
 390
 degree distribution
 degree
@@ -749,76 +749,9 @@ PENS
 
 SLIDER
 0
-173
-170
-206
-number-of-subnets
-number-of-subnets
-1
-20
-1
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-0
-255
-170
-288
-inter-nodes-per-subnet
-inter-nodes-per-subnet
-0
-10
-4
-1
-1
-NIL
-HORIZONTAL
-
-CHOOSER
-0
-210
-93
-255
-subnet1
-subnet1
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-0
-
-CHOOSER
-93
-210
-185
-255
-subnet2
-subnet2
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-1
-
-BUTTON
-0
-291
-55
-324
-link-em
-inter-link-subnets subnet1 subnet2\n; subnet1 and subnet2 are globals defined\n; by gui elements.
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-0
-545
-203
-578
+395
+195
+428
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -831,9 +764,9 @@ HORIZONTAL
 
 TEXTBOX
 5
-580
+430
 204
-623
+473
 Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
 11
 0.0
@@ -856,23 +789,6 @@ NIL
 NIL
 1
 
-BUTTON
-55
-290
-164
-324
-NIL
-link-near-subnets
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 TEXTBOX
 5
 85
@@ -885,9 +801,9 @@ network structure:
 
 TEXTBOX
 0
-375
+225
 140
-393
+243
 transmission parameters:
 11
 0.0
