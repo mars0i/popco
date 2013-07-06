@@ -502,10 +502,10 @@ end
 GRAPHICS-WINDOW
 195
 10
-795
-631
-29
-29
+675
+511
+23
+23
 10.0
 1
 9
@@ -516,10 +516,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--29
-29
--29
-29
+-23
+23
+-23
+23
 1
 1
 1
@@ -561,9 +561,9 @@ NIL
 1
 
 PLOT
-795
+675
 130
-1005
+885
 250
 average cultvar activations
 time
@@ -604,7 +604,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-15
+14
 1
 1
 NIL
@@ -645,10 +645,10 @@ NIL
 1
 
 PLOT
-794
-9
-1004
-129
+675
+10
+885
+130
 cultvar freqs & pop variance
 NIL
 NIL
@@ -730,9 +730,9 @@ NIL
 HORIZONTAL
 
 PLOT
-795
+675
 250
-1005
+885
 390
 degree distribution
 degree
@@ -822,17 +822,9 @@ On each tick, for each link attached to a person, the person randomly decides to
 
 If the activation coming into a node is positive, it will move receiver's activation in that direction; if negative, it will push in negative direction. However, the degree of push will be scaled by how far the current activation is from the extremum in the direction of push.  If the distance is large, the incoming activation will have a large effect. If the distance is small, then incoming-activn's effect will be small, so that it's harder to get to the extrema. The method used to do this is often used to update nodes in connectionist/neural networks.  Note that this is not Bayesian updating.
 
-You can create multiple "subnetworks" which will be unconnected unless you create "inter-links" between them.  Inter-links are a different color than within-subnet links, but all links function identically.  Similarly, nodes connected to inter-links change shape, but this does not change their functioning.
-
-Each subnetwork is created randomly in order to make the total number of links such that the average node degree per node is that specified by the user.  However, the network-creation algorithm tries to link to nodes which are located near each other.  This means that the node chosen for linking is random, since locations are random.  However, the result is not an Erdos-Renyi binomial/Possion network, since pairs of nodes don't have equal probability of being linked: Closer nodes are overwhelmingly more likely to be linked.
-
 ## HOW TO USE IT
 
-Most of the GUI controls should be easy to understand with a little bit of experimentation.  
-
-The inter-nodes and inter-links controls are used to add links between subnets which otherwise would be unconnected.  inter-nodes-per-subnet determines the number of nodes in subnet1 and subnet2 that will be connected to each other each time create-inter-links is pushed.  When the button is pushed, each of the "inter-nodes" from subnet1 is linked to each of the inter-nodes from subnet2.  (If you want to create singly linked inter-nodes instead, set inter-nodes-per-subnet to 1, and push the button as many times
-as needed.)
-
+Most of the GUI controls should be easy to understand with a little bit of experimentation.
 
 ## THINGS TO NOTICE
 
@@ -849,9 +841,7 @@ Now try increasing the average node degree to 20, or 30.  Perform the same exper
 
 Go back to your original node degree and run the model until there is a stable pattern.  Now change prob-of-transmission-bias, making the black (1) or white (-1) cultural variant more likely to be transmitted.  What happens?  Is it possible to maintain cultural variation with a nonzero value for this parameter?
 
-Try altering trust-mean or trust-stdev.  What happens?  
-
-Try creating multiple subnetworks.  You can link them using the "link-em" or "link-near-subnets" buttons.  (Experiment with the settings above those buttons.)  Under what conditions can both black and white be preserved on the network?
+Try altering trust-mean or trust-stdev.  What happens?
 @#$#@#$#@
 default
 true
