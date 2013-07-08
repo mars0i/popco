@@ -17,20 +17,20 @@
 
 (make-no-bias-crime-talker 'aa crime-propns 'pundits '(VIBIs BEBIs BOBIs NOBIs))  ; pundit
 
-(make-virus-bias-crime-talker 'temp-v '() 'vibis '(vibis))
-(n-persons-with-name 'temp-v 'v *group-size*)
+(make-virus-bias-crime-talker 'temp-vi '() 'vibis '(vibis))
+(n-persons-with-name 'temp-v 'vi *group-size*)
 (kill 'temp-v)
 
-(make-beast-bias-crime-talker 'temp-b '() 'bebis '(bebis))
-(n-persons-with-name 'temp-b 'b *group-size*)
+(make-beast-bias-crime-talker 'temp-be '() 'bebis '(bebis))
+(n-persons-with-name 'temp-b 'be *group-size*)
 (kill 'temp-b)
 
-(make-both-bias-crime-talker 'temp-b '() 'bobis '(bobis))
-(n-persons-with-name 'temp-b 'b *group-size*)
+(make-both-bias-crime-talker 'temp-bo '() 'bobis '(bobis))
+(n-persons-with-name 'temp-b 'bo *group-size*)
 (kill 'temp-b)
 
-(make-no-bias-crime-talker 'temp-b '() 'nobis '(nobis))
-(n-persons-with-name 'temp-b 'b *group-size*)
+(make-no-bias-crime-talker 'temp-no '() 'nobis '(nobis))
+(n-persons-with-name 'temp-b 'no *group-size*)
 (kill 'temp-b)
 
 (init-pop)
