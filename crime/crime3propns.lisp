@@ -33,34 +33,34 @@
 
 (defvar virus-propns
   '(
-    (is-infected (vpers-0) v-ip)              ; 0. Person 0 has infection.
-    (not-infected (vpers-1) v-na)             ; 1. Person 1 lacks infection.
-    (is-infected (vpers-1) v-ia)              ; 2. Person 1 has infection.
-    (harms (vpers-1) v-ha)                    ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
+    (is-infected (vpers0) v-ip)               ; 0. Person 0 has infection.
+    (not-infected (vpers1) v-na)              ; 1. Person 1 lacks infection.
+    (is-infected (vpers1) v-ia)               ; 2. Person 1 has infection.
+    (harms (vpers1) v-ha)                     ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
     (cause (v-ia v-ha) v-ci->ha)              ; 4. That person 1 has infection is harmful to person 1. [HO1]
-    (infect (vpers-0 pers-1) v-ipa)           ; 5. Person 0, who already has infection, infects person 1.
+    (infect (vpers0 VPERS1) v-ipa)            ; 5. Person 0, who already has infection, infects person 1.
     (cause (v-ipa v-ia) v-ipa->ia)            ; 6. The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
-    (inoculate (vpers-1) v-ica)               ; 7. Person 1 gets innoculated.
+    (inoculate (vpers1) v-ica)                ; 7. Person 1 gets innoculated.
     (prevent (v-ica v-ipa) v-ia->-spa)        ; 8. That person 1 is innoculated prevents person 0 from infecting person 1. [HO1]
     (cause (v-ia->-spa v-na) v-iaspa->na)     ; 9. That the innoculating prevents the infecting causes [preserves] person 1 lacking infection. [HO2]
-    (quarantine (vpers-0) v-qp)               ; 10. Person 0 is quarantined.
+    (quarantine (vpers0) v-qp)                ; 10. Person 0 is quarantined.
     (prevent (v-qp v-ipa) v-qp->-spa)         ; 11. That person 0 is quarantined prevents person 0 from infecting person 1.
     (cause (v-qp->-spa  v-na) v-qpspa->na)    ; 12. That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
    ))
 
 (defvar viral-crime-propns
   '(
-    (is-criminal (cpers-0) cv-cp)             ; 0. Person 0 is a criminal.
-    (not-criminal (cpers-1) cv-na)            ; 1. Person 1 is not a criminal (or: is innocent).
-    (is-criminal (cpers-1) cv-ca)             ; 2. Person 1 is a criminal.
-    (harms (cpers-1) cv-ha)                   ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
+    (is-criminal (cpers0) cv-cp)              ; 0. Person 0 is a criminal.
+    (not-criminal (cpers1) cv-na)             ; 1. Person 1 is not a criminal (or: is innocent).
+    (is-criminal (cpers1) cv-ca)              ; 2. Person 1 is a criminal.
+    (harms (cpers1) cv-ha)                    ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
     (cause (cv-ca cv-ha) cv-ca->hp)           ; 4. Person 1 being a criminal is harmful to person 1.
-    (recruit (cpers-0 cpers-1) cv-rpa)        ; 5. Person 0 recruits person 1 into crime.
+    (recruit (cpers0 cpers1) cv-rpa)          ; 5. Person 0 recruits person 1 into crime.
     (cause (cv-rpa cv-ca) cv-sca->ca)         ; 6. Person 0 recruiting person 1 causes person 1 to become a criminal. [HO1]
-    (support (cpers-1) cv-sa)                 ; 7. Person 1 is [financially, parentally, socially, educationally, etc.] supported.
+    (support (cpers1) cv-sa)                  ; 7. Person 1 is [financially, parentally, socially, educationally, etc.] supported.
     (prevent (cv-sa cv-rpa) cv-sa->-rpa)      ; 8. Person 1 being supported prevents person 0 from recruiting person 1. [HO1]
     (cause (cv-sa->-rpa cv-na) cv-sarpa->na)  ; 9. That being supported prevents 1 from being recruited by 0 causes [preserves] 1's innocence. [HO2]
-    (imprison (cpers-0) cv-ip)                ; 10. Person 0 is imprisoned.  [Alternative: is reformed]
+    (imprison (cpers0) cv-ip)                 ; 10. Person 0 is imprisoned.  [Alternative: is reformed]
     (prevent (cv-ip cv-rpa) cv-ip->-rpa)      ; 11. Person 0 being imprisoned prevents person 0 from recruiting person 1. [HO1]
     (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; 12. That O's imprisonment prevents 0 from recruiting 1 causes [preserves] 1's innocence. [HO2]
    ))

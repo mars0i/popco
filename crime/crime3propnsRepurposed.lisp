@@ -7,34 +7,34 @@
 ;; (e.g. Lansing _Perfect Order_ describes a kind of witch-ness that is transmitted from one person to another.)
 (defvar virus-propns
   '(
-    (is-infected (vpers-0) v-ip)              ; Person 0 has infection.
-    (not-infected (vpers-1) v-na)             ; Person 1 lacks infection.
-    (is-infected (vpers-1) v-ia)              ; Person 1 has infection. [PREVENTING THIS IS THE GOAL]
-    (harms (vpers-1) v-ha)                    ; Person 1 is harmed.
+    (is-infected (vpers0) v-ip)              ; Person 0 has infection.
+    (not-infected (vpers1) v-na)             ; Person 1 lacks infection.
+    (is-infected (vpers1) v-ia)              ; Person 1 has infection. [PREVENTING THIS IS THE GOAL]
+    (harms (vpers1) v-ha)                    ; Person 1 is harmed.
     (cause (v-ia v-ha) v-ci->ha)              ; That person 1 has infection is harmful to person 1. [HO1]
-    (infect (vpers-0 pers-1) v-ipa)           ; Person 0, who already has infection, infects person 1.
+    (infect (vpers0 vpers1) v-ipa)           ; Person 0, who already has infection, infects person 1.
     (cause (v-ipa v-ia) v-ipa->ia)            ; The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
-    (inoculate (vpers-1) v-ica)               ; Person 1 gets preventative methods applied, etc., is isolated, etc.
+    (inoculate (vpers1) v-ica)               ; Person 1 gets preventative methods applied, etc., is isolated, etc.
     (prevent (v-ica v-ipa) v-ia->-spa)        ; That person 1 has preventative methods applied prevents person 0 from infecting person 1. [HO1]
     (cause (v-ia->-spa v-na) v-iaspa->na)     ; That the preventative appliction to 1 prevents the infecting, causes [preserves] person 1 lacking infection. [HO2]
-    (quarantine (vpers-0) v-qp)               ; Person 0 is quarantined.
+    (quarantine (vpers0) v-qp)               ; Person 0 is quarantined.
     (prevent (v-qp v-ipa) v-qp->-spa)         ; That person 0 is quarantined prevents person 0 from infecting person 1.
     (cause (v-qp->-spa  v-na) v-qpspa->na)    ; That (quarantining 0 prevents 0 from infecting 1) causes [preserves] person 1 lacking infection. [HO2]
    ))
 
 (defvar viral-crime-propns
   '(
-    (is-criminal (cpers-0) cv-cp)             ; Garden 0 has been attacked by pests.
-    (not-criminal (cpers-1) cv-na)            ; Garden 1 has not been attacked by pests.
-    (is-criminal (cpers-1) cv-ca)             ; Garden 1 has been attacked by pests.
-    (harms (cpers-1) cv-ha)                   ; Garden 1 is harmed. [PREVENTING THIS IS THE GOAL]
+    (is-criminal (cpers0) cv-cp)             ; Garden 0 has been attacked by pests.
+    (not-criminal (cpers1) cv-na)            ; Garden 1 has not been attacked by pests.
+    (is-criminal (cpers1) cv-ca)             ; Garden 1 has been attacked by pests.
+    (harms (cpers1) cv-ha)                   ; Garden 1 is harmed. [PREVENTING THIS IS THE GOAL]
     (cause (cv-ca cv-ha) cv-ca->hp)           ; Garden 1 being attacked by pests is harmful to garden 1.
-    (recruit (cpers-0 cpers-1) cv-rpa)        ; Pests move from garden 0 to garden 1.
+    (recruit (cpers0 cpers1) cv-rpa)        ; Pests move from garden 0 to garden 1.
     (cause (cv-rpa cv-ca) cv-sca->ca)         ; Pests moving from garden 0 to garden 1 causes garden 1 to be attacked. [HO1]
-    (support (cpers-1) cv-sa)                 ; Garden 1 is protected by fertilizer, substances noxious to pests, fences, etc.
+    (support (cpers1) cv-sa)                 ; Garden 1 is protected by fertilizer, substances noxious to pests, fences, etc.
     (prevent (cv-sa cv-rpa) cv-sa->-rpa)      ; Garden 1 being protected prevents pests from moving from garden 0 to garden 1. [HO1]
     (cause (cv-sa->-rpa cv-na) cv-sarpa->na)  ; That garden 1 is protected pests from moving from 0 to 1 causes [preserves] 1's health. [HO2]
-    (imprison (cpers-0) cv-ip)                ; Garden 0 is isolated by fences, etc.
+    (imprison (cpers0) cv-ip)                ; Garden 0 is isolated by fences, etc.
     (prevent (cv-ip cv-rpa) cv-ip->-rpa)      ; Garden 0 being isolated prevents pests from moving from garden 0 to garden 1. [HO1]
     (cause (cv-ip->-rpa  cv-na) cv-iprpa->na) ; That O's isolation prevents pests from moving from 0 to 1 causes [preserves] 1's health. [HO2]
    ))
