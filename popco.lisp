@@ -850,35 +850,35 @@
   (pushnew (list personal-propn1 personal-propn2 weight) (get person 'semantic-iffs)))
 
 
-;; OBSOLETE--use semantic-iff:
-;; MAKE-PERSONAL-SYMLINK-IF-UNITS
-;; SYMLINK-IF-UNITS
-;; Convenience function, especially for use in specification of a population.
-;; Just calls make-symlink-if-units after personalizing generic unit names.
-;; Allows forcing a link between two nodes within a person, without
-;; having to embed generic-to-personal-sym's in top-level population code.
-;; *THE PERSON* MUST BE SET PROPERLY.
-(defun make-personal-symlink-if-units (generic-unit1 generic-unit2 weight)
-  (make-symlink-if-units (generic-to-personal-sym generic-unit1)
-                          (generic-to-personal-sym generic-unit2)
-                          weight))
+; ;; OBSOLETE--use semantic-iff:
+; ;; MAKE-PERSONAL-SYMLINK-IF-UNITS
+; ;; SYMLINK-IF-UNITS
+; ;; Convenience function, especially for use in specification of a population.
+; ;; Just calls make-symlink-if-units after personalizing generic unit names.
+; ;; Allows forcing a link between two nodes within a person, without
+; ;; having to embed generic-to-personal-sym's in top-level population code.
+; ;; *THE PERSON* MUST BE SET PROPERLY.
+; (defun make-personal-symlink-if-units (generic-unit1 generic-unit2 weight)
+;   (make-symlink-if-units (generic-to-personal-sym generic-unit1)
+;                           (generic-to-personal-sym generic-unit2)
+;                           weight))
+; 
+; ;; OBSOLETE--use semantic-iff:
+; ;; Abbreviation for preceding, which see.
+; (defun symlink-if-units (generic-unit1 generic-unit2 weight)
+;   (make-personal-symlink-if-units generic-unit1 generic-unit2 weight))
 
-;; OBSOLETE--use semantic-iff:
-;; Abbreviation for preceding, which see.
-(defun symlink-if-units (generic-unit1 generic-unit2 weight)
-  (make-personal-symlink-if-units generic-unit1 generic-unit2 weight))
-
-;; OBSOLETE?--use semantic-iff:
-;; MAKE-SYMLINK-IF-UNITS
-;; Make symlink if the two units to be linked are suitable--if they
-;; have activation values.  Silently returns nil if not.
-;; Useful for specification of a population model,
-;; to run the same function on everyone, but don't have it bomb if the
-;; appropriate beliefs or other nodes don't exist.
-(defun make-symlink-if-units (unit1 unit2 weight)
-  (when (and (unit? unit1)
-             (unit? unit2))
-    (make-symlink unit1 unit2 weight))) ; from network.lisp
+; ;; OBSOLETE?--use semantic-iff:
+; ;; MAKE-SYMLINK-IF-UNITS
+; ;; Make symlink if the two units to be linked are suitable--if they
+; ;; have activation values.  Silently returns nil if not.
+; ;; Useful for specification of a population model,
+; ;; to run the same function on everyone, but don't have it bomb if the
+; ;; appropriate beliefs or other nodes don't exist.
+; (defun make-symlink-if-units (unit1 unit2 weight)
+;   (when (and (unit? unit1)
+;              (unit? unit2))
+;     (make-symlink unit1 unit2 weight))) ; from network.lisp
 
 
 ; RAW-MAKE-SYMLINK-IF-UNITS
