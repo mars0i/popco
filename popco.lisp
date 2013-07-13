@@ -198,7 +198,7 @@
 
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
   (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
-  (update-proposition-nets                       ; update proposition network links based on activations of proposition-map-units [pop->pop]
+  (update-propn-nets-from-analogy-nets           ; update proposition network links based on activations of proposition-map-units [pop->pop]
     (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
       (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
         (transmit-environments                   ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
@@ -425,9 +425,9 @@
 ;;       - a degree of trust: number between 0 and 1 to weight the propn's transmitted credence;
 ;;         see utterance-influence to see what this really means.
 ;; RETURNS: The new-flag: t if the proposition is a new addition to listener's analog struc, nil if not
-; [NOTE: update-proposition-net *may* simply reinvoke a semantic-iff that was created here in receive-utterance
+; [NOTE: update-propn-net-from-analogy-net *may* simply reinvoke a semantic-iff that was created here in receive-utterance
 ; because a new proposition suddenly made it applicable, which might then immediately get clobbered 
-; in update-proposition-net before it could be used.  However, some of the semantic-iffs created here will not correspond
+; in update-propn-net-from-analogy-net before it could be used.  However, some of the semantic-iffs created here will not correspond
 ; to the map-unit-influenced ones we deal with there.  So it's simpler to create all semantic-iffs
 ; relevant to a new proposition here, even if a few of them might get recreated moments later over there.]
 (defun receive-utterance (generic-propn generic-struc listener trust)
@@ -651,7 +651,7 @@
   ;old version: (mapc #'perceived (mapcar #'generic-to-personal-sym (get person 'given-el))) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (mapc #'perceived (get person 'given-el)) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (update-analogy-net person) ; create and record the net from what's been stored in person, analog strucs, propns
-  (update-proposition-net person) ; initialize proposition net [won't reflect code in next lines, but needed so make-symlinks there have something to attach to]
+  (update-propn-net-from-analogy-net person) ; initialize proposition net [won't reflect code in next lines, but needed so make-symlinks there have something to attach to]
   (mapc #'apply-record-raw-make-symlink-if-units (get person 'semantic-iffs))
   (mapc #'eval (get person 'addl-input))) ; [PROBABLY BUGGY--SHOULDN'T IT RUN IN LATER TICKS, TOO?] additional code, such as pragmatics directives, that needs to run after the main net is created
 
@@ -716,8 +716,8 @@
 
 ; make/update proposition links from proposition-map-units
 ; SEE doc/ruleForUpdatingPropnLinksFromMapNodes for a description of this whole process 5/2103.
-(defun update-proposition-nets (population)
-  (mapc #'update-proposition-net (get population 'members))
+(defun update-propn-nets-from-analogy-nets (population)
+  (mapc #'update-propn-net-from-analogy-net (get population 'members))
   population)
 
 ; Make/update proposition links from proposition-map-units, then reinvoke 
@@ -730,9 +730,9 @@
 ; because a new proposition suddenly made it applicable, but then immediately gets clobbered 
 ; here before it can be used.  However, some of the semantic-iffs created there will not correspond
 ; to the map-unit-influenced ones we deal with here--i.e. they might not have been clobbered 
-; by the previous step in update-proposition-net.  So it's simpler to create all semantic-iffs
+; by the previous step in update-propn-net-from-analogy-net.  So it's simpler to create all semantic-iffs
 ; relevant to a new proposition there, even if a few of them might get recreated moments later here.]
-(defun update-proposition-net (person)
+(defun update-propn-net-from-analogy-net (person)
   (when *do-update-propn-nets*
     (setf *the-person* person) ; [redund if called from create-net]
     (let ((propn-map-units (get *the-person* 'propn-map-units)))
@@ -848,7 +848,6 @@
 ; [so that we can just pass the entire list as is to apply].
 (defun personal-semantic-iff (personal-propn1 personal-propn2 weight &optional (person *the-person*))
   (pushnew (list personal-propn1 personal-propn2 weight) (get person 'semantic-iffs)))
-
 
 ; ;; OBSOLETE--use semantic-iff:
 ; ;; MAKE-PERSONAL-SYMLINK-IF-UNITS
