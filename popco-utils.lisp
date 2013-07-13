@@ -10,6 +10,11 @@
 ; lockstep, since identical.
 ; use REMOVE to filter a list
 
+;; GET-ARGUMENTS
+;; Get the list of arguments of a proposition from a proposition symbol
+(defun get-arguments (propn)
+  (second (get propn 'message)))
+
 ; Return copy of list with nth (zero-based) element removed
 (defun rem-nth (n lis)
   (cond ((null lis) (error "REM-NTH: Trying to remove object past end of list"))

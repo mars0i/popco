@@ -739,6 +739,27 @@
       (mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
       (invoke-semantic-iffs-for-propn-map-units propn-map-units person))))
 
+(defun update-propn-nets-from-propn-nets (population)
+  (mapc #'update-propn-net-from-propn-net (get population 'members))
+  population)
+
+;; TODO
+(defun update-propn-net-from-propn-net (person)
+  (when *do-update-propn-nets*
+    (setf *the-person* person) ; [redund if called from create-net]
+    (let ((conditionals (remove-if-not #'conditional-propn-p (get *the-person* 'all-propositions))))
+      ;(mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
+      ;(invoke-semantic-iffs-for-propn-map-units propn-map-units person)
+      )))
+
+;; TODO
+(defun conditional-propn-p (propn)
+  t) ; FIXME
+
+;; TODO
+(defun biconditional-propn-p (propn)
+  t) ; FIXME
+
 ; RECORD-CONSTRAINTS
 ; Sometimes useful to have list of constraints stored with each
 ; person, but, we don't need to maintain it on every iteration.
