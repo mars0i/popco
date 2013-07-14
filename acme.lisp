@@ -214,15 +214,18 @@
 (defun make-propn (struc field msg &optional person)
   (let ((*the-person* (or person *the-person*))) ; if person is passed, temporarily set *the-person* to it [affects calls as well--defvar vars are dynamic]
     (let ((personal-msg (personalize-tree (remove-non-propn-elts msg))) ; personalize-tree is in popco.lisp or popco-utils.lisp
-          (propn (get-propn-name msg))                    ; get interpersonal canonical proposition symbol
-          (personal-propn (personal-get-propn-name msg))) ; get mentalese propositional symbol
+          (propn (get-propn-name msg))                    ; interpersonal canonical proposition symbol
+          (personal-propn (personal-get-propn-name msg))  ; mentalese propositional symbol
+          (pred (get-pred msg)))                          ; interpersonal predicate
       (when (includes-credence msg)                       ; added by MA 9/2011
         (note-unit personal-propn (get-tr-val msg)))    ; record credence as activation, if exists
       (put propn 'message msg)           ; give interpersonal prop pointer to structured prop
       (put personal-propn 'message personal-msg)  ; give mentalese prop link to structured prop (interpersonal format)
       (put personal-propn 'belongs-to
            (cons-if-new (list struc field) (get personal-propn 'belongs-to)))
-      (put personal-propn 'is-causal (member (get-pred msg) *causal-preds*)) ; note we're using the interpersonal predicate to set the personal property ADDED 7/14/2013 -MA
+      (put personal-propn 'is-causal (or    ; note we're using the interpersonal predicate to set personal properties [ADDED 7/14/2013 -MA]
+                                       (put personal-propn 'is-causal-conditional (member pred *causal-if-preds*))      ; put returns the newly set value
+                                       (put personal-propn 'is-causal-biconditional (member pred *causal-iff-preds*))))
       (setf (get *the-person* 'all-propositions)
             (cons-if-new personal-propn (get *the-person* 'all-propositions)))
       (put struc 'propositions

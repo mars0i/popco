@@ -288,6 +288,11 @@
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured
 (defvar *propn-category-descriptions* '()) ; similar
 
+; Propositions with these predicates may be processed in special ways:
+(defvar *causal-if-preds* '(causal-if preventative-if))
+(defvar *causal-iff-preds* '(causal-iff preventative-iff))
+(defvar *causal-preds* (append *causal-if-preds* *causal-iff-preds*))
+
 (defvar *all-soc-net-groups* '()) ; should store all social network groups (including e.g. small gentemp'ed groups)
 
 ; Some Lisps (e.g. SBCL) use the same random state every time, by
