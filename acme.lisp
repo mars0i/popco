@@ -203,10 +203,7 @@
   (caar (get propn 'belongs-to)))
 
 ; *****************************
-; MAKE-PROPNS sets up propositions which have the structure:
-; Name of proposition:
-; message
-; belongs-to: ((structure field) ...)
+; MAKE-PROPNS sets up propositions.
 ; *THE-PERSON* MUST BE SET PROPERLY
 (defun make-propns (struc field lst-of-messages)
   (mapc #'(lambda (msg) (make-propn struc field msg)) lst-of-messages))
@@ -225,6 +222,7 @@
       (put personal-propn 'message personal-msg)  ; give mentalese prop link to structured prop (interpersonal format)
       (put personal-propn 'belongs-to
            (cons-if-new (list struc field) (get personal-propn 'belongs-to)))
+      (put personal-propn 'is-causal (member (get-pred msg) *causal-preds*)) ; note we're using the interpersonal predicate to set the personal property ADDED 7/14/2013 -MA
       (setf (get *the-person* 'all-propositions)
             (cons-if-new personal-propn (get *the-person* 'all-propositions)))
       (put struc 'propositions

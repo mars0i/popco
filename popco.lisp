@@ -69,6 +69,10 @@
 
 (defvar *time-runs* t)
 
+;; TO RUN POPCO, see definitions of functions popco (run the main loop *max-pop-ticks*)
+;; or alternatives such as popco-plus-t (which usually requires that popco be run first).
+
+
 ;; RUN-POPULATION-ONCE
 ;; Guts of THE MAIN LOOP.
 ;; Logic that's not obvious from structure of the code:
@@ -77,19 +81,20 @@
 ;;   environment rather than persons, with different internals.  [not yet implemented]
 ;; - sex-and-death might cause beliefs of newborns to be partly initialized. [not yet implemented]
 ;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
-
+;;
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
   (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
-  (update-propn-nets-from-analogy-nets           ; update proposition network links based on activations of proposition-map-units [pop->pop]
-    (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
-      (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
-        (transmit-environments                   ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
-          (transmit-utterances                   ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
-            (choose-utterances                   ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
-              (choose-conversers                 ; choose who talks to whom [pop->(converser-pairs . pop)]
-                (births-and-deaths               ; choose who lives, dies, has babies, and do it [pop->pop] [split?] [currently a NO-OP]
-                  (report-persons                ; optionally report state of persons to external gui, etc. [pop->pop]
-                    (settle-nets population)))))))))) ; settle nets, at least partially [pop->pop] +
+  (update-propn-nets-from-propn-nets      ; [NO-OP?] supposed to create/update links in propn net from activns of causal propns. [pop->pop]
+    (update-propn-nets-from-analogy-nets  ; update proposition network links based on activations of proposition-map-units [pop->pop]
+      (update-analogy-nets                ; update internal analogy nets to reflect newly added propositions [pop->pop]
+        (report-conversations             ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
+          (transmit-environments          ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
+            (transmit-utterances          ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
+              (choose-utterances          ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
+                (choose-conversers        ; choose who talks to whom [pop->(converser-pairs . pop)]
+                  (births-and-deaths      ; [NO-OP] choose who lives, dies, has babies, and do it [pop->pop] [split?]
+                    (report-persons       ; optionally report state of persons to external gui, etc. [pop->pop]
+                      (settle-nets population))))))))))) ; settle nets, at least partially [pop->pop] +
   (report-progress-to-console) ; brief report on what tick [etc.] just occurred
   (finish-output))
 
@@ -639,6 +644,7 @@
   (mapc #'perceived (get person 'given-el)) ; mark propns in given-el perceived.  [Or put calls into the input field via make-person.]
   (update-analogy-net person) ; create and record the net from what's been stored in person, analog strucs, propns
   (update-propn-net-from-analogy-net person) ; initialize proposition net [won't reflect code in next lines, but needed so make-symlinks there have something to attach to]
+  ; not running update-propn-net-from-propn-net until later
   (mapc #'apply-record-raw-make-symlink-if-units (get person 'semantic-iffs))
   (mapc #'eval (get person 'addl-input))) ; [PROBABLY BUGGY--SHOULDN'T IT RUN IN LATER TICKS, TOO?] additional code, such as pragmatics directives, that needs to run after the main net is created
 
@@ -646,7 +652,7 @@
 
 ; single-arg wrapper for note-unit for mapc'ing:
 (defun init-propn (propn &optional (init-activ *propn-init-activ*) (person *the-person*))
-  (note-unit propn init-activ person))
+  (note-unit propn init-activ person)) ; see network.lisp
 
 ;;-----------------------------------------------------
 ;; UPDATE-NETS
@@ -727,24 +733,21 @@
       (invoke-semantic-iffs-for-propn-map-units propn-map-units person))))
 
 (defun update-propn-nets-from-propn-nets (population)
-  (mapc #'update-propn-net-from-propn-net (get population 'members))
+  ;(mapc #'update-propn-net-from-propn-net (get population 'members))
   population)
 
 ;; TODO
 (defun update-propn-net-from-propn-net (person)
   (when *do-update-propn-nets*
-    (setf *the-person* person) ; [redund if called from create-net]
+    (setf *the-person* person)
     (let ((conditionals (remove-if-not #'conditional-propn-p (get *the-person* 'all-propositions))))
       ;(mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
       ;(invoke-semantic-iffs-for-propn-map-units propn-map-units person)
       )))
 
+;; A condition is a biconditional or a regular "uni" conditional.
 ;; TODO
 (defun conditional-propn-p (propn)
-  t) ; FIXME
-
-;; TODO
-(defun biconditional-propn-p (propn)
   t) ; FIXME
 
 ; RECORD-CONSTRAINTS

@@ -89,7 +89,8 @@
 ; NOTE-UNIT sets the global variables indicating a unit has been added.
 ; And sets the initial activation value.
 ; Added optional activation value to override default value (9/2011 MA)
-; *THE-PERSON* MUST BE SET CORRECTLY.
+; NOTE THAT this in effect creates the node if it didn't already exist.
+; *THE-PERSON* MUST BE SET CORRECTLY or passed as arg.
 (defun note-unit (unit &optional my-init-activ (person *the-person*))
   (setf (activation unit) (or my-init-activ *init-activ*)) ; sets activn even if nil is passed
   (setf (person-of unit) person)
