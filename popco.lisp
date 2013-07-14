@@ -35,9 +35,7 @@
 ;; VARIABLES TO CONTROL OVERALL OPERATION OF POPCO
 
 (setf *max-pop-ticks* 30) ; max number of pop-tick iterations
-
 (setf *max-times* 5) ; defined in variables-personal.lisp. Here means how many cycles of net-settling allowed per pop-tick.
-
 (setf *pop-tick* 0) ; number/time of the tick currently being processed.  
 ; Note this gets incremented before anything happens, so the first tick is actually = 1.
 
@@ -46,15 +44,12 @@
 ;; Call to MAKE-RANDOM-STATE now in variables.lisp, to precede setting *run-id*, which is used in other files.
 
 (defvar *data-dir* "data")
-
 (defvar *random-state-file* (format nil "~A/~A.lisp" *data-dir* *run-id*)) ; we'll write code to restore this session's random state here
-
 (defvar *netlogo-basename* (format nil "~A/~A" *data-dir* *run-id*))
 (defvar *netlogo-extension* ".nlogdat")  
 (defvar *netlogo-output-name* (format nil "~A~A" *netlogo-basename* *netlogo-extension*)) ; main, ongoing NetLogo data file name
 (defvar *netlogo-outstream* nil)    ; stream for same
 (defvar *netlogo-snapshot-suffix* "AtTick") ; used in name of file for passing NetLogo pop state during a single tick; see report-persons-just-at-t-for-netlogo.
-
 (defvar *propns-csv-output-name* (format nil "~A/~A.csv" *data-dir* *run-id*)) ; file to write propn activn data in csv format
 (defvar *propns-csv-outstream* nil) ; stream for same
 
@@ -74,6 +69,38 @@
 
 (defvar *time-runs* t)
 
+;; RUN-POPULATION-ONCE
+;; Guts of THE MAIN LOOP.
+;; Logic that's not obvious from structure of the code:
+;; - Though main loop has functional form, it modifies population along the way.
+;; - There might be one or more agents who represent the
+;;   environment rather than persons, with different internals.  [not yet implemented]
+;; - sex-and-death might cause beliefs of newborns to be partly initialized. [not yet implemented]
+;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
+
+(defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
+  (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
+  (update-propn-nets-from-analogy-nets           ; update proposition network links based on activations of proposition-map-units [pop->pop]
+    (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
+      (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
+        (transmit-environments                   ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
+          (transmit-utterances                   ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
+            (choose-utterances                   ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
+              (choose-conversers                 ; choose who talks to whom [pop->(converser-pairs . pop)]
+                (births-and-deaths               ; choose who lives, dies, has babies, and do it [pop->pop] [split?] [currently a NO-OP]
+                  (report-persons                ; optionally report state of persons to external gui, etc. [pop->pop]
+                    (settle-nets population)))))))))) ; settle nets, at least partially [pop->pop] +
+  (report-progress-to-console) ; brief report on what tick [etc.] just occurred
+  (finish-output))
+
+; Give person running the program a quick brief update so they know that something's happening.
+; This version reports pop-tick number.  Assumes less than 1 billion pop-ticks.
+; Assumes that terminal handles backspace normally, and it won't backspace to prev line. (e.g. not gui version of CCL)
+; To undo this behavior add something like (defun report-progress-to-console () ) .
+(defun report-progress-to-console ()
+  (format t "~C~C~C~C~C~C~C~C~C~S" #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace
+                                         *pop-tick*))
+
 ; POPCO
 ; Run the main loop on *the-population* until *max-pop-ticks* is reached.
 ; If  ':cont-prev-sess t' is added, then don't recreate output files such 
@@ -86,6 +113,7 @@
   (if *time-runs* 
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
+
 
 ; POPCO-PLUS-T
 ; Run the main loop on *the-population*, starting from the current *pop-tick*, until
@@ -185,47 +213,6 @@
    ) ; end of unwind-protect
  t)
 ; end of run-population
-
-
-;; RUN-POPULATION-ONCE
-;; Guts of THE MAIN LOOP.
-;; Logic that's not obvious from structure of the code:
-;; - Though main loop has functional form, it modifies population along the way.
-;; - There might be one or more agents who represent the
-;;   environment rather than persons, with different internals.  [not yet implemented]
-;; - sex-and-death might cause beliefs of newborns to be partly initialized. [not yet implemented]
-;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
-
-(defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
-  (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
-  (update-propn-nets-from-analogy-nets           ; update proposition network links based on activations of proposition-map-units [pop->pop]
-    (update-analogy-nets                         ; update internal analogy nets to reflect newly added propositions [pop->pop]
-      (report-conversations                      ; optionally report conversations to external gui, etc. [(conversations-plus . pop)->pop]
-        (transmit-environments                   ; like transmit utterances, but "utterances" of the external world, or other "cognitively spontaneous" emphasis
-          (transmit-utterances                   ; add propositions uttered to listeners [(conversations . pop)->(conversations-plus . pop)]
-            (choose-utterances                   ; choose propositions spoken [(converser-pairs . pop)->(conversations . pop)]
-              (choose-conversers                 ; choose who talks to whom [pop->(converser-pairs . pop)]
-                (births-and-deaths               ; choose who lives, dies, has babies, and do it [pop->pop] [split?] [currently a NO-OP]
-                  (report-persons                ; optionally report state of persons to external gui, etc. [pop->pop]
-                    (settle-nets population)))))))))) ; settle nets, at least partially [pop->pop] +
-  (report-progress-to-console) ; brief report on what tick [etc.] just occurred
-  (finish-output))
-
-; [Yes there's inefficiency in looping and consing about conversing and
-; uttering multiple times.  maybe get rid of that later.  It's nice to
-; be able to see the logic of the process at the top level, though.]
-
-; Give person running the program a quick brief update so they know that something's happening.
-; This version reports pop-tick number, in the same terminal location each time.
-; i.e. prints pop-tick number on stdout, in place, i.e. backspacing over previous number.
-; Assumes that terminal handles backspace normally, and it won't backspace to prev line. (e.g. not gui version of CCL)
-; Also assumes less than 1 billion pop-ticks.
-(defun report-progress-to-console ()
-  (format t "~C~C~C~C~C~C~C~C~C~S" #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace #\backspace
-                                         *pop-tick*))
-
-(defun del-netlogo-outfile ()
-  (delete-file *netlogo-output-name*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; MACROS
