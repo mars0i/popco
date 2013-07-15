@@ -113,8 +113,8 @@
 ; Also displays basic information on nature of the run, and times it by default, i.e. if *time-runs* is true.
 (defun popco (&key cont-prev-sess) 
   (format t "~%Running popco with maximum of ~S cycles each in ~S popco tick(s) ....~%" *max-times* (- *max-pop-ticks* *pop-tick*))
-  (format t "*do-converse* ~S; *do-update-propn-nets* ~S; *do-report-to-netlogo* ~S; *do-report-propns-to-csv* ~S; *use-new-random-state* ~S~%"
-             *do-converse*     *do-update-propn-nets*     *do-report-to-netlogo*     *do-report-propns-to-csv*      *use-new-random-state*)
+  (format t "*do-converse* ~S; *do-update-propn-nets-from-analogy-nets* ~S; *do-report-to-netlogo* ~S; *do-report-propns-to-csv* ~S; *use-new-random-state* ~S~%"
+             *do-converse*     *do-update-propn-nets-from-analogy-nets*     *do-report-to-netlogo*     *do-report-propns-to-csv*      *use-new-random-state*)
   (if *time-runs* 
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
@@ -710,7 +710,8 @@
 ; make/update proposition links from proposition-map-units
 ; SEE doc/ruleForUpdatingPropnLinksFromMapNodes for a description of this whole process 5/2103.
 (defun update-propn-nets-from-analogy-nets (population)
-  (mapc #'update-propn-net-from-analogy-net (get population 'members))
+  (when *do-update-propn-nets-from-analogy-nets*
+    (mapc #'update-propn-net-from-analogy-net (get population 'members)))
   population)
 
 ; Make/update proposition links from proposition-map-units, then reinvoke 
@@ -726,24 +727,23 @@
 ; by the previous step in update-propn-net-from-analogy-net.  So it's simpler to create all semantic-iffs
 ; relevant to a new proposition there, even if a few of them might get recreated moments later here.]
 (defun update-propn-net-from-analogy-net (person)
-  (when *do-update-propn-nets*
-    (setf *the-person* person) ; [redund if called from create-net]
-    (let ((propn-map-units (get *the-person* 'propn-map-units)))
-      (mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
-      (invoke-semantic-iffs-for-propn-map-units propn-map-units person))))
+  (setf *the-person* person) ; [redund if called from create-net]
+  (let ((propn-map-units (get *the-person* 'propn-map-units)))
+    (mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
+    (invoke-semantic-iffs-for-propn-map-units propn-map-units person)))
 
 (defun update-propn-nets-from-propn-nets (population)
-  ;(mapc #'update-propn-net-from-propn-net (get population 'members))
+  ;(when *do-update-propn-nets-from-propn-nets*
+  ;(mapc #'update-propn-net-from-propn-net (get population 'members)))
   population)
 
 ;; TODO
 (defun update-propn-net-from-propn-net (person)
-  (when *do-update-propn-nets*
-    (setf *the-person* person)
-    (let ((conditionals (remove-if-not #'conditional-propn-p (get *the-person* 'all-propositions))))
-      ;(mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
-      ;(invoke-semantic-iffs-for-propn-map-units propn-map-units person)
-      )))
+  (setf *the-person* person)
+  (let ((conditionals (remove-if-not #'conditional-propn-p (get *the-person* 'all-propositions))))
+    ;(mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
+    ;(invoke-semantic-iffs-for-propn-map-units propn-map-units person)
+    ))
 
 ;; A condition is a biconditional or a regular "uni" conditional.
 ;; TODO
