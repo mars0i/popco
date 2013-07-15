@@ -11,10 +11,7 @@
 ; UPDATED: 5-95, to join COHERE
 ; UPDATED: 11-98, fixed sem-similarity
 
-; MODIFIED by Marshall Abrams 6/2011 and after, to make some globals 
-; concerning persons and coherence networks into properties of persons, as well
-; as other code to facilitate this, and other changes.  e.g. 2012 added deeper type
-; compatibility checking for propositions in make-hyp-unit.
+; MODIFIED in many ways by Marshall Abrams 6/2011 and after.
 
 
 ; MACRO ISOMORPHIC-ARGLISTS
@@ -224,8 +221,8 @@
       (put personal-propn 'belongs-to
            (cons-if-new (list struc field) (get personal-propn 'belongs-to)))
       (put personal-propn 'is-causal (or    ; note we're using the interpersonal predicate to set personal properties [ADDED 7/14/2013 -MA]
-                                       (put personal-propn 'is-causal-conditional (member pred *causal-if-preds*))      ; put returns the newly set value
-                                       (put personal-propn 'is-causal-biconditional (member pred *causal-iff-preds*))))
+                                       (put personal-propn 'is-causal-conditional (and (member pred *causal-if-preds*) t))      ; put returns the newly set value
+                                       (put personal-propn 'is-causal-biconditional (and (member pred *causal-iff-preds*) t)))) ; 'and' outputs t rather than rest of list--less confusing
       (setf (get *the-person* 'all-propositions)
             (cons-if-new personal-propn (get *the-person* 'all-propositions)))
       (put struc 'propositions
@@ -238,37 +235,6 @@
       (setf (get *the-person* 'all-preds)  ; Q: IS THIS REDUNDANT GIVEN CONSTRAINT-MAP? -MA 11/2011
             (cons-if-new (get-pred personal-msg)
                          (get *the-person* 'all-preds))))))
-
-; OLD ALL-IN-ONE VERSION OF MAKE-PROPNS
-;(defun old-make-propns (struc field lst-of-messages)
-;  (do ((msgs lst-of-messages (cdr msgs))
-;       (msg nil)
-;       (personal-msg nil)
-;       (result nil)
-;       (propn nil)
-;       (personal-propn nil))
-;      ((null msgs) result)
-;    (setf msg (car msgs))
-;    (setf personal-msg (personalize-tree (remove-non-propn-elts msg))) ; personalize-tree is in popco.lisp or popco-utils.lisp
-;    (setf propn (get-propn-name msg))                   ; get interpersonal canonical proposition symbol
-;    (setf personal-propn (personal-get-propn-name msg)) ; get mentalese propositional symbol
-;    (when (includes-credence msg)                       ; added by MA 9/2011
-;        (note-unit personal-propn (get-tr-val msg)))    ; record credence as activation, if exists
-;    (put propn 'message msg)           ; give interpersonal prop pointer to structured prop
-;    (put personal-propn 'message personal-msg)  ; give mentalese prop link to structured prop (interpersonal format)
-;    (put personal-propn 'belongs-to
-;         (cons-if-new (list struc field) (get personal-propn 'belongs-to)))
-;    (setf (get *the-person* 'all-propositions)
-;          (cons-if-new personal-propn (get *the-person* 'all-propositions)))
-;    (put struc 'propositions
-;         (cons-if-new personal-propn (get struc 'propositions)))  ; changed propn to personal-propn -MA 10-03-2011
-;    (put (get-pred personal-msg) 'belongs-to
-;         (cons-if-new struc (get (get-pred personal-msg) 'belongs-to)))
-;    (put (get-pred personal-msg) 'from-propns
-;         (cons-if-new personal-propn (get (get-pred personal-msg) 'from-propns))) ; ??
-;    (setf (get *the-person* 'all-preds)  ; Q: IS THIS REDUNDANT GIVEN CONSTRAINT-MAP? -MA 11/2011
-;          (cons-if-new (get-pred personal-msg)
-;                       (get *the-person* 'all-preds)))))
 
 ; added by MA 11/2011 [fn not macro, so can mapcar it]
 (defun propns-of-struc (struc)

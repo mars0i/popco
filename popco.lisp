@@ -733,22 +733,40 @@
     (invoke-semantic-iffs-for-propn-map-units propn-map-units person)))
 
 (defun update-propn-nets-from-propn-nets (population)
-  ;(when *do-update-propn-nets-from-propn-nets*
-  ;(mapc #'update-propn-net-from-propn-net (get population 'members)))
+  (when *do-update-propn-nets-from-propn-nets*
+    (mapc #'update-propn-net-from-propn-net (get population 'members)))
   population)
+
+(defun causal-p (propn)
+  (get propn 'is-causal))
+
+(defun causal-conditional-p (propn)
+  (get propn 'is-causal-conditional))
+
+(defun causal-biconditional-p (propn)
+  (get propn 'is-causal-biconditional))
 
 ;; TODO
 (defun update-propn-net-from-propn-net (person)
   (setf *the-person* person)
-  (let ((conditionals (remove-if-not #'conditional-propn-p (get *the-person* 'all-propositions))))
-    ;(mapc #'update-assoc-from-unit propn-map-units) ; from acme-infer.lisp
-    ;(invoke-semantic-iffs-for-propn-map-units propn-map-units person)
-    ))
+  (let* ((propns (get *the-person* 'all-propositions)))
+    (mapc #'update-causal-conditional-link (remove-if-not #'causal-conditional-p propns))
+    (mapc #'update-causal-biconditional-link (remove-if-not #'causal-biconditional-p propns)))
+  ;invoke-semantic-iffs?? ; TODO
+  )
 
-;; A condition is a biconditional or a regular "uni" conditional.
-;; TODO
-(defun conditional-propn-p (propn)
-  t) ; FIXME
+(defun update-causal-conditional-link (propn)
+  ; TODO
+  )
+
+(defun update-causal-biconditional-link (propn)
+  (let ((args (get-args-from-propn propn)))
+    (record-raw-make-symlink-if-units (first args) 
+                                      (second args)
+                                      (activn-to-causal-link-weight (activation propn)))))
+;; TODO?
+(defun activn-to-causal-link-weight (activn)
+  activn)
 
 ; RECORD-CONSTRAINTS
 ; Sometimes useful to have list of constraints stored with each
@@ -905,12 +923,20 @@
 
 ; APPLY-RECORD-RAW-MAKE-SYMLINK-IF-UNITS
 ; NOTE: *THE-PERSON* MUST BE SET CORRECTLY.
-(defun apply-record-raw-make-symlink-if-units (u1u2w)
-  (mark-constraint-newly-added (first u1u2w)  ; unit1
-                               (second u1u2w) ; unit2
-                               (third u1u2w)  ; weight
-                               *the-person*) ; record that we're making a new constraint, so popco can tell gui if desired
-  (apply-raw-make-symlink-if-units u1u2w)) 
+(defun apply-record-raw-make-symlink-if-units (u1u2w &optional (person *the-person*))
+  (record-raw-make-symlink-if-units (first u1u2w) (second u1u2w) (third u1u2w) person))
+
+(defun record-raw-make-symlink-if-units (unit1 unit2 weight &optional (person *the-person*))
+  (mark-constraint-newly-added unit1 unit2 weight person) ; record that we're making a new constraint, so popco can tell gui if desired
+  (raw-make-symlink-if-units unit1 unit2 weight))
+
+; old version
+;(defun apply-record-raw-make-symlink-if-units (u1u2w &optional (person *the-person*))
+;  (mark-constraint-newly-added (first u1u2w)  ; unit1
+;                               (second u1u2w) ; unit2
+;                               (third u1u2w)  ; weight
+;                               person)        ; record that we're making a new constraint, so popco can tell gui if desired
+;  (apply-raw-make-symlink-if-units u1u2w)) 
 
 ;;-----------------------------------------------------
 ;; BIRTHS-AND-DEATHS

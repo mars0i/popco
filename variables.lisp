@@ -257,10 +257,13 @@
 ;	Causes choose-conversers to return empty list of conversers
 ;	 so subsequent conversation functions have nothing to do.
 ;(defvar	*dont-update-propn-nets* nil) ; OBSOLETE
-(defvar	*do-update-propn-nets* t)
+(defvar	*do-update-propn-nets-from-analogy-nets* t)
 ;	Set previous to nil to cause proposition-net to be neither created 
 ;	nor updated. Propositions exist regardless, but won't have activations
 ;	 or links.  Causes update-proposition-nets to be a no-op.
+(defvar	*do-update-propn-nets-from-propn-nets* t)
+;	Setting previous to nil prevents creating/updating additional links representating
+;       causal relations between propositions related by a causal proposition.
 (defvar *do-report-to-netlogo* t)
 (defvar *do-report-propns-to-csv* t) ; whether to write proposition activations to a csv file
 (defvar *do-report-analogy-nets-to-guess* t)

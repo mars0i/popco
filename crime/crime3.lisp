@@ -106,9 +106,10 @@
 ; *propn-excit-weight* *propn-inhib-weight* *trust* *perceived-excit*
 ;(setf *time-runs* nil)
 ;(setf *do-converse* t)  ; set this in particular model files
-(setf *do-update-propn-nets* t)
-(setf *do-report-to-netlogo* t)
-(setf *do-report-propns-to-csv* t)
+(setf *do-update-propn-nets-from-analogy-nets* t)
+(setf *do-update-propn-nets-from-propn-nets* t)
+;(setf *do-report-to-netlogo* t)
+;(setf *do-report-propns-to-csv* t)
 (setf *do-report-analogy-nets-to-guess* t)
 (setf *sleep-delay* nil)           ; If non-nil, pause this many seconds between generations
 (setf *silent-run?* t)             ; If nil, use Thagard-style verbose reporting to console

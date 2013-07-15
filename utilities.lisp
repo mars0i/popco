@@ -32,7 +32,8 @@
   (my-print '"Maximum ACME link weight (+acme-max-weight+): " +acme-max-weight+)
   (my-print '"Propn compatibility checks propn args' args? (+deep-isomorphic-matching+): " +deep-isomorphic-matching+)
   (my-print '"Converse? (*do-converse*): " *do-converse*)
-  (my-print '"Update propn link weights from map unit activns? (*do-update-propn-nets*): " *do-update-propn-nets*)
+  (my-print '"Update propn link weights from map unit activns? (*do-update-propn-nets-from-analogy-nets*): " *do-update-propn-nets-from-analogy-nets*)
+  (my-print '"Update propn link weights from map unit activns? (*do-update-propn-nets-from-propn-nets*): " *do-update-propn-nets-from-propn-nets*)
   (my-print '"Create output file for use by NetLogo? (*do-report-to-netlogo*): " *do-report-to-netlogo*)
 )
 
