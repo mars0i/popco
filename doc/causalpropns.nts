@@ -1,0 +1,97 @@
+7/2013
+
+Exploring special handling of causal propns so that they create and
+update links between their antecedent and consequent.  This is similar
+to how propn map nodes control link weights in the belief net already.
+
+7/16/2014:
+
+There are currently four such propns:
+
+causal-if
+preventative-if
+causal-iff
+preventative-iff
+
+If the causal/preventative propn has positive activation, the
+activation controls the link weight of antecedent-consequent link.
+Otherwise, that link weight is zero, since the falsehood of a causal
+propn does not imply that there is a negative causal connection,
+normally.
+
+The difference between causal and preventative propns is whether link
+weights are a positive or negative function of the causal/preventative
+propn's activation.
+
+The iff versions create/update regular symlinks.
+
+The if versions also have a symlink, of a sort: It has two separately
+links, one for the modus ponen effect, and the other for the modus
+tollens effect.  However, symlinks in POPCO are just two one-way
+links, so the if versions really do just have a symlink.  Except:
+
+For causal-if:
+
+	There should be transmission on the antecedent->consequent
+	link iff antecedent > 0.
+
+	There should be transmission on the consequent->antecedent
+	link iff consequent < 0.
+
+	In both cases, the link weights will be positive (see below),
+	transmitting positive influence in the first case, and
+	negative influence in the second.
+
+For preventative-if:
+
+	There should be transmission on the antecedent->consequent
+	link iff antecedent > 0 (just as for causal-if).
+
+	There should be transmission on the consequent->antecedent
+	link iff consequent > 0.  (i.e. MT effect fires when the
+	original consequent is negative, but we represent that as the
+	non-negated consequent, but handle it so as to operate as
+	if negated.  We want the MT to fire when the negated
+	consequent is negative, i.e. when the non-negated consequent
+	is positive.)
+
+	In both cases, the link weights will be negative (see below),
+	transmitting negative influence from the originating node in
+	both cases.  In the consequent-antecedent case, what we are
+	transmitting is the positive node activation, i.e. the
+	negative negation-of-the-node activation, but along a negative
+	link.  That ~consequent is false makes antedecent false.
+
+I probably should review the Nelson, Thagard, and Hardy paper that does
+this stuff.  Oh--note that they do a version of the Duncker problem.
+
+--------------------------
+
+Maybe the easiest way to implement the thresholding is to add an extra
+step that clips the values of the activations.  This could work since at
+present the next step after update-propn-nets-from-propn-nets is
+settle-nets.  This method potentially fragile, though, to rearrangement
+of order of operations in the main loop.  More significantly, the
+preceding method means that nodes forget their regular activation, which
+would matter for all other links.  So this is a bad idea.  Maybe I
+really do have to implement the thresholding in settle-nets.  Well, I
+dunno--maybe there's a tricky way to do it with the difference between
+activation and new-activation.  Probably not.
+
+So maybe I have to implement the thresholding with calls inside
+update-unit-activn-gross or excit-and-inhib.
+
+Ug--would rather not.
+
+Um, I suppose there might be something where I have a third activation
+property, which is the one that's used by the settling functions iff
+it's a causal link.  Ugg, still.
+
+On the other hand, it's not surprising that I have to muck with the
+settling functions, since I'm taking what was a unformly symmmetric
+settling process and making it assymetric.
+
+(I wonder whether I could get away with only using iff versions of the
+causal predicates.  On the other hand, this expands the logical
+relations possible.  It probably gives me full propositional logic, in
+principle.)
