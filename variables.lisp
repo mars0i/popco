@@ -261,7 +261,7 @@
 ;	Set previous to nil to cause proposition-net to be neither created 
 ;	nor updated. Propositions exist regardless, but won't have activations
 ;	 or links.  Causes update-proposition-nets to be a no-op.
-(defvar	*do-update-propn-nets-from-propn-nets* t)
+(defvar	*do-update-propn-nets-from-propn-nets* nil)
 ;	Setting previous to nil prevents creating/updating additional links representating
 ;       causal relations between propositions related by a causal proposition.
 (defvar *do-report-to-netlogo* t)
@@ -295,6 +295,7 @@
 (defvar *causal-if-preds* '(causal-if preventative-if))
 (defvar *causal-iff-preds* '(causal-iff preventative-iff))
 (defvar *causal-preds* (append *causal-if-preds* *causal-iff-preds*))
+(defvar *preventative-preds* '(preventative-if preventative-iff))
 
 (defvar *all-soc-net-groups* '()) ; should store all social network groups (including e.g. small gentemp'ed groups)
 

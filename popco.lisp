@@ -5,31 +5,22 @@
 ;; This is toplevel code for POPCO: Population Coherence Dynamics by Marshall Abrams
 ;; Many parts of POPCO, in other files, are by Paul Thagard and his collaborators on COHERE,
 ;; with extensive modifications in many areas.
-;; e.g. I've modified PT's files to allow persons to maintain separate nets, and added and modified various functions.
 ;; -MA
-;; v1.2, fall 2012
 
 ;; TO USE
-;; First load:
-;; 	popco-start.lisp [or its abbrevation start.lisp]
-;; which loads the framework.
-;; Then load 
-;;	some persons in a population (cf. testbush.lisp).
-;; which should run
-;; 	(create-nets population)
-;; or
-;; 	(init-pop population)
-;; [which do the same thing] to initialize the coherence network in each person.
-;; Then call 
-;; 	one of the run-population functions below, or their popco abbreviations.
+;; First load start.lisp which loads the POPCO framework.
+;; Then load ;;	some persons in a population (cf. testbush.lisp).
+;; which should run (init-pop population)
+;; Then call one of the popco functions below.  Usually popco itself must be called first.
 ;; You might also want to change the global variables mentioned below.
+
+;; See function RUN-POPULATION-ONCE for the sequence that occurs in each iteration of the main loop.
 
 ;; NAMING CONVENTION:
 ;; Functions with plural nouns in their names generally do something with entire population or collection.  
 ;; Functions with singular nouns do things to individual persons, etc.
 
 (defvar *personal-separator* "_")
-;(defconstant *personal-separator* "_") ; makes SBCL error on reload
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VARIABLES TO CONTROL OVERALL OPERATION OF POPCO
@@ -72,15 +63,11 @@
 ;; TO RUN POPCO, see definitions of functions popco (run the main loop *max-pop-ticks*)
 ;; or alternatives such as popco-plus-t (which usually requires that popco be run first).
 
-
 ;; RUN-POPULATION-ONCE
 ;; Guts of THE MAIN LOOP.
 ;; Logic that's not obvious from structure of the code:
 ;; - Though main loop has functional form, it modifies population along the way.
-;; - There might be one or more agents who represent the
-;;   environment rather than persons, with different internals.  [not yet implemented]
-;; - sex-and-death might cause beliefs of newborns to be partly initialized. [not yet implemented]
-;; If called directly, output file will automatically be appended to [call del-netlogo-outfile to start fresh]
+;; - There can be agents who represent the environment rather than persons, with different internals.
 ;;
 (defun run-population-once (population)  ; [input->output] for each stage is indicated in comments.
   (incf *pop-tick*) ; note that it's incremented before we do anything, and then reported after finishing--but before the next incf
@@ -737,23 +724,23 @@
     (mapc #'update-propn-net-from-propn-net (get population 'members)))
   population)
 
-(defun causal-p (propn)
-  (get propn 'is-causal))
-
-(defun causal-conditional-p (propn)
-  (get propn 'is-causal-conditional))
-
-(defun causal-biconditional-p (propn)
-  (get propn 'is-causal-biconditional))
-
-;; TODO
+;; UPDATE-PROPN-NET-FROM-PROPN-NET 
+;; Create/update links between antecendent and consequent propns of a causal propn.
+;; Initial step creates/updates biconditional links for all causal propns:
+;; a two-way link is just two one-way links.  The difference between a biconditional
+;; and a conditional is just that the conditional has extra run-time processing so
+;; that only positive activations go from antecedent to consequent (modus ponens),
+;; and only negative activations go from consequent to antecedent (modus tollens).
+;; WORRY: Could this form of conditional relationship lead to (a) extreme cycling behavior,
+;;        or (b) extrem path dependence?  What happens if the antecedent is being pushed up
+;;        while the consequent is being pushed down?
 (defun update-propn-net-from-propn-net (person)
   (setf *the-person* person)
   (let* ((propns (get *the-person* 'all-propositions)))
-    (mapc #'update-causal-conditional-link (remove-if-not #'causal-conditional-p propns))
-    (mapc #'update-causal-biconditional-link (remove-if-not #'causal-biconditional-p propns)))
-  ;invoke-semantic-iffs?? ; TODO
-  )
+    (mapc #'update-causal-biconditional-link (remove-if-not #'causal-p propns))
+    ; handle special properties of (uni)conditionals here
+    ; reapply semantic iffs here?
+  ))
 
 (defun update-causal-conditional-link (propn)
   ; TODO
@@ -763,7 +750,9 @@
   (let ((args (get-args-from-propn propn)))
     (record-raw-make-symlink-if-units (first args) 
                                       (second args)
-                                      (activn-to-causal-link-weight (activation propn)))))
+                                      (* (if (get propn 'is-preventative) -1 1)
+                                         (activn-to-causal-link-weight (activation propn))))))
+
 ;; TODO?
 (defun activn-to-causal-link-weight (activn)
   activn)

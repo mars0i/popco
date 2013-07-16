@@ -223,6 +223,7 @@
       (put personal-propn 'is-causal (or    ; note we're using the interpersonal predicate to set personal properties [ADDED 7/14/2013 -MA]
                                        (put personal-propn 'is-causal-conditional (and (member pred *causal-if-preds*) t))      ; put returns the newly set value
                                        (put personal-propn 'is-causal-biconditional (and (member pred *causal-iff-preds*) t)))) ; 'and' outputs t rather than rest of list--less confusing
+      (put-personal-propn 'is-preventative (and (member pred *preventative-pred*) t))
       (setf (get *the-person* 'all-propositions)
             (cons-if-new personal-propn (get *the-person* 'all-propositions)))
       (put struc 'propositions
@@ -239,6 +240,15 @@
 ; added by MA 11/2011 [fn not macro, so can mapcar it]
 (defun propns-of-struc (struc)
   (get struc 'propositions))
+
+(defun causal-p (propn)
+  (get propn 'is-causal))
+
+(defun causal-conditional-p (propn)
+  (get propn 'is-causal-conditional))
+
+(defun causal-biconditional-p (propn)
+  (get propn 'is-causal-biconditional))
 
 ; ******************************
 ; MCON (formerly MAKE-CONCEPT-A) is a bit different from make-concept in PI.
