@@ -738,7 +738,7 @@
   (setf *the-person* person)
   (let* ((propns (get *the-person* 'all-propositions)))
     (mapc #'update-causal-biconditional-link (remove-if-not #'causal-p propns))
-    ; handle special properties of (uni)conditionals here
+    ; add handling of special properties of (uni)conditionals here
     ; reapply semantic iffs here?
   ))
 
@@ -746,8 +746,9 @@
   ; TODO
   )
 
+;; BUG: I think that later updates are clobbering these
 (defun update-causal-biconditional-link (propn)
-  (let ((args (get-args-from-propn propn)))
+  (let ((args (args-from-propn propn)))
     (record-raw-make-symlink-if-units (first args) 
                                       (second args)
                                       (* (if (get propn 'is-preventative) -1 1)

@@ -38,6 +38,6 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 100)
+(setf *max-pop-ticks* 1)
 (popco)
 ;(quit)

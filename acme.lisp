@@ -223,7 +223,7 @@
       (put personal-propn 'is-causal (or    ; note we're using the interpersonal predicate to set personal properties [ADDED 7/14/2013 -MA]
                                        (put personal-propn 'is-causal-conditional (and (member pred *causal-if-preds*) t))      ; put returns the newly set value
                                        (put personal-propn 'is-causal-biconditional (and (member pred *causal-iff-preds*) t)))) ; 'and' outputs t rather than rest of list--less confusing
-      (put-personal-propn 'is-preventative (and (member pred *preventative-pred*) t))
+      (put personal-propn 'is-preventative (and (member pred *preventative-preds*) t))
       (setf (get *the-person* 'all-propositions)
             (cons-if-new personal-propn (get *the-person* 'all-propositions)))
       (put struc 'propositions
@@ -237,16 +237,24 @@
             (cons-if-new (get-pred personal-msg)
                          (get *the-person* 'all-preds))))))
 
-; added by MA 11/2011 [fn not macro, so can mapcar it]
+
 (defun propns-of-struc (struc)
   (get struc 'propositions))
 
+;; is a causal predicate
 (defun causal-p (propn)
   (get propn 'is-causal))
 
+;; note prevention is a subcategory of causation. 
+;; to get non-preventative causal predicates, use 'not'
+(defun preventative-p (propn)
+  (get propn 'is-preventative))
+
+;; subcategory of causal preds
 (defun causal-conditional-p (propn)
   (get propn 'is-causal-conditional))
 
+;; subcategory of causal preds
 (defun causal-biconditional-p (propn)
   (get propn 'is-causal-biconditional))
 
