@@ -71,6 +71,17 @@
       (personal-sym-to-guess-nodename poss-map-node)
       nil)))
 
+(defun personal-syms-to-guess-causal-nodename (sym1 sym2)
+  (or
+    (personal-syms-to-poss-guess-causal-nodename sym1 sym2)   ; nil if sym1->sym2 or sym1->-sym2 isn't a map node; guess node string if it is
+    (personal-syms-to-poss-guess-causal-nodename sym2 sym1))) ; ditto
+
+(defun personal-syms-to-poss-guess-causal-nodename (sym1 sym2)
+  (let ((poss-causal-node (FIXME sym1 sym2)))
+    (if (is-acme-unit poss-causal-node)
+      (personal-sym-to-guess-nodename poss-causal-node)
+      nil)))
+
 (defun graphml-header () 
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"  
