@@ -47,7 +47,7 @@
     (not-infected (vpers1) v-na)               ; 1. Person 1 lacks infection.
     (is-infected (vpers1) v-ia)                ; 2. Person 1 has infection.
     (harms (vpers1) v-ha)                      ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
-    (causal-if (v-ia v-ha) v-ci->ha)           ; 4. That person 1 has infection is harmful to person 1. [HO1]
+    (causal-if (v-ia v-ha) v-ia->ha)           ; 4. That person 1 has infection is harmful to person 1. [HO1]
     (infect (vpers0 VPERS1) v-ipa)             ; 5. Person 0, who already has infection, infects person 1.
     (causal-if (v-ipa v-ia) v-ipa->ia)         ; 6. The infecting of person 1 by person 0 causes person 1 to have infection. [HO1]
     (inoculate (vpers1) v-ica)                 ; 7. Person 1 gets innoculated.
