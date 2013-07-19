@@ -66,7 +66,7 @@
     (harms (cpers1) cv-ha)                        ; 3. Person 1 is harmed. [PREVENTING THIS IS GOAL.]
     (causal-if (cv-ca cv-ha) cv-ca->ha)           ; 4. Person 1 being a criminal is harmful to person 1.
     (recruit (cpers0 cpers1) cv-rpa)              ; 5. Person 0 recruits person 1 into crime.
-    (causal-if (cv-rpa cv-ca) cv-sca->ca)         ; 6. Person 0 recruiting person 1 causes person 1 to become a criminal. [HO1]
+    (causal-if (cv-rpa cv-ca) cv-rpa->ca)         ; 6. Person 0 recruiting person 1 causes person 1 to become a criminal. [HO1]
     (support (cpers1) cv-sa)                      ; 7. Person 1 is [financially, parentally, socially, educationally, etc.] supported.
     (preventative-if (cv-sa cv-rpa) cv-sa->-rpa)  ; 8. Person 1 being supported prevents person 0 from recruiting person 1. [HO1]
     (causal-if (cv-sa->-rpa cv-na) cv-sarpa->na)  ; 9. That being supported prevents 1 from being recruited by 0 causes [preserves] 1's innocence. [HO2]
