@@ -1343,6 +1343,12 @@
 (defun is-acme-unit (unit)
   (eq 'acme (get unit 'unit-type)))
 
+; like is-acme-unit: true if unit-type is acme. but here true value is the unit itself.
+(defun acme-unit (unit)
+  (if (is-acme-unit unit)
+    unit
+    nil))
+
 ; true if all unit-types are acme
 (defun all-are-acme-units (&rest units)
   (eval (cons 'and (mapcar #'is-acme-unit units))))

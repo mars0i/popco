@@ -7,6 +7,7 @@
 (load "crime/crime3")
 
 (setf *do-report-to-netlogo* nil)
+(defvar *do-report-propns-to-csv* NIL)
 
 (setf *do-update-propn-nets-from-propn-nets* t)
 
