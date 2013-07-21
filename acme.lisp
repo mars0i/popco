@@ -220,6 +220,7 @@
       (put personal-propn 'message personal-msg)  ; give mentalese prop link to structured prop (interpersonal format)
       (put personal-propn 'belongs-to
            (cons-if-new (list struc field) (get personal-propn 'belongs-to)))
+      (put personal-propn 'unit-type 'proposition)
       (put personal-propn 'is-causal (or    ; note we're using the interpersonal predicate to set personal properties [ADDED 7/14/2013 -MA]
                                        (put personal-propn 'is-causal-conditional (and (member pred *causal-if-preds*) t))      ; put returns the newly set value
                                        (put personal-propn 'is-causal-biconditional (and (member pred *causal-iff-preds*) t)))) ; 'and' outputs t rather than rest of list--less confusing
@@ -1335,19 +1336,9 @@
                                       (coerce (princ-to-string unit2) 'list))
                               'string))))
 
-
-; Next few helper functions added by Marshall Abrams 6/2011
-; unit-type=acme distinguishes map units from others e.g. pure proposition units
-
-; true if unit-type is acme
+; true if unit-type is acme, i.e. it's a map unit
 (defun is-acme-unit (unit)
   (eq 'acme (get unit 'unit-type)))
-
-; like is-acme-unit: true if unit-type is acme. but here true value is the unit itself.
-(defun acme-unit (unit)
-  (if (is-acme-unit unit)
-    unit
-    nil))
 
 ; true if all unit-types are acme
 (defun all-are-acme-units (&rest units)
