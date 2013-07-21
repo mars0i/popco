@@ -328,6 +328,18 @@
 (defun propn? (sym)
   (get sym 'message)) ; nil if not proposition
 
+;; approximate synonym for preceding
+(defun is-propn (sym)
+  (if (get sym 'message)
+    t
+    nil))
+
+;; Can function like preceding, but returns the symbol name
+(defun propn (sym)
+  (if (is-propn sym)
+    sym
+    nil))
+
 ; is this a node that represents a mapping between propositions?
 ; MAYBE THIS SHOULD BE DONE WITH A PERMANENT FLAG--WOULD BE FASTER
 (defun propn-map? (sym)

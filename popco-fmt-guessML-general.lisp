@@ -56,37 +56,46 @@
 ;    'string))
 
 
-;; PERSONAL-SYMS-TO-GUESS-MAP-NODENAME 
+;; GENERIC-SYMS-TO-GUESS-MAP-NODENAME 
 ;; Given two Lisp symbols which should normally be proposition nodes,
 ;; produce the corresponding map node, if it exists.
 ;; Tries constructing a map node from arguments in both orders
+;; *THE-PERSON* must be set properly.
 (defun personal-syms-to-guess-map-nodename (sym1 sym2 &optional (person *the-person*))
-  (or
-    (personal-syms-to-poss-guess-map-nodename sym1 sym2 person)   ; nil if sym1=sym2 isn't a map node; guess node string if it is
-    (personal-syms-to-poss-guess-map-nodename sym2 sym1 person))) ; ditto
+  (let ((generic-sym1 (personal-to-generic-sym sym1 person))
+        (generic-sym2 (personal-to-generic-sym sym2 person)))
+    (or
+      (generic-syms-to-poss-guess-map-nodename generic-sym1 generic-sym2 person)    ; nil if sym1=sym2 isn't a map node; guess node string if it is
+      (generic-syms-to-poss-guess-map-nodename generic-sym2 generic-sym1 person)))) ; ditto
 
-(defun personal-syms-to-poss-guess-map-nodename (sym1 sym2 &optional (person *the-person*))
-  (let ((poss-map-node (catname sym1 sym2)))
+;; *THE-PERSON* must be set properly.
+(defun generic-syms-to-poss-guess-map-nodename (sym1 sym2 &optional (person *the-person*))
+  (let ((poss-map-node (catname sym1 sym2))) ; generates a personal symbol
     (if (is-acme-unit poss-map-node)
       (personal-sym-to-guess-nodename poss-map-node person)
       nil)))
 
+;; GENERIC-SYMS-TO-GUESS-CAUSAL-NODENAME 
+;; If given two propositions, 
+;; *THE-PERSON* must be set properly.
 (defun personal-syms-to-guess-causal-nodename (sym1 sym2 &optional (person *the-person*))
-  (or
-    (personal-syms-to-poss-guess-causal-nodename sym1 sym2 person)   ; nil if sym1->sym2 or sym1->-sym2 isn't a map node; guess node string if it is
-    (personal-syms-to-poss-guess-causal-nodename sym2 sym1 person))) ; ditto
+  (if (and (is-propn sym1) (is-propn sym2))
+    (let ((generic-sym1 (personal-to-generic-sym sym1 person))
+          (generic-sym2 (personal-to-generic-sym sym2 person)))
+      (or
+        (generic-syms-to-poss-guess-causal-nodename generic-sym1 generic-sym2 person)   ; nil if sym1->sym2 or sym1->-sym2 isn't a map node; guess node string if it is
+        (generic-syms-to-poss-guess-causal-nodename generic-sym2 generic-sym1 person))) ; ditto
+    nil))
 
-(defun personal-syms-to-poss-guess-causal-nodename (sym1 sym2 &optional (person *the-person*))
-  (let ((poss-causal-node (generic-syms-to-poss-guess-causal-nodename (maybe-depersonalize-sym sym1 person)
-                                                                              (maybe-depersonalize-sym sym2 person))))
+
+;; *THE-PERSON* must be set properly.
+(defun generic-syms-to-poss-guess-causal-nodename (sym1 sym2 &optional (person *the-person*))
+  (let ((poss-causal-node 
+          (or (propn (generic-to-personal-sym (simple-catname sym1 "->" sym2)))
+              (propn (generic-to-personal-sym (simple-catname sym1 "->-" sym2))))))
     (if poss-causal-node
       (personal-sym-to-guess-nodename poss-causal-node person)
       nil)))
-
-(defun generic-syms-to-poss-guess-causal-nodename (sym1 sym2 &optional (person *the-person*))
-  (or (acme-unit (generic-to-personal-sym (simple-catname sym1 "->" sym2)))
-      (acme-unit (generic-to-personal-sym (simple-catname sym1 "->-" sym2)))))
-
 
 (defun graphml-header () 
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>

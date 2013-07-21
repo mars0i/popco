@@ -173,11 +173,9 @@
                   (t "gray"))
             (* *graphml-edge-multiplier* (abs weight))
             weight
-            (let ((generic-unit1 (personal-to-generic-sym unit1))
-                  (generic-unit2 (personal-to-generic-sym unit2)))
-              (or (personal-syms-to-guess-map-nodename generic-unit1 generic-unit2)
-                  (personal-syms-to-guess-causal-nodename generic-unit1 generic-unit2)
-                  "")))))
+              (or (personal-syms-to-guess-map-nodename unit1 unit2)
+                  (personal-syms-to-guess-causal-nodename unit1 unit2)
+                  ""))))
 
 (defun default-graph-label (person) 
   (format nil "~S" person))
