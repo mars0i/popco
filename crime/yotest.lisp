@@ -7,7 +7,7 @@
 (load "crime/crime3")
 
 (setf *do-report-to-netlogo* nil)
-(defvar *do-report-propns-to-csv* NIL)
+(setf *do-report-propns-to-csv* nil)
 
 (setf *do-update-propn-nets-from-propn-nets* t)
 
@@ -39,6 +39,6 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 1)
+(setf *max-pop-ticks* 10)
 ;(popco)
 ;(quit)
