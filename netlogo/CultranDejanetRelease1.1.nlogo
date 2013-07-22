@@ -390,16 +390,10 @@ end
 ; of push.  If the distance is large, the incoming-activn will have a large effect.
 ; If the distance is small, then incoming-activn's effect will be small, so that it's
 ; harder to get to the extrema. The method used to do this is often used to update
-; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313).
-; Alternatively, use weighted averaging in transmission.
+; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313). 
 to receive-cultvar [message]
-  let candidate-activn 0
-  if-else averaging-transmission [
-    set candidate-activn (message * weight-on-senders-activn) + (activation * (1 - weight-on-senders-activn))
-  ][
-    let incoming-activn (message-to-cultvar message)
-    set candidate-activn (activation + (incoming-activn * (dist-from-extremum incoming-activn activation))) ; sign will come from incoming-activn; scaling factors are positive
-  ]
+  let incoming-activn (message-to-cultvar message)
+  let candidate-activn (activation + (incoming-activn * (dist-from-extremum incoming-activn activation))) ; sign will come from incoming-activn; scaling factors are positive
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
 end
 
@@ -550,10 +544,10 @@ NIL
 1
 
 BUTTON
-1
-155
-57
-189
+0
+185
+56
+219
 NIL
 go
 T
@@ -588,9 +582,9 @@ PENS
 
 SLIDER
 0
-79
+105
 170
-112
+138
 nodes-per-subnet
 nodes-per-subnet
 4
@@ -603,9 +597,9 @@ HORIZONTAL
 
 SLIDER
 0
-114
+140
 170
-147
+173
 average-node-degree
 average-node-degree
 1
@@ -617,10 +611,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-56
-155
-120
-189
+55
+185
+119
+219
 go once
 go
 NIL
@@ -671,10 +665,10 @@ PENS
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
 
 SLIDER
-1
-210
-196
-243
+0
+240
+195
+273
 trust-mean
 trust-mean
 .01
@@ -686,10 +680,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-1
-295
-196
-328
+0
+325
+195
+358
 prob-of-transmission-bias
 prob-of-transmission-bias
 -1
@@ -701,30 +695,30 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-166
-280
-203
-300
+165
+310
+202
+330
 black
 10
 0.0
 1
 
 TEXTBOX
-6
-280
-36
-300
+5
+310
+35
+330
 white
 10
 0.0
 1
 
 SLIDER
-1
-245
-196
-278
+0
+275
+195
+308
 trust-stdev
 trust-stdev
 0
@@ -754,10 +748,10 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons" "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons"
 
 SLIDER
-615
-390
-810
-423
+0
+365
+195
+398
 stop-threshold-exponent
 stop-threshold-exponent
 -20
@@ -769,12 +763,12 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-615
-425
-815
-449
-Iteration stops if max activn change is < 10^stop-threshold-exponent.
-8
+0
+400
+199
+443
+Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
+11
 0.0
 1
 
@@ -796,40 +790,24 @@ NIL
 1
 
 TEXTBOX
-1
-195
-141
-213
-transmission parameters:
+5
+85
+105
+103
+network structure:
 11
 0.0
 1
 
-SWITCH
-2
-339
-196
-373
-averaging-transmission
-averaging-transmission
-1
-1
--1000
-
-SLIDER
-3
-374
-197
-408
-weight-on-senders-activn
-weight-on-senders-activn
+TEXTBOX
 0
+225
+140
+243
+transmission parameters:
+11
+0.0
 1
-0.25
-.05
-1
-NIL
-HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -837,8 +815,6 @@ HORIZONTAL
 This is a model of spread of conflicting beliefs or other cultural variants on a network.  It allows experimenting with the effect of different network structures and transmission biases on the distribution of beliefs. The model suggests that for some forms of cultural transmission, network structure can affect whether cultural variation can be maintained on reasonable time scales.
 
 ## HOW IT WORKS
-
-The following describes the behavior when averaging-transmission is set to false.  See below for the behavior when it is set to true.
 
 Each person (node) has a degree of confidence.  1 indicates full confidence in the "black" proposition.  -1 indicates full confidence in its negation.  Degrees of confidence are not transmitted.  Instead, the degree of confidence (activation) determines the probability that a belief will be communicated.  (After all, when people offer assertions to each other, they don't generally indicate their degree of confidence, even if there are ways to do that by choice of words and tone of voice.)
 
@@ -849,8 +825,6 @@ If the activation increment (the value normally distributed around trust-mean) i
 This fact that there is a significant effect of opinions which differ from the receipient of an utterance is obviously unrealistic as a model of many real-world cases, since in practice people may simply ignore people who disagree with them, or might adjust their degree of belief only a tiny bit when faced with disagreement.  Bounded confidence models (e.g. Hegselmann & Krause 2002) better capture such patterns.  Note, however, that this NetLogo model shares, with both bounded confidence models and some game-theoretic models like Morris's (2000) cohesion-based model and various models in (Alexander 2007), the possibility of maintenance of disagreement in a network.  By contrast, models in which new activations are simply a weighted average of neighboring activations (DeGroot 1974; Lehrer & Wagner 1981; Hegselmann & Krause 2002) have difficulty maintaining disagreement unless portions of the network are effectively isolated from each other.  
 
 Maybe a way to think about the relationship between this model, the game theoretic models mentioned, and bounded confidence models, is that they all allow the effect of neighbors on a node to be sharply restricted in some situations or to be subject to competition.  This is what allows maintenance of disagreement.  In averaging models, by contrast, the effect of neighbors may be small, but it is persistent and constant.  In the current model, the effect of each neighbor is always restricted to a maximum of (a normal distribution around) trust-mean, regardless of how strong neighbors' beliefs are. In the game-theoretic models mentioned above, the effects of neighbors is restricted by payoff values.  In both of the current model and these game-theoretic models, there is a competition between influences of neighbors who disagree with each other, so that if there is more influence from one set of competing neighbors, the others end up having no effect.  In bounded confidence models, the effect of neighbors is curtailed when their opinions differ too much from the recipient node's.  In averaging models, each neighbor *always* has an influence, no matter what the receiver or other neighbors think.
-
-When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. Whether an activation is communicated is still a random decision, using the procedure described above.  (You may want to set stop-threshold-exponent to -2 for averaging activation, rather than the default value of -3.)
 
 ## HOW TO USE IT
 
