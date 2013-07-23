@@ -506,10 +506,10 @@ to yo
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-195
-10
-615
-451
+198
+8
+618
+449
 20
 20
 10.0
@@ -610,7 +610,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-14
+15
 1
 1
 NIL
@@ -702,19 +702,19 @@ HORIZONTAL
 
 TEXTBOX
 166
-280
+283
 203
-300
+303
 black
 10
 0.0
 1
 
 TEXTBOX
-6
-280
-36
-300
+8
+283
+38
+303
 white
 10
 0.0
@@ -769,10 +769,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-615
-425
-815
-449
+620
+424
+783
+447
 Iteration stops if max activn change is < 10^stop-threshold-exponent.
 8
 0.0
@@ -809,7 +809,7 @@ SWITCH
 2
 339
 196
-373
+372
 averaging-transmission
 averaging-transmission
 1
@@ -820,7 +820,7 @@ SLIDER
 3
 374
 197
-408
+407
 weight-on-senders-activn
 weight-on-senders-activn
 0
@@ -834,7 +834,7 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a model of spread of conflicting beliefs or other cultural variants on a network.  It allows experimenting with the effect of different network structures and transmission biases on the distribution of beliefs. The model suggests that for some forms of cultural transmission, network structure can affect whether cultural variation can be maintained on reasonable time scales.
+This is a model of spread of conflicting beliefs or other cultural variants on a network.  It allows experimenting with the effect of different network structures and transmission methods on the distribution of beliefs. The model suggests that for some forms of cultural transmission, network structure can affect whether cultural variation can be maintained on reasonable time scales.
 
 ## HOW IT WORKS
 
@@ -846,11 +846,11 @@ On each tick, for each link attached to a person, the person randomly decides to
 
 If the activation increment (the value normally distributed around trust-mean) is positive, it will move receiver's activation in that direction; if negative, it will push in negative direction. However, the degree of push will be scaled by how far the current activation is from the extremum in the direction of push.  If the distance is large, the incoming activation will have a large effect. If the distance is small, then incoming-activn's effect will be small, so that it's harder to get to the extremum. The underlying intuition is that if you already have a strong belief in a proposition, then when someone expresses agreement with you, it doesn't make much difference.  On the other hand, if you're undecided, then what people around tell you is more likely to make a big difference.  Also, if you have a strong belief that P, and someone disagrees with you, that can make a big difference in your opinion.  (However, for a usual value of trust-mean such as .05, the effect is still small.) The method used to do the updating is similar to methods often used to update nodes in connectionist/neural networks (e.g. Holyoak & Thagard 1989).  This is clearly not Bayesian updating, by the way.
 
-This fact that there is a significant effect of opinions which differ from the receipient of an utterance is obviously unrealistic as a model of many real-world cases, since in practice people may simply ignore people who disagree with them, or might adjust their degree of belief only a tiny bit when faced with disagreement.  Bounded confidence models (e.g. Hegselmann & Krause 2002) better capture such patterns.  Note, however, that this NetLogo model shares, with both bounded confidence models and some game-theoretic models like Morris's (2000) cohesion-based model and various models in (Alexander 2007), the possibility of maintenance of disagreement in a network.  By contrast, models in which new activations are simply a weighted average of neighboring activations (DeGroot 1974; Lehrer & Wagner 1981; Hegselmann & Krause 2002) have difficulty maintaining disagreement unless portions of the network are effectively isolated from each other.  
+This fact that there is a significant effect of opinions which differ from the receipient of an utterance is obviously unrealistic as a model of many real-world cases, since in practice people may simply ignore people who disagree with them, or might adjust their degree of belief only a tiny bit when faced with disagreement.  Bounded confidence models (e.g. Hegselmann & Krause 2002) better capture such patterns.  Note, however, that this NetLogo model shares with bounded confidence models, Morris's (2000) coordination game model, and various game-theoretic models in (Alexander 2007), the possibility of maintenance of disagreement in a network.  By contrast, models in which new activations are simply a weighted average of neighboring activations (DeGroot 1974; Lehrer & Wagner 1981; Hegselmann & Krause 2002) have difficulty maintaining disagreement unless portions of the network are effectively isolated from each other.
 
 Maybe a way to think about the relationship between this model, the game theoretic models mentioned, and bounded confidence models, is that they all allow the effect of neighbors on a node to be sharply restricted in some situations or to be subject to competition.  This is what allows maintenance of disagreement.  In averaging models, by contrast, the effect of neighbors may be small, but it is persistent and constant.  In the current model, the effect of each neighbor is always restricted to a maximum of (a normal distribution around) trust-mean, regardless of how strong neighbors' beliefs are. In the game-theoretic models mentioned above, the effects of neighbors is restricted by payoff values.  In both of the current model and these game-theoretic models, there is a competition between influences of neighbors who disagree with each other, so that if there is more influence from one set of competing neighbors, the others end up having no effect.  In bounded confidence models, the effect of neighbors is curtailed when their opinions differ too much from the recipient node's.  In averaging models, each neighbor *always* has an influence, no matter what the receiver or other neighbors think.
 
-When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. Whether an activation is communicated is still a random decision, using the procedure described above.  (You may want to set stop-threshold-exponent to -2 for averaging activation, rather than the default value of -3.)
+When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. Whether an activation is communicated is still a random decision, using the procedure described above.  (You may want to adjust stop-threshold-exponent from the default value of -3.)
 
 ## HOW TO USE IT
 
@@ -861,7 +861,7 @@ Most of the GUI controls should be easy to understand with a little bit of exper
 The spread of black or white beliefs is influenced by how well connected different nodes are.  A set of nodes with many interconnections can reinforce similarity among its members, even in the face of a bias toward an alternative cultural variant.
 
 If a group of nodes has more connections to each other than to "outsiders", it can
-maintain an extreme view even if surrounded by those with the opposite view.
+maintain an extreme view even if surrounded by those with the opposite view.  This property of a region of a network is related to Morris's concept of "cohesion" or "cohesiveness" (Morris 2000; Vega-Redondo 2007), Young's concept of "close-knittedness" (Young 1998), to other concepts of cohesion (Wasserman & Faust 1994), and other measures of community structure (Newman 2010).
 
 ## THINGS TO TRY
 
@@ -872,6 +872,10 @@ Now try increasing the average node degree to 20, or 30.  Perform the same exper
 Go back to your original node degree and run the model until there is a stable pattern.  Now change prob-of-transmission-bias, making the black (1) or white (-1) cultural variant more likely to be transmitted.  What happens?  Is it possible to maintain cultural variation with a nonzero value for this parameter?
 
 Try altering trust-mean or trust-stdev.  What happens?  (You might think of high values of trust-mean as representing rumor during a crisis.)
+
+Turn on averaging-transmission.  How does the behavior differ?  How long does it take for the network to settle to a stable configuration under different conditions?  Is it possible to stabilize to a state with a variety of activation values?  What happens if you adjust stop-threshold exponent?  
+
+With average-node-degree in the 12-15 range, try starting with averaging-transmission off.  Then turn it on after the network has stabilized to a configuration in which there are large contiguous black and white regions.
 
 ## REFERENCES
 
@@ -890,15 +894,21 @@ Lehrer, K. and C. Wagner (1981). Rational Consensus in Science and Society. D. R
 
 Morris, S. (2000). Contagion. Review of Economic Studies 67, 57–78.
 
+Newman, M. E. J. (2010). Networks: An Introduction. Oxford University Press.
+
 Vega-Redondo, F. (2007). Complex Social Networks. Cambridge University Press.
+
+Wasserman, S. and K. Faust (1994). Social Network Analysis: Methods and Applications. Cambridge University Press.
+
+Young, H. P. (1998). Individual Strategy and Social Structure: An Evolutionary Theory of Institutions. Princeton University Press.
 
 ## MODELS USED AS STARTING POINTS
 
 Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
 
-Wilensky, U. (2005). NetLogo Preferential Attachment model. http://ccl.northwestern.edu/netlogo/models/PreferentialAttachment. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+## DEDICATION
 
-Wilensky, U. (2005). NetLogo Small Worlds model. http://ccl.northwestern.edu/netlogo/models/SmallWorlds. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+This model is dedicated to two transmitters of deep, resonant, complex, fascinating culture, John Coltrane and Jack Dejohnette.
 @#$#@#$#@
 default
 true
@@ -1183,7 +1193,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.3
+NetLogo 5.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
