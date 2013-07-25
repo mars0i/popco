@@ -1235,7 +1235,7 @@ stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
--3
+-2
 1
 1
 NIL
@@ -1673,7 +1673,7 @@ weight-on-senders-activn
 weight-on-senders-activn
 0
 1
-0.1
+0.05
 .05
 1
 NIL

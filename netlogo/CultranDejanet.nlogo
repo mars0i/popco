@@ -390,17 +390,24 @@ end
 ; of push.  If the distance is large, the incoming-activn will have a large effect.
 ; If the distance is small, then incoming-activn's effect will be small, so that it's
 ; harder to get to the extrema. The method used to do this is often used to update
-; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313).
-; Alternatively, use weighted averaging in transmission.
+; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313). 
 to receive-cultvar [message]
   let candidate-activn 0
-  if-else averaging-transmission [
-    set candidate-activn (message * weight-on-senders-activn) + (activation * (1 - weight-on-senders-activn))
-  ][
-    let incoming-activn (message-to-cultvar message)
-    set candidate-activn (activation + (incoming-activn * (dist-from-extremum incoming-activn activation))) ; sign will come from incoming-activn; scaling factors are positive
-  ]
+  if-else averaging-transmission
+    [set candidate-activn new-activn-averaging-tran activation message]
+    [set candidate-activn new-activn-popco-tran activation message]
   set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
+end
+
+to-report new-activn-averaging-tran [activn incoming-activn]
+  if-else (abs (activn - incoming-activn)) < confidence-bound
+    [report (incoming-activn * weight-on-senders-activn) + (activn * (1 - weight-on-senders-activn))]
+    [report 0]
+end
+
+to-report new-activn-popco-tran [activn incoming-activn]
+  let effective-in-activn (sign-of incoming-activn) * (random-normal trust-mean trust-stdev)
+  report (activn + (effective-in-activn * (dist-from-extremum effective-in-activn activn))) ; sign will come from incoming-activn; scaling factors are positive
 end
 
 to-report dist-from-extremum [incoming-activn current-activn]
@@ -409,13 +416,6 @@ to-report dist-from-extremum [incoming-activn current-activn]
                         [max-activn - activation] ; if incoming activen pushes in positive direction, get distance from max
   report max (list 1 dist)
 end
-
-; no scaling: trust is the incremental value, like in POPCO
-to-report message-to-cultvar [activn]
-  let sign sign-of activn
-  report (sign * (random-normal trust-mean trust-stdev))
-end
-
 
 to update-activns
   ask persons
@@ -582,8 +582,8 @@ true
 true
 "" ""
 PENS
-"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of persons)"
-"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of persons)"
+"+" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of persons)"
+"-" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of persons)"
 "pop" 1.0 0 -8053223 true "" "plot (mean [activation] of persons)"
 
 SLIDER
@@ -666,8 +666,8 @@ true
 true
 "" ""
 PENS
-"Bl" 1.0 0 -16777216 true "" "plot ((count persons with [activation > 0])/(count persons))"
-"Wh" 1.0 0 -5987164 true "" "plot ((count persons with [activation < 0])/(count persons))"
+"+" 1.0 0 -16777216 true "" "plot ((count persons with [activation > 0])/(count persons))"
+"-" 1.0 0 -5987164 true "" "plot ((count persons with [activation < 0])/(count persons))"
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
 
 SLIDER
@@ -806,10 +806,10 @@ transmission parameters:
 1
 
 SWITCH
-2
-339
-196
-372
+5
+340
+195
+373
 averaging-transmission
 averaging-transmission
 1
@@ -817,15 +817,30 @@ averaging-transmission
 -1000
 
 SLIDER
-3
-374
-197
-407
+5
+375
+195
+408
 weight-on-senders-activn
 weight-on-senders-activn
 0
 1
 0.25
+.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+5
+410
+195
+443
+confidence-bound
+confidence-bound
+0
+2
+0.1
 .05
 1
 NIL
@@ -850,11 +865,19 @@ This fact that there is a significant effect of opinions which differ from the r
 
 Maybe a way to think about the relationship between this model, the game theoretic models mentioned, and bounded confidence models, is that they all allow the effect of neighbors on a node to be sharply restricted in some situations or to be subject to competition.  This is what allows maintenance of disagreement.  In averaging models, by contrast, the effect of neighbors may be small, but it is persistent and constant.  In the current model, the effect of each neighbor is always restricted to a maximum of (a normal distribution around) trust-mean, regardless of how strong neighbors' beliefs are. In the game-theoretic models mentioned above, the effects of neighbors is restricted by payoff values.  In both of the current model and these game-theoretic models, there is a competition between influences of neighbors who disagree with each other, so that if there is more influence from one set of competing neighbors, the others end up having no effect.  In bounded confidence models, the effect of neighbors is curtailed when their opinions differ too much from the recipient node's.  In averaging models, each neighbor *always* has an influence, no matter what the receiver or other neighbors think.
 
-When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. A receiver node's new activation is then receiver's old activation * (1 - weight-on-senders-activn) + (transmitter's activation * weight-on-senders-activn).  Whether an activation is communicated is still a random decision, using the procedure described above.  (You may want to adjust stop-threshold-exponent from the default value of -3.)
+When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. A receiver node's new activation is then receiver's old activation * (1 - weight-on-senders-activn) + (transmitter's activation * weight-on-senders-activn).  Whether an activation is communicated is still a random decision, using the procedure described above.  If confidence-bound is set to something other than 2, then persons whose activations differ by more than this amount will not communicate.  In practice confidence bounds > .8 will probably give the same result in the end (see Hegselmann & Krause 2002). For averaging tramsmission may find it useful to adjust stop-threshold-exponent from the default value of -3 if you want the updating to stop on its own.
 
 ## HOW TO USE IT
 
 Most of the GUI controls should be easy to understand with a little bit of experimentation.
+
+## PLOTS
+
+The first plot shows the frequency of persons with activations > 0 ("+"), the frequency for persons with activations < 0 ("-"), and population variance in activation.
+
+The second plot shows the average activation of persons with activations > 0 ("+"), and for persons with activations < 0 ("-"), as well as the average activation for the entire population.
+
+The third plot shows the distribution of degrees for persons.  The degree of a node its number of links.
 
 ## THINGS TO NOTICE
 
