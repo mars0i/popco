@@ -1,46 +1,27 @@
-; NetworkExperiment19.nlogo
-; Marshall Abrams' based partly on the following models from the built-in NetLogo models library:
-;
-; Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model. http://ccl.northwestern.edu/netlogo/models/VirusonaNetwork. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
-; Wilensky, U. (2005). NetLogo Preferential Attachment model. http://ccl.northwestern.edu/netlogo/models/PreferentialAttachment. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
-; Wilensky, U. (2005). NetLogo Small Worlds model. http://ccl.northwestern.edu/netlogo/models/SmallWorlds. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
-
-; Globals set by user:
-;   nodes-per-subnet
-;   average-node-degree  ; avg links per node
-;   trust-mean           ; mean activation passed to receiver
-;   trust-stdev          ; standard deviation of normal distribution around mean
-;   prob-of-transmission-bias ; allows transmission to be biased so that black or white is more likely to transmit
-;   subnet1, subnet2
-
-extensions [matrix nw]
+extensions [matrix]
   
 globals
 [
-  max-activn       ; maximum possible node activation, i.e. degree of confidence/commitment, prob of transmission, etc.
-  min-activn       ; minimum possible node activation. negative to indicate confidence/commitment in the opposite cultvar.
-  stop-threshold   ; if every node's activation change from previous tick is < this, go procedure automatically stops.
-  ready-to-stop    ; transmit result of activn change test before update-activns proc to after it runs.
+  selected-persons ; set of nodes selected (e.g. by mouse) whose close-knittedness will be evaluated
   netlogo-person-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
   node-shape       ; default node shape
   link-color       ; obvious
   inter-link-subnets-color ; links that go from one subnet to another
   inter-node-shape ; nodes that link from one subnet to another
   background-color ; obvious
-  clustering-coefficient               ; the clustering coefficient of the network; this is the
-                                       ; average of clustering coefficients of all persons
-  average-path-length                  ; average path length of the network
   infinity                             ; a very large number.
                                        ; used to denote distance between two persons which
                                        ; don't have a connected or unconnected path between them
-  nodes-showing-numbers?                      ; true when we are displaying node degrees
+  nodes-showing-numbers?               ; true when we are displaying node degrees
   subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
   
   communities  ; list of lists of nodes representing communities we've found so far
 ]
 
+
 breed [persons person]
+breed [sides side]       ;; the four sides of the selection rectangle
 
 persons-own
 [
@@ -64,20 +45,13 @@ links-own
 
 to setup
   clear-all
-  
-  set ready-to-stop false
-  
-  set max-activn 1
-  set min-activn -1
-  set stop-threshold 10 ^ stop-threshold-exponent
-  
+
   set node-shape "circle" ; "square" "target" "face happy" "x" "leaf" "star""triangle" "face sad"
   set-default-shape persons node-shape
+  set-default-shape sides "line"
   
-  ;set background-color 73 ; a blue-green
   set background-color 17 ; peach
-  ;set background-color 58
-  set netlogo-person-hue 0
+  set netlogo-person-hue 74
   set link-color 123
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
@@ -87,17 +61,6 @@ to setup
   ask patches [set pcolor background-color]
 
   let i 1
-  if make-pundit and number-of-subnets > 1 [
-    create-nodes i 1
-    ask persons with [person-subnet = i] [
-      set is-pundit true
-      set activation 1
-      set color (activn-to-color activation)
-    ]
-
-    set i i + 1
-  ]
-
   while [i <= number-of-subnets] [
     create-nodes i nodes-per-subnet
     ask persons with [person-subnet = i] [set is-pundit false]
@@ -106,6 +69,8 @@ to setup
   ]
 
   layout-network
+  
+  set selected-persons no-turtles
 
   reset-ticks
 end
@@ -116,7 +81,7 @@ to create-nodes [subnet nodes-per-net]
     ; for visual reasons, we don't put any nodes *too* close to the edges
     setxy (random-xcor * 0.95) (random-ycor * 0.95)
     set person-subnet subnet
-    setup-cultvar
+    set color netlogo-person-hue
   ]
 end
 
@@ -274,15 +239,6 @@ to stretch-network [nodes xratio yratio]
     set ycor (clip-to-y-extrema (yratio * ycor))]
 end
 
-; Given a set of nodes, moves them xratio of distance to right/left edge 
-; and yratio up to the top/bottom edge (depending on whether xratio, yratio are positive or negative)
-; ASSUMES that origin is in center, and that world is right-left and up/down symmetric (but not necess that height and width are same).
-;to shift-network [nodes xratio yratio]
-;  shift-network-by-patches nodes
-;                           (xratio * max-pxcor)
-;                           (yratio * max-pycor)
-;end
-
 ; Given a set of nodes, moves them xincrement, yincrement patches to the right and up, respectively.
 to shift-network-by-patches [nodes xincrement yincrement]
    ask nodes [set xcor (clip-to-x-extrema (xcor + xincrement))  ; note inner parens are essential
@@ -299,19 +255,6 @@ to-report clip-to-y-extrema [y]
   if y > max-pycor [report max-pycor]
   if y < min-pycor [report min-pycor]
   report y
-end
-
-; start over with the same network
-to reset-cultvars
-  ask persons [setup-cultvar]
-  clear-all-plots
-  reset-ticks
-  set ready-to-stop false
-end
-
-to setup-cultvar
-  set activation ((random-float 2) - 1)
-  set color (activn-to-color activation)
 end
 
 to toggle-cohesion-display
@@ -364,156 +307,100 @@ end
 ;;; RUN
 
 to go
-  if (ready-to-stop) [
-    set ready-to-stop false ; allows trying to restart, perhaps after altering parameters or network
-    stop
+  if mouse-down? [
+    ifelse selected? mouse-xcor mouse-ycor
+      [ handle-drag
+        deselect ]
+      [ handle-select ]
   ]
-  set stop-threshold 10 ^ stop-threshold-exponent ; allows changing this while running
-  transmit-cultvars
-  if (activns-settled) [set ready-to-stop true] ; compares activation with next-activation, so must run between transmit-cultvars and update-activns
-  update-activns                                ; on the other hand, we do want to complete the activation updating process even if about to stop
-  tick
 end
 
-to-report activns-settled
-  let max-change (max [abs (activation - next-activation)] of persons) ; must be called between communication and updating activation
-  report stop-threshold > max-change
-end
-
-; Transmit to any neighbor if probabilistically decide to transmit along that link.
-; Probability is determined by activation value.
-to transmit-cultvars
-  ask persons
-    [let message cultvar-to-message activation
-     ask link-neighbors
-       [if transmit-cultvar? message 
-           [receive-cultvar message]]]
-end
-
-; Decide probabilistically whether to report your cultvar to an individual:
-; Roughly, the absolute value of your activation is treated as a probability: When bias = 0,
-; a random number between 0 and 1 is selected, and if your absolute activation is above that,
-; you transmit to the receiver.  When bias is nonzero, the sum of activation and bias is used instead.
-; i.e. for large activations, if bias has the same sign as activation, it increases the probability of
-; transmission; if they have opposite signs, the probability is reduced. The result may be
-; > 1, in which case the effect is the same as if it were 1.  For small absolute activations,
-; adding bias to the activation may flip the sign and produce a number whose absolute value is
-; larger than the absolute value of the activation. [IS THAT OK?]
-to-report transmit-cultvar? [activn]
-  report (abs (activn + prob-of-transmission-bias)) > (random-float 1)
-end
-
-to-report cultvar-to-message [activn]
-  report activn
-end
-
-; RECEIVE-CULTVAR
-; Let an incoming cultvar affect strength of receiver's cultvar.
-; If incoming-activn is positive, it will move receiver's activn in that direction;
-; if negative, it will push in negative direction. However, the degree of push will
-; be scaled by how far the current activation is from the extremum in the direction
-; of push.  If the distance is large, the incoming-activn will have a large effect.
-; If the distance is small, then incoming-activn's effect will be small, so that it's
-; harder to get to the extrema. The method used to do this is often used to update
-; nodes in connectionist/neural networks (e.g. Holyoak & Thagard, Cognitive Science 13, 295-355 (1989), p. 313). 
-to receive-cultvar [message]
-  let candidate-activn 0
-  if-else is-pundit
-    [set candidate-activn 1] ; designated pundits never listen to anyone
-    [if-else averaging-transmission
-      [set candidate-activn new-activn-averaging-tran activation message]
-      [set candidate-activn new-activn-popco-tran activation message]]
-  set next-activation max (list min-activn (min (list max-activn candidate-activn))) ; failsafe: cap at extrema. need list op, not [] here
-end
-
-to-report new-activn-averaging-tran [activn incoming-activn]
-  if-else (abs (activn - incoming-activn)) < confidence-bound
-    [report (incoming-activn * weight-on-senders-activn) + (activn * (1 - weight-on-senders-activn))]
-    [report 0]
-end
-
-to-report new-activn-popco-tran [activn incoming-activn]
-  let effective-in-activn (sign-of incoming-activn) * (random-normal trust-mean trust-stdev)
-  report (activn + (effective-in-activn * (dist-from-extremum effective-in-activn activn))) ; sign will come from incoming-activn; scaling factors are positive
-end
-
-to-report dist-from-extremum [incoming-activn current-activn]
-  let dist ifelse-value (incoming-activn <= 0)
-                        [activation - min-activn]  ; if incoming-activn is pushes in negative direction, get current distance from the min
-                        [max-activn - activation] ; if incoming activen pushes in positive direction, get distance from max
-  report max (list 1 dist)
-end
-
-to update-activns
-  ask persons
-    [set activation next-activation
-     set color (activn-to-color activation)
-     if nodes-showing-numbers? [
-       set label-color ifelse-value (activation < .3) [black] [white]]]
-end
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Morris (2000) model
-;; includes both setup and run functions
-;; uses other code here
-
-to morris-setup
-  setup
-  make-activns-extreme
-end
-
-to make-activns-extreme
-  ask persons
-    [if-else activation >= 0
-       [set activation 1
-        set next-activation 1]
-       [set activation -1
-        set next-activation -1]
-     set color (activn-to-color activation)]
-end
-
-to morris-go
-  if (ready-to-stop) [
-    set ready-to-stop false ; allows trying to restart, perhaps after altering parameters or network
-    stop
+to handle-select
+  ;; remember where the mouse pointer was located when
+  ;; the user pressed the mouse button
+  let old-x mouse-xcor
+  let old-y mouse-ycor
+  while [mouse-down?] [
+    select old-x old-y mouse-xcor mouse-ycor            ; this is the line that should the nodes into selected-persons
+    ;; update the view, otherwise the user can't see
+    ;; what's going on
+    display
   ]
-  set stop-threshold 10 ^ stop-threshold-exponent ; allows changing this while running
-  morris-transmit-cultvars
-  if (activns-settled) [set ready-to-stop true] ; compares activation with next-activation, so must run between transmit-cultvars and update-activns
-  update-activns                                ; on the other hand, we do want to complete the activation updating process even if about to stop
-  tick
+  ;; if no turtles are selected, kill off
+  ;; the selection rectangle and start over
+  if not any? selected-persons [ deselect ]
 end
 
-; modified Morris (2000) style transmission:
-; Just count whether proportion of 1's among neighbors exceeds switch-threshold to see whether to change from -1 to 1.
-; No need to separate into transmit and receive functions. 
-to morris-transmit-cultvars
-  ask persons with [activation < 0]
-    [let num-neighbors count link-neighbors
-     let num-high-neighbors count link-neighbors with [activation > 0]
-     if (num-high-neighbors / num-neighbors >= morris-switch-threshold)
-       [set next-activation 1]]
-   if morris-symmetric?
-     [ask persons with [activation > 0]
-        [let num-neighbors count link-neighbors
-         let num-low-neighbors count link-neighbors with [activation < 0]
-         if (num-low-neighbors / num-neighbors >= morris-switch-threshold)
-           [set next-activation -1]]]
+to handle-drag
+  ;; remember where the mouse pointer was located when
+  ;; the user pressed the mouse button
+  let old-x mouse-xcor
+  let old-y mouse-ycor
+  if selected? old-x old-y [
+    while [mouse-down?] [
+      let new-x mouse-xcor
+      let new-y mouse-ycor
+      ;; we need to move both the selected turtles and the sides
+      ;; of the selection rectangle by the same amount that the
+      ;; mouse has moved.  we do this by subtracting the current
+      ;; mouse coordinates from the previous mouse coordinates
+      ;; and adding the results to the coordinates of the turtles
+      ;; and sides.
+      ask selected-persons
+        [ setxy xcor + new-x - old-x
+                ycor + new-y - old-y ]
+      ask sides
+        [ setxy xcor + new-x - old-x
+                ycor + new-y - old-y ]
+      set old-x new-x
+      set old-y new-y
+      ;; update the view, otherwise the user can't see
+      ;; what's going on
+      display
+    ]
+  ]
 end
 
-to morris-reset-cultvars
-  reset-cultvars
-  make-activns-extreme
+to deselect
+  ask sides [ die ]
+  ask selected-persons [ set color blue ]
+  set selected-persons no-turtles
 end
 
-to set-right-half-low
-  ask persons with [xcor > 0]
-    [set activation -1
-     set next-activation -1
-     set color (activn-to-color activation)]
+to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
+  deselect  ;; kill old selection rectangle
+  make-side x1 y1 x2 y1
+  make-side x1 y1 x1 y2
+  make-side x1 y2 x2 y2
+  make-side x2 y1 x2 y2
+  set selected-persons persons with [selected? xcor ycor]
+  ask selected-persons [ set color red ]
 end
 
+to make-side [x1 y1 x2 y2]
+  ;; for each side, one thin line shape is created at the mid point of each segment
+  ;; of the bounding box and scaled to the proper length
+  create-sides 1 [
+    set color black
+    setxy (x1 + x2) / 2
+          (y1 + y2) / 2
+    facexy x1 y1
+    set size 2 * distancexy x1 y1
+  ]
+end
+
+;; helper procedure that determines whether a point is
+;; inside the selection rectangle
+to-report selected? [x y]
+  if not any? sides [ report false ]
+  let y-max max [ycor] of sides   ;; largest ycor is where the top is
+  let y-min min [ycor] of sides   ;; smallest ycor is where the bottom is
+  let x-max max [xcor] of sides   ;; largest xcor is where the right side is
+  let x-min min [xcor] of sides   ;; smallest xcor is where the left side is
+  ;; report whether the input coordinates are within the rectangle
+  report x >= x-min and x <= x-max and
+         y >= y-min and y <= y-max
+end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; COMMUNITY MARKING AND COHESION CALCULATION
 
@@ -541,276 +428,6 @@ to reset-colors
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; MATRIX-BASED PARTITIONING PROCEDURE
-;; Procedure make-network-partition below artitions a network into two 
-;; subnets so as to have a small cut set -- i.e.
-;; so as to have close to the fewest number of links between the
-;; subnets, as possible.  You get to choose how large the subnets are. 
-;; Implements algorithm on p. 369 of 
-;; Networks: An Introduction
-;; by M.E.J. Newman
-;; Oxford University Press 2010
-
-; Partition a set of nodes into two sets so as to try to minimize the number of links between them.
-; Implements Newman 2010 p. 369.
-; Needs percentage in first subnet, n1-proportion, to be set in the gui.
-to-report make-network-partition [nodes]
-  let node-list init-node-list nodes  ; make list of nodes with internal indexes of their order - to maintain matrix row/col order
-  let sorted-nodes sort-node-list-by-order-list node-list (Laplacean-2nd-eigenvector node-list) ; order nodes by 2nd eigenvector of Laplacean matrix
-
-  ; get partition size quantities
-  let num-nodes count nodes
-  let num-n1 floor (n1-proportion * num-nodes)  ; size of first partition set. n1-proportion should be set in the gui.
-  let num-n2 num-nodes - num-n1                 ; size of other set
-  
-  ; first try splitting into beginning vs end nodes in order of values in the second eigenvector
-  let n1a sublist sorted-nodes 0 num-n1
-  let n2a sublist sorted-nodes num-n1 num-nodes ; result has length num-n2
-  let cutset-a-size count cut-set (turtle-set n1a) (turtle-set n2a)
-
-  ; then try splitting into end vs beginning nodes in order of values in the second eigenvector
-  let n1b sublist sorted-nodes num-n2 num-nodes  ; result has length num-n1
-  let n2b sublist sorted-nodes 0 num-n2
-  let cutset-b-size count cut-set (turtle-set n1b) (turtle-set n2b)
-  
-  ; now pick whichever partition has a smaller cut size
-  if-else cutset-a-size <= cutset-b-size
-    [report (list n1a n2a)]
-    [report (list n1b n2b)]
-end
-
-to find-and-store-communities
-  if-else empty? communities [
-    set communities find-two-communities persons
-  ][
-    set communities (reduce sentence (map find-two-communities communities)) ; 'reduce sentence ...' turns a list of lists of lists into a list of lists
-  ]
-  
-  set communities remove [] communities ; remove empty communities
-end
-
-to reset-communities
-  set communities []
-  ask persons [set my-community false] ; avoid bugs due to this containing -1 or 1 from before
-end
-
-to-report find-two-communities [nodes]
-  let node-list init-node-list nodes
-  let eigvec modularity-mat-1st-eigenvector node-list
-  
-  let comm1 []
-  let comm2 []
-  let i 0
-  foreach eigvec [
-    let this-node item i node-list
-    if-else ? >= 0 [
-      set comm1 fput this-node comm1
-      ask this-node [set my-community 1]
-    ][
-      set comm2 fput this-node comm2
-      ask this-node [set my-community -1]
-    ]
-    set i i + 1
-  ]
-  
-  report (list comm1 comm2)
-end
-
-; This gives each node in nodes an index number.
-; The indexes are arbitrary, but will be used to index rows and columns 
-; in an N x N matrix, where N is the size of nodes.  The indexes will be in
-; who order, but we can't use who numbers, since some could be missing.
-to-report init-node-list [nodes]  ; nodes could be either a list or an agentset
-  let node-list sort nodes
-  let i 0
-  foreach node-list [
-    ask ? [set index i]  ; don't assume that we've got all of the who numbers--make our own
-    set i i + 1 
-  ]
-  
-  report node-list
-end
-
-; Make vector of 1's and -1's representing two communities
-; This is the vector s in Newman.
-; Assumes that my-community in each node has recently been set appropriately by find-two-communities.
-; node-list need not contain the entire population.
-to-report make-communities-vec [node-list]
-  report matrix:from-column-list (list map [[my-community] of ?] node-list)
-end
-
-; MODULARITY and MODULARITH-WITHOUT-SPLIT are wrappers around MODULARITY-FROM-COMMS-VEC:
-
-; MODULARITY: standard modularity calculation for a (sub-)network, assuming that it is divided into
-; two communities.  node-list should be initialized so that each persons' my-communities variable
-; contains either 1 or -1, representing which of the two communities its in.  Note that these values
-; are temporary--they depend on the most recent splitting of this (sub-)network.
-; (This is equation 11.45, p. 376 in Newman.)
-to-report modularity [mod-mat node-list]
-  report modularity-from-comms-vec mod-mat (make-communities-vec node-list)
-end
-
-; MODULARITY-WITHOUT-SPLIT calculates the modularity of a (sub-)network as if it had
-; not been divided into two communities.  This "modularity" is simply the sum of all elements
-; of the modularity matrix, divided by 4 * the number of nodes.  So we do the regular modularity
-; calculation with modularity-from-comms-vec, but pass in a vector of 1's instead of the
-; real community vector of 1's and -1's.  (This is the second term in the expression before the
-; first "=" in the second line of eq. 11.53, along with the outer 1/4m, p. 379 in Newman.)
-to-report modularity-without-split [mod-mat]
-  let num-nodes first matrix:dimensions mod-mat
-  ; next line passes a num-nodes x 1 column vector of 1's, along with mod-mat.
-  report modularity-from-comms-vec mod-mat (matrix:make-constant num-nodes 1 1)
-end
-  
-to-report modularity-from-comms-vec [mod-mat comms-vec]
-  let divisor 4 * (first matrix:dimensions comms-vec)
-  let mod-sum-mat matrix:times (matrix:transpose comms-vec) (matrix:times mod-mat comms-vec)
-  let mod-sum matrix:get mod-sum-mat 0 0 ; prev line produces a 1x1 matrix containing the sum we want.
-  report mod-sum / divisor
-end
-
-; restricted-mod-mat
-; One way to sum only those matrix entries that fall within a subset of nodes
-; is to zero out all other entries, and then just sum them all.  This procedure
-; creates such a matrix.  You can do this
-; by setting each entry separately with double indexes and embedded loops,
-; or you can just set all rows and columns corresponding to the extra indexes to zero.
-to-report restrict-mod-mat [mod-mat node-list]
-  let zero-list n-values (length node-list) [0] ; list of zeros
-  let restricted-mat matrix:copy mod-mat
-
-  let i 0
-  foreach node-list [
-    if [my-community] of ? = -1 [
-      matrix:set-row restricted-mat i zero-list
-      matrix:set-column restricted-mat i zero-list
-    ]
-    set i i + 1
-  ]
-  
-  report restricted-mat
-end
-
-; MODULARITY-CHANGE
-; This is supposed to implement the first half of line 2 in Newman eq. 11.53, p. 379.
-; That equation is based on the insight that in evaluating the change in modularity
-; due to splitting one of the communities in a two-way split of a network, you only
-; need to compare the effect of the split on the split subnetwork, with that subnet's
-; "modularity" when unsplit.  i.e. you can ignore the other part of the larger network.
-; Our strategy here is to pass in a modularity matrix and node-list for only that
-; subnetwork.
-; QUESTION!!: Is this a correct implementation?? There's something funny here.
-; The sum Bij's in the first two lines of 11.53 would be equal to 0 if all indexes
-; were used (11.41, cf. 11.45).  But I'm treating this as if it were the whole
-; network, so shouldn't they be zero?  So the calculation that I'm doing is not
-; the one in the book. ?  Maybe what I really need is to get the modularity matrix
-; from the entire network--all the persons--and then subset it for just these nodes.
-; But in that case, it will be easier to do with a double loop rather than matrix
-; multiplication.  I also may need to have, at different points, a node-list for all
-; persons, and one for only this subnet, maybe initialized differently.  i.e. in that
-; case I can't use side-effected persons to maintain my 1's and -1's.  ??
-to-report modularity-change [mod-mat node-list]
-  report (modularity mod-mat node-list) - (modularity-without-split mod-mat)
-end
-
-; make list of node degrees in node-list order
-to-report make-degree-list [node-list]
-  report map [[count link-neighbors] of ?] node-list
-end
-
-; turn degree list into a single-row matrix
-to-report degree-list-to-degree-vec [deg-list]
-  report matrix:from-row-list (list deg-list)
-end
-
-to-report modularity-mat-1st-eigenvector [node-list]
-  report matrix:get-column (matrix:eigenvectors make-modularity-mat node-list) (length node-list - 1)
-end
-
-to-report make-modularity-mat [node-list]
-  let adj-mat make-adjacency-mat (turtle-set node-list)
-  let deg-vec degree-list-to-degree-vec make-degree-list node-list
-  let sq-deg-mat matrix:times (matrix:transpose deg-vec) deg-vec
-  let neg-normalized-sq-deg-mat matrix:times-scalar sq-deg-mat (-1 / (2 * count links))
-  
-  report matrix:plus adj-mat neg-normalized-sq-deg-mat
-end
-
-; Generate the Laplacean matrix of a node-list created by init-node-list.
-; A Laplacean is an N x N matrix, where N is length of node-list.
-; Position (i,i) on the diagonal contains the degree of the node with index i.
-; For i != j, position (i,j) contains -1 if nodes i and j are linked, and
-; 0 otherwise.  It's a matrix with the degree vector along the diagonal and 
-; zeros elsewhere, minus the adjacency matrix. See e.g. Newman 2010 for details. 
-to-report make-Laplacean [node-list]
-  let laplacean matrix:times-scalar (make-adjacency-mat (turtle-set node-list)) -1  ; Laplacean is based on negative of the adjacency matrix
-  let deg-list make-degree-list node-list
-  
-  let i 0
-  foreach deg-list [
-    matrix:set laplacean i i ?
-    set i i + 1
-  ]
-  
-  report laplacean
-end
-
-; nodes should already have passed through init-node-list, i.e. they should have index numbers
-to-report make-adjacency-mat [nodes]
-  let num-nodes count nodes
-  let the-links link-set [my-links with [member? other-end nodes]] of nodes ; if we're only looking at a subnet, ignore links outside of it
-  
-  let a-mat matrix:make-constant num-nodes num-nodes 0 ; init a matrix with default values
-  
-  ; Record links by putting 1's at locations corresponding to the two ends:
-  ask the-links [
-    let index1 0
-    let index2 0
-    ask end1 [set index1 index]
-    ask end2 [set index2 index]
-    
-    matrix:set a-mat index1 index2 1
-    matrix:set a-mat index2 index1 1  ; the matrix is symmetric--we have to do it both ways.
-  ]
-  
-  report a-mat
-end
-
-; Return second-smallest eigenvector of the Laplacean matrix of nodes.
-; This has information about a good approximation of the smallest cut set.
-to-report Laplacean-2nd-eigenvector [node-list]
-  report matrix:get-column (matrix:eigenvectors make-Laplacean node-list) 1
-end
-
-; Given a node-list, i.e. a list of nodes with index variables set, sort them by
-; comparing what the index values index in a second list.  i.e. reorder the node-list
-; according to their corresponding values in the second list.
-; Use this to reorder nodes by the relative sizes of values in an eigenvector.
-to-report sort-node-list-by-order-list [node-list order-list]
-  report sort-by [ (item ([index] of ?1) order-list) > (item ([index] of ?2) order-list) ] node-list
-end
-
-; Get the cut set of all links between two disjoint sets of nodes
-to-report cut-set [nodes1 nodes2]
-   report (link-set [my-links] of nodes1) with [member? self (link-set [my-links] of nodes2)]
-end
-
-to show-communities
-  foreach communities [
-    let col random 256
-    ask (turtle-set ?) [set color col]
-  ]
-end
-
-
-; deprecated
-to show-node-sets [node-lists]
-  let sets map turtle-set node-lists 
-  ask (item 0 sets) [set color red] 
-  ask (item 1 sets) [set color blue]
-end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
@@ -937,10 +554,10 @@ ticks
 
 BUTTON
 0
-10
-95
-43
-set up network
+9
+94
+44
+NIL
 setup
 NIL
 1
@@ -953,10 +570,10 @@ NIL
 1
 
 BUTTON
-820
-25
-876
-59
+94
+9
+151
+45
 NIL
 go
 T
@@ -968,26 +585,6 @@ NIL
 NIL
 NIL
 1
-
-PLOT
-1030
-130
-1240
-250
-average cultvar activations
-time
-activn
-0.0
-52.0
--1.0
-1.0
-true
-true
-"" ""
-PENS
-"Bl" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of persons)"
-"Wh" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of persons)"
-"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of persons)"
 
 SLIDER
 0
@@ -1018,143 +615,6 @@ min (list 500 (nodes-per-subnet - 1))
 1
 NIL
 HORIZONTAL
-
-BUTTON
-875
-25
-939
-59
-go once
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-95
-10
-185
-43
-NIL
-reset-cultvars
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-PLOT
-1029
-9
-1239
-129
-cultvar freqs & pop variance
-NIL
-NIL
-0.0
-10.0
-0.0
-1.0
-true
-true
-"" ""
-PENS
-"Bl" 1.0 0 -16777216 true "" "plot ((count persons with [activation > 0])/(count persons))"
-"Wh" 1.0 0 -5987164 true "" "plot ((count persons with [activation < 0])/(count persons))"
-"var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
-
-SLIDER
-820
-90
-1025
-123
-trust-mean
-trust-mean
-.01
-1
-0.05
-.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-820
-175
-1025
-208
-prob-of-transmission-bias
-prob-of-transmission-bias
--1
-1
-0
-.02
-1
-NIL
-HORIZONTAL
-
-TEXTBOX
-995
-160
-1032
-180
-black
-10
-0.0
-1
-
-TEXTBOX
-825
-160
-855
-180
-white
-10
-0.0
-1
-
-SLIDER
-820
-125
-1025
-158
-trust-stdev
-trust-stdev
-0
-.1
-0
-.01
-1
-NIL
-HORIZONTAL
-
-PLOT
-1030
-250
-1240
-390
-degree distribution
-degree
-# of nodes
-1.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons" "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons"
 
 SLIDER
 0
@@ -1207,71 +667,12 @@ subnet2
 3
 
 BUTTON
-0
-326
-55
-359
+2
+327
+58
+361
 link-em
 inter-link-subnets subnet1 subnet2\n; subnet1 and subnet2 are globals defined\n; by gui elements.
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-820
-550
-1023
-583
-stop-threshold-exponent
-stop-threshold-exponent
--20
-0
--2
-1
-1
-NIL
-HORIZONTAL
-
-TEXTBOX
-825
-585
-1024
-628
-Iteration stops if max activn change is < 10 ^ stop-threshold-exponent.  Less negative means stop sooner.
-11
-0.0
-1
-
-BUTTON
-820
-515
-922
-548
-redo layout
-layout-network
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-925
-515
-1027
-548
-circle layout
-layout-circle turtles (.95 * min (list max-pxcor max-pycor))
 NIL
 1
 T
@@ -1299,97 +700,11 @@ NIL
 NIL
 1
 
-TEXTBOX
-821
-9
-988
-29
-POPCO-style transmission:
-11
-0.0
-1
-
-SLIDER
-820
-425
-1025
-458
-morris-switch-threshold
-morris-switch-threshold
-0
-.5
-0.35
-.025
-1
-NIL
-HORIZONTAL
-
 BUTTON
-915
-390
-1025
-424
-morris-go once
-morris-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-820
-390
-917
-424
-NIL
-morris-go
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-TEXTBOX
-822
-375
-967
-393
-Morris-style transmission:
-11
-0.0
-1
-
-BUTTON
-0
-45
-85
-78
-extremize
-make-activns-extreme
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-55
-325
-164
-359
+60
+327
+170
+361
 NIL
 link-near-subnets
 NIL
@@ -1401,17 +716,6 @@ NIL
 NIL
 NIL
 1
-
-SWITCH
-820
-460
-1025
-493
-morris-symmetric?
-morris-symmetric?
-0
-1
--1000
 
 BUTTON
 0
@@ -1430,53 +734,6 @@ NIL
 NIL
 1
 
-SLIDER
-55
-505
-185
-538
-k-means-clusters
-k-means-clusters
-1
-50
-50
-1
-1
-NIL
-HORIZONTAL
-
-BUTTON
-0
-505
-55
-538
-cluster
-nw:set-snapshot persons links foreach nw:k-means-clusters k-means-clusters 500 .01 [let col (random 256) foreach ? [ask ? [set color col]]]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-55
-465
-185
-498
-n1-proportion
-n1-proportion
-0
-1
-0.5
-.01
-1
-NIL
-HORIZONTAL
-
 BUTTON
 0
 560
@@ -1484,57 +741,6 @@ BUTTON
 593
 node #
 toggle-who-display
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-0
-465
-55
-498
-partition
-show-node-sets make-network-partition persons
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-0
-385
-140
-418
-modularity communities
-find-and-store-communities\nshow-communities
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-115
-420
-170
-453
-recolor
-show-communities
 NIL
 1
 T
@@ -1574,16 +780,6 @@ network structure:
 
 TEXTBOX
 5
-365
-130
-383
-community detection:
-11
-0.0
-1
-
-TEXTBOX
-5
 545
 150
 563
@@ -1591,105 +787,6 @@ toggle numeric node info:
 11
 0.0
 1
-
-TEXTBOX
-820
-60
-960
-78
-transmission parameters:
-11
-0.0
-1
-
-TEXTBOX
-820
-75
-895
-93
-popco style:
-11
-0.0
-1
-
-TEXTBOX
-820
-500
-910
-518
-not very useful:
-11
-0.0
-1
-
-BUTTON
-0
-420
-115
-453
-reset-communites
-reset-communities\nreset-colors
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SWITCH
-0
-205
-132
-238
-make-pundit
-make-pundit
-1
-1
--1000
-
-SWITCH
-820
-220
-1025
-253
-averaging-transmission
-averaging-transmission
-1
-1
--1000
-
-SLIDER
-820
-255
-1025
-288
-weight-on-senders-activn
-weight-on-senders-activn
-0
-1
-0.05
-.05
-1
-NIL
-HORIZONTAL
-
-SLIDER
-820
-290
-1025
-323
-confidence-bound
-confidence-bound
-0
-2
-2
-.05
-1
-NIL
-HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2001,7 +1098,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.2
+NetLogo 5.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
