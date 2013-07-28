@@ -402,7 +402,7 @@ end
 to-report new-activn-averaging-tran [activn incoming-activn]
   if-else (abs (activn - incoming-activn)) < confidence-bound
     [report (incoming-activn * weight-on-senders-activn) + (activn * (1 - weight-on-senders-activn))]
-    [report 0]
+    [report activn]
 end
 
 to-report new-activn-popco-tran [activn incoming-activn]
@@ -762,7 +762,7 @@ stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
--3
+-2
 1
 1
 NIL
@@ -812,7 +812,7 @@ SWITCH
 373
 averaging-transmission
 averaging-transmission
-1
+0
 1
 -1000
 
@@ -840,7 +840,7 @@ confidence-bound
 confidence-bound
 0
 2
-0.1
+0.25
 .05
 1
 NIL
