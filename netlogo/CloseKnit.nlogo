@@ -4,6 +4,7 @@ extensions [matrix]
 globals
 [
   selected-persons ; set of nodes selected (e.g. by mouse) whose close-knittedness will be evaluated
+  selected-persons-color
   netlogo-person-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
   node-shape       ; default node shape
   link-color       ; obvious
@@ -52,6 +53,7 @@ to setup
   
   set background-color 17 ; peach
   set netlogo-person-hue 74
+  set selected-persons-color red
   set link-color 123
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
@@ -306,13 +308,35 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; RUN
 
-to go
+to select-indivs
+  if mouse-down? [
+    let this-person min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+    if [distancexy mouse-xcor mouse-ycor] of this-person < 2 [
+      if-else member? this-person selected-persons [
+        ask this-person [set selected-persons other selected-persons]
+      ][
+        set selected-persons (turtle-set this-person selected-persons)
+      ]
+    ]
+  ]
+  reset-colors
+end
+
+to select-region
   if mouse-down? [
     ifelse selected? mouse-xcor mouse-ycor
       [ handle-drag
         deselect ]
       [ handle-select ]
   ]
+  reset-colors
+end
+
+to reset-colors
+  ask selected-persons [set color selected-persons-color]
+  ask persons with [not member? self selected-persons]
+    [set color (activn-to-color activation)
+     set label ""]
 end
 
 to handle-select
@@ -421,11 +445,6 @@ to-report community-cohesion [community]
   report min [node-cohesion self community] of community
 end
 
-to reset-colors
-  ask persons
-    [set color (activn-to-color activation)
-     set label ""]
-end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -570,12 +589,12 @@ NIL
 1
 
 BUTTON
-94
-9
-151
+0
 45
+95
+80
 NIL
-go
+select-region
 T
 1
 T
@@ -786,6 +805,23 @@ TEXTBOX
 toggle numeric node info:
 11
 0.0
+1
+
+BUTTON
+95
+45
+190
+80
+NIL
+select-indivs
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 @#$#@#$#@
