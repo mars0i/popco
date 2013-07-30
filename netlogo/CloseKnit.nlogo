@@ -594,7 +594,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-100
+300
 1
 1
 NIL
@@ -844,6 +844,17 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+855
+465
+1132
+510
+cohesion
+community-cohesion selected-subnet
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
