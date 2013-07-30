@@ -264,6 +264,8 @@ end
 ;;; RUN
 
 to select-indivs
+  let something-changed false
+
   if mouse-down? [
     let this-person min-one-of turtles [distancexy mouse-xcor mouse-ycor]
     if [distancexy mouse-xcor mouse-ycor] of this-person < 2 [
@@ -272,18 +274,35 @@ to select-indivs
       ][
         set selected-subnet (turtle-set this-person selected-subnet)
       ]
+      set something-changed true
     ]
   ]
-  set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
-  reset-colors
+
+  if something-changed [
+    set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
+    reset-colors
+    output-subnet-properties selected-subnet
+    set something-changed false
+  ]
 end
 
 to select-region
-  if mouse-down? 
-    [handle-select]
-  set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
+  let something-changed false
+  
+  if mouse-down? [
+    handle-select
+    set something-changed true
+  ]
+ 
+  if something-changed [
+    set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
+    reset-colors
+    output-subnet-properties selected-subnet
+    set something-changed false
+  ]
+ 
   ask sides [die]
-  reset-colors
+  display
 end
 
 to reset-colors
@@ -314,6 +333,7 @@ to deselect
   ask sides [ die ]
   set selected-subnet no-turtles
   reset-colors
+  output-subnet-properties selected-subnet
 end
 
 to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
@@ -805,10 +825,10 @@ NIL
 1
 
 BUTTON
-1
-46
-95
-82
+0
+45
+94
+80
 NIL
 deselect
 NIL
@@ -846,10 +866,10 @@ NIL
 1
 
 MONITOR
-855
-465
-1132
-510
+805
+445
+1082
+490
 cohesion
 community-cohesion selected-subnet
 17
