@@ -3,8 +3,8 @@ extensions [matrix]
   
 globals
 [
-  selected-persons ; set of nodes selected (e.g. by mouse) whose close-knittedness will be evaluated
-  selected-persons-color
+  selected-subnet ; set of nodes selected (e.g. by mouse) whose close-knittedness will be evaluated
+  selected-subnet-color
   netlogo-person-hue ; hue of nodes for use with variation using NetLogo built-in color-mapping scheme (vs. HSB or RGB).
   node-shape       ; default node shape
   link-color       ; obvious
@@ -15,7 +15,7 @@ globals
                                        ; used to denote distance between two persons which
                                        ; don't have a connected or unconnected path between them
   nodes-showing-numbers?               ; true when we are displaying node degrees
-  subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
+  subnets-matrix                       ; matrix of subnet id's showing how they're laid out in the world
   
   communities  ; list of lists of nodes representing communities we've found so far
 ]
@@ -53,7 +53,7 @@ to setup
   
   set background-color 17 ; peach
   set netlogo-person-hue 74
-  set selected-persons-color red
+  set selected-subnet-color red
   set link-color 123
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
@@ -72,7 +72,7 @@ to setup
 
   layout-network
   
-  set selected-persons no-turtles
+  set selected-subnet no-turtles
 
   reset-ticks
 end
@@ -259,51 +259,6 @@ to-report clip-to-y-extrema [y]
   report y
 end
 
-to toggle-cohesion-display
-  if-else nodes-showing-numbers? [
-    ask persons [set label ""]
-    set nodes-showing-numbers? false
-  ][
-    ; first tell each node what its community is:
-    foreach communities [
-      let this-community ?
-      foreach this-community [
-        ask ? [set my-community this-community]
-      ]
-    ]
-    
-    ask persons [let coh precision (node-cohesion self my-community) 2 ; round to 2 dec places
-                 let coh-string (word coh) ; make into string
-                 if coh < 1 [set coh-string substring coh-string 1 (length coh-string)] ; strip initial 0
-                 set label coh-string
-                 set label-color ifelse-value (activation < .3) [black] [white]]
-    set nodes-showing-numbers? true
-  ]
-end
-
-to toggle-degree-display
-  if-else nodes-showing-numbers? [
-    ask persons [set label ""]
-    set nodes-showing-numbers? false
-  ][
-    ask persons [;set label sum [count link-neighbors] of link-neighbors
-                 set label count link-neighbors 
-                 set label-color ifelse-value (activation < .3) [black] [white]]
-    set nodes-showing-numbers? true
-  ]
-end
-
-to toggle-who-display
-  if-else nodes-showing-numbers? [
-    ask persons [set label ""]
-    set nodes-showing-numbers? false
-  ][
-    ask persons [set label who 
-                 set label-color ifelse-value (activation < .3) [black] [white]]
-    set nodes-showing-numbers? true
-  ]
-end
-
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; RUN
@@ -312,26 +267,28 @@ to select-indivs
   if mouse-down? [
     let this-person min-one-of turtles [distancexy mouse-xcor mouse-ycor]
     if [distancexy mouse-xcor mouse-ycor] of this-person < 2 [
-      if-else member? this-person selected-persons [
-        ask this-person [set selected-persons other selected-persons]
+      if-else member? this-person selected-subnet [
+        ask this-person [set selected-subnet other selected-subnet]
       ][
-        set selected-persons (turtle-set this-person selected-persons)
+        set selected-subnet (turtle-set this-person selected-subnet)
       ]
     ]
   ]
+  set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
   reset-colors
 end
 
 to select-region
   if mouse-down? 
     [handle-select]
+  set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
   ask sides [die]
   reset-colors
 end
 
 to reset-colors
-  ask selected-persons [set color selected-persons-color]
-  ask persons with [not member? self selected-persons]
+  ask selected-subnet [set color selected-subnet-color]
+  ask persons with [not member? self selected-subnet]
     [set color (activn-to-color activation)
      set label ""]
   display
@@ -343,19 +300,19 @@ to handle-select
   let old-x mouse-xcor
   let old-y mouse-ycor
   while [mouse-down?] [
-    select old-x old-y mouse-xcor mouse-ycor            ; this is the line that should the nodes into selected-persons
+    select old-x old-y mouse-xcor mouse-ycor            ; this is the line that should the nodes into selected-subnet
     ;; update the view, otherwise the user can't see
     ;; what's going on
     display
   ]
   ;; if no turtles are selected, kill off
   ;; the selection rectangle and start over
-  ;if not any? selected-persons [ deselect ]
+  ;if not any? selected-subnet [ deselect ]
 end
 
 to deselect
   ask sides [ die ]
-  set selected-persons no-turtles
+  set selected-subnet no-turtles
   reset-colors
 end
 
@@ -365,8 +322,8 @@ to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
   make-side x1 y1 x1 y2
   make-side x1 y2 x2 y2
   make-side x2 y1 x2 y2
-  set selected-persons (turtle-set (persons with [selected? xcor ycor]) selected-persons)
-  ask selected-persons [ set color red ]
+  set selected-subnet (turtle-set (persons with [selected? xcor ycor]) selected-subnet)
+  ask selected-subnet [ set color red ]
 end
 
 to make-side [x1 y1 x2 y2]
@@ -393,8 +350,15 @@ to-report selected? [x y]
   report x >= x-min and x <= x-max and
          y >= y-min and y <= y-max
 end
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; COMMUNITY MARKING AND COHESION CALCULATION
+
+to output-subnet-properties [community]
+  clear-output
+  output-type "cohesion: "
+  output-print community-cohesion community
+end
 
 to-report node-cohesion [node community]
   let num-neighbs 0
@@ -416,6 +380,53 @@ end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+to toggle-cohesion-display
+  if-else nodes-showing-numbers? [
+    ask persons [set label ""]
+    set nodes-showing-numbers? false
+  ][
+    ; first tell each node what its community is:
+    foreach communities [
+      let this-community ?
+      foreach this-community [
+        ask ? [set my-community this-community]
+      ]
+    ]
+    
+    foreach communities [
+      ask persons with [my-community = ?]
+        [let coh precision (node-cohesion self my-community) 2 ; round to 2 dec places
+         let coh-string (word coh) ; make into string
+         if coh < 1 [set coh-string substring coh-string 1 (length coh-string)] ; strip initial 0
+         set label coh-string
+         set label-color black]]
+         ;set label-color ifelse-value (activation < .3) [black] [white]]
+    set nodes-showing-numbers? true
+  ]
+end
+
+to toggle-degree-display
+  if-else nodes-showing-numbers? [
+    ask persons [set label ""]
+    set nodes-showing-numbers? false
+  ][
+    ask persons [;set label sum [count link-neighbors] of link-neighbors
+                 set label count link-neighbors 
+                 set label-color ifelse-value (activation < .3) [black] [white]]
+    set nodes-showing-numbers? true
+  ]
+end
+
+to toggle-who-display
+  if-else nodes-showing-numbers? [
+    ask persons [set label ""]
+    set nodes-showing-numbers? false
+  ][
+    ask persons [set label who 
+                 set label-color ifelse-value (activation < .3) [black] [white]]
+    set nodes-showing-numbers? true
+  ]
+end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
 
@@ -514,9 +525,9 @@ to yo
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-215
+199
 10
-815
+799
 631
 29
 29
@@ -575,25 +586,25 @@ NIL
 1
 
 SLIDER
-0
-105
-170
-138
+4
+174
+174
+207
 nodes-per-subnet
 nodes-per-subnet
 4
 1000
-300
+100
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-0
-140
-170
-173
+4
+209
+174
+242
 average-node-degree
 average-node-degree
 1
@@ -605,10 +616,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-0
-173
-170
-206
+4
+242
+174
+275
 number-of-subnets
 number-of-subnets
 1
@@ -620,45 +631,45 @@ NIL
 HORIZONTAL
 
 SLIDER
-0
-290
-170
-323
+4
+359
+174
+392
 inter-nodes-per-subnet
 inter-nodes-per-subnet
-0
+1
 50
-50
+5
 1
 1
 NIL
 HORIZONTAL
 
 CHOOSER
-0
-245
-93
-290
+4
+314
+97
+359
 subnet1
 subnet1
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 0
 
 CHOOSER
-93
-245
-185
-290
+98
+314
+190
+359
 subnet2
 subnet2
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-3
+1
 
 BUTTON
-2
-327
-58
-361
+7
+396
+63
+430
 link-em
 inter-link-subnets subnet1 subnet2\n; subnet1 and subnet2 are globals defined\n; by gui elements.
 NIL
@@ -689,10 +700,10 @@ NIL
 1
 
 BUTTON
-60
-327
-170
-361
+64
+396
+174
+430
 NIL
 link-near-subnets
 NIL
@@ -757,10 +768,10 @@ NIL
 1
 
 TEXTBOX
-5
-85
-105
-103
+10
+154
+110
+172
 network structure:
 11
 0.0
@@ -800,6 +811,30 @@ BUTTON
 82
 NIL
 deselect
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+OUTPUT
+804
+29
+1142
+439
+14
+
+BUTTON
+10
+87
+185
+121
+show subnet properties
+output-subnet-properties selected-subnet
 NIL
 1
 T
