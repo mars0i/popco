@@ -323,12 +323,9 @@ to select-indivs
 end
 
 to select-region
-  if mouse-down? [
-    ifelse selected? mouse-xcor mouse-ycor
-      [ handle-drag
-        deselect ]
-      [ handle-select ]
-  ]
+  if mouse-down? 
+    [handle-select]
+  ask sides [die]
   reset-colors
 end
 
@@ -337,6 +334,7 @@ to reset-colors
   ask persons with [not member? self selected-persons]
     [set color (activn-to-color activation)
      set label ""]
+  display
 end
 
 to handle-select
@@ -352,52 +350,22 @@ to handle-select
   ]
   ;; if no turtles are selected, kill off
   ;; the selection rectangle and start over
-  if not any? selected-persons [ deselect ]
-end
-
-to handle-drag
-  ;; remember where the mouse pointer was located when
-  ;; the user pressed the mouse button
-  let old-x mouse-xcor
-  let old-y mouse-ycor
-  if selected? old-x old-y [
-    while [mouse-down?] [
-      let new-x mouse-xcor
-      let new-y mouse-ycor
-      ;; we need to move both the selected turtles and the sides
-      ;; of the selection rectangle by the same amount that the
-      ;; mouse has moved.  we do this by subtracting the current
-      ;; mouse coordinates from the previous mouse coordinates
-      ;; and adding the results to the coordinates of the turtles
-      ;; and sides.
-      ask selected-persons
-        [ setxy xcor + new-x - old-x
-                ycor + new-y - old-y ]
-      ask sides
-        [ setxy xcor + new-x - old-x
-                ycor + new-y - old-y ]
-      set old-x new-x
-      set old-y new-y
-      ;; update the view, otherwise the user can't see
-      ;; what's going on
-      display
-    ]
-  ]
+  ;if not any? selected-persons [ deselect ]
 end
 
 to deselect
   ask sides [ die ]
-  ask selected-persons [ set color blue ]
   set selected-persons no-turtles
+  reset-colors
 end
 
 to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
-  deselect  ;; kill old selection rectangle
+  ;deselect  ;; kill old selection rectangle
   make-side x1 y1 x2 y1
   make-side x1 y1 x1 y2
   make-side x1 y2 x2 y2
   make-side x2 y1 x2 y2
-  set selected-persons persons with [selected? xcor ycor]
+  set selected-persons (turtle-set (persons with [selected? xcor ycor]) selected-persons)
   ask selected-persons [ set color red ]
 end
 
@@ -513,10 +481,11 @@ to-report middle-factors-helper [n fac]
 end
 
 to-report activn-to-color [activn]
-  let zero-one-activn (activn + 1) / 2
-  let zero-ten-activn round (10 * zero-one-activn)
-  let almost-color netlogo-person-hue + 10 - zero-ten-activn   ; change "+ 10 -" to "+" to map colors in NetLogo order, not reverse
-  report ifelse-value (almost-color = 10) [9.9] [almost-color]
+  report netlogo-person-hue
+  ;let zero-one-activn (activn + 1) / 2
+  ;let zero-ten-activn round (10 * zero-one-activn)
+  ;let almost-color netlogo-person-hue + 10 - zero-ten-activn   ; change "+ 10 -" to "+" to map colors in NetLogo order, not reverse
+  ;report ifelse-value (almost-color = 10) [9.9] [almost-color]
 end
 
 to-report sign-of [x]
@@ -589,10 +558,10 @@ NIL
 1
 
 BUTTON
-0
+96
+10
+191
 45
-95
-80
 NIL
 select-region
 T
@@ -815,6 +784,23 @@ BUTTON
 NIL
 select-indivs
 T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+1
+46
+95
+82
+NIL
+deselect
+NIL
 1
 T
 OBSERVER
