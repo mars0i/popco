@@ -375,7 +375,7 @@ end
 ; adding bias to the activation may flip the sign and produce a number whose absolute value is
 ; larger than the absolute value of the activation. [IS THAT OK?]
 to-report transmit-cultvar? [activn]
-  report (abs (activn + prob-of-transmission-bias)) > (random-float 1)
+  report (abs (activn + transmission-bias-prob)) > (random-float 1)
 end
 
 to-report cultvar-to-message [activn]
@@ -402,7 +402,7 @@ to receive-cultvar [incoming-activn]
 end
 
 to-report new-activn-averaging-tran [activn incoming-activn]
-  report (incoming-activn * weight-on-senders-activn) + (activn * (1 - weight-on-senders-activn))
+  report (incoming-activn * sender-activn-weight) + (activn * (1 - sender-activn-weight))
 end
 
 to-report new-activn-popco-tran [activn incoming-activn]
@@ -567,9 +567,9 @@ NIL
 1
 
 PLOT
-615
+622
 130
-825
+832
 250
 average cultvar activations
 time
@@ -651,9 +651,9 @@ NIL
 1
 
 PLOT
-615
+622
 10
-825
+832
 130
 cultvar freqs & pop variance
 NIL
@@ -687,11 +687,11 @@ HORIZONTAL
 
 SLIDER
 0
-360
-195
-393
-prob-of-transmission-bias
-prob-of-transmission-bias
+355
+196
+389
+transmission-bias-prob
+transmission-bias-prob
 -1
 1
 0
@@ -702,9 +702,9 @@ HORIZONTAL
 
 TEXTBOX
 165
-345
+340
 202
-365
+360
 black
 10
 0.0
@@ -712,9 +712,9 @@ black
 
 TEXTBOX
 5
-345
+340
 35
-365
+360
 white
 10
 0.0
@@ -736,9 +736,9 @@ NIL
 HORIZONTAL
 
 PLOT
-615
+622
 250
-825
+832
 390
 degree distribution
 degree
@@ -754,25 +754,25 @@ PENS
 "default" 1.0 1 -16777216 true "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons" "let max-degree max [count link-neighbors] of persons\nplot-pen-reset  ;; erase what we plotted before\nset-plot-x-range 1 (max-degree + 1)  ;; + 1 to make room for the width of the last bar\nhistogram [count link-neighbors] of persons"
 
 SLIDER
-620
-390
-815
-423
+623
+391
+818
+424
 stop-threshold-exponent
 stop-threshold-exponent
 -20
 0
--2
+-3
 1
 1
 NIL
 HORIZONTAL
 
 TEXTBOX
-620
-424
-783
-447
+623
+425
+786
+448
 Iteration stops if max activn change is < 10^stop-threshold-exponent.
 8
 0.0
@@ -818,11 +818,11 @@ averaging-transmission
 
 SLIDER
 0
-415
+410
 195
-448
-weight-on-senders-activn
-weight-on-senders-activn
+443
+sender-activn-weight
+sender-activn-weight
 0
 1
 0.25
@@ -848,9 +848,9 @@ HORIZONTAL
 
 TEXTBOX
 5
-400
+395
 155
-418
+413
 \"averaging\" transmission:
 11
 0.0
@@ -867,17 +867,17 @@ Each person, or node, represented by a circle has a degree of confidence.  1 ind
 
 ## HOW TO USE IT - OVERVIEW
 
-Details are given below, but most of the GUI controls should be easy to understand with a little bit of experimentation.  If you're new to NetLogo, or just new to this NetLogo model, try clicking on "set up network".  Then click on "go".  You can stop the program by clicking on "go" again.  See how the program behaves differently depending on whether the "averaging-transmission" is turned on or off.  Try changing the number of people in the network by dragging the "nodes-per-subnet" slider.  The "average-node-degree" slider changes the kind of structure the network has, by adjusting how many links each person has.  The function of these last three GUI controls are described in more detail below, along with descriptions of the functions of other controls.
+Most of the GUI controls should be easy to understand with a little bit of experimentation; details are given below.  If you're new to NetLogo, or just new to this NetLogo model, try clicking on "set up network".  After it finishes, click on "go".  You can stop the program before it decides to finish by clicking on "go" again.  Notice how the program behaves differently depending on whether the "averaging-transmission" is turned on or off.  Try changing the number of people in the network by dragging the "nodes-per-subnet" slider.  The "average-node-degree" slider changes the kind of structure the network has, adjusting how many links each person has.
 
 ## POPCO TRANSMISSION
 
-This section describes the behavior when averaging-transmission is set to false.  See below for the behavior when it is set to true.  
+This section describes the behavior when averaging-transmission is set to false.  See below for the model's behavior when averaging-transmission is set to true.  
 
 Degrees of confidence are not transmitted.  Instead, the degree of confidence (activation) determines the probability that a belief will be communicated.  (After all, when people offer assertions to each other, they don't generally indicate their degree of confidence, even if there are ways to do that by choice of words and tone of voice.)
 
-On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its (undirected) network neighbors, with probability equal to the absolute value of the degree of confidence plus prob-of-transmission-bias.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.
+On each tick, for each link attached to a person, the person randomly decides to "utter" the proposition to its (undirected) network neighbors, with probability equal to the absolute value of the degree of confidence plus transmission-bias-prob.  The value that's conveyed to the receiver of the utterance is trust-mean times the sign of the original degree of confidence, or a normally distributed value with mean trust-mean and standard deviation trust-stdev, if trust-stdev is not zero.  The effect of this input to the receiver's degree of confidence depends on how far the latter is from -1 or 1.
 
-If the activation increment (the value normally distributed around trust-mean) is positive, it will move receiver's activation in that direction; if negative, it will push in negative direction. However, the degree of push will be scaled by how far the current activation is from the extremum in the direction of push.  If the distance is large, the incoming activation will have a large effect. If the distance is small, then incoming-activn's effect will be small, so that it's harder to get to the extremum. The underlying intuition is that if you already have a strong belief in a proposition, then when someone expresses agreement with you, it doesn't make much difference.  On the other hand, if you're undecided, then what people around tell you is more likely to make a big difference.  Also, if you have a strong belief that P, and someone disagrees with you, that can make a big difference in your opinion.  (However, for a usual value of trust-mean such as .05, the effect is still small.) The method used to do the updating is similar to methods often used to update nodes in connectionist/neural networks (e.g. Holyoak & Thagard 1989).  This is clearly not Bayesian updating, by the way.
+If the activation increment (the value normally distributed around trust-mean) is positive, it will move receiver's activation in that direction; if negative, it will push in negative direction. However, the degree of push will be scaled by how far the current activation is from the extremum in the direction of push.  If the distance is large, the incoming activation will have a large effect. If the distance is small, then incoming-activn's effect will be small, so that it's harder to get to the extremum. The underlying intuition is that if you already have a strong belief in a proposition, then when someone expresses agreement with you, it doesn't make much difference.  On the other hand, if you're undecided, then what people around tell you is more likely to make a big difference.  Also, if you have a strong belief that P, and someone disagrees with you, that can make a big difference in your opinion.  (However, for a common value of trust-mean such as .05, the effect is still small.) The method used to do the updating is similar to methods often used to update nodes in connectionist/neural networks (e.g. Holyoak & Thagard 1989).  This is clearly not Bayesian updating, by the way.
 
 This fact that there is a significant effect of opinions which differ from the receipient of an utterance is obviously unrealistic as a model of many real-world cases, since in practice people may simply ignore people who disagree with them, or might adjust their degree of belief only a tiny bit when faced with disagreement.  Bounded confidence models (e.g. Hegselmann & Krause 2002) better capture such patterns.  Note, however, that this NetLogo model shares with bounded confidence models, Morris's (2000) coordination game model, and various game-theoretic models in (Alexander 2007), the possibility of maintenance of disagreement in a network.  By contrast, models in which new activations are simply a weighted average of neighboring activations (DeGroot 1974; Lehrer & Wagner 1981; Hegselmann & Krause 2002) have difficulty maintaining disagreement unless portions of the network are effectively isolated from each other.
 
@@ -885,7 +885,7 @@ Maybe a way to think about the relationship between this model, the game theoret
 
 ## AVERAGING TRANSMISSION
 
-When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. A receiver node's new activation is then receiver's old activation * (1 - weight-on-senders-activn) + (transmitter's activation * weight-on-senders-activn).  Whether an activation is communicated is still a random decision, using the procedure described in the popco transmission section.  For averaging tramsmission you may find it useful to adjust stop-threshold-exponent from the default value if you want the updating to stop on its own.
+When averaging-transmission is set to true, the new activation that results from each communication event is a weighted average of the senders and the receiver's activations. A receiver node's new activation is then receiver's old activation * (1 - sender-activn-weight) + (transmitter's activation * sender-activn-weight).  Whether an activation is communicated is still a random decision, using the procedure described in the popco transmission section.  For averaging tramsmission you may find it useful to adjust stop-threshold-exponent from the default value if you want the updating to stop on its own.
 
 ## BOUNDED CONFIDENCE
 
@@ -912,7 +912,7 @@ Start with average node degree in the range of 12 to 15.  Does one color take ov
 
 Now try increasing the average node degree to 20, or 30.  Perform the same experiment. What happens?
 
-Go back to your original node degree and run the model until there is a stable pattern.  Now change prob-of-transmission-bias, making the black (1) or white (-1) cultural variant more likely to be transmitted.  What happens?  Is it possible to maintain cultural variation with a nonzero value for this parameter?
+Go back to your original node degree and run the model until there is a stable pattern.  Now change transmission-bias-prob, making the black (1) or white (-1) cultural variant more likely to be transmitted.  What happens?  Is it possible to maintain cultural variation with a nonzero value for this parameter?
 
 Try altering trust-mean or trust-stdev.  What happens?  (You might think of high values of trust-mean as representing rumor during a crisis.)
 
@@ -1238,7 +1238,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.4
+NetLogo 5.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
