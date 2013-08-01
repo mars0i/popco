@@ -38,6 +38,8 @@ globals
   subnets-matrix                       ; matrix of subnet id's showing how they're layed out in the world
   
   communities  ; list of lists of nodes representing communities we've found so far
+  selected-subnet ; subnet selected by user through GUI.  Maybe merge with preceding.
+  selected-subnet-color
 ]
 
 breed [sides side]
@@ -80,11 +82,13 @@ to setup
   set background-color 17 ; peach
   ;set background-color 58
   set netlogo-person-hue 0
+  set selected-subnet-color red
   set link-color 123
   set inter-link-subnets-color yellow
   set inter-node-shape "square"
   set nodes-showing-numbers? false
   set communities []
+  set selected-subnet no-turtles
   ;output-print "vars defined"
 
   ask patches [set pcolor background-color]
@@ -444,6 +448,141 @@ to reset-colors
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; USER SELECTION OF SUBNETS
+
+to select-indivs
+  let something-changed false
+
+  if mouse-down? [
+    let this-person min-one-of turtles [distancexy mouse-xcor mouse-ycor]
+    if [distancexy mouse-xcor mouse-ycor] of this-person < 2 [
+      if-else member? this-person selected-subnet [
+        ask this-person [set selected-subnet other selected-subnet]
+      ][
+        set selected-subnet (turtle-set this-person selected-subnet)
+      ]
+      set something-changed true
+    ]
+  ]
+
+  if something-changed [
+    set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
+    reset-subnet-colors
+    ;output-subnet-properties selected-subnet
+    set something-changed false
+  ]
+end
+
+to select-region
+  let something-changed false
+  
+  if mouse-down? [
+    handle-select
+    set something-changed true
+  ]
+ 
+  if something-changed [
+    set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
+    reset-subnet-colors
+    ;output-subnet-properties selected-subnet
+    set something-changed false
+  ]
+ 
+  ask sides [die]
+  display
+end
+
+to reset-subnet-colors
+  ask selected-subnet [set color selected-subnet-color]
+  ask persons with [not member? self selected-subnet]
+    [set color (activn-to-color activation)
+     set label ""]
+  display
+end
+
+to handle-select
+  ;; remember where the mouse pointer was located when
+  ;; the user pressed the mouse button
+  let old-x mouse-xcor
+  let old-y mouse-ycor
+  while [mouse-down?] [
+    select old-x old-y mouse-xcor mouse-ycor            ; this is the line that should the nodes into selected-subnet
+    ;; update the view, otherwise the user can't see
+    ;; what's going on
+    display
+  ]
+  ;; if no turtles are selected, kill off
+  ;; the selection rectangle and start over
+  ;if not any? selected-subnet [ deselect ]
+end
+
+to deselect
+  ask sides [ die ]
+  set selected-subnet no-turtles
+  reset-subnet-colors
+  ;output-subnet-properties selected-subnet
+end
+
+to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
+  ;deselect  ;; kill old selection rectangle
+  make-side x1 y1 x2 y1
+  make-side x1 y1 x1 y2
+  make-side x1 y2 x2 y2
+  make-side x2 y1 x2 y2
+  set selected-subnet (turtle-set (persons with [selected? xcor ycor]) selected-subnet)
+  ask selected-subnet [ set color red ]
+end
+
+to make-side [x1 y1 x2 y2]
+  ;; for each side, one thin line shape is created at the mid point of each segment
+  ;; of the bounding box and scaled to the proper length
+  create-sides 1 [
+    set color black
+    setxy (x1 + x2) / 2
+          (y1 + y2) / 2
+    facexy x1 y1
+    set size 2 * distancexy x1 y1
+  ]
+end
+
+;; helper procedure that determines whether a point is
+;; inside the selection rectangle
+to-report selected? [x y]
+  if not any? sides [ report false ]
+  let y-max max [ycor] of sides   ;; largest ycor is where the top is
+  let y-min min [ycor] of sides   ;; smallest ycor is where the bottom is
+  let x-max max [xcor] of sides   ;; largest xcor is where the right side is
+  let x-min min [xcor] of sides   ;; smallest xcor is where the left side is
+  ;; report whether the input coordinates are within the rectangle
+  report x >= x-min and x <= x-max and
+         y >= y-min and y <= y-max
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; COMMUNITY MARKING AND COHESION CALCULATION
+
+;to output-subnet-properties [community]
+;  clear-output
+;  output-type "cohesion: "
+;  output-print community-cohesion community
+;end
+
+to-report node-cohesion [node community]
+  let num-neighbs 0
+  let num-community-neighbs 0
+  ask node
+    [set num-neighbs count link-neighbors
+     set num-community-neighbs num-neighbors-in-community community]
+  report num-community-neighbs / num-neighbs
+end
+
+to-report num-neighbors-in-community [community]
+  report count link-neighbors with [member? self community]
+end
+
+to-report community-cohesion [community]
+  report min [node-cohesion self community] of community
+end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY PROCEDURES
@@ -566,26 +705,6 @@ NIL
 NIL
 1
 
-PLOT
-622
-130
-832
-250
-average cultvar activations
-time
-activn
-0.0
-52.0
--1.0
-1.0
-true
-true
-"" ""
-PENS
-"+" 1.0 0 -16777216 true "" "plot (mean [ifelse-value (activation > 0) [activation] [0]] of persons)"
-"-" 1.0 0 -5987164 true "" "plot (mean [ifelse-value (activation < 0) [activation] [0]] of persons)"
-"pop" 1.0 0 -8053223 true "" "plot (mean [activation] of persons)"
-
 SLIDER
 0
 79
@@ -651,16 +770,16 @@ NIL
 1
 
 PLOT
-622
-10
-832
-130
+624
+128
+834
+248
 cultvar freqs & pop variance
 NIL
 NIL
 0.0
 10.0
-0.0
+-1.0
 1.0
 true
 true
@@ -669,6 +788,7 @@ PENS
 "+" 1.0 0 -16777216 true "" "plot ((count persons with [activation > 0])/(count persons))"
 "-" 1.0 0 -5987164 true "" "plot ((count persons with [activation < 0])/(count persons))"
 "var" 1.0 0 -8053223 true "" "plot (var [activation] of persons)"
+"avg" 1.0 0 -14439633 true "" "plot (mean [activation] of persons)"
 
 SLIDER
 0
@@ -689,7 +809,7 @@ SLIDER
 0
 355
 196
-389
+388
 transmission-bias-prob
 transmission-bias-prob
 -1
@@ -855,6 +975,68 @@ TEXTBOX
 11
 0.0
 1
+
+BUTTON
+687
+10
+798
+44
+NIL
+select-region
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+687
+43
+798
+77
+NIL
+select-indivs\n
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+687
+77
+798
+111
+NIL
+deselect\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+623
+10
+684
+52
+cohesion
+community-cohesion selected-subnet
+4
+1
+10
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1238,7 +1420,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.2
+NetLogo 5.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

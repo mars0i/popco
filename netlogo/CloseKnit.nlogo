@@ -281,7 +281,7 @@ to select-indivs
   if something-changed [
     set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
     reset-colors
-    output-subnet-properties selected-subnet
+    ;output-subnet-properties selected-subnet
     set something-changed false
   ]
 end
@@ -297,7 +297,7 @@ to select-region
   if something-changed [
     set communities (list [self] of selected-subnet) ; communities is supposed to be a list of lists of persons
     reset-colors
-    output-subnet-properties selected-subnet
+    ;output-subnet-properties selected-subnet
     set something-changed false
   ]
  
@@ -333,7 +333,7 @@ to deselect
   ask sides [ die ]
   set selected-subnet no-turtles
   reset-colors
-  output-subnet-properties selected-subnet
+  ;output-subnet-properties selected-subnet
 end
 
 to select [x1 y1 x2 y2]   ;; x1 y1 is initial corner and x2 y2 is current corner
@@ -374,11 +374,11 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; COMMUNITY MARKING AND COHESION CALCULATION
 
-to output-subnet-properties [community]
-  clear-output
-  output-type "cohesion: "
-  output-print community-cohesion community
-end
+;to output-subnet-properties [community]
+;  clear-output
+;  output-type "cohesion: "
+;  output-print community-cohesion community
+;end
 
 to-report node-cohesion [node community]
   let num-neighbs 0
@@ -841,40 +841,16 @@ NIL
 NIL
 1
 
-OUTPUT
-804
-29
-1142
-439
-20
-
-BUTTON
-10
-87
-185
-121
-show subnet properties
-output-subnet-properties selected-subnet
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
-805
-445
-1082
-490
+110
+85
+190
+126
 cohesion
 community-cohesion selected-subnet
-17
+4
 1
-11
+10
 
 @#$#@#$#@
 ## WHAT IS IT?
