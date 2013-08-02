@@ -736,9 +736,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-55
+57
 150
-119
+121
 184
 go once
 go
@@ -774,7 +774,7 @@ PLOT
 130
 835
 250
-cultvar freqs & pop variance
+mean, var, freqs
 NIL
 NIL
 0.0
@@ -977,10 +977,10 @@ TEXTBOX
 1
 
 BUTTON
-687
-10
-798
-44
+689
+9
+800
+43
 NIL
 select-region
 T
@@ -994,10 +994,10 @@ NIL
 1
 
 BUTTON
-687
-43
-798
-77
+689
+45
+800
+79
 NIL
 select-indivs\n
 T
@@ -1011,10 +1011,10 @@ NIL
 1
 
 BUTTON
-687
-77
-798
-111
+689
+81
+800
+115
 NIL
 deselect\n
 NIL
