@@ -770,10 +770,10 @@ NIL
 1
 
 PLOT
-624
-128
-834
-248
+625
+130
+835
+250
 cultvar freqs & pop variance
 NIL
 NIL
@@ -856,9 +856,9 @@ NIL
 HORIZONTAL
 
 PLOT
-622
+625
 250
-832
+835
 390
 degree distribution
 degree
@@ -1031,7 +1031,7 @@ MONITOR
 623
 10
 684
-52
+51
 cohesion
 community-cohesion selected-subnet
 4
