@@ -559,7 +559,7 @@ to-report selected? [x y]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; COMMUNITY MARKING AND COHESION CALCULATION
+;; COMMUNITY MARKING AND COHESION CALCULATION
 
 ;to output-subnet-properties [community]
 ;  clear-output
@@ -582,6 +582,50 @@ end
 
 to-report community-cohesion [community]
   report min [node-cohesion self community] of community
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CLOSE-KNITTEDNESS
+
+; POWER-SET-1
+; The "-1" means "minus one subset" because we exclude the empty set, which we don't need here.
+to-report power-set-1 [lis]
+  report butlast power-set lis
+end
+
+; POWER-SET
+; Based on Common Lisp version at http://rosettacode.org/wiki/Power_set#Common_Lisp .
+; [Don't bother rewriting as a loop: If the recursion gets too deep for NetLogo, then your set is probably too big for calc'ing close-knittedness anyway.]
+to-report power-set [lis]
+  if-else empty? lis
+    [ report [[]] ] ; we would report [[]] if we were including the empty set
+    [ let prev power-set butfirst lis
+      report (sentence (map [fput (first lis) ?] prev) 
+                       prev) ]  
+end
+
+to-report close-knittedness [knit-set]
+  print "ALGORITHM IS WRONG: Currently just slow way to calculate cohesion!"
+  report min subset-knittednesses knit-set
+end
+
+to-report subset-knittednesses [knit-set]
+  let powset power-set-1 knit-set
+  report map [(cross-links-count ? knit-set) / (count-links (turtle-set ?)) ] powset
+end
+
+to-report count-links [aset]
+  let n 0
+  ask aset [set n n + (count my-links)]
+  report n
+end
+
+to-report cross-links-count [set1 set2]
+  let aset1 turtle-set set1
+  let aset2 turtle-set set2
+  let n 0
+  ask aset1 [ set n n + (count link-neighbors with [member? self aset2]) ]
+  report n
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -729,7 +773,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-15
+16
 1
 1
 NIL
