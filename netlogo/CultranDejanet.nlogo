@@ -598,26 +598,20 @@ end
 ; [Don't bother rewriting as a loop: If the recursion gets too deep for NetLogo, then your set is probably too big for calc'ing close-knittedness anyway.]
 to-report power-set [lis]
   if-else empty? lis
-    [ report [[]] ] ; we would report [[]] if we were including the empty set
+    [ report [[]] ]
     [ let prev power-set butfirst lis
       report (sentence (map [fput (first lis) ?] prev) 
                        prev) ]  
 end
 
 to-report close-knittedness [knit-set]
-  print "ALGORITHM IS WRONG: Currently just slow way to calculate cohesion!"
+  print "ALGORITHM IS WRONG: Currently just slow way to calculate cohesion!  ..."
   report min subset-knittednesses knit-set
 end
 
 to-report subset-knittednesses [knit-set]
   let powset power-set-1 knit-set
-  report map [(cross-links-count ? knit-set) / (count-links (turtle-set ?)) ] powset
-end
-
-to-report count-links [aset]
-  let n 0
-  ask aset [set n n + (count my-links)]
-  report n
+  report map [(cross-links-count ? knit-set) / sum (map [[count my-links] of ?] ?) ] powset
 end
 
 to-report cross-links-count [set1 set2]
