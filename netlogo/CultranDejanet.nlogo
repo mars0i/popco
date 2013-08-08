@@ -610,8 +610,8 @@ to-report close-knittedness [knit-set]
 end
 
 to-report subset-knittednesses [knit-set]
-  let powset power-set-1 knit-set
-  report map [(cross-links-count ? knit-set) / sum (map [[count my-links] of ?] ?) ] powset
+  let powset-1 power-set-1 knit-set
+  report map [(cross-links-count ? knit-set) / sum (map [[count my-links] of ?] ?) ] powset-1 ; inner/outer "?" are different
 end
 
 to-report cross-links-count [set1 set2]
