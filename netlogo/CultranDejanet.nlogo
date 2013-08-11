@@ -604,17 +604,33 @@ to-report power-set [lis]
                        prev) ]  
 end
 
+;; NOT WORKING RIGHT - close no cigar. I think the numbers are wrong.  try calc'ing by hand.
 to-report close-knittedness [knit-set]
-  print "ALGORITHM IS WRONG: Currently just slow way to calculate cohesion!  ..."
   report min subset-knittednesses knit-set
 end
 
 to-report subset-knittednesses [knit-set]
   let powset-1 power-set-1 knit-set
-  report map [(cross-links-count ? knit-set) / sum (map [[count my-links] of ?] ?) ] powset-1 ; inner/outer "?" are different
+  report map [(cross-links-count ? knit-set) / (count-all-links ?) ] powset-1 ; inner/outer "?" are different
+end
+
+to-report count-all-links [a-set]
+  report sum (map [[count my-links] of ?] a-set)
 end
 
 to-report cross-links-count [set1 set2]
+  let aset1 turtle-set set1
+  let aset2 turtle-set set2
+  let crosslinks []
+  ; collect all links between set1 and set2, including duplicates if set1 and set2 intersect.
+  ask aset1 [ask aset2 [set crosslinks fput (link-with myself) crosslinks]]
+  report length (remove-duplicates (remove nobody crosslinks))
+end
+
+; THIS IS WRONG. I think it counts links twice when set1 and set2 intersect as they do in my use.
+; e.g. if set1 has 2 nodes, linked, and set2 includes them both.  Then the link is counted both
+; as from node1 in set1 to node2 in set2, and as node2 in set1 to node2 in set2.
+to-report bad-cross-links-count [set1 set2]
   let aset1 turtle-set set1
   let aset2 turtle-set set2
   let n 0
@@ -752,7 +768,7 @@ nodes-per-subnet
 nodes-per-subnet
 4
 1000
-225
+4
 1
 1
 NIL
@@ -767,7 +783,7 @@ average-node-degree
 average-node-degree
 1
 min (list 500 (nodes-per-subnet - 1))
-16
+3
 1
 1
 NIL
