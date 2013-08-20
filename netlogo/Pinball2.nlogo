@@ -27,7 +27,7 @@ particles-own [
 
 to setup
   clear-all
-  set-default-shape particles "circle"
+  set-default-shape particles "circle 2"
   set box-edge max-pxcor - 1
   ask patches with [(abs pxcor = box-edge or pycor = box-edge) and
                     abs pxcor <= box-edge and abs pycor <= box-edge]
@@ -64,7 +64,7 @@ to make-particles
   foreach sort-by [[size] of ?1 > [size] of ?2] particles [
     ask ? [
       position-randomly
-      while [overlapping?] [ position-randomly ]
+      ;while [overlapping?] [ position-randomly ]
     ]
   ]
 end
@@ -469,7 +469,7 @@ to-report max-particle-mass
 end
 
 to-report kinetic-energy
-   report (0.5 * mass * speed * speed)
+   report (5.5 * mass * speed * speed)
 end   
 
 to draw-vert-line [ xval ]
@@ -536,7 +536,7 @@ initial-number-particles
 initial-number-particles
 1
 250
-18
+250
 1
 1
 NIL
@@ -568,7 +568,7 @@ largest-particle-size
 largest-particle-size
 1
 10
-6
+2
 0.5
 1
 NIL
