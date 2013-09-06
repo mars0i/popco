@@ -1,0 +1,30 @@
+successbias.nts
+
+for success bias or nat sel what's needed is comparison to an env.
+
+at one time I thought I'd have these special people called envs.
+
+and I used that idea to give people personal envs, which is how
+the influence of the world and of utterances, partially, is implemented now.
+
+and I thought that I'd ultimately extend this so that individuals could
+share an env.  or envs.  e.g. as they moved around a landscape.
+
+but now I wonder whether it would be simpler simply to take some
+pundits--i.e. people who speak and don't listen, and exogneously, so
+to speak, impose a rule such that behavior depends on relation to that
+"pundit".
+
+i.e. think of the pundit as the world, and what makes the pundit the
+world, and not just ... a blowhard, is that it matters whether others
+agree with it.  So for success bias, a person could follow a rule that
+said that I will pay attention to what you say--anything you say, to
+the extent that what you say in domain D1 matches what the pundit says
+in D1.
+
+Well, that's a kind of blending transmission.  A real success bias
+might have you weigh your interlocutors against each other, and only
+listen to the one that has the highest match to the pundit on D1, eg.
+
+Or maybe you could get a similar effect by using a sigmoid weighting
+or something, so that it's not a linear relationship to pundit-match.

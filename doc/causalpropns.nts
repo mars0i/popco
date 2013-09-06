@@ -13,6 +13,9 @@ preventative-if
 causal-iff
 preventative-iff
 
+9/2013: I DON'T THINK THIS IS ALL IMPLEMENTED YET.  
+[search '\(causal\|preventative*\)*-p\>' 'is-causal', 'is-preventative' to find out what is.]
+
 If the causal/preventative propn has positive activation, the
 activation controls the link weight of antecedent-consequent link.
 Otherwise, that link weight is zero, since the falsehood of a causal
