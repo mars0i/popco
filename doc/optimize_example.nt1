@@ -5,7 +5,13 @@ included at the end of this file.  This used POPCO as it was on
 9/23/2013.  It hadn't changed in any significant way in a while.  I also
 include a recent git history list.
 
-Summary:
+OS X 10.6.8, MacBook Air 1.6 GHz Intel Core 2 Duo, 4GB 1067 MHz DDR3
+SBCL 1.1.5
+ABCL 1.2.0, Java 1.6.0_51 Apple Inc., Java HotSpot(TM) 64-Bit Server VM
+
+
+-----------------------------------
+Summary of times:
 
 SBCL:
 
@@ -20,8 +26,13 @@ or:
 95.5/88 = 1.085
 
 
+ABCL:
+Optimizations don't seem to do anything with my current code.
+There are time differences, but they don't go in a consistent
+direction.
 
-
+-----------------------------------
+SBCL times:
 
 ............................
 
@@ -66,7 +77,49 @@ Evaluation took:
   141,976,698,744 processor cycles
   16,750,052,032 bytes consed
 
-............................
+-----------------------------------
+ABCL times:
+
+echo ; echo NO OPTIMIZATION: ; echo ; abcl --load start --load crime/yotest.lisp ; echo ; echo SPACE SPEED: ; echo ; abcl --eval '(declaim (optimize (space 0) (speed 3)))' --load start --load crime/yotest.lisp ; echo ; echo SPACE SPEED SAFETY: ; echo ; abcl --eval '(declaim (optimize (space 0) (speed 3) (safety 0)))' --load start --load crime/yotest.lisp
+
+
+1st time:
+
+NO OPTIMIZATION:
+...
+816.975 seconds real time
+303965354 cons cells
+
+SPACE SPEED:
+...
+806.325 seconds real time
+303969784 cons cells
+
+SPACE SPEED SAFETY:
+...
+817.211 seconds real time
+303951541 cons cells
+
+
+2nd time:
+
+NO OPTIMIZATION:
+...
+798.323 seconds real time
+303967480 cons cells
+
+SPACE SPEED:
+...
+812.834 seconds real time
+303958631 cons cells
+
+SPACE SPEED SAFETY:
+...
+803.662 seconds real time
+303965392 cons cells
+
+
+-----------------------------------
 
 RECENT GIT HIST:
 
@@ -99,7 +152,7 @@ RECENT GIT HIST:
 * 32466c2 2013-07-22 | added new averaging transmission feature to both NetworkExperiment (new v.21) and CultranDejanet. Also added a lot to the Info tab in the latter. [mars0i]
 * 69b634a 2013-07-21 | popco-fmt-guessML-*: now GUESS knows the source causal propn for causal links (Requires new precise causal propn naming convention implemented in today's version of crime3propn.lisp) [mars0i]
 
-............................
+-----------------------------------
 
 THE SCRIPT yotest.lisp (I called '(popco)' by hand after loading.)
 
