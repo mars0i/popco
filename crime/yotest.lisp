@@ -1,4 +1,4 @@
-;;;; dispersal1.lisp
+;;;; originally was: dispersal1.lisp
 ;;;; (similar to crime3socnet1.lisp)
 ;;;; four distinct subpops who don't communicate with each other, 
 ;;;; but have different biases, and listen to the same pundit.
@@ -11,7 +11,7 @@
 
 (setf *do-update-propn-nets-from-propn-nets* t)
 
-(defvar *group-size* 5)
+(defvar *group-size* 10)
 
 ; don't move graph around in telguess:
 (setf *guess-layout-commands* "")
@@ -39,6 +39,6 @@
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 10)
-;(popco)
-;(quit)
+(setf *max-pop-ticks* 100)
+(popco)
+(quit)

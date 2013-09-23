@@ -1,0 +1,149 @@
+Here are examples of the effect of declaiming optimize on POPCO.  I only
+ran the tests twice, and I'm only reporting it once, because in the past
+there haven't been many differences.  The script used, yotest.lisp, is
+included at the end of this file.  This used POPCO as it was on
+9/23/2013.  It hadn't changed in any significant way in a while.  I also
+include a recent git history list.
+
+Summary:
+
+SBCL:
+
+No optimization: 95.5 seconds
+Space, speed optimizations: 90 seconds (90.5 the second time)
+Space, speed, run-time checking optimizations: 88 seconds (89.5 second time)
+
+90/95.5 = .94, i.e. 6% better
+88/95.5 = .92, i.e. 8% better
+or:
+95.5/90 = 1.06
+95.5/88 = 1.085
+
+
+
+
+
+............................
+
+DEFAULT SETTINGS:
+
+sbcl --load start --load crime/yotest.lisp 
+...
+Evaluation took:
+  95.868 seconds of real time
+  95.492745 seconds of total run time (94.397717 user, 1.095028 system)
+  [ Run times consist of 4.234 seconds GC time, and 91.259 seconds non-GC time. ]
+  99.61% CPU
+  153,082,098,376 processor cycles
+  3 page faults
+  17,439,386,832 bytes consed
+
+............................
+
+OPTIMIZE SPACE, SPEED:
+
+sbcl --eval '(declaim (optimize (space 0) (speed 3)))' --load start --load crime/yotest.lisp 
+...
+Evaluation took:
+  91.015 seconds of real time
+  90.037565 seconds of total run time (88.085592 user, 1.951973 system)
+  [ Run times consist of 4.943 seconds GC time, and 85.095 seconds non-GC time. ]
+  98.93% CPU
+  145,336,266,944 processor cycles
+  16,750,169,200 bytes consed
+
+............................
+
+OPTIMIZE SPACE, SPEED, RUN-TIME CHECKING:
+
+sbcl --eval '(declaim (optimize (space 0) (speed 3) (safety 0)))' --load start --load crime/yotest.lisp
+...
+Evaluation took:
+  88.912 seconds of real time
+  87.845589 seconds of total run time (85.801427 user, 2.044162 system)
+  [ Run times consist of 5.058 seconds GC time, and 82.788 seconds non-GC time. ]
+  98.80% CPU
+  141,976,698,744 processor cycles
+  16,750,052,032 bytes consed
+
+............................
+
+RECENT GIT HIST:
+
+* eb0db4f 2013-09-23 | Added a little documentation about how to run popco on cheaha and with optimizations. (HEAD, origin/master, origin/HEAD, master) [mars0i]
+* 49b6426 2013-09-06 | notes [mabrams]
+* 2db05aa 2013-08-19 | doesn't go into infinite loop during setup now [mars0i]
+* 7678c33 2013-08-17 | initial experiments toward "pinball" population analogy [mabrams]
+* 792db69 2013-08-11 | working on fixing the close-knittedness calculation. changed calc of between-links i.e. e(S',S) in Young. [mars0i]
+* 24d9755 2013-08-08 | trivial [mars0i]
+* 8979857 2013-08-08 | revised line in subset-knittednesses to equivalent more functional/netlogoey code [mars0i]
+* d0e4e03 2013-08-02 | added attempt to calculate close-knittedness.  Doesn't work yet--seems to be slow cohesion calculation instead. [mars0i]
+* 8c3b082 2013-08-02 | Added cohesion calc to Info tab and formatted Info text more nicely. [mabrams]
+* 7c16080 2013-08-02 | trivial [mars0i]
+* 536afcb 2013-08-02 | trivial [mars0i]
+* 4570301 2013-08-01 | CultranDejanet.nlogo: added user-selectable cohesion calculation from CloseKnit.nlogo. CloseKnit.nlogo: small changes to interface. [mabrams]
+* 910cc68 2013-07-31 | small changes [mabrams]
+* 877d503 2013-07-30 | added Nicolas P's suggestion to write from inside the mouse button procedures by setting a "something changed" flag to decide whether to update the Output window. [however, I now question the plan to display info on all subsets of the selected subnet, i.e. for close-knittedness, since e.g. for a subnet of only 10 nodes, that will be 1K values, 64K for 16 nodes, etc.  Crazy.  I don't want to even calculate this automatically, since it may take a long time. e.g. for as few as 30 nodes, I have 1G subsets to calculate, and for each one I run through each of the nodes in it and look at their links, if I do it naively. [mabrams]
+* 532ddb8 2013-07-30 | not sure I saved all of the latest changes last time [mabrams]
+* 8982180 2013-07-30 | Now displays cohesion of the selected subnet. [mabrams]
+* b69fc9d 2013-07-30 | CloseKnit.nlogo: now able to select arbitrary subnets using regions and individual clicking [mabrams]
+* e79606d 2013-07-29 | further work on selecting subnets with mouse [mabrams]
+* 0a40018 2013-07-28 | small changes [mabrams]
+* 22cf7e5 2013-07-28 | Fixed bug in confidence-bound usage in averaging tran--now returns existing activation rather than zero when difference is above bound. [mabrams]
+* 69c9d47 2013-07-27 | CloseKnit.nlogo: initial work toward display of closeknittedness properties of subnets NetworkExperiment23.nlogo: cleanup [mabrams]
+* 22ecee0 2013-07-25 | Moved the cleaned up version of receive-cultvar to CultranDejanet.nlogo, and added to the Info tab. [mars0i]
+* 6f9ddb4 2013-07-25 | NetworkExperiment23.nlogo so far functions same as v22, but receive-cultvar is cleaned up. [mars0i]
+* c6d7a44 2013-07-24 | New NetworkExperiment22.nlogo adds bounded confidence to averaging updating. [mars0i]
+* 7535152 2013-07-24 | small addition to Info tabl of CultranDejanet [mars0i]
+* bfb80e1 2013-07-23 | refinements to Info tab of CultranDejanet.nlogo [mars0i]
+* 32466c2 2013-07-22 | added new averaging transmission feature to both NetworkExperiment (new v.21) and CultranDejanet. Also added a lot to the Info tab in the latter. [mars0i]
+* 69b634a 2013-07-21 | popco-fmt-guessML-*: now GUESS knows the source causal propn for causal links (Requires new precise causal propn naming convention implemented in today's version of crime3propn.lisp) [mars0i]
+
+............................
+
+THE SCRIPT yotest.lisp (I called '(popco)' by hand after loading.)
+
+;;;; originally was: dispersal1.lisp
+;;;; (similar to crime3socnet1.lisp)
+;;;; four distinct subpops who don't communicate with each other, 
+;;;; but have different biases, and listen to the same pundit.
+
+(load "nosettle")      ; don't allow networks to settle, ever, since subtle differences are amplified by communication
+(load "crime/crime3")
+
+(setf *do-report-to-netlogo* nil)
+(setf *do-report-propns-to-csv* nil)
+
+(setf *do-update-propn-nets-from-propn-nets* t)
+
+(defvar *group-size* 10)
+
+; don't move graph around in telguess:
+(setf *guess-layout-commands* "")
+(setf *extra-meta-commands* "")
+(setf *do-converse* t)
+
+(make-no-bias-crime-talker 'aa crime-propns 'pundits '(VIBIs BEBIs BOBIs NOBIs))  ; pundit
+
+(make-virus-bias-crime-talker 'temp-vi '() 'vibis '(vibis))
+(n-persons-with-name 'temp-vi 'vi *group-size*)
+(kill 'temp-vi)
+
+(make-beast-bias-crime-talker 'temp-be '() 'bebis '(bebis))
+(n-persons-with-name 'temp-be 'be *group-size*)
+(kill 'temp-be)
+
+(make-both-bias-crime-talker 'temp-bo '() 'bobis '(bobis))
+(n-persons-with-name 'temp-bo 'bo *group-size*)
+(kill 'temp-bo)
+
+(make-no-bias-crime-talker 'temp-no '() 'nobis '(nobis))
+(n-persons-with-name 'temp-no 'no *group-size*)
+(kill 'temp-no)
+
+(init-pop)
+(print (get 'folks 'members))
+
+(setf *max-pop-ticks* 100)
+;(popco)
+;(quit)
