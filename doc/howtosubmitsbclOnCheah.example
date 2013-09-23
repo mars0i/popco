@@ -1,0 +1,1 @@
+qsub -N disp1 -t 1-50 ~/jobs/submitanything.job sbcl --eval '(declaim (optimize (space 0) (speed 3)))' --eval '(defvar *data-dir* "../data/dispersal1")' --load start --eval '(defun report-progress-to-console ())' --script crime/dispersal1.fasl

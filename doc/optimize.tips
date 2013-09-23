@@ -1,0 +1,17 @@
+; I don't care at all about saving space, but I care as much as
+; possible about improving speed:
+(declaim (optimize (space 0) (speed 3)))
+
+; I don't care at all about saving space, I care as much as
+; possible about improving speed, and I don't care at all about
+; run-time error checking:
+(declaim (optimize (space 0) (speed 3) (safety 0)))
+
+"A value 0 means that the corresponding quality is totally
+unimportant, and 3 that the quality is extremely important; 1 and 2
+are intermediate values, with 1 the neutral value."
+
+; Another thing that might possibly be useful is:
+(declaim (optimize (debug 3)))
+
+See 'optimize' in the Common Lisp HyperSpec for more info.
