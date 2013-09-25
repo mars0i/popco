@@ -244,10 +244,10 @@
 
 (defvar *use-new-random-state* t) ; set to nil to use whatever seed the Lisp implementation provides by default
 
-(defvar *perceived-excit* .5) ; default link weight to salient for propositions perceived as true in env
+(defvar *perceived-excit* .5L0) ; default link weight to salient for propositions perceived as true in env
 (defvar *special-units* '(special salient pragmatic)) ; units which require special handling by personalization code
 
-(defconstant +acme-max-weight+ .5) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
+(defconstant +acme-max-weight+ .5L0) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
 
 (defvar *the-person* 'the-person) ; value normally swapped among members of population. Setting to 'the-person also makes it work with traditional COHERE.
 (defvar *the-population* 'folks)
@@ -272,7 +272,7 @@
 (defvar *utterance-threshold* .2 "If in use, propns with activns below this number will not be uttered.")
 (defvar *utterance-probability-multiplier* 1 "Parameter for utterance-probability-cutoff.")
 (defvar *utterance-probability-increment* 0 "Parameter for utterance-probability-cutoff.")
-(defvar *trust* .05 "Degree to which utterances are like observations for listeners.")
+(defvar *trust* .05L0 "Degree to which utterances are like observations for listeners.")
 (defvar *sleep-delay* nil) ; if non-nil, gives number of seconds to pause between pop-ticks
 (defvar *max-pop-ticks* 50) ; max number of pop-tick iterations; 0 for infinite
 (defvar *pop-tick* 0)
@@ -313,7 +313,7 @@
 ; Generate an ID string for this simulation run which is unique (with high probability):
 (defvar *run-id* (format nil "RUN~9,'0D" (random 1000000000)))
 
-(proclaim '(type (float)
+(proclaim '(type (LONG-FLOAT)
             min-activation max-activation output-threshold
             excit-weight inhib-weight decay-amount
             current-excit current-inhib))

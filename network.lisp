@@ -29,7 +29,7 @@
 ; Changed from function to macro 4/20/2012 -MA
 ; Note doesn't know the difference between symlinks and one-way links.
 (defmacro weight-of-link-between (unit1 unit2)
-  `(or (cdr (assoc ,unit2 (links-from ,unit1))) 0)) ; i.e. if unit2 is listed in unit1's list of links, return the link weight, otherwise 0
+  `(or (cdr (assoc ,unit2 (links-from ,unit1))) 0L0)) ; i.e. if unit2 is listed in unit1's list of links, return the link weight, otherwise 0
 
 ; def is in utilities-personal.lisp
 ;(defmacro plist (atm) `(symbol-plist ,atm))
@@ -92,9 +92,11 @@
 ; NOTE THAT this in effect creates the node if it didn't already exist.
 ; *THE-PERSON* MUST BE SET CORRECTLY or passed as arg.
 (defun note-unit (unit &optional my-init-activ (person *the-person*))
-  (setf (activation unit) (or my-init-activ *init-activ*)) ; sets activn even if nil is passed
-  (setf (person-of unit) person)
-  (pushnew unit (get person 'all-units)))
+  (let ((new-activn (or my-init-activ *init-activ*)))
+    (DECLARE (LONG-FLOAT NEW-ACTIVN))
+    (setf (activation unit) new-activn) ; sets activn even if nil is passed
+    (setf (person-of unit) person)
+    (pushnew unit (get person 'all-units))))
 
 ; Older version:
 ;(defun note-unit (unit)
@@ -105,6 +107,7 @@
 ; of units.
 ; *THE-PERSON* MUST BE SET CORRECTLY: See comment on make-link for explanation.
 (defun make-symlinks (list-of-units weight)
+  (DECLARE (LONG-FLOAT WEIGHT))
   (do ((units list-of-units (cdr units)))
       ((null units) nil)
     (dolist (unit (cdr units))
@@ -120,6 +123,7 @@
 ; However, DOES NOT CONVERT GENERIC/PERSONAL ETC.: Uses whatever is passed in as the unit name.
 ; 4/20/2012 split the old OR into two cond tests.
 (defun make-symlink (unit1 unit2 weight)
+  (DECLARE (LONG-FLOAT WEIGHT))
   (if (not (eq unit1 unit2))                  ; if distinct nodes
     (let ((old-weight (weight-of-link-between unit1 unit2)))
       (cond ((= old-weight 0)             ; and either never-linked [MAYBE REPLACE WITH UNLINKED?]
@@ -134,6 +138,7 @@
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person.
 ; And to record symlinks as new in person.
 (defun raw-make-symlink (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
+  (DECLARE (LONG-FLOAT WEIGHT))
   (make-link unit1 unit2 weight max-weight min-weight)
   (make-link unit2 unit1 weight max-weight min-weight))
 
@@ -148,7 +153,8 @@
 ; [Adding weights is needed e.g. for ECHO; see Conceptual Revolutions p. 99. -MA]
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person.
 ; However, DOES NOT CONVERT GENERIC/PERSONAL ETC.: Uses whatever is passed in as the unit name.
-(defun make-link (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
+(defun make-link (unit1 unit2 weight &optional (max-weight 1L0) (min-weight -1L0))
+  (DECLARE (LONG-FLOAT WEIGHT))
   (let ((link (assoc unit2 (links-from unit1)))) ; check if there's already a link from unit2 to unit1; if non-nil,
     (cond (link                                  ;   this is the cons in links-from with unit2 as car and old weight as cdr
            (rplacd link (add-weight weight (cdr link) max-weight min-weight)))  ; replace cdr of old entry in unit1's links-from with added weight 
@@ -173,67 +179,23 @@
                    (settle-up-to-n-iters (get person units-property) *max-times*))))))
 
 (defun settle-n-iters (units iters)
+  (DECLARE (FIXNUM ITERS))
   ;(format t "settle-n-iters: iter = ") ; DEBUG
   (dotimes (i iters)
+    (DECLARE (FIXNUM I))
     ;(format t "~S " i) ; DEBUG
     (mapc #'update-unit-activn-gross units)
     (mapc #'fix-activn units)))
 
 ; do-less tail-recursive version seems clearer than do loop version below
 (defun settle-up-to-n-iters (units remaining-iters)
+  (DECLARE (FIXNUM REMAINING-ITERS))
   ;(format t "settle-up-to-n-iters: remaining-iters = ~S~%" remaining-iters) ; DEBUG
   (mapc #'update-unit-activn-gross units)
   (let ((settled (every #'identity (mapcar #'fix-activn units))))  ; EVERY #'IDENTITY means "and". [Can't apply AND; it's a macro.]
     (if (or settled (= remaining-iters 1))
       settled
       (settle-up-to-n-iters units (1- remaining-iters)))))
-
-; CL's do makes the loop version harder to read
-;(defun settle-up-to-n-iters (units iters)
-;  (let ((settled))
-;    (do ((i 0 (1+ i)))              ; iteration var
-;        ((or settled (>= i iters))) ; termination test, ignoring return value.
-;      ; body of loop:
-;      (mapc #'update-unit-activn-gross units)
-;      (setf settled (every #'identity                     ; like "apply #'and", but and is a macro, so you can't apply it
-;                           (mapcar #'fix-activn units)))) ; network is settled if every unit reports [almost] no change
-;    settled))
-
-; let-less recursive version is harder to understand:
-;(defun settle-up-to-n-iters (units iters)
-;  (settle-up-to-n-iters units iters nil))
-;(defun settle-up-to-n-iters-aux (units iters settled)
-;  (cond ((or settled (= iters 0)) settled)  ; use = not <= so it breaks by infinite looping if we use negative iter
-;        (t
-;          (mapc #'update-unit-activn-gross units)
-;          (settle-up-to-n-iters-aux units 
-;                                    (1- iters)
-;                                    (every #'identity (mapcar #'fix-activn units))))))
-
-
-;; OBSOLETED BY FUNCTIONS ABOVE
-;; SETTLE-NET
-;; 11/2012 replacement for run-hyp-net
-;; NOTE only able to do Grossberg settling at present
-;; NOTE the test for prior settling should be done at higher level--this function should
-;; not even be called on a network if it has settled.
-;; Has no HOTCO code, but that can be added later on the model of run-hyp-net if desired.
-;; RETURNS t or nil depending on whether the net containing units has settled
-;(defun settle-net (units)
-;  (do ((settled nil) ; will be updated inside loop
-;       (timestep 1 (1+ timestep)))
-;      ; loop termination test and return:
-;      ((or (> timestep *max-times*)
-;           (and 
-;             settled  ; we don't allow settled status to short-circuit number of ticks when still in initial pop-ticks -- need to get things rolling
-;             (> *pop-tick* *min-pop-ticks-to-settle*)) ; NEEDS REVISION WHEN REPRODUCTION IS IMPLEMENTED
-;           ) ; if settled or sufficient iterations
-;       settled) ; return value of settled from the do loop
-;    ;(format t " pop-tick: ~S, total-times: ~S, loop step: ~S~%" *pop-tick* (get *the-person* 'total-times) timestep)
-;    (mapc #'update-unit-activn-gross units)
-;    (setf settled 
-;          (every #'identity                      ; like "apply #'and", but and is a macro, so you can't apply it
-;                 (mapcar #'fix-activn units))))) ; network is settled if every unit reports [almost] no change
 
 ;; FIX-ACTIVN
 ;; Shifts new-activation into activation, now that we've updated all of the new-activations
@@ -242,10 +204,13 @@
 ;; NOTE no longer recording asymptoted units.
 ;; [Replacement for fix-activation, formerly called by run-hyp-net 11/2012]
 (defun fix-activn (unit)
-  (let ((asymptoted (< (abs (- (new-activation unit) (activation unit)))
-                       *asymptote*)))
-    (setf (activation unit) (new-activation unit))
-    asymptoted))
+  (let ((old-activn (activation unit))
+        (new-activn (new-activation unit)))
+    (DECLARE (LONG-FLOAT OLD-ACTIVN NEW-ACTIVN))
+    (let ((asymptoted (< (abs (- new-activn old-activn))
+                         *asymptote*)))
+      (setf (activation unit) new-activn)
+      asymptoted)))
 
 
 ; MCLELLAN/RUMELHART SETTLING FUNCTION. NOT CURRENTLY USED BY POPCO, BUT WORTH KEEPING AROUND
@@ -293,14 +258,16 @@
   ;(declare (ftype (function (&rest float) float) + - * min max))
   ; calculate excitation and inhibition.
   (if *tversky?*
-      (excit-and-inhib-tversky unit)
-      (excit-and-inhib unit))
-  (setf (new-activation unit)
-        (min *max-activation*
-             (max *min-activation*
-                  (+ (* (activation unit) (- 1.0 *decay-amount*))
-                     (* (- *max-activation* (activation unit)) *current-excit*) ; *current-excit* and *current-inhib* are set by excit-and-inhib*
-                     (* (- (activation unit) *min-activation*) *current-inhib*)))))) ; and contain sums of activns from linked nodes
+    (excit-and-inhib-tversky unit)
+    (excit-and-inhib unit))
+  (let ((activn (THE LONG-FLOAT (activation unit))))
+    (DECLARE (LONG-FLOAT ACTIVN))
+    (setf (new-activation unit)
+          (min *max-activation*
+               (max *min-activation*
+                    (+ (* activn (- 1.0L0 *decay-amount*))
+                       (* (- *max-activation* activn) *current-excit*) ; *current-excit* and *current-inhib* are set by excit-and-inhib*
+                       (* (- activn *min-activation*) *current-inhib*))))))) ; and contain sums of activns from linked nodes
 
 ; EXCIT-AND-INHIB is just like net-input, except that it keeps track
 ; of excitation and inhibition separately. EXCIT-AND-INHIB-TVERSKY is
@@ -312,14 +279,14 @@
 (defun excit-and-inhib (unit)
   ;(declare (ftype (function (&rest float) float) max + *)
   ;         (ftype (function (float float) symbol) >))
-  (do ((excit 0.0) (inhib 0.0) (wt 0.0) (activn 0.0)
+  (do ((excit 0.0L0) (inhib 0.0L0) (wt 0.0L0) (activn 0.0L0)
        (links (links-from unit) (cdr links)))
       ((null links)
        (setf *current-excit* excit)
        (setf *current-inhib* inhib))
-    ;(declare (type (float) excit inhib wt activn))
-    (setf wt (float (cdar links)))
-    (setf activn (max *output-threshold* (activation (caar links)))) ; *output-threshold* is usually 0.
+    (DECLARE (LONG-FLOAT EXCIT INHIB WT ACTIVN))
+    (setf wt (cdar links))
+    (setf activn (max *output-threshold* (THE LONG-FLOAT (activation (caar links))))) ; *output-threshold* is usually 0.
     (if (> wt 0.0)
         (setf excit (+ excit (* wt activn)))
       ; else wt is inhibitory:
@@ -377,6 +344,7 @@
 
 ; SET-SYMLINK-WEIGHT: Set weight of an existing symlink. Added by MA 11/2011.
 (defun set-symlink-weight (unit1 unit2 weight)
+  (DECLARE (LONG-FLOAT WEIGHT))
   (let ((unit1-link (assoc unit2 (links-from unit1)))
         (unit2-link (assoc unit1 (links-from unit2))))
     (if (not (and unit1-link unit2-link))
@@ -389,7 +357,7 @@
 ; produced by list-constraints and sometimes stored in person 
 ; property all-constraints.  Added by MA 12/11
 (defun set-symlink-weight-from-constraint (constraint)
-  (set-symlink-weight (car constraint) (cadr constraint) (cddr constraint)))
+  (set-symlink-weight (car constraint) (cadr constraint) (THE LONG-FLOAT (cddr constraint))))
 ; tip - example:
 ;(mapc #'set-symlink-weight-from-constraint (mapcar #'maybe-personalize-constraint list-of-constraints))
 
@@ -406,12 +374,12 @@
 ; Old COHERE-style test for being unlinked.  
 ; Fails on POPCO's zero-weight proposition/salient links.
 (defun cohere-style-unlinked? (unit1 unit2)
-  (= 0 (weight-of-link-between unit1 unit2)))
+  (= 0.0L0 (THE LONG-FLOAT (weight-of-link-between unit1 unit2))))
 
 (defun abs-activn-change (unit)
   (abs 
-    (- (get unit 'activation) 
-       (get unit 'new-activation))))
+    (- (THE LONG-FLOAT (get unit 'activation))
+       (THE LONG-FLOAT (get unit 'new-activation)))))
 
 ;; Sum of differences between new-activation and activation in units.
 (defun sum-activn-changes (units)

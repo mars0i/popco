@@ -338,7 +338,7 @@
 ;; TRANSMIT-UTTERANCES, TRANSMIT-ENVIRONMENT
 
 (defun transmit-environments (conversations-plus-and-pop)
-  (let ((*trust* 1.0)) ; will affect receive-utterance in call chain from transmit-utterance
+  (let ((*trust* 1.0L0)) ; will affect receive-utterance in call chain from transmit-utterance
     (mapc #'transmit-environment (get (cdr conversations-plus-and-pop) 'members)))
   conversations-plus-and-pop)
 
@@ -410,6 +410,7 @@
 ; to the map-unit-influenced ones we deal with there.  So it's simpler to create all semantic-iffs
 ; relevant to a new proposition here, even if a few of them might get recreated moments later over there.]
 (defun receive-utterance (generic-propn generic-struc listener trust)
+  (DECLARE (LONG-FLOAT TRUST))
   (setf *the-person* listener)
   (let* ((personal-propn (generic-to-personal-sym generic-propn))
          (personal-struc (generic-to-personal-sym generic-struc))
@@ -431,13 +432,15 @@
 ;; This could be sensitive speaker's degree of confidence passed in 
 ;; generic propn's activation, but currently just checks its sign.
 (defun utterance-influence (propn-from-speaker trust)
+  (DECLARE (LONG-FLOAT TRUST))
   (* trust
-     (sign-of (activation propn-from-speaker))))
+     (THE FIXNUM (sign-of (activation propn-from-speaker)))))
 
 ; UPDATE-SALIENT-LINK
 ; We need raw-make-symlink for this purpose because we want to sum 
 ; whether negative or positive; make-symlink won't sum into negative links.
 (defun update-salient-link (propn weight)
+  (DECLARE (LONG-FLOAT WEIGHT))
   ;(format t "update-salient-link for propn ~S with weight ~S~%" propn weight) ; DEBUG
   (when (unlinked? propn 'salient) ; if this link doesn't exist
     (mark-constraint-newly-added propn 'salient weight *the-person*)) ; record that we're making a new constraint, so popco can tell gui if desired
@@ -639,6 +642,7 @@
 
 ; single-arg wrapper for note-unit for mapc'ing:
 (defun init-propn (propn &optional (init-activ *propn-init-activ*) (person *the-person*))
+  (DECLARE (LONG-FLOAT INIT-ACTIV))
   (note-unit propn init-activ person)) ; see network.lisp
 
 ;;-----------------------------------------------------
@@ -751,11 +755,12 @@
   (let ((args (args-from-propn propn)))
     (record-raw-make-symlink-if-units (first args) 
                                       (second args)
-                                      (* (if (get propn 'is-preventative) -1 1)
-                                         (activn-to-causal-link-weight (activation propn))))))
+                                      (* (if (get propn 'is-preventative) -1.0L0 1.0L0)
+                                         (activn-to-causal-link-weight (THE LONG-FLOAT (activation propn)))))))
 
 ;; TODO?
 (defun activn-to-causal-link-weight (activn)
+  (DECLARE (LONG-FLOAT ACTIVN))
   activn)
 
 ; RECORD-CONSTRAINTS
@@ -790,7 +795,8 @@
 ; symbol, that might be the problem.
 ; *THE-PERSON* MUST BE SET CORRECTLY.
 ; ALSO SEE: perceived-negation
-(defun perceived (msg &optional (degree 1.0) (person *the-person*))
+(defun perceived (msg &optional (degree 1.0L0) (person *the-person*))
+  (DECLARE (LONG-FLOAT DEGREE))
   (let* ((env (make-persons-env-sym person))
          (generic-propn (last-element msg))
          (generic-struc (generic-struc-of-propn generic-propn person))
@@ -903,6 +909,7 @@
 ;; Make symlink if the two units to be linked are suitable--if they
 ;; have activation values.  Silently returns nil if not.
 (defun raw-make-symlink-if-units (unit1 unit2 weight)
+  (DECLARE (LONG-FLOAT WEIGHT))
   (when (and (unit? unit1)
              (unit? unit2))
     (raw-make-symlink unit1 unit2 weight))) ; from network.lisp
@@ -914,9 +921,10 @@
 ; APPLY-RECORD-RAW-MAKE-SYMLINK-IF-UNITS
 ; NOTE: *THE-PERSON* MUST BE SET CORRECTLY.
 (defun apply-record-raw-make-symlink-if-units (u1u2w &optional (person *the-person*))
-  (record-raw-make-symlink-if-units (first u1u2w) (second u1u2w) (third u1u2w) person))
+  (record-raw-make-symlink-if-units (first u1u2w) (second u1u2w) (THE LONG-FLOAT (third u1u2w)) person))
 
 (defun record-raw-make-symlink-if-units (unit1 unit2 weight &optional (person *the-person*))
+  (DECLARE (LONG-FLOAT WEIGHT))
   (mark-constraint-newly-added unit1 unit2 weight person) ; record that we're making a new constraint, so popco can tell gui if desired
   (raw-make-symlink-if-units unit1 unit2 weight))
 

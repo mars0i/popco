@@ -129,10 +129,10 @@
 
 (defvar semantic-relations
   '(
-    (similar 'cause 'prevent (* -1 *ident-weight*)) ; avoid mapping cause to prevent
-    (semantic-iff 'cb-vpp 'v-ipa -.1)
-    (semantic-iff 'cv-rpa 'b-abp -.1)
-    (similar 'is-beastly 'is-infected (* -1 *ident-weight*))
+    (similar 'cause 'prevent (* -1L0 *ident-weight*)) ; avoid mapping cause to prevent
+    (semantic-iff 'cb-vpp 'v-ipa -.1L0)
+    (semantic-iff 'cv-rpa 'b-abp -.1L0)
+    (similar 'is-beastly 'is-infected (* -1L0 *ident-weight*))
    ))
 
 (defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
