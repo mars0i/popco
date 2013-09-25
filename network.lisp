@@ -137,7 +137,7 @@
 ;; Added 4/20/2012, replaced separate make-link calls in make-symlink with this. -MA
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person.
 ; And to record symlinks as new in person.
-(defun raw-make-symlink (unit1 unit2 weight &optional (max-weight 1) (min-weight -1))
+(defun raw-make-symlink (unit1 unit2 weight &optional (max-weight 1L0) (min-weight -1L0))
   (DECLARE (LONG-FLOAT WEIGHT))
   (make-link unit1 unit2 weight max-weight min-weight)
   (make-link unit2 unit1 weight max-weight min-weight))

@@ -1,0 +1,24 @@
+#!/bin/sh
+# Runs POPCO with lisp filename arguments passed to SBCL to be loaded
+# AND FULL SPEED OPTIMIZATION SETTINGS, INCLUDING NO SAFETY CHECKS
+
+# You should only use this version of the popco script after running
+# under full debug mode to catch things that would cause e.g. memory
+# corruption otherwise.
+
+loadargs=''
+
+# While there are remaining command line arguments which end in ".lisp",
+# (i.e. such that stripping off ".lisp" does not produce a different string)
+# take arguments off the command line and store them in loadargs, each
+# preceded by "--load" in order to tell sbcl what to do with the filenames.
+# Remaining args will be left in $@, and accessible in SBCL via *posix-argv*.
+while [ "$1" != "${1%.lisp}" ]; do
+	loadargs="$loadargs --load $1"
+	shift
+done
+
+set -x
+sbcl \
+--eval '(declaim (optimize (debug 0) (safety 0) (speed 3) (space 0)))' \
+--load start $loadargs "$@"

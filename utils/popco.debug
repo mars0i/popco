@@ -1,5 +1,7 @@
 #!/bin/sh
 # Runs POPCO with lisp filename arguments passed to SBCL to be loaded
+# WITH OPTIMIZATION SETTINGS FOR AS MUCH DEBUGGING AND SAFETY CHECKS
+# AS POSSIBLE.
 
 loadargs=''
 
@@ -13,7 +15,7 @@ while [ "$1" != "${1%.lisp}" ]; do
 	shift
 done
 
-echo "Running popco with SBCL optimizations."
-echo "This will have no effect on fasl's compiled without optimizations."
 set -x
-sbcl --eval '(declaim (optimize (space 0) (speed 3)))' --load start $loadargs "$@"
+sbcl \
+--eval '(declaim (optimize (compilation-speed 0) (debug 3) (safety 3) (speed 0) (space 0)))' \
+--load start $loadargs "$@"

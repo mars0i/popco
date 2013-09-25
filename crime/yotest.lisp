@@ -36,9 +36,12 @@
 (n-persons-with-name 'temp-no 'no *group-size*)
 (kill 'temp-no)
 
+
+(setf *max-pop-ticks* 100)
+
 (init-pop)
 (print (get 'folks 'members))
 
-(setf *max-pop-ticks* 100)
+(gc :full t) ; garbage collect first for greater uniformity in time trials
 (popco)
 (quit)
