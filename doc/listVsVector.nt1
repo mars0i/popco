@@ -1,0 +1,8 @@
+If you run seqtests.lisp, you'll see that for simple mapping over
+two sequences, mapc is faster than mapcar, map nil with declared
+lists is like mapc, and map nil with declared vectors is
+significantly slower than mapc. (!)
+
+(I wonder if that is related to the style warning about nreverse.
+Apparently map list reverses an intermediate list.  Maybe with
+vectors the same sort of thing happens.)
