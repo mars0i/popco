@@ -6,3 +6,7 @@ significantly slower than mapc. (!)
 (I wonder if that is related to the style warning about nreverse.
 Apparently map list reverses an intermediate list.  Maybe with
 vectors the same sort of thing happens.)
+
+Ah.  But if you run seqtests2.lisp, which includes arrays, a
+fully-type-specified map nil call on a 1-D array is approx 5x faster
+even than mapc (or map nil on lists).
