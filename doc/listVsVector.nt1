@@ -10,3 +10,19 @@ vectors the same sort of thing happens.)
 Ah.  But if you run seqtests2.lisp, which includes arrays, a
 fully-type-specified map nil call on a 1-D array is approx 5x faster
 even than mapc (or map nil on lists).
+
+But then again, with mapc/map nil on lists and arrays of symbols,
+seqtest3.lisp shows that setf'ing a property in in every symbols is
+EQUALLY FAST IN LISTS AND IN ARRAYS WITH FULL TYPE SPECIFICATION IN THE
+MAP NIL CALL.  Arrays without full type specification in the map nil
+call are slightly slower.  
+
+Similarly, seqtest4.lisp shows a similar result for pure getf, at
+least with full optimizations.
+Although in this case, it appears that map nil on lists maybe a little
+bit slower than mapc.  Maybe if I wrapped the list argument in (the
+list lis) that would get rid of the apparent discrepancy.
+
+SO, APPARENTLY, THERE IS NO ADVANTAGE TO USING ARRAYS OVER LISTS IN THIS
+CONTEXT!  AND IN FACT MAPC IS AT LEAST AS GOOD AS MAP NIL.
+Wow.  And very convenient for me.
