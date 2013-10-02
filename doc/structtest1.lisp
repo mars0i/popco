@@ -116,4 +116,4 @@
 
 (format t "prop list:~%")
 (time (dotimes (ignored times)
-        (rot-props propsvar)))
+        (rot-props 'propsvar)))

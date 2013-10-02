@@ -1,13 +1,8 @@
-Run structtest1.lisp.  The struct version is about 40 times faster
-than the property list version!
+Run structtest?.lisp.  The struct versions are about 17, 50, 100 times
+faster than the property list versions!
 
-*That* is thing to work on to speed up popco.  (It's a big job,
+*That* is the thing to work on to speed up popco.  (It's a big job,
 though.)
 
-(Setting full options may be making a small improvement in the property
-list access--on the order of 1%.  Would have to do more tests to tell.
-But it's not meaningful.  The struct version is unaffected by
-optimizations.)
-
-Hmm. I wonder whether you can make structs even faster in some
-situations by typing the slots.  But they are pretty fast as it is.
+(Hmm. I wonder whether you can make structs even faster in some
+situations by typing the slots.  But they are pretty fast as it is.)
