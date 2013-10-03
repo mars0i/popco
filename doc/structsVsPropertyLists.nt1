@@ -1,8 +1,24 @@
 Run structtest?.lisp.  The struct versions are about 17, 50, 100 times
 faster than the property list versions!
 
+(structtest5.lisp only contains a structure test, doing a functional
+programming version in which an entire new structure is created for
+each full rotation.  This is intermediate in time between the regular
+imperative structure rotations, and the property list imperative
+rotation.)
+
 *That* is the thing to work on to speed up popco.  (It's a big job,
 though.)
 
 (Hmm. I wonder whether you can make structs even faster in some
 situations by typing the slots.  But they are pretty fast as it is.)
+
+[btw I tried duplicating the defstruct version in clojure using closest
+obvious clojure analogue (creating a new object every time I rotate all
+of the values).  It takes way, way, way longer than even the functional
+version of the structure rotation.  It takes longer when I run the loop
+through the test 10K times, as opposed to the 1M times loop I'm using
+for the Common Lisp tests.  This is using the default compilation
+provided by Leiningen.  It may well be that there are tricks to make the
+clojure version faster, but at first glance, there's simply no
+comparison.  The clojure version is in structtest1.clj.]
