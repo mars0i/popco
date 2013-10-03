@@ -54,9 +54,10 @@
 ; This is exactly PT's function slightly recoded. -MA 11/2011
 (defun associate (feature1  ; e.g. a belief/proposition node
                   feature2  ; ditto
-                  &optional (degree 1) ; e.g. activn of related map node
+                  &optional (degree 1L0) ; e.g. activn of related map node
                             (activ1 *init-activ*) (activ2 *init-activ*) ; activns of first two args
                             (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
+  (DECLARE (LONG-FLOAT DEGREE ACTIV1 ACTIV2 EXCIT-WEIGHT INHIB-WEIGHT))
   (print-si feature1 " is associated with " feature2 " to degree " degree)
   (make-symlink feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight))
   (note-unit feature1 activ1)
@@ -70,12 +71,14 @@
 ; 1/2012 added call to normalize-degree.  This can be a no-op macro
 ; to produce standard COHERE behavior, or something different, e.g. for POPCO.
 (defun calc-assoc-weight (degree &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
+  (DECLARE (LONG-FLOAT DEGREE EXCIT-WEIGHT INHIB-WEIGHT))
   (if (> degree 0)
     (* excit-weight (normalize-degree degree))
     (* inhib-weight (normalize-degree degree) -1))) ; negative association
 
 ; SET-ASSOC-WEIGHT: Set the weight of an existing association. -MA 11/2011
 (defun set-assoc-weight (feature1 feature2 degree &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
+  (DECLARE (LONG-FLOAT DEGREE EXCIT-WEIGHT INHIB-WEIGHT))
   (set-symlink-weight feature1 feature2 (calc-assoc-weight degree excit-weight inhib-weight)))
 
 

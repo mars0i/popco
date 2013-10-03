@@ -83,6 +83,7 @@
 ; The optional arguments are maximum link weights. -MA 1/2012
 ; [The functionality of Thagard's associate-ana is now in associate-ana-from-propns.]
 (defun associate-ana (prop1 prop2 map-unit &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*) (init-activ *init-activ*))
+  (DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT INIT-ACTIV))
   (associate prop1 prop2                                ; link the two proposition units [associate from imp.lisp]
              (or (get map-unit 'activation) *ana-assn*) ; initial weight of the link
              (or (activation prop1) init-activ)       ; initial activation of source propn, or init-activ if nil
@@ -105,6 +106,7 @@
 ; SET-ASSOC-WEIGHT-FROM-ACTIVN: Set the weight of an existing association
 ; between propositions from the activation of an ACME map unit.  -MA 11/2011
 (defun set-assoc-weight-from-activn (prop1 prop2 map-unit &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
+  (DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT))
   (set-assoc-weight prop1 prop2 (activation map-unit) excit-weight inhib-weight)) ; set-assoc-weight is in imp.lisp
 
 ;; NOT IN USE:

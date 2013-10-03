@@ -91,8 +91,8 @@
 ; Added optional activation value to override default value (9/2011 MA)
 ; NOTE THAT this in effect creates the node if it didn't already exist.
 ; *THE-PERSON* MUST BE SET CORRECTLY or passed as arg.
-(defun note-unit (unit &optional my-init-activ (person *the-person*))
-  (let ((new-activn (or my-init-activ *init-activ*)))
+(defun note-unit (unit &optional my-init-activn (person *the-person*))
+  (let ((new-activn (or my-init-activn *init-activ*)))
     (DECLARE (LONG-FLOAT NEW-ACTIVN))
     (setf (activation unit) new-activn) ; sets activn even if nil is passed
     (setf (person-of unit) person)
