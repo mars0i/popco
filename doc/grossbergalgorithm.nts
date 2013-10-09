@@ -1,0 +1,64 @@
+grossbergalgorithim.nts
+(Thagard's method of calculating Grossberg updating of activation
+values, in network.lisp, is confusing.  Here are notes about what
+really has to be done, oriented toward the possibility of doing it
+with matrices.  This is based on my description of the method in
+"Moderate Role", which was based on rereading H&T1989 and rereading
+Thagard's code.  Doing it according to the steps given here might not
+be what's most efficient, and it may not useful to give all of the
+intermediate data structures names in the ultimate code.)
+
+For each person, there are two networks: the analogy network and the
+proposition network.  The following applies to each of the two
+networks in each of the persons.
+
+Initial data structures:
+
+	Activns: An Nx1 column vector of activations (current state of
+	nodes), where N is the number of node in this network.
+	Activations range from -1 to 1.
+
+	Weights: An NxN matrix of weights, representing links between
+	nodes.  These range from -1 to 1.  Many will be zero,
+	representing no link.  Old activations correspond to column
+	indexes.  New activations correspond to row indexes.  [The flow
+	of information is from right to left.]  The nonzero weights in
+	row r represent the weights of links from nodes linked to the
+	node represented by r.
+
+Notes/comments are indented.  Steps are numbered at the left margin.
+
+	Negative activations are not transmitted.  They might as well be
+	zero.
+
+. Apply max(0,a_ij) to Activns.  The result PosActivns is a vector of
+activations in which the negative activations have been turned into
+zeros.
+
+	New activations are a function of the weighted sums of positive
+	activations of linked nodes.  An early step is to create such sums.
+
+. Multiply Weights X Activns.  The result WtdSums is a vector of
+values, positive, negative, or zero.  These are not yet the new
+activations. The new activations will be a function of these values
+[p_i and n_i in "Moderate Role", p. 13].
+
+	There is a decay on the contribution of each old activation to
+	the new activation of the same node.
+
+	ACK! There's an error in the description of the algorithim in
+	"Moderate Role"!  I can't belief this.  There the
+	constribution of the old activation to the new activation is:
+		old * .1 + old * .99 = old * 1.09
+	but what it should be is
+		old * (.99 - .1) = old * .89
+	cf. H&T1989 p. 313.  And actually, in the code, now 10/2013,
+	at least, what it's actually doing is
+		old * (1 - .1) = old * .90
+
+. Multiply Activns by the decay value .9 = 1 - .1 = 1 - decay amount 
+[*decay-amount* in POPCO] to produce the result vector DKdActivns.
+
+NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
+depends on whether the sum is negative or positive.  Then add the
+results to DKdActivns to get the new activation vector.
