@@ -1,0 +1,21 @@
+When running crime/yotest.lisp in SBCL with full speed optimization
+settings, for the "both" persons, who have 262 map units, settle-nets on
+map units for a person takes about .00035 seconds to do one round of
+settling on one person for one network.  This is from inserting TIME
+into settle-n-iters.
+
+When running matrix * vector multiplication in Clojure using the JBLAS
+routines (which seem to be faster than the Incanter routines),
+multiplying a 262x262 random matrix by a 262x1 random column vector
+takes about 0.057 milliseconds, i.e. a fraction of a millisecond, i.e.
+0.000057 seconds.  (It takes a little longer the first few times you
+do the multiplication.)
+(Interestingly, the opposite operation, multiplying a row vector times a
+matrix, takes a lot longer--almost .25 seconds.
+
+i.e. the Clojure/BLAS operation is about 6 times faster.
+
+HOWEVER, there is a little bit more to do than just the matrix by vector
+multiplication.  You also have to sum with the old activation after
+decaying it, and clip to the extremes.  And it depends on whether values
+or positive or negative.

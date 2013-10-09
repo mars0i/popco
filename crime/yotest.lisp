@@ -18,23 +18,23 @@
 (setf *extra-meta-commands* "")
 (setf *do-converse* t)
 
-(make-no-bias-crime-talker 'aa crime-propns 'pundits '(VIBIs BEBIs BOBIs NOBIs))  ; pundit
+;(make-no-bias-crime-talker 'aa crime-propns 'pundits '(VIBIs BEBIs BOBIs NOBIs))  ; pundit
 
-(make-virus-bias-crime-talker 'temp-vi '() 'vibis '(vibis))
-(n-persons-with-name 'temp-vi 'vi *group-size*)
-(kill 'temp-vi)
+;(make-virus-bias-crime-talker 'temp-vi '() 'vibis '(vibis))
+;(n-persons-with-name 'temp-vi 'vi *group-size*)
+;(kill 'temp-vi)
 
-(make-beast-bias-crime-talker 'temp-be '() 'bebis '(bebis))
-(n-persons-with-name 'temp-be 'be *group-size*)
-(kill 'temp-be)
+;(make-beast-bias-crime-talker 'temp-be '() 'bebis '(bebis))
+;(n-persons-with-name 'temp-be 'be *group-size*)
+;(kill 'temp-be)
 
 (make-both-bias-crime-talker 'temp-bo '() 'bobis '(bobis))
 (n-persons-with-name 'temp-bo 'bo *group-size*)
 (kill 'temp-bo)
 
-(make-no-bias-crime-talker 'temp-no '() 'nobis '(nobis))
-(n-persons-with-name 'temp-no 'no *group-size*)
-(kill 'temp-no)
+;(make-no-bias-crime-talker 'temp-no '() 'nobis '(nobis))
+;(n-persons-with-name 'temp-no 'no *group-size*)
+;(kill 'temp-no)
 
 
 (setf *max-pop-ticks* 100)

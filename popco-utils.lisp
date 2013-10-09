@@ -825,3 +825,20 @@
       (mapcar #'get-propn-name msgs1)
       (mapcar #'get-propn-name msgs2)))
   t)
+
+;; for experiments:
+;; MATRIX-MAP-INTO
+;; Sets every element of a matrix (i.e. a 2-D array) to the value of a function
+;; Example usage:
+;;   (matrix-map-into #'(lambda (x y) (declare (ignore x y)) (random 1.0)) ra)
+;; The IGNORE declaration stops SBCL from issuing a style warning
+;; because the function never uses the indexes passed to it.
+(defun matrix-map-into (fn mat)
+  (declare ((simple-array * (* *)) mat)
+           ((function (fixnum fixnum))))  ; is this useful??
+  (destructuring-bind
+    (height width) (array-dimensions mat)
+    (dotimes (i height)
+      (dotimes (j width)
+        (setf (aref mat i j) (funcall fn i j)))))
+  mat)
