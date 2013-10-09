@@ -11,7 +11,7 @@ takes about 0.057 milliseconds, i.e. a fraction of a millisecond, i.e.
 0.000057 seconds.  (It takes a little longer the first few times you
 do the multiplication.)
 (Interestingly, the opposite operation, multiplying a row vector times a
-matrix, takes a lot longer--almost .25 seconds.
+matrix, takes a lot longer--almost .25 seconds.)
 
 i.e. the Clojure/BLAS operation is about 6 times faster.
 
@@ -19,3 +19,24 @@ HOWEVER, there is a little bit more to do than just the matrix by vector
 multiplication.  You also have to sum with the old activation after
 decaying it, and clip to the extremes.  And it depends on whether values
 or positive or negative.
+
+--------------
+
+Well here's something weird.  When I do the same thing, loading jblas
+through lein, I don't get the speed improvement from mat x colvec.
+It's just as slow as rowvec X mat.  i.e. lein vs. explicitly loading
+the jar on the commandline, mat x mat are about same speed, and vec X
+mat are the same, but mat X vec are different.  Maybe because I'm
+giving it a lot of RAM on the commandline?  No, same result without
+the extra RAM.  Note btw that in some cases what happens starts out
+very slow but gets fast after several iterations.  And oddly, today
+(10/9 at UM) I'm not even getting it as fast as last night.  
+.075 millisecconds rather than .057.
+
+OK so the Lein speed of about .225 milliseconds, that's .000225
+seconds.  That's still faster than the speed above for sbcl, but not
+by much.  Once I do the whole process, I don't think it will be.
+So have to figure out what's going on here.
+
+[Lein's jblas jar is the same version as the one I was using the
+commandline (1.2.3), but the file sizes are different.]
