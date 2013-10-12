@@ -288,7 +288,7 @@
     (setf wt (cdar links))
     (setf activn (max *output-threshold* (THE LONG-FLOAT (activation (caar links))))) ; *output-threshold* is usually 0.
     (if (> wt 0.0L0)
-        (setf excit (+ excit (* wt activn)))
+      (setf excit (+ excit (* wt activn)))
       ; else wt is inhibitory:
       (setf inhib (+ inhib (* wt activn))))))
 
