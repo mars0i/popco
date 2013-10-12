@@ -26,22 +26,43 @@ Initial data structures:
 	row r represent the weights of links from nodes linked to the
 	node represented by r.
 
+	Note: There is a drawback to treating such a matrix as the basic
+	representation of links.  I have had cases in which a link had
+	zero weight (usually in the proposition network).  That it's
+	treated identically to non-links in the activation calculations
+	is OK, but for graphical representaions of networks, this is
+	undesirable--confusing.  Links will be missing where they should
+	be, and can pop in and out of existence in the graphical
+	display.  There should be a way of showing links that don't
+	(yet) have a nonzero activation.  Thus I should probably have a
+	separate representation of the network available for graphical
+	display or other analyses, e.g.  analyses of community or
+	neighborhood network structure.
+
+	This alternative representation could be a matrix of 1's and
+	0's, or just a list-like structure.
+
 Notes/comments are indented.  Steps are numbered at the left margin.
 
 	Negative activations are not transmitted.  They might as well be
-	zero.
+	zero. So:
 
 . Apply max(0,a_ij) to Activns.  The result PosActivns is a vector of
 activations in which the negative activations have been turned into
 zeros.
 
 	New activations are a function of the weighted sums of positive
-	activations of linked nodes.  An early step is to create such sums.
+	activations of linked nodes.  An early step is to create such sums:
 
 . Multiply Weights X Activns.  The result WtdSums is a vector of
 values, positive, negative, or zero.  These are not yet the new
 activations. The new activations will be a function of these values
 [p_i and n_i in "Moderate Role", p. 13].
+
+Note that you have to keep track of which of these come from pos
+weights vs neg weights.  This can't be read off of the results of the
+mulitplications.  Maybe there should be two separate output vectors
+PosWtdSums and NegWtdSums.
 
 	There is a decay on the contribution of each old activation to
 	the new activation of the same node.
@@ -60,5 +81,5 @@ activations. The new activations will be a function of these values
 [*decay-amount* in POPCO] to produce the result vector DKdActivns.
 
 NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
-depends on whether the sum is negative or positive.  Then add the
-results to DKdActivns to get the new activation vector.
+depends on whether the weights for the sum were negative or positive.
+Then add the results to DKdActivns to get the new activation vector.
