@@ -52,72 +52,17 @@ activations in which the negative activations have been turned into
 zeros.
 
 	New activations are a function of the weighted sums of positive
-	activations of linked nodes.  An early step is to create such sums.
-	However, we actually need two vectors of sums, or a 2xN
-	matrix, or something.  We have to distinguish sums that have
-	their source in positive links, and sums that have their
-	source in negative links.  The reason is that when we scale
-	the effect of incoming activations (i.e. the sum) by
-	distance from the extremes [-1, 1], we have to scale in
-	different directions depending on whether the sum comes from
-	positively-weighted or negatively-weighted links. But that
-	information about the source is lost in the sum itself.  So we
-	need two sums.
+	activations of linked nodes.  An early step is to create such sums:
 
-. From Weights, create two matrices PosWeights and NegWeights,
-containing only nonnegative and nonpositive weights, respectively. 
-Each can have zeros where the weights aren't positive or aren't
-negative, respectively.  
-
-	NOTE: These last matrices can just be created once at the
-	beginning of the run in the analogy networks *if* everyone
-	starts with all of the propositions.  In that case, the analogy
-	network structure and weights will not change.  The proposition
-	network weights readily change over time, however, so we've got
-	to split out PosWeights and NegWeights every time, potentially.
-	Maybe there should be a switch to set whether to allow the
-	analogy PosWeights and NegWeights to be fixed at the beginning.
-	An alternative is to leave them fixed but allow introduction of
-	new propositions to cause them to be updated.  Note however that
-	in a naive implementation, what we're doing is recreating what
-	could be a 100,000 element matrix, for example.
-
-	Maybe there should simply not be a combined weight matrix at
-	all.  Just start with two of them.  And then when you update
-	them in the proposition network, or in the analogy network when
-	new propositions are introduced, you have to keep track so that
-	when a weight flips sign, you zero out the one matrix and update
-	to a nonzero element in the other.  (Possibly it could be
-	simpler [faster??] to use positive values in NegWeights, and
-	then just multiply by 1 at an appropriate step.)
-
-	NOTE that the sums from both positively and negatively
-	weighted links will always be positive, and negative,
-	respectively, because we ignore negative activations in
-	computing inputs.
-
-	Note the effect of the separate scaling by distance from
-	extremes is that when the old activation is near 1, positive
-	links have a small effect, but negative links have a large
-	effect, since they are scaled by distance from -1 (see below).
-	And vice versa when the old activation is near -1.
-
-. Multiply PosWeights X Activns to produce PosWtdSums, and NegWeights
-X Activns to produce NegWtdSums.  Each of these new structures is a
-vector of values, positive, negative, or zero.  These are not yet the
-new activations. The new activations will be a function of these values
+. Multiply Weights X Activns.  The result WtdSums is a vector of
+values, positive, negative, or zero.  These are not yet the new
+activations. The new activations will be a function of these values
 [p_i and n_i in "Moderate Role", p. 13].
 
-. Calculate two vectors of distances of old activations from the
-extremes.  
-DistsFromMin = Actvns - (-1) = Activns + 1 [which may be > 1 for some]
-DistsFromMax = 1 - Actvns [which may be < -1 for some]
-	(Really?  This seems wrong.  It is what's in H&T1989.
-	And it's in network.lisp.)
-Actually, there's another step of clipping to the extremes.  If we do
-that all in one step, it goes like this:
-[HERE]
-
+Note that you have to keep track of which of these come from pos
+weights vs neg weights.  This can't be read off of the results of the
+mulitplications.  Maybe there should be two separate output vectors
+PosWtdSums and NegWtdSums.
 
 	There is a decay on the contribution of each old activation to
 	the new activation of the same node.
@@ -134,7 +79,6 @@ that all in one step, it goes like this:
 
 . Multiply Activns by the decay value .9 = 1 - .1 = 1 - decay amount 
 [*decay-amount* in POPCO] to produce the result vector DKdActivns.
-
 
 NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
 depends on whether the weights for the sum were negative or positive.

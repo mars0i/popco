@@ -5,7 +5,9 @@ settling on one person for one network.  This is from inserting TIME
 into settle-n-iters.
 
 When running matrix * vector multiplication in Clojure using the JBLAS
-routines (which seem to be faster than the Incanter routines),
+routines (which seem to be faster than the Incanter routines [no, that
+seems not to be true with latest version of Incanter.  matrix mult, at
+least, is identical after the first time.]),
 multiplying a 262x262 random matrix by a 262x1 random column vector
 takes about 0.057 milliseconds, i.e. a fraction of a millisecond, i.e.
 0.000057 seconds.  (It takes a little longer the first few times you

@@ -1,0 +1,38 @@
+For matrix multiplication, Incanter, Clatrix, and JBLAS appear to be the
+same speed, generally, probably because Incanter is now using Clatrix,
+which is built on JBLAS.
+
+On MBA, Vectorz is about 3.85 times the speed of Incanter or JBLAS or
+Clatrix on large matrices. On the MBP it's worse--more like 8 times
+slower.
+
+So at present I have a choice between Incanter/Clatrix without
+mutability, and Vectorz that's much slower, with mutability.  Or I
+could go raw, and use jBLAS directly.  No, WAIT:
+
+The clatrix source does have an operator 'set' (no bang) that will
+set values in Clatrix matrices.  I succeeded in using this from the source
+project with
+	(clatrix.core/set mat row col val)
+Note that you don't really want 'set' to shadow the regular Clojure
+'set', which does something completely different.  But you can use it
+with the above syntax.  
+
+[The name defined for this operation in the clojure.core.matrix spec is
+(the more general) 'mset!', which works in Vectorz but not in Clatrix.
+('set' is used internally in the Clatrix source e.g. to create a matrix
+inside a function, then set its values, then return it as if it were
+brand new.)]
+I can alias 'set' to something else e.g. by 
+	(def matset! clatrix.core/set)
+However, don't use 'mset!', because it's already been compiled as something
+for core.matrix, and 'set!' it's a basic lang construct.  Either gives
+errors, though at different points.
+
+But ... I'm in business.  I can use Clatrix.  Yayy!
+
+Also there is a destructive 'core.clatrix/map!' function in clatrix.  The
+function to be mapped should take one arg representing the element.
+This could be useful.
+
+[other useful functions for POPCO: from-indices, from-sparse]
