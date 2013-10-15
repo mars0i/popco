@@ -37,10 +37,39 @@ Initial data structures:
 	(yet) have a nonzero activation.  Thus I should probably have a
 	separate representation of the network available for graphical
 	display or other analyses, e.g.  analyses of community or
-	neighborhood network structure.
+	neighborhood network structure.  This alternative representation
+	could be a matrix of 1's and 0's, or just a list-like structure.
 
-	This alternative representation could be a matrix of 1's and
-	0's, or just a list-like structure.
+	Or maybe there's something I could do where non-links are
+	represented by nil or NaN or something.  Or some number that's
+	way too large or something.
+
+	Note: NaN and Infinity, as names, don't function as normal
+	symbols, but they exist, and you can set them into matrix
+	elements in both Clatrix (using clatrix.core/set) and Vectorz
+	(using mset!).
+
+	(/ 1.0 0.0) => Infinity [(/ 1 0) generates an error].  You can
+	then get NaN by dividing Infinity by Infinity.  These entities
+	behave as you'd expect, with Infinity propagating through
+	multiplication and addition, and returning -Infinity when
+	multiplied by a negative number.  NaN is utterly infectious, as
+	you'd expect.  Infinity and Infinity are numerically equal (==)
+	and generally equal (=).  NaN and NaN are numerically not equal
+	(==), since, I guess, that's just the nature of NaN-ness.  It is
+	possible for it NaN = NaN [i.e. the more general equality] but
+	only if they are the same NaN object.  Apparently there can be
+	more than one.  If you divide infinity by infinity more than
+	once, you get different NaN objects.  (This NaN behavior does
+	not sound like something that should be depended on in the
+	future.  Testing for equality with Infinity seems more reliable.
+	Um, on the other hand, what I really want is something that
+	behaves like zero when you sum it.  Not something that will
+	infect the whole sum.  Hmm--what about 0 vs 0.0?  
+	0 == 0.0, but they aren't = .  Well, that's risky.  Asking for
+	errors.  Since in most cases, floats will infect integers.
+	Don't do that.  Probably just need another matrix that
+	distinguishes real links from non-links.)
 
 Notes/comments are indented.  Steps are numbered at the left margin.
 
