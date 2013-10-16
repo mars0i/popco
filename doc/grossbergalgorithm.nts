@@ -145,8 +145,17 @@ DistsFromMax = 1 - Actvns [which may be < -1 for some]
 	And it's in network.lisp.)
 Actually, there's another step of clipping to the extremes.  If we do
 that all in one step, it goes like this:
-[HERE]
+ClippedDistsFromMin = min(Activns + 1, 1)
+ClippedDistsFromMax = max(1 - Actvns, -1)
 
+	clojure notes:
+		(clatrix.core/map (fn [e] (max e 0)) M) ; clips above zero
+		(clatrix.core/map (fn [e] (min e 0)) M) ; clips below zero
+		; here's how you're supposed to do it:
+		(clojure.core.matrix.protocols/element-map 
+		   M (fn [e] (max e 0))))
+		   ; does the right thing in Vectorz
+		   ; returns a LazySeq in Clatrix. you have redo shape
 
 	There is a decay on the contribution of each old activation to
 	the new activation of the same node.
