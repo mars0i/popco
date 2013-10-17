@@ -12,7 +12,7 @@ For each person, there are two networks: the analogy network and the
 proposition network.  The following applies to each of the two
 networks in each of the persons.
 
-Initial data structures:
+0. Initial data structures:
 
 	Activns: An Nx1 column vector of activations (current state of
 	nodes), where N is the number of node in this network.
@@ -76,7 +76,7 @@ Notes/comments are indented.  Steps are numbered at the left margin.
 	Negative activations are not transmitted.  They might as well be
 	zero. So:
 
-. Apply max(0,a_ij) to Activns.  The result PosActivns is a vector of
+1. Apply max(0,a_ij) to Activns.  The result PosActivns is a vector of
 activations in which the negative activations have been turned into
 zeros.
 
@@ -93,7 +93,7 @@ zeros.
 	information about the source is lost in the sum itself.  So we
 	need two sums.
 
-. From Weights, create two matrices PosWeights and NegWeights,
+2. From Weights, create two matrices PosWeights and NegWeights,
 containing only nonnegative and nonpositive weights, respectively. 
 Each can have zeros where the weights aren't positive or aren't
 negative, respectively.  
@@ -131,13 +131,13 @@ negative, respectively.
 	effect, since they are scaled by distance from -1 (see below).
 	And vice versa when the old activation is near -1.
 
-. Multiply PosWeights X Activns to produce PosWtdSums, and NegWeights
+3. Multiply PosWeights X Activns to produce PosWtdInputs, and NegWeights
 X Activns to produce NegWtdSums.  Each of these new structures is a
 vector of values, positive, negative, or zero.  These are not yet the
 new activations. The new activations will be a function of these values
 [p_i and n_i in "Moderate Role", p. 13].
 
-. Calculate two vectors of distances of old activations from the
+4. Calculate two vectors of distances of old activations from the
 extremes.  
 DistsFromMin = Actvns - (-1) = Activns + 1 [which may be > 1 for some]
 DistsFromMax = 1 - Actvns [which may be < -1 for some]
@@ -156,6 +156,7 @@ ClippedDistsFromMax = max(1 - Actvns, -1)
 		   M (fn [e] (max e 0))))
 		   ; does the right thing in Vectorz
 		   ; returns a LazySeq in Clatrix. you have redo shape
+	NO USE EMAP.
 
 	There is a decay on the contribution of each old activation to
 	the new activation of the same node.
@@ -170,10 +171,10 @@ ClippedDistsFromMax = max(1 - Actvns, -1)
 	at least, what it's actually doing is
 		old * (1 - .1) = old * .90
 
-. Multiply Activns by the decay value .9 = 1 - .1 = 1 - decay amount 
+5. Multiply Activns by the decay value .9 = 1 - .1 = 1 - decay amount 
 [*decay-amount* in POPCO] to produce the result vector DKdActivns.
 
-
+6.
 NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
 depends on whether the weights for the sum were negative or positive.
 Then add the results to DKdActivns to get the new activation vector.

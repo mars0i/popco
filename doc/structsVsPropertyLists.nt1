@@ -47,4 +47,4 @@ So defrecord with :<field> is the fastest, and although it takes 50%
 more time relative to CL in this example, that's still in the same
 ballpark.  Much faster than the property list access I'm using now.
 
-
+Note that deftype creates mutable structures; defrecord doesn't.
