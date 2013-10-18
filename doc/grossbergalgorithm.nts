@@ -1,4 +1,4 @@
-grossbergalgorithim.nts
+grossbergalgorithm.nts
 (Thagard's method of calculating Grossberg updating of activation
 values, in network.lisp, is confusing.  Here are notes about what
 really has to be done, oriented toward the possibility of doing it
@@ -143,10 +143,6 @@ DistsFromMin = Actvns - (-1) = Activns + 1 [which may be > 1 for some]
 DistsFromMax = 1 - Actvns [which may be < -1 for some]
 	(Really?  This seems wrong.  It is what's in H&T1989.
 	And it's in network.lisp.)
-Actually, there's another step of clipping to the extremes.  If we do
-that all in one step, it goes like this:
-ClippedDistsFromMin = min(Activns + 1, 1)
-ClippedDistsFromMax = max(1 - Actvns, -1)
 
 	clojure notes:
 		(clatrix.core/map (fn [e] (max e 0)) M) ; clips above zero
@@ -178,3 +174,4 @@ ClippedDistsFromMax = max(1 - Actvns, -1)
 NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
 depends on whether the weights for the sum were negative or positive.
 Then add the results to DKdActivns to get the new activation vector.
+Then clip to [-1,1].
