@@ -10,22 +10,37 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility functions
 
-(defn rand-1+1 []
+(defmacro defun 
+  "Like defn, but with Lisp-style doc string placement after argvec.
+  (Don't use with destructuring/multiple argument/body lists or with no
+  docstring.  In those cases you're better off using defn anyway.)"
+  [fn-name argvec docstring & body]
+  `(defn ~fn-name ~docstring ~argvec ~@body))
+
+(defun rand-1+1 []
+  "Returns a random number in [-1, 1)."
   (dec (rand 2)))
 
-(defn nonneg [x]
+(defun nonnegify [x]
+  "Return the non-negative number closest to x, i.e. 0 if x < 0."
   (max 0 x))
 
-(defn nonpos [x]
+(defun nonposify [x]
+  "Return the non-positive number closest to x, i.e. 0 if x > 0."
   (min 0 x))
 
-(defn dist-from-min [activn]
-  (+ 1 activn))  ; think of sum as distance of neg activn from -1
-
-(defn dist-from-max [activn]
+(defun dist-from-max [activn]
+  "Return the distance of activn from 1.  Note return value will be > 1
+  if activn < 0."
   (- 1 activn))
 
-(defn clip-to-extrema [x]
+(defun dist-from-min [activn]
+  "Return the distance of activn from 1.  Note return value will be > 1
+  if activn < 0."
+  (+ 1 activn))  ; think of this sum as distance of neg activn from -1
+
+(defun clip-to-extrema [x]
+  "Returns -1 if x < -1, 1 if x > 1, and x otherwise."
   (max -1 (min 1 x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -49,11 +64,11 @@
 
 ;; step 1
 ;; ; neg activns will have no effect
-(def pos-activns (emap nonneg activns)) ; max(0, a_j) in MR; o_i(t) in HT
+(def pos-activns (emap nonnegify activns)) ; max(0, a_j) in MR; o_i(t) in HT
 
 ;; step 2
-(def pos-wts (emap nonneg wts)) ; w_ij > 0 in MR
-(def neg-wts (emap nonpos wts)) ; w_ij < 0
+(def pos-wts (emap nonnegify wts)) ; w_ij > 0 in MR
+(def neg-wts (emap nonposify wts)) ; w_ij < 0
 
 ;; step 3
 (def pos-wtd-inputs (mmul pos-wts pos-activns)) ; p_i in MR; enet_j in HT
