@@ -170,8 +170,8 @@ DistsFromMax = 1 - Actvns [which may be < -1 for some]
 5. Multiply Activns by the decay value .9 = 1 - .1 = 1 - decay amount 
 [*decay-amount* in POPCO] to produce the result vector DKdActivns.
 
-6.
-NEXT: Scale the sums in WtdSums by |max/min - current activn|, which
+6. Scale the sums in WtdSums by |max/min - current activn|, which
 depends on whether the weights for the sum were negative or positive.
 Then add the results to DKdActivns to get the new activation vector.
-Then clip to [-1,1].
+
+7. Then clip to [-1,1].
