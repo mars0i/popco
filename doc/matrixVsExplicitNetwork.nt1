@@ -4,6 +4,66 @@ map units for a person takes about .00035 seconds to do one round of
 settling on one person for one network.  This is from inserting TIME
 into settle-n-iters.
 
+Um, I'm not sure that the preceding is correct or makes sense. Soo:
+
+I again inserted '(time ...)'s inside the inner loop of
+settle-n-iters, i.e. around
+    (mapc #'update-unit-activn-gross units)
+    (mapc #'fix-activn units)
+I tried this both with (time (progn ...)) around both, and (time ...)
+around each individually.  And I ran yotest.lisp with only individuals
+that have all of the propositions in crime3.lisp, using full
+optimization settings, including turning off safety.  This runs
+separately for the 262-node analogy network and the 50-node proposition
+network.  Times for the propn network are very small.  Let's just
+consider the analogy network.  Roughly as reported above, the times for
+one iteration of settling--i.e.  one pass through the nodes and their
+links, updating the activation of each once---takes between 0.000335
+seconds and 0.000405 seconds, usually at the lower end.  Most of this
+time is in update-unit-activn-gross rather than fix-activn, which takes
+between 0.000025 and 0.000035 seconds.  
+
+Note that update-unit-activn does a little bit of property-list getting
+and setting, but not a lot.  fix-activn is mostly property-list access,
+except for a short calculation that no longer has a function--it's just
+wasting time.  Well, it is used in settle-up-to-n-iters, but I'm not
+using that right now.  (OK, I tried taking out that calculation and it
+saves 0.000007 to 0.000010 seconds.  Not a big difference relative to
+the comparison with clojure matrices.)
+
+Compared to matrix-based settling in Clojure using my October
+2013 experimental version of this process and using the fastest
+available matrix implementation at that time, vectorz:  For networks
+with random links with prob 0.035 of being nonzero, vectorz takes the
+following average times in seconds for one iteration of Grossberg
+settling of 250-node and 500-node networks when it's not necessary to
+recalculate the positive and negative weight matrices from the main
+weight matrix:
+	250 nodes, pre-split pos/neg matrices: 0.00014811879
+	500 nodes, pre-split pos/neg matrices: 0.000524436958
+
+Including recaculation of the positive and negative matrices from the
+main weight matrix:
+	250 nodes, calculating split matrices: 0.003031336
+	500 nodes, calculating split matrices: 0.012342413
+
+i.e. vs. <= 0.000405 seconds for POPCO in Common Lisp.  So it looks
+like vectorz with my algorithm is comparable but probably a little bit
+faster than POPCO/CL when the analogy network doesn't change.  But
+vectorz is a *lot* slower when doing the full Grossberg calculation,
+needed when new propositions are communicated. (for 250 nodes,
+0.003031336 / 0.00014811879 = 20X slower). Note the POPCO/CL
+algorithm always handles the case of the analogy network changing--it
+uses the full Grossberg algorithm each time.
+
+(Wow. That's disappointing.  And vectorz is *very* fast compared to the
+other core.matrix implementations.  So maybe I need to implement
+networks the hard way in the rewrite.  Or maybe I should see how fast
+a Common Lisp matrix implementation can be.)
+
+
+OBSOLETE:
+
 When running matrix * vector multiplication in Clojure using the JBLAS
 routines (which seem to be faster than the Incanter routines [no, that
 seems not to be true with latest version of Incanter.  matrix mult, at
