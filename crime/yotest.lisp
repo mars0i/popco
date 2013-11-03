@@ -32,12 +32,23 @@
 (n-persons-with-name 'temp-bo 'bo *group-size*)
 (kill 'temp-bo)
 
+; Add a person with a sets of propositions
+;            name groups given
+(make-person 'hal 'folks '() 
+             `((make-struc 'target 'problem '(start (,@viral-crime-propns)))
+               (make-struc 'source 'problem '(start (,@virus-propns)))
+               ,@semantic-relations)
+             '()          ; addl-input
+             '(target)    ; converse-strucs
+             '() ; talks-to
+             1)   ;num-listeners (may be irrelev)
+
 ;(make-no-bias-crime-talker 'temp-no '() 'nobis '(nobis))
 ;(n-persons-with-name 'temp-no 'no *group-size*)
 ;(kill 'temp-no)
 
 
-(setf *max-pop-ticks* 100)
+(setf *max-pop-ticks* 3)
 
 (init-pop)
 (print (get 'folks 'members))
