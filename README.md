@@ -17,7 +17,7 @@ software works see the open-access article listed below.
 
 POPCO is written mainly in Common Lisp, but there are some ancillary
 programs in NetLogo and R.  I'm currently exploring the suitability of
-rewriting POPCO in Clojure (see project popco-x).  This should result in
+rewriting POPCO in Clojure (see [popco-x](https://github.com/mars0i/popco-x)).  This should result in
 cleaner, simpler code--not because of Clojure, really, but because I'm
 rewriting POPCO from scratch now that I understand it well.  However,
 implementing POPCO in Clojure will make it easier to work with external
