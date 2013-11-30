@@ -16,9 +16,7 @@ open-access article:
 
 -------
 
-**Marshall Abrams, "A moderate role for cognitive models in agent-based
-modeling of cultural change", *Complex Adaptive Systems Modeling* 2013,
-1(16):1-33.**
+### Marshall Abrams, "A moderate role for cognitive models in agent-based modeling of cultural change", *Complex Adaptive Systems Modeling* 2013, 1(16):1-33.**
 
 #### Abstract
 
