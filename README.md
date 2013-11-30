@@ -32,6 +32,8 @@ to use POPCO. See http://members.logical.net/~marshall for more info.
 
 #### Marshall Abrams, "A moderate role for cognitive models in agent-based modeling of cultural change", *Complex Adaptive Systems Modeling* 2013, 1(16):1-33.
 
+http://www.casmodeling.com/content/1/1/16
+
 #### Abstract:
 
 ##### Purpose
