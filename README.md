@@ -1,4 +1,4 @@
-popco
+POPCO (population coherence)
 =======
 
 Copyright (c) 2012, 2013 by Marshall Abrams
