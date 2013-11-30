@@ -2,7 +2,8 @@ popco
 =======
 
 Copyright (c) 2012, 2013 by Marshall Abrams
-This work is free for academic use.  Distribution and use for other
+
+This work is currently free for academic use.  Distribution and use for other
 purposes allowed only with permission from the author.
 Many parts of POPCO in other files are by Paul Thagard and his
 collaborators on COHERE, with extensive modifications in many areas.
