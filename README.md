@@ -20,9 +20,9 @@ Marshall Abrams, "A moderate role for cognitive models in agent-based
 modeling of cultural change", *Complex Adaptive Systems Modeling* 2013,
 1(16):1-33.
 
-## Abstract
+### Abstract
 
-# Purpose
+#### Purpose
 
 Agent-based models are typically “simple-agent” models, in which agents
 behave according to simple rules, or “complex-agent” models which
@@ -33,7 +33,7 @@ argue that such models have the potential to bring insights from the
 humanistic study of culture into population-level modeling of cultural
 change.
 
-# Methods
+#### Methods
 
 I motivate my proposal in part by describing an agent-based modeling
 framework, POPCO, in which agents’ communication of their simulated
@@ -42,7 +42,7 @@ artificial neural networks within each agent. I use POPCO to model a
 hypothesis about causal relations between cultural patterns proposed by
 Peggy Sanday.
 
-# Results
+#### Results
 
 In model 1, empirical patterns like those reported by Sanday emerge from
 the influence of analogies on agents’ communication with each other.
@@ -51,7 +51,7 @@ diffuse through the population for reasons unrelated to later effects of
 the analogy. This illustrates a process by which novel cultural features
 might arise.
 
-# Conclusions
+#### Conclusions
 
 The inclusion of relatively simple cognitive models in agents allows
 modeling population-level effects of inferential and cultural coherence
