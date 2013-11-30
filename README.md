@@ -8,13 +8,26 @@ Many parts of POPCO in other files are by Paul Thagard and his
 collaborators on COHERE, with extensive modifications in many areas.
 Kristen Hammack made significant contributions to POPCO.
 
-For the motivation of this project, an illustration of its use, and the
-primary overview documentation of the software see the following
-open-access article.
+POPCO is a framework for agent-based simulations in which agents’
+communication of their simulated beliefs depends how those beliefs do or
+do not fit into analogies.  For the motivation of this project, an
+illustration of its use, and the primary documentation of how the
+software works see the open-access article listed below.
+
+POPCO is written mainly in Common Lisp, but there are some ancillary
+programs in NetLogo and R.  I'm currently exploring the suitability of
+rewriting POPCO in Clojure (see project popco-x).  This should result in
+cleaner, simpler code--not because of Clojure, really, but because I'm
+rewriting POPCO from scratch now that I understand it well.  However,
+implementing POPCO in Clojure will make it easier to work with external
+Java libraries.
+
+I'm more than happy to answer questions or work with others who want
+to use POPCO. See http://members.logical.net/~marshall for more info.
 
 -------
 
-#### Marshall Abrams, "A moderate role for cognitive models in agent-based modeling of cultural change", *Complex Adaptive Systems Modeling* 2013, 1(16):1-33.**
+#### Marshall Abrams, "A moderate role for cognitive models in agent-based modeling of cultural change", *Complex Adaptive Systems Modeling* 2013, 1(16):1-33.
 
 #### Abstract:
 
