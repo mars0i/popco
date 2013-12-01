@@ -7,9 +7,9 @@ This work is currently free for academic use.  Distribution and use for
 other purposes allowed only with permission from the author.  The
 overall conception and much of the code for POPCO are by Marshall
 Abrams, but many parts of POPCO are by Paul Thagard and his
-collaborators on COHERE, with extensive modifications by M.A.  Kristen
-Hammack made significant contributions to POPCO.  See the
-acknowledgements section of the article listed below for a list of
+collaborators on COHERE, with extensive modifications by Marshall
+Abrams.  Kristen Hammack also made significant contributions to POPCO.  See
+the acknowledgements section of the article listed below for a list of
 others whose help was very important.
 
 POPCO is a framework for agent-based simulations in which agents’
