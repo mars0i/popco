@@ -16,7 +16,7 @@ POPCO is a framework for agent-based simulations in which agents’
 communication of their simulated beliefs depends how those beliefs do or
 do not fit into analogies.  For the motivation of this project, an
 illustration of its use, and the primary documentation of how the
-software works see the open-access article listed below.
+software works, see the open-access article listed below.
 
 POPCO is written mainly in Common Lisp, but there are some ancillary
 programs in NetLogo and R.  I'm currently exploring the suitability of
