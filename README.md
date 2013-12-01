@@ -24,7 +24,7 @@ rewriting POPCO in Clojure (see [popco-x](https://github.com/mars0i/popco-x)).  
 cleaner, simpler code--not because of Clojure, but because I'm
 rewriting POPCO from scratch now that I understand it well.  However,
 implementing POPCO in Clojure will make it easier to work with external
-Java libraries.
+Java libraries and programs.
 
 I'm more than happy to answer questions or work with others who want
 to use POPCO. See http://members.logical.net/~marshall for more info.
