@@ -3,11 +3,14 @@ POPCO (population coherence)
 
 Copyright (c) 2012, 2013 by Marshall Abrams
 
-This work is currently free for academic use.  Distribution and use for other
-purposes allowed only with permission from the author.
-Many parts of POPCO in other files are by Paul Thagard and his
-collaborators on COHERE, with extensive modifications in many areas.
-Kristen Hammack made significant contributions to POPCO.
+This work is currently free for academic use.  Distribution and use for
+other purposes allowed only with permission from the author.  The
+overall conception and much of the code for POPCO are by Marshall
+Abrams, but many parts of POPCO are by Paul Thagard and his
+collaborators on COHERE, with extensive modifications by M.A.  Kristen
+Hammack made significant contributions to POPCO.  See the
+acknowledgements section of the article listed below for a list of
+others whose help was very important.
 
 POPCO is a framework for agent-based simulations in which agents’
 communication of their simulated beliefs depends how those beliefs do or
