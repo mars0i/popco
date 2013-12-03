@@ -45,17 +45,20 @@ sanday directories.  See for example crime/crime3example.lisp, which
 also loads crime/crime3.lisp, which in turn loads
 crime/crime3propns.lisp.
 
-If `*do-report-propns-to-csv*` is non-`nil`, a CSV file with data on all
+POPCO doesn't make any pretty pictures or anything like that on its own.
+I use R, GUESS, and NetLogo for analysis and visualization. (Also,
+examining data structures at a Lisp prompt can be extremely useful.) If
+`*do-report-propns-to-csv*` is non-`nil`, a CSV file with data on all
 proposition activation values in each person at each tick will be
 generated.  This can be read by functions defined in R/df2ra.R.  If
 `*do-report-to-netlogo*` is non-`nil`, a file that can be read by
 netlogo/popco.nlogo will be generated.  See doc/GuessTips.txt for info
 on on how to generate files that can be loaded into the GUESS network
 visualization package.  By default, POPCO generates a file
-data/RUN*.lisp, which stores a command to set the same random seed.
-If you load this after start.lisp but before loading the files that
-define persons, etc., and before running `(popco)`, you can replay
-the session that generated the RUN*.lisp file.
+data/RUN*.lisp, which stores a command to set the same random seed.  If
+you load this after start.lisp but before loading the files that define
+persons, etc., and before running `(popco)`, you can replay the session
+that generated the RUN*.lisp file.
 
 (I don't consider the rest self-explanatory, but the preceding is a
 start.  If you want to experiment with POPCO, I suggest contacting me.
