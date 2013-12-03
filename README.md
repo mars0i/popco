@@ -45,7 +45,7 @@ sanday directories.  See for example crime/crime3example.lisp, which
 also loads crime/crime3.lisp, which in turn loads
 crime/crime3propns.lisp.
 
-POPCO doesn't make any pretty pictures or anything like that on its own.
+POPCO doesn't make pretty pictures or anything like that on its own.
 I use R, GUESS, and NetLogo for analysis and visualization. (Also,
 examining data structures at a Lisp prompt can be extremely useful.) If
 `*do-report-propns-to-csv*` is non-`nil`, a CSV file with data on all
