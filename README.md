@@ -45,25 +45,27 @@ sanday directories.  See for example crime/crime3example.lisp, which
 also loads crime/crime3.lisp, which in turn loads
 crime/crime3propns.lisp.
 
-I've run POPCO successfully in Steel Bank Common Lisp (SBCL), Armed Bear
-Common Lisp (ABCL), Clozure Common Lisp (CCL), Embeddable Common Lisp
-(ECL), LispWorks, and CLISP.  POPCO runs fastest in SBCL, in my
-experience.
+(I don't consider the rest self-explanatory, but this is a start.  If
+you want to experiment with POPCO, I suggest contacting me.  I'll be
+very happy to help.)
 
-There is a problem that can occur with CLISP and (at least) the free
-version of LispWorks.  If you set `*do-report-to-netlogo*` to `t` in
-order to generate a data file to be read by popco.nlogo, it's possible
-for the code that generates the NetLogo data file to construct a
-function call with an extremely long argument list.  CLISP and LispWorks
-have a limit on the length of argument lists, and therefore can generate
-errors in this situation.
+I've run POPCO successfully in Steel Bank Common Lisp (SBCL), Armed
+Bear Common Lisp (ABCL), Clozure Common Lisp (CCL), Embeddable Common
+Lisp (ECL), LispWorks, and CLISP.  POPCO runs fastest in SBCL, in my
+experience. (There is a problem that can occur with CLISP and (at
+least) the free version of LispWorks.  If you set
+`*do-report-to-netlogo*` to `t` in order to generate a data file to be
+read by popco.nlogo, it's possible for the code that generates the
+NetLogo data file to construct a function call with an extremely long
+argument list.  CLISP and LispWorks have a limit on the length of
+argument lists, and therefore can generate errors in this situation.)
 
 #### How to read POPCO's source code
 
 I suggest starting with popco.lisp.  A good starting point is the
-function run-population-once.  You'll also want to reference
-variables.lisp along the way.  start.lisp loads all of the lisp files
-that make up POPCO.
+function `run-population-once`.  You'll also want to reference
+variables.lisp along the way.  Note that start.lisp loads all of the
+lisp files that make up POPCO.
 
 -------
 
