@@ -59,7 +59,7 @@ the session that generated the RUN*.lisp file.
 
 (I don't consider the rest self-explanatory, but the preceding is a
 start.  If you want to experiment with POPCO, I suggest contacting me.
-I'll be very happy to help you get started.)
+I'll be very happy to help.)
 
 I've run POPCO successfully in Steel Bank Common Lisp (SBCL), Armed
 Bear Common Lisp (ABCL), Clozure Common Lisp (CCL), Embeddable Common
