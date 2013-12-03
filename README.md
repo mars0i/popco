@@ -9,10 +9,10 @@ overall conception and much of the code for POPCO are by Marshall
 Abrams, but many parts of POPCO are by Paul Thagard and his
 collaborators on COHERE, with extensive modifications by Marshall
 Abrams.  Kristen Hammack also made significant contributions to POPCO.  See
-the acknowledgements section of the article listed below for a list of
+the acknowledgments section of the article listed below for a list of
 others whose help was very important to the project.
 
-POPCO is a framework for agent-based simulations in which agents’
+POPCO is a framework for agent-based simulations in which agents'
 communication of their simulated beliefs depends how those beliefs do or
 do not fit into analogies.  For the motivation of this project, an
 illustration of its use, and the primary documentation of how the
@@ -89,8 +89,8 @@ lisp files that make up POPCO.
 
 ##### Purpose
 
-Agent-based models are typically “simple-agent” models, in which agents
-behave according to simple rules, or “complex-agent” models which
+Agent-based models are typically "simple-agent" models, in which agents
+behave according to simple rules, or "complex-agent" models which
 incorporate complex models of cognitive processes. I argue that there is
 also an important role for agent-based computer models in which agents
 incorporate cognitive models of moderate complexity. In particular, I
@@ -101,7 +101,7 @@ change.
 ##### Methods
 
 I motivate my proposal in part by describing an agent-based modeling
-framework, POPCO, in which agents’ communication of their simulated
+framework, POPCO, in which agents' communication of their simulated
 beliefs depends on a model of analogy processing implemented by
 artificial neural networks within each agent. I use POPCO to model a
 hypothesis about causal relations between cultural patterns proposed by
@@ -110,7 +110,7 @@ Peggy Sanday.
 ##### Results
 
 In model 1, empirical patterns like those reported by Sanday emerge from
-the influence of analogies on agents’ communication with each other.
+the influence of analogies on agents' communication with each other.
 Model 2 extends model 1 by allowing the components of a new analogy to
 diffuse through the population for reasons unrelated to later effects of
 the analogy. This illustrates a process by which novel cultural features
