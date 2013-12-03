@@ -38,23 +38,25 @@ Then load one or more files that define persons and their
 propositions, and set parameters.  Then run the command '(popco)'.
 
 utils/popco and utils/popco.fast are *nix shell scripts that
-illustrate how to run POPCO using Steel Bank Common Lisp (SBCL).
+illustrate how to run POPCO using Steel Bank Common Lisp.
 
 Examples of files defining persons, etc. can be found in the crime and
 sanday directories.  See for example crime/crime3example.lisp, which
 also loads crime/crime3.lisp, which in turn loads
 crime/crime3propns.lisp.
 
-I've run POPCO successfully in SBCL, ABCL, CCL, ECL, LispWorks, and
-CLISP.  POPCO runs the fastest in SBCL, and that's what I usually use.
+I've run POPCO successfully in Steel Bank Common Lisp (SBCL), Armed Bear
+Common Lisp (ABCL), Clozure Common Lisp (CCL), Embeddable Common Lisp
+(ECL), LispWorks, and CLISP.  POPCO runs fastest in SBCL, in my
+experience.
 
-(There is a problem that can occur with CLISP and LispWorks--at least
-the free version.  If you set *do-report-to-netlogo* to t in order to
-generate a data file to be read by popco.nlogo, it's possible for the
-code that generates the NetLogo data file to construct a function call
-with an extremely long argument list.  CLISP and LispWorks have a limit
-on the length of argument lists, and therefore can generate errors in
-this situation.)
+There is a problem that can occur with CLISP and (at least) the free
+version of LispWorks.  If you set `*do-report-to-netlogo*` to `t` in
+order to generate a data file to be read by popco.nlogo, it's possible
+for the code that generates the NetLogo data file to construct a
+function call with an extremely long argument list.  CLISP and LispWorks
+have a limit on the length of argument lists, and therefore can generate
+errors in this situation.
 
 #### How to read POPCO's source code
 
