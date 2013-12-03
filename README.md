@@ -45,9 +45,21 @@ sanday directories.  See for example crime/crime3example.lisp, which
 also loads crime/crime3.lisp, which in turn loads
 crime/crime3propns.lisp.
 
-(I don't consider the rest self-explanatory, but this is a start.  If
-you want to experiment with POPCO, I suggest contacting me.  I'll be
-very happy to help.)
+If `*do-report-propns-to-csv*` is non-`nil`, a CSV file with data on all
+proposition activation values in each person at each tick will be
+generated.  This can be read by functions defined in R/df2ra.R.  If
+`*do-report-to-netlogo*` is non-`nil`, a file that can be read by
+netlogo/popco.nlogo will be generated.  See doc/GuessTips.txt for info
+on on how to generate files that can be loaded into the GUESS network
+visualization package.  By default, POPCO generates a file
+data/RUN*.lisp, which stores a command to set the same random seed.
+If you load this after start.lisp but before loading the files that
+define persons, etc., and before running `(popco)`, you can replay
+the session that generated the RUN*.lisp file.
+
+(I don't consider the rest self-explanatory, but the preceding is a
+start.  If you want to experiment with POPCO, I suggest contacting me.
+I'll be very happy to help you get started.)
 
 I've run POPCO successfully in Steel Bank Common Lisp (SBCL), Armed
 Bear Common Lisp (ABCL), Clozure Common Lisp (CCL), Embeddable Common
@@ -62,8 +74,8 @@ argument lists, and therefore can generate errors in this situation.)
 
 #### How to read POPCO's source code
 
-I suggest starting with popco.lisp.  A good starting point is the
-function `run-population-once`.  You'll also want to reference
+I suggest starting with popco.lisp.  A good starting point for reading
+is the function `run-population-once`.  You'll also want to reference
 variables.lisp along the way.  Note that start.lisp loads all of the
 lisp files that make up POPCO.
 
