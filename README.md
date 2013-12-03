@@ -80,7 +80,10 @@ argument lists, and therefore can generate errors in this situation.)
 I suggest starting with popco.lisp.  A good starting point for reading
 is the function `run-population-once`.  You'll also want to reference
 variables.lisp along the way.  Note that start.lisp loads all of the
-lisp files that make up POPCO.
+lisp files that make up POPCO.  (Parts of the source code are relatively
+easy to read, I feel; other parts are not.  There's a lot of history in
+some of the code.  The POPCO rewrite mentioned earlier, if completed,
+will be easier to read overall--I hope.)
 
 -------
 
