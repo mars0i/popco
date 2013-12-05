@@ -1,0 +1,29 @@
+;; SHOULD A=B BE TREATED AS THE SAME NODE AS B=A?  IF THE PREDICATES HAVE THE SAME
+;; MEANING IN BOTH ANALOGS?  IF THEY DON'T, OR MIGHT NOT?  What would(did) H&T do? (WDHTD)
+;; (Note that if A=B and B=A are the same node, it would be easy in some cases to avoid
+;; this effect where desired by simply renaming the predicates on one side.  However,
+;; this would raise issues for predicates like Causal-If and Preventative-If, that are
+;; intended to be very general and may cause special treatment e.g. in the proposition net.
+;; NOTE: Yes, A=B and B=A are treated differently in the CL POPCO.  e.g. compare
+;; Causal-if=Preventative-if in crime3.  And note that Causal-if=Causal-if and 
+;; Preventative-if=Preventative-if have a *lot* of links.
+;; HERE'S ANOTHER THING: If A=B and B=A *are* distinct, shouldn't they have negative
+;; links?  Aren't they competitive?  Or not?  (In POPCO 1 they have no neglink.)
+;; Well I suppose that if being in a different analog means you're a different predicate,
+;; then they aren't in competition.
+;; OK:
+;; First, H&T1989 makes no special provision for this issue.
+;; Predicates in different analogs are different, no matter how named.
+;; (Except that A=A gets a poslink from SPECIAL.)
+;; And maybe that's how it should be?  We poslink A=B to P=Q and o=p because
+;; propn P is A(o) and propn Q is B(p).  If we were to link P=Q and o=p to B=A,
+;; that doesn't make sense.  It's as if we're confusing this with a different
+;; propn mapping A(p)=B(o).
+;; ON THE OTHER HAND:
+;; A=B just says that A and B are analogous.  These predicates are playing the same role.
+;; They're being identified for the sake of the analogy.  So B=A should mean the same thing.
+;; ON THE NEXT HAND:
+;; A=B says that A and B play analogous roles *in their respective analogs*.  It does not
+;; say that B plays the role of A in the first analog, etc.  That is just wrong.
+;; OK so I think A=B and B=A should remain distinct.
+
