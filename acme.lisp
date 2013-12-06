@@ -428,9 +428,17 @@
     (unless *silent-run?* (my-print '"Constructing constraint network for "
                                     struc1 '" and " struc2))
     (setf *struc1* struc1)
+
     ; set up units and excitatory links for each field:
-    
     (make-units-for-fields struc1 struc2)
+    ; NOTE: The preceding line calls make-hyp-units, which calls make-hyp-units-for-msg, 
+    ; which calls make-hyp-unit, which is what (a) constructs new mapnodes, if they don't 
+    ; already exist, (b) determines whether they participate in propositional-structure 
+    ; isomorphisms--i.e. checks whether the propositions from which the mapnodes 
+    ; are derived have the same structure, and (c) creates/updates positively weighted 
+    ; links between mapnodes related by such structural isomorphism, if so.
+    ; Negative links representing competition between mapnodes are created/updated below
+    ; by calls to inhibit-multiple-mappings. -MA
     
     (unless *silent-run?*
       (and (my-print " Total number of units made: " (length (get *the-person* 'all-units)))
@@ -445,16 +453,20 @@
     (inhibit-multiple-mappings (conc-from-struc struc1) *inhib-weight*)
     
     ; for 1-1 mapping:
+    ; (For popco, *map-one-one?* is typically true, and *stop-many-one* typically = 1.0.)
     (if *map-one-one?* (inhibit-multiple-mappings (conc-from-struc struc2)
                                                   (* *stop-many-one* *inhib-weight*)))
 
     ; inhibitory links among object hypotheses (can be less than concepts)
+    ; (For popco, *obj-conc-fraction* typically = 1.0.)
     (inhibit-multiple-mappings (obj-from-struc struc1)
                                (* *inhib-weight* *obj-conc-fraction*))
     ; for 1-1 mapping:
+    ; (For popco, *obj-conc-fraction* typically = 1.0.)
     (if *map-one-one?* (inhibit-multiple-mappings (obj-from-struc struc2)
                                                   (* *inhib-weight* *obj-conc-fraction*)))
     ; inhibitory links to enforce 1-1 mapping of propositions:
+    ; (For popco, *map-one-one?* is typically true, and *propn-uniqueness* typically = 1.0.)
     (inhibit-multiple-mappings (get *the-person* 'all-propositions)
                                (* *inhib-weight* *propn-uniqueness*))
     (unless *silent-run?*
@@ -623,7 +635,7 @@
                   (record-hypothesis personal-propn1 new-propn-unit)
                   (record-hypothesis personal-propn2 new-propn-unit)
                   (setf result (cons new-propn-unit result))))  ; This is never used? -MA 6/2011
-           ; link proposition unit with concept unit:
+           ; link proposition unit with concept (predicate) unit:
            (make-symlink new-propn-unit new-conc-unit *excit-weight*)
 
            ; if msg2 from target contains a query, treat specially:
