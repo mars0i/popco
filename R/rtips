@@ -1,6 +1,22 @@
 R tips:
 
 ...........................................................
+# How to use the built-in plot function to plot a continuous function:
+
+# Using the example of the Frechet distribution from the evd package:
+require(evd)
+plot(dfrechet, xlim=c(0,11.5))
+# That's easy, but it doesn't allow specifying optional parameters to the distribution function.
+# Here's a way to do that:
+> plot(function(t){dfrechet(t,shape=2)}, xlim=c(0,11.5))
+# However, neither of those plots was very smooth.  R is sampling on the x axis and then connecting dots.
+# Here's how to make a smooth curve:
+> d=seq(0,11.5,.01)
+> plot(x=d, y=dfrechet(d,shape=2), type="l")
+# Note that that also avoids having to wrap in 'function', since you're sticking the data right into the function call.
+# Also, you don't need the xlim parameter, since the data itself tells R what the range should be.
+
+...........................................................
 # Unfortunately, the documentation for the built-in R cov function
 # is nearly unintelligible, but in fact it works as you'd expect,
 # with the qualification that it's a sample covariance, so the division
