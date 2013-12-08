@@ -1152,7 +1152,7 @@
       ; otherwise:
       ; make negatively-weighted links between map units for competing mapping hypotheses:
       (progn
-       (make-inhib-links
+       (make-inhib-links  ; in echo.lisp
         (no-queries ; strips out any queries
          (get-firsts (car lst) (get (car lst) 'constraint-hyps))) ; get map units in which obj-or-conc participates on the left side
         weight)

@@ -9,7 +9,7 @@
 (setf *do-report-to-netlogo* nil)
 (setf *do-report-propns-to-csv* nil)
 
-(setf *do-update-propn-nets-from-propn-nets* t)
+(setf *DO-UPDATE-PROPN-NETS-FROM-PROPN-NETS* NIL)
 
 (defvar *group-size* 10)
 

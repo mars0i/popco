@@ -118,6 +118,8 @@
 ; excitatory links with inhibitory ones.  Also won't make an acme map
 ; unit unless it doesn't exist.
 ; Excitatory links sum, but inhibitory don't.
+; [ADDED 12/8/2013: i.e. once a link has weight < 0, it will never be touched again.
+; This is tested in make-symlink.  (Original Thagard code does the same.)]
 ; This slows down creation of symlinks, but only has to be done once.
 ; *THE-PERSON* MUST BE SET CORRECTLY to update number of links in person in make-link.
 ; However, DOES NOT CONVERT GENERIC/PERSONAL ETC.: Uses whatever is passed in as the unit name.
