@@ -23,7 +23,11 @@
 ;;;  (causal-if (b-abp b-hp) B-ABP->HP)          ; 5. Beast attacking human harms person. [HO1]
 ;;;  (causal-if (b-abp b-hb) B-ABP->HB)          ; 7. Beast attacking person benefits beast. [HO1]
 ;;; Fixed for the first time now 7/21/2013.
-
+;;;
+;;; 3/11/2014 (yes, 2014, well into dev of Clojure popco) FIXED BUG:
+;;; When I renamed cause to causal-if and prevent to preventative-if, I forgot to
+;;; rename them in the semantic specs.  QUESTION: Did the stuff I presented
+;;; in July 2013 reflect the bug, or not?
 
 ;;; This file has all of the the propositonal and semantic contents of
 ;;; crime3.lisp as of 2/20/2013, with everything but the propositions and 
@@ -129,7 +133,7 @@
 
 (defvar semantic-relations
   '(
-    (similar 'cause 'prevent (* -1L0 *ident-weight*)) ; avoid mapping cause to prevent
+    (similar 'casual-if 'preventative-if (* -1L0 *ident-weight*)) ; avoid mapping cause to prevent
     (semantic-iff 'cb-vpp 'v-ipa -.1L0)
     (semantic-iff 'cv-rpa 'b-abp -.1L0)
     (similar 'is-beastly 'is-infected (* -1L0 *ident-weight*))
