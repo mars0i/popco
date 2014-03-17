@@ -61,14 +61,24 @@
   t)
 
 ; print to the console a person's constraints in csv sorted format
-(defun sort-print-constraints-csv (person)
+(defun sort-print-constraints-csv (person &optional (key 'all-units))
   (setf *the-person* person)
   (mapc 
     #'(lambda (c)
         (let ((a (personal-to-generic-sym (car c)))  
               (b (personal-to-generic-sym (cadr c))))
-             (format t "~S,~S,~S~%" (if (string< a b) a b) (if (string< a b) b a) (cddr c))))
-    (list-constraints (get person 'all-units)))
+          (format t "~S,~S,~S~%" (if (string< a b) a b) (if (string< a b) b a) (cddr c))))
+    (stable-sort 
+      (list-constraints (get person key))
+      #'(lambda (c1 c2)
+          (let ((c1a (personal-to-generic-sym (car c1)))  
+                (c1b (personal-to-generic-sym (cadr c1)))
+                (c2a (personal-to-generic-sym (car c2)))
+                (c2b (personal-to-generic-sym (cadr c2))))
+            (or (symbol-lessp c1a c2a) 
+                (if (symbol-equal c1a c2a)
+                  (symbol-lessp c1b c2b)
+                  nil))))))
   t)
 
 
@@ -166,6 +176,9 @@
 
 (defun symbol-lessp (sym1 sym2)
   (string-lessp (symbol-name sym1) (symbol-name sym2)))
+
+(defun symbol-equal (sym1 sym2)
+  (string-equal (symbol-name sym1) (symbol-name sym2)))
 
 (defun symbol< (sym1 sym2)
   (string< (symbol-name sym1) (symbol-name sym2)))
