@@ -139,6 +139,7 @@
    ))
 
 (defvar crime-propns `(,@viral-crime-propns ,@beastly-crime-propns))
+(defvar living-propns `(,@virus-propns ,@beast-propns))
 
 (defvar virus-propn-syms (mapcar #'third virus-propns))
 (defvar beast-propn-syms (mapcar #'third beast-propns))
