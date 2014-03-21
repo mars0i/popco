@@ -106,6 +106,10 @@
     (time (run-population *the-population* :cont-prev-sess cont-prev-sess))
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
 
+;; POPCO without creating a random-state file, and other effects (see run-population-once)
+(defun popco*
+  (popco :cont-prev-sess t))
+
 
 ; POPCO-PLUS-T
 ; Run the main loop on *the-population*, starting from the current *pop-tick*, until
