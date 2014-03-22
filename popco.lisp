@@ -107,7 +107,7 @@
     (run-population *the-population* :cont-prev-sess cont-prev-sess))) 
 
 ;; POPCO without creating a random-state file, and other effects (see run-population-once)
-(defun popco*
+(defun popco* ()
   (popco :cont-prev-sess t))
 
 
