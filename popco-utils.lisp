@@ -60,26 +60,20 @@
     (list-constraints (get person 'all-units)))
   t)
 
-; print to the console a person's constraints in csv sorted format
 (defun sort-print-constraints-csv (person &optional (key 'all-units))
-  (setf *the-person* person)
   (mapc 
-    #'(lambda (c)
-        (let ((a (personal-to-generic-sym (car c)))  
-              (b (personal-to-generic-sym (cadr c))))
-          (format t "~S,~S,~S~%" (if (string< a b) a b) (if (string< a b) b a) (cddr c))))
-    (stable-sort 
-      (list-constraints (get person key))
-      #'(lambda (c1 c2)
-          (let ((c1a (personal-to-generic-sym (car c1)))  
-                (c1b (personal-to-generic-sym (cadr c1)))
-                (c2a (personal-to-generic-sym (car c2)))
-                (c2b (personal-to-generic-sym (cadr c2))))
-            (or (symbol-lessp c1a c2a) 
-                (if (symbol-equal c1a c2a)
-                  (symbol-lessp c1b c2b)
-                  nil))))))
+    #'(lambda (c) (format t "~S,~S,~S~%" (car c) (cadr c) (cddr c)))
+    (sort-person-constraints person key))
   t)
+
+(defun sort-person-constraints (person &optional (key 'all-units))
+  (sort-constraints (list-constraints (get person key))))
+
+
+(defun sort-constraints (cs)
+  (stable-sort
+    (mapcar #'normalize-constraint cs)
+    #'constraint-lessp))
 
 (defun constraint-lessp (c1 c2)
   (let ((c1a (personal-to-generic-sym (car c1)))  
@@ -100,6 +94,27 @@
       (cons node1 
             (cons node2 
                   (cddr c))))))
+
+;; print to the console a person's constraints in csv sorted format
+;(defun sort-print-constraints-csv (person &optional (key 'all-units))
+;  (setf *the-person* person)
+;  (mapc 
+;    #'(lambda (c)
+;        (let ((a (personal-to-generic-sym (car c)))  
+;              (b (personal-to-generic-sym (cadr c))))
+;          (format t "~S,~S,~S~%" (if (string< a b) a b) (if (string< a b) b a) (cddr c))))
+;    (stable-sort 
+;      (list-constraints (get person key))
+;      #'(lambda (c1 c2)
+;          (let ((c1a (personal-to-generic-sym (car c1)))  
+;                (c1b (personal-to-generic-sym (cadr c1)))
+;                (c2a (personal-to-generic-sym (car c2)))
+;                (c2b (personal-to-generic-sym (cadr c2))))
+;            (or (symbol-lessp c1a c2a) 
+;                (if (symbol-equal c1a c2a)
+;                  (symbol-lessp c1b c2b)
+;                  nil))))))
+;  t)
 
 ;;;doesn't work yet... trying to write constraints to a file, or just return them
 #|  (defun write-constraints-csv (person )
