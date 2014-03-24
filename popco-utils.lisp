@@ -66,9 +66,39 @@
     (sort-person-constraints person key))
   t)
 
-(defun sort-person-constraints (person &optional (key 'all-units))
-  (sort-constraints (list-constraints (get person key))))
+;; USE THIS TO GENERATE LIST OF CONSTRAINTS FOR COMPARISON WITH POPCO-X/POPCO2:
+(defun list-constraints-for-popco2 (person &optional (key 'all-units) (filename "yo.txt"))
+  (with-open-file (*standard-output* filename :direction :output :if-exists :rename)
+    (mapc #'(lambda (c) (format t "[:~A :~A ~F]~%" (car c) (cadr c) (cddr c)))
+          (mapcar #'semanticize-special-nodes
+                  (sort-person-constraints person key))))
+  t)
 
+;; In popco-x/popco2, the node 'special has been renamed to :semantic.
+;; For purposes of comparison with that version of popco, we make can 
+;; this replacement in output.  This should be the *only* place that this
+;; translation is hardcoded.
+(defun semanticize-special-nodes (constraint)
+  (let ((n1 (car constraint))
+        (n2 (cadr constraint))
+        (weight (cddr constraint)))
+    (cons (semanticize-if-special n1)
+          (cons (semanticize-if-special n2)
+                weight))))
+
+(defun semanticize-if-special (node)
+  (if (eq node 'special)
+    'semantic
+    node))
+
+;; Example:
+;; (with-open-file (*standard-output* "yo.txt" :direction :output :if-exists :rename)
+;;    (pprint (sort-person-constraints 'bo01 'all-map-units)))
+(defun sort-person-constraints (person &optional (key 'all-units))
+  (setf *the-person* person)
+  (sort-constraints 
+    (mapcar #'maybe-depersonalize-constraint
+            (list-constraints (get person key)))))
 
 (defun sort-constraints (cs)
   (stable-sort
@@ -76,10 +106,10 @@
     #'constraint-lessp))
 
 (defun constraint-lessp (c1 c2)
-  (let ((c1a (personal-to-generic-sym (car c1)))  
-        (c1b (personal-to-generic-sym (cadr c1)))
-        (c2a (personal-to-generic-sym (car c2)))
-        (c2b (personal-to-generic-sym (cadr c2))))
+  (let ((c1a (maybe-depersonalize-sym (car c1)))  
+        (c1b (maybe-depersonalize-sym (cadr c1)))
+        (c2a (maybe-depersonalize-sym (car c2)))
+        (c2b (maybe-depersonalize-sym (cadr c2))))
     (or (symbol-lessp c1a c2a) 
         (and (symbol-equal c1a c2a) 
              (symbol-lessp c1b c2b)))))
