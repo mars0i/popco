@@ -48,11 +48,10 @@
 ;(kill 'temp-no)
 
 
-(setf *max-pop-ticks* 100)
-
+(setf *max-pop-ticks* 5)
 (init-pop)
 (print (get 'folks 'members))
 
-(gc :full t) ; garbage collect first for greater uniformity in time trials
-;(popco)
+;(gc :full t) ; garbage collect first for greater uniformity in time trials
+(popco*)
 ;(quit)
