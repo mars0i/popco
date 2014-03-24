@@ -67,7 +67,7 @@
   t)
 
 ;; USE THIS TO GENERATE LIST OF CONSTRAINTS FOR COMPARISON WITH POPCO-X/POPCO2:
-(defun list-constraints-for-popco2 (person &optional (key 'all-units) (filename "yo.txt"))
+(defun list-constraints-for-popco2-comparison (person &optional (key 'all-units) (filename "yo.txt"))
   (with-open-file (*standard-output* filename :direction :output :if-exists :rename)
     (mapc #'(lambda (c) (format t "[:~A :~A ~F]~%" (car c) (cadr c) (cddr c)))
           (mapcar #'semanticize-special-nodes
