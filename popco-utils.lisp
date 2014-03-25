@@ -67,13 +67,19 @@
   t)
 
 ;; USE THIS TO GENERATE LIST OF CONSTRAINTS FOR COMPARISON WITH POPCO-X/POPCO2:
-(defun list-constraints-for-popco2-comparison (person &optional (key 'all-units) (filename "yo.txt"))
+;; Generates a file containing Clojure code that can also be visually compared, diffed, etc.
+(defun list-constraints-for-popco2-comparison (person &optional (key 'all-units) (filename "yo.clj"))
   (with-open-file (*standard-output* filename :direction :output :if-exists :rename)
-    (format t "(")
-    (mapc #'(lambda (c) (format t " [:~A :~A ~F]~%" (car c) (cadr c) (cddr c)))
-          (mapcar #'semanticize-special-nodes
-                  (sort-person-constraints person key)))
-    (format t ")"))
+    (let ((initial 0))
+      (format t "(def from-popco1 ' ~%(" )  ; <- note the Clojure code
+      (mapc #'(lambda (c) (format t "~[~;~% ~][:~A :~A ~F ~F]" ; '~[~;~% ~]' says: if arg is 0, print what's between '~[' and '~;' (nothing); if arg is 1, print between '~;' and '~]'.
+                                  (prog1 initial         ; first time choose zeroth segment of '~[~;~% ~]'
+                                    (when (= 0 initial)  ; after that, chose the oneth segment.
+                                      (incf initial)))
+                                  (car c) (cadr c) (cddr c) (cddr c))) ; repeat weight to indicate it's a bidirectional link
+            (mapcar #'semanticize-special-nodes
+                    (sort-person-constraints person key)))
+      (format t "))" )))
   t)
 
 ;; In popco-x/popco2, the node 'special has been renamed to :semantic.
