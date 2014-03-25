@@ -123,8 +123,8 @@
         (node2 (cadr c)))
     (if (string< node1 node2) 
       c
-      (cons node1 
-            (cons node2 
+      (cons node2 
+            (cons node1 
                   (cddr c))))))
 
 ;; print to the console a person's constraints in csv sorted format
