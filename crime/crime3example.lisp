@@ -28,9 +28,13 @@
 ;(n-persons-with-name 'temp-be 'be *group-size*)
 ;(kill 'temp-be)
 
-(make-both-bias-crime-talker 'temp-bo '() 'bobis '(bobis))
-(n-persons-with-name 'temp-bo 'bo *group-size*)
-(kill 'temp-bo)
+;(make-both-bias-crime-talker 'temp-bo '() 'bobis '(bobis))
+;(n-persons-with-name 'temp-bo 'bo *group-size*)
+;(kill 'temp-bo)
+
+(make-both-bias-crime-talker  'bo '() 'folks '(folks))
+(make-beast-bias-crime-talker 'be '() 'folks '(folks))
+(make-virus-bias-crime-talker 'bv '() 'folks '(folks))
 
 ; Add a person with a sets of propositions
 ;            name groups given
