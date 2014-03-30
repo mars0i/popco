@@ -66,6 +66,14 @@
     (sort-person-constraints person key))
   t)
 
+;; convenience function for use with the following function
+;; note popco2 must be a link in the current popco directory
+(defun list-constraints-for-popco2-comparison-to-person-file (person &optional (basename "popco2/src/popco/test/FromPopco1"))
+  (list-constraints-for-popco2-comparison person 
+                                          'all-units
+                                          (format nil "~A~A.clj" basename (symbol-name person))))
+
+
 ;; USE THIS TO GENERATE LIST OF CONSTRAINTS FOR COMPARISON WITH POPCO-X/POPCO2:
 ;; Generates a file containing Clojure code that can also be visually compared, diffed, etc.
 (defun list-constraints-for-popco2-comparison (person &optional (key 'all-units) (filename "yo.clj"))
