@@ -52,7 +52,9 @@
 
 (popco*)
 
-(mapc #'list-analogy-constraints-for-popco2-comparison-to-person-file (get 'folks 'members))
+(mapc #'list-analogy-constraints-for-popco2-comparison-to-person-file 
+      (get 'folks 'members) 
+      (make-list (length (get 'folks 'members)) :initial-element "crime3"))
 
 
 ;(quit)

@@ -68,18 +68,19 @@
 
 ;; convenience function for use with the following function
 ;; note popco2 must be a link in the current popco directory
-(defun list-analogy-constraints-for-popco2-comparison-to-person-file (person &optional (basename "popco2/src/popco/test/FromPopco1"))
+(defun list-analogy-constraints-for-popco2-comparison-to-person-file (person classtail &optional (basename "popco2/src/popco/test/FromPopco1"))
   (list-constraints-for-popco2-comparison person 
+                                          classtail
                                           'all-map-units
                                           (format nil "~A~A.clj" basename (symbol-name person))))
 
 
 ;; USE THIS TO GENERATE LIST OF CONSTRAINTS FOR COMPARISON WITH POPCO-X/POPCO2:
 ;; Generates a file containing Clojure code that can also be visually compared, diffed, etc.
-(defun list-constraints-for-popco2-comparison (person &optional (key 'all-units) (filename "yo.clj"))
+(defun list-constraints-for-popco2-comparison (person classtail &optional (key 'all-units) (filename "yo.clj"))
   (with-open-file (*standard-output* filename :direction :output :if-exists :rename)
     (let ((initial 0))
-      (format t "(def from-popco1 ' ~%(" )  ; <- note the Clojure code
+      (format t "(ns popco.test.~A)~%~%(def from-popco1 ' ~%(" classtail)  ; <- note the Clojure code
       (mapc #'(lambda (c) (format t "~[~;~% ~][:~A :~A ~F ~F]" ; '~[~;~% ~]' says: if arg is 0, print what's between '~[' and '~;' (nothing); if arg is 1, print between '~;' and '~]'.
                                   (prog1 initial         ; first time choose zeroth segment of '~[~;~% ~]'
                                     (when (= 0 initial)  ; after that, chose the oneth segment.
