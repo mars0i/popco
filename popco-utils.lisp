@@ -68,9 +68,9 @@
 
 ;; convenience function for use with the following function
 ;; note popco2 must be a link in the current popco directory
-(defun list-constraints-for-popco2-comparison-to-person-file (person &optional (basename "popco2/src/popco/test/FromPopco1"))
+(defun list-analogy-constraints-for-popco2-comparison-to-person-file (person &optional (basename "popco2/src/popco/test/FromPopco1"))
   (list-constraints-for-popco2-comparison person 
-                                          'all-units
+                                          'all-map-units
                                           (format nil "~A~A.clj" basename (symbol-name person))))
 
 

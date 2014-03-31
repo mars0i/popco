@@ -52,7 +52,7 @@
 
 (popco*)
 
-(mapc #'list-constraints-for-popco2-comparison-to-person-file (get 'folks 'members))
+(mapc #'list-analogy-constraints-for-popco2-comparison-to-person-file (get 'folks 'members))
 
 
 ;(quit)
