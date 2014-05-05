@@ -11,9 +11,9 @@
 (setf *guess-layout-commands* "")
 (setf *extra-meta-commands* "")
 
-(make-both-bias-crime-talker  'bo crime-propns 'folks '(folks))
-(make-beast-bias-crime-talker 'be crime-propns 'folks '(folks))
-(make-virus-bias-crime-talker 'bv crime-propns 'folks '(folks))
+(make-both-bias-crime-talker  'jo  crime-propns 'folks '(folks))
+(make-beast-bias-crime-talker 'job crime-propns 'folks '(folks))
+(make-virus-bias-crime-talker 'jov crime-propns 'folks '(folks))
 
 (setf *max-pop-ticks* 100)
 (init-pop)
