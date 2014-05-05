@@ -7,16 +7,16 @@
 (load "crime/crime3")
 
 (setf *do-report-to-netlogo* nil)
-(setf *do-report-propns-to-csv* nil)
+(setf *do-report-propns-to-csv* t)
 
 (setf *DO-UPDATE-PROPN-NETS-FROM-PROPN-NETS* NIL)
 
-(defvar *group-size* 1)
+;(defvar *group-size* 25)
 
 ; don't move graph around in telguess:
 (setf *guess-layout-commands* "")
 (setf *extra-meta-commands* "")
-(setf *do-converse* t)
+(setf *do-converse* nil)
 
 ;(make-no-bias-crime-talker 'aa crime-propns 'pundits '(VIBIs BEBIs BOBIs NOBIs))  ; pundit
 
@@ -52,10 +52,11 @@
 ;(kill 'temp-no)
 
 
-(setf *max-pop-ticks* 5)
+(setf *max-pop-ticks* 100)
 (init-pop)
 (print (get 'folks 'members))
 
 ;(gc :full t) ; garbage collect first for greater uniformity in time trials
-(popco*)
+;(popco*)
+(popco)
 ;(quit)
