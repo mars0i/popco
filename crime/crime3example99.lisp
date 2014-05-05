@@ -33,5 +33,5 @@
 (print (get 'folks 'members))
 
 ;(gc :full t) ; garbage collect first for greater uniformity in time trials
-;(popco*)
+;(popco)
 ;(quit)
