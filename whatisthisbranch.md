@@ -1,3 +1,6 @@
+What is this branch?
+=======
+
 This was forked from master on 5/10/2014.  It differs from master in
 that all numbers have been changed to integers or ratios, rather than
 long floats, and type declarations have been removed or commented out.
