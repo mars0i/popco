@@ -72,7 +72,7 @@
 ;(myload "logistic")
 (myload "popco")
 (format t "Main POPCO routines loaded (popco.lisp).~%")
-(setq *asymptote* .0001)
+(setq *asymptote* 1/10000)
 (myload "HT1989params")
 (format t "~%Network and ACME parameters have been set to values specified in Holyoak and Thagard 1989 'Analog mapping by constraint satisfaction'.~%")
 

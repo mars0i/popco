@@ -929,8 +929,8 @@
 ;; The IGNORE declaration stops SBCL from issuing a style warning
 ;; because the function never uses the indexes passed to it.
 (defun matrix-map-into (fn mat)
-  (declare ((simple-array * (* *)) mat)
-           ((function (fixnum fixnum))))  ; is this useful??
+  ;(declare ((simple-array * (* *)) mat)
+  ;         ((function (fixnum fixnum))))  ; is this useful??
   (destructuring-bind
     (height width) (array-dimensions mat)
     (dotimes (i height)
@@ -1705,8 +1705,8 @@
 ;; The IGNORE declaration stops SBCL from issuing a style warning
 ;; because the function never uses the indexes passed to it.
 (defun matrix-map-into (fn mat)
-  (declare ((simple-array * (* *)) mat)
-           ((function (fixnum fixnum))))  ; is this useful??
+  ;(declare ((simple-array * (* *)) mat)
+  ;         ((function (fixnum fixnum))))  ; is this useful??
   (destructuring-bind
     (height width) (array-dimensions mat)
     (dotimes (i height)

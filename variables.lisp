@@ -31,8 +31,8 @@
 (defvar *eval-mode* 'tempered) ; coherence mode: pure, tempered, or foundational
 (defvar *num-solutions* 0) ; number of solutions to be considered
 (defvar *max-num-solutions* 5000) ; maximum number of solutions to try
-(defvar *special-register* 1L0) ; hold value for *special-activation* DEFINED BELOW [cf. functions pure, temp, found and following comments in cohere.lisp]
-(defvar *resonance-impact* 1L0) ; resonance has effect if value > 1
+(defvar *special-register* 1) ; hold value for *special-activation* DEFINED BELOW [cf. functions pure, temp, found and following comments in cohere.lisp]
+(defvar *resonance-impact* 1) ; resonance has effect if value > 1
 
  ; If both of these variables are non-nil, then run-hyp-net
 ; will report activations of listed nodes for listed persons:
@@ -44,28 +44,28 @@
 (defvar *report-activn-change* nil) ; If non-nil run-hyp-net calculates, returns total change of all activations of person's units. added by MA 1/2012
 (defvar *all-xs* nil)    ; This is setf'ed in network.lisp.  Added by MA 10/2011 to make SBCL compiler happy.
 (defvar *all-xsit* nil)  ;  ditto
-(defvar *init-activ* .01L0 "Initial activation of units.")
-(defvar *propn-init-activ* .0L0 "Initial activation of units for POPCO proposition-inference networks.")
-(defvar *default-activ* .01L0 "Default activation of units.")
-(defvar *excit-weight* .04L0 "Weight of excitatory links--for traditional COHERE networks.")
-(defvar *inhib-weight* -.06L0 "Weight of inhibitory links--for traditional COHERE networks.")
+(defvar *init-activ* 1/10 "Initial activation of units.")
+(defvar *propn-init-activ* 0 "Initial activation of units for POPCO proposition-inference networks.")
+(defvar *default-activ* 1/10 "Default activation of units.")
+(defvar *excit-weight* 4/100 "Weight of excitatory links--for traditional COHERE networks.")
+(defvar *inhib-weight* -6/100 "Weight of inhibitory links--for traditional COHERE networks.")
 ; See also: *propn-<excit|inhib>-weight* in the POPCO section.
-(defvar *simpl-impact* 1L0 "Impact of complexity of structure on coherence.")
-(defvar *goal-excit* .04L0 "Default weight of links from special unit to basic goals.")
-(defvar *weak-incohere-impact* .2L0 "Impact of incohering subgoals.")
-;defined below: (defvar *analogy-impact* 1L0 "Impact of analogous goal structures.")
-(defvar *special-activation* 1.0L0 "Activation of special unit.") ; Changed from 1 to 1.0 for implementations like SBCL that are finicky about numeric types -MA 8/3/2011
+(defvar *simpl-impact* 1 "Impact of complexity of structure on coherence.")
+(defvar *goal-excit* 4/100 "Default weight of links from special unit to basic goals.")
+(defvar *weak-incohere-impact* 2/10 "Impact of incohering subgoals.")
+;defined below: (defvar *analogy-impact* 1 "Impact of analogous goal structures.")
+(defvar *special-activation* 1 "Activation of special unit.") ; Changed from 1 to 1.0 for implementations like SBCL that are finicky about numeric types -MA 8/3/2011
 (setf (get 'special 'activation) *special-activation*)
 ;(setf (get 'semantic 'activation) *special-activation*)
-(defvar *min-activation* -.99L0 "Minimum possible activation for a unit.")
-(defvar *max-activation* .99L0 "Maximum possible activation for a unit.")
-(defvar *goal-min-activation* 0L0 "minimum possible activation for a goal.")
-(defvar *decay-amount* 0.1L0 "Amount that units' activations decay over time.")
-(defvar *output-threshold* 0L0 "Minimum activation for an influential unit.") ; PT 2-93
+(defvar *min-activation* -1 "Minimum possible activation for a unit.")
+(defvar *max-activation* 1 "Maximum possible activation for a unit.")
+(defvar *goal-min-activation* 0 "minimum possible activation for a goal.")
+(defvar *decay-amount* 1/10 "Amount that units' activations decay over time.")
+(defvar *output-threshold* 0 "Minimum activation for an influential unit.") ; PT 2-93
 (defvar *min-settle* 25 "Minimum time at which a network can settle.")
-(defvar *asymptote* .0001L0 "Amount of change at which a unit has asymptoted.")
-(defvar *current-excit* 0.0L0 "Variable for Grossberg rule.")
-(defvar *current-inhib* 0.0L0 "Variable for Grossberg rule.")
+(defvar *asymptote* 1/10000 "Amount of change at which a unit has asymptoted.")
+(defvar *current-excit* 0 "Variable for Grossberg rule.")
+(defvar *current-inhib* 0 "Variable for Grossberg rule.")
 (defvar *where-to-print* *standard-output* "Option to change output stream.")
 (defvar *when-to-print* '(1 30 40 50 70 85 100 150) "When to print state of network.") ; PT 2-93
 (defvar *silent-run?* nil "Printout results.")
@@ -135,21 +135,21 @@
 (defvar *effector-units* nil)
 ;(defvar *object-units* nil) ; not used in POPCO; replaced with a local var in make-hyp-unit -MA 4/2012
 (defvar *sim-list* nil)
-(defvar *no-sim-weight* 0L0)
-(defvar *obj-conc-fraction* 1L0 ) ; inhibition of object hypotheses
-(defvar *stop-many-one* 1L0) ; if > 1L0, discourages many-one mappings
-(defvar *propn-uniqueness* 1L0) ; enforces 1-1 mappings of propositions
+(defvar *no-sim-weight* 0)
+(defvar *obj-conc-fraction* 1 ) ; inhibition of object hypotheses
+(defvar *stop-many-one* 1) ; if > 1, discourages many-one mappings
+(defvar *propn-uniqueness* 1) ; enforces 1-1 mappings of propositions
 (defvar *map-all?* nil) ; map regardless of fields
 
-(defvar *ident-weight* .1L0) ; similarity of concept to self
-(defvar *synon-weight* .08L0) ; similarity of synonyms
-(defvar *coord-weight* .06L0) ; similarity of coordinates
+(defvar *ident-weight* 1/10) ; similarity of concept to self
+(defvar *synon-weight* 8/100) ; similarity of synonyms
+(defvar *coord-weight* 6/100) ; similarity of coordinates
 (defvar *synonyms* nil)
 (defvar *same-kinds* nil)
 (defvar *same-parts* nil)
 
 (defvar *map-one-one?* t) ; do 1-1 mapping
-(defvar *no-concept-weight* 0L0) ; weight from special to null units
+(defvar *no-concept-weight* 0) ; weight from special to null units
 (defvar *stop-when-matched?* nil) ; for automatic stopping on correct answer
 (defvar *best-matches* nil)
 (defvar *desired-matches* nil)
@@ -159,22 +159,22 @@
 
 (defvar *look-for-queries?* nil) ; for query arguments
 (defvar *query-connections* nil)
-(defvar *query-weight-proportion* 1L0)
+(defvar *query-weight-proportion* 1)
 (defvar *link-concepts-objects?* t) ; link concept hyps to object hyps directly
 (defvar *link-objects?* t) ; make links between object mappings
 (defvar *watch-for-dup-arguments?* nil) ; see dup-arguments
 (defvar *pragmatic-unit-made* nil) ; for pragmatic constraint
 
 (defvar *show-others?* t) ; show other good maps
-(defvar *min-good* .2L0) ; good enough to notice
-(defvar *prag-weight* .3L0) ; weight to pragmatic unit for presumed
-(defvar *import-weight* .1L0) ; importance links to pragmatic unit
+(defvar *min-good* 2/10) ; good enough to notice
+(defvar *prag-weight* 3/10) ; weight to pragmatic unit for presumed
+(defvar *import-weight* 1/10) ; importance links to pragmatic unit
 
 (defvar *use-arcs-semantics?* nil) ; to use arcs semantics file to make
 ; similarity judgements
 (defvar *feature-selection* nil)
 (defvar *ignore-preds* nil)
-(defvar *propns-import?* 0L0)
+(defvar *propns-import?* 0)
 (defvar *selection-list* nil) ; for ARCS
 (defvar *symmetric-concepts* nil)
 (defvar *use-auto-prag?* nil) ; to have function check-importance invoked
@@ -192,22 +192,22 @@
 (defvar *all-explainers* nil)
 (defvar *all-explained* nil)
 (defvar *explan-data* nil)
-(defvar *data-excit* .05L0) ; excitation of data
-;defined above: (defvar *special-activation* 1L0)
+(defvar *data-excit* 5/100) ; excitation of data
+;defined above: (defvar *special-activation* 1)
 ; (setf (get *the-person* 'all-propositions) nil) ; now in initialize-person-properties in popco.lisp
 (defvar *all-data* nil)
 (defvar *data-self-links?* nil)
-(defvar *analogy-impact* 1L0) ; impact of analogy
-;defined above: (defvar *simpl-impact* 1L0) ; impact of simplicity
-(defvar *co-hyp-importance* 1L0) ; if < 1, links between cohypotheses are less.
+(defvar *analogy-impact* 1) ; impact of analogy
+;defined above: (defvar *simpl-impact* 1) ; impact of simplicity
+(defvar *co-hyp-importance* 1) ; if < 1, links between cohypotheses are less.
 (defvar *self-link-data* nil)
-(defvar *data-init-activ* .01L0)
+(defvar *data-init-activ* 1/100)
 ;defined above: (defvar *init-activ* .01)
-(defvar *decay-register* .05L0)
+(defvar *decay-register* 5/100)
 (defvar *check-unexplained* nil) ; look for unexplained data
-(defvar *entail-impact* 1L0) ; if > 1, entailment excites more than expln.
+(defvar *entail-impact* 1) ; if > 1, entailment excites more than expln.
 (defvar *contradictions* nil) ; pairs of contradictory propns
-(defvar *ad-hoc-factor* 1L0 "decrease excitatory links for ad hoc explanations")
+(defvar *ad-hoc-factor* 1 "decrease excitatory links for ad hoc explanations")
 
 
 
@@ -220,7 +220,7 @@
 (defvar *all-basic-goals* nil "List of all basic goals.")
 ;defined above: (defvar *contradictions* nil "List of lists of contradictory goals.")
 ; (setf (get *the-person* 'asymptoted-units) nil); "Units that have reached asymptote.") ; now in initialize-person-properties in popco.lisp
-; (setf (get *the-person* 'total-links) 0L0); "Total number of links created.") ; now in initialize-person-properties in popco.lisp
+; (setf (get *the-person* 'total-links) 0); "Total number of links created.") ; now in initialize-person-properties in popco.lisp
 ; (setf (get *the-person* 'total-times) 0); "Number of settle cycles that have been run.") ; now in initialize-person-properties in popco.lisp
 (defvar *experiment* nil "A description of the current experiment.")
 
@@ -228,10 +228,10 @@
 
 (defvar *emote* nil "Do updating for HOTCO.")
 ; (setf (get *the-person* 'all-valence-units) nil); "List of units that have valences.") ; now in initialize-person-properties in popco.lisp
-(defvar *valence-weight* .05L0 "Default value for valence weight.")
-(defvar *truth-valence* 0L0 "Value of truth.")
+(defvar *valence-weight* 5/100 "Default value for valence weight.")
+(defvar *truth-valence* 0 "Value of truth.")
 ;; THIS HAS TO BE FIXED:
-(setf (get 'special 'valence) 0L0) ; extent to which truth is desired??? ; now in initialize-person-properties in popco.lisp
+(setf (get 'special 'valence) 0) ; extent to which truth is desired??? ; now in initialize-person-properties in popco.lisp
 ; not quite the right interpretation, because true theories are
 ; wanted, but not ugly truths about someone being evaluated.
 ; (setf (get *the-person* 'evaluation-units) nil) ; for HOTCO 2 ; now in initialize-person-properties in popco.lisp
@@ -239,15 +239,15 @@
 
 ; POPCO-SPECIFIC VARIABLES:
 
-(defvar *propn-excit-weight* .2L0 "Weight of excitatory links for POPCO proposition-inference networks.")
-(defvar *propn-inhib-weight* -.025L0 "Weight of inhibitory links for POPCO proposition-inference networks.") ; NOTE: This may need to be adjusted wrt proportion of neg to pos links
+(defvar *propn-excit-weight* 2/10 "Weight of excitatory links for POPCO proposition-inference networks.")
+(defvar *propn-inhib-weight* -25/1000 "Weight of inhibitory links for POPCO proposition-inference networks.") ; NOTE: This may need to be adjusted wrt proportion of neg to pos links
 
 (defvar *use-new-random-state* t) ; set to nil to use whatever seed the Lisp implementation provides by default
 
-(defvar *perceived-excit* .5L0) ; default link weight to salient for propositions perceived as true in env
+(defvar *perceived-excit* 1/2) ; default link weight to salient for propositions perceived as true in env
 (defvar *special-units* '(special salient pragmatic)) ; units which require special handling by personalization code
 
-(defconstant +acme-max-weight+ .5L0) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
+(defconstant +acme-max-weight+ 1/2) ; Used in make-symlink to tamp down on cyclic non-settling in analogy networks.  A bit of a kludge--should be reworked if POPCO starts using ECHO, for example.
 
 (defvar *the-person* 'the-person) ; value normally swapped among members of population. Setting to 'the-person also makes it work with traditional COHERE.
 (defvar *the-population* 'folks)
@@ -269,10 +269,10 @@
 (defvar *do-report-analogy-nets-to-guess* t)
 (defvar *netlogo-status-flag* "status:")
 (defvar *netlogo-status-message* nil)
-(defvar *utterance-threshold* .2 "If in use, propns with activns below this number will not be uttered.")
+(defvar *utterance-threshold* 2/10 "If in use, propns with activns below this number will not be uttered.")
 (defvar *utterance-probability-multiplier* 1 "Parameter for utterance-probability-cutoff.")
 (defvar *utterance-probability-increment* 0 "Parameter for utterance-probability-cutoff.")
-(defvar *trust* .05L0 "Degree to which utterances are like observations for listeners.")
+(defvar *trust* 5/100 "Degree to which utterances are like observations for listeners.")
 (defvar *sleep-delay* nil) ; if non-nil, gives number of seconds to pause between pop-ticks
 (defvar *max-pop-ticks* 50) ; max number of pop-tick iterations; 0 for infinite
 (defvar *pop-tick* 0)
@@ -285,7 +285,7 @@
 (defvar *graphml-node-floor* 3) ; size of zero-activation node
 ; Parameters for logistic.lisp; should be tuned for normalize-degree in popco.lisp:
 (defconstant +logistic-growth-rate+ 35)  ; sometimes called B
-(defconstant +logistic-position+ .3) ; sometimes called M
+(defconstant +logistic-position+ 3/10) ; sometimes called M
 (defconstant +logistic-taughtness+ 1) ; sometimes called v
 
 (defvar *propn-category-prefixes* '()) ; used to tell e.g. NetLogo prefixes of propositions which identify distinct categories to be measured

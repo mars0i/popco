@@ -5,8 +5,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Parameters specified by H&T 1989 "Analog retrieval as constraint satisfaction"
 
-(setf *min-activation* -.99L0)
-(setf *max-activation* .99L0)
+(setf *min-activation* -1)
+(setf *max-activation* 1)
 ; These are the default values of .99 and -.99, as per p. 313 bottom,
 ; which says 1 and -1 are max and min.  So don't really have to set
 ; them here.  Note however comment in footnote  on p. 315: 
@@ -21,7 +21,7 @@
 ; 12/2012: THIS IS NOW IGNORED--WE USE GROSSBERG NO MATTER WHAT.
 
 ; *output-threshold*
-(output 0.0L0)
+(output 0)
 ; Footnote to p. 315:
 ; "For both rules it proved important to impose a zero threshold on
 ; the outputs of units, so that units with negative activations do
@@ -31,13 +31,13 @@
 ; each other, yielding counterintuitive results for some examples.
 
 ; *decay-amount*
-(decay .1L0)   ; p. 348 [but "Decay rates form .001 to .2 work equally well...."]
+(decay 1/10)   ; p. 348 [but "Decay rates form .001 to .2 work equally well...."]
 
 ; *excit-weight*
-(excit .1L0)   ; p. 348 ["values ranging from .01 to .12 work"]
+(excit 1/10)   ; p. 348 ["values ranging from .01 to .12 work"]
 
 ; *inhib-weight*
-(inhib -.2L0)  ; p. 348 ["Inhibition values can range all the way to -.9 
+(inhib -2/10)  ; p. 348 ["Inhibition values can range all the way to -.9 
              ;         without causing problems, except that high
              ;         inhibition can prevent ACME from ovecoming
              ;         an initially promising but incorrect mapping."]
@@ -46,7 +46,7 @@
 ; because that produces greater separation in the asymptotic values of
 ; best and second-best units."
 
-(setf *prag-weight* .3L0) ; This is the weight for links created by function PRESUMED.
+(setf *prag-weight* 3/10) ; This is the weight for links created by function PRESUMED.
 ; "In order to have a large impact, the p2 parameter for weights
 ; from the pragmatic unit for PRESUMED mappings works best at around
 ; .3; smaller values produce less differentiation while larger values

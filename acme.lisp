@@ -1263,7 +1263,7 @@
 ; *THE-PERSON* MUST BE SET PROPERLY
 (defun create-pragmatic-unit ()
   (cond ((null *pragmatic-unit-made*)
-         (put 'pragmatic 'activation 1.0L0) ; clamp it
+         (put 'pragmatic 'activation 1) ; clamp it
          (setf (get *the-person* 'all-units) (remove 'pragmatic (get *the-person* 'all-units)))
          (setf *pragmatic-unit-made* t))))
 

@@ -53,12 +53,12 @@
 ; DEFAULTS-ECHO
 
 (defun defaults-echo2 ()
-  (decay .05)
-  (excit .04)
-  (inhib -.06)
+  (decay 5/100)
+  (excit 4/100)
+  (inhib -6/100)
   (wtp '(120))
-  (output -.99)
-  (data-excit .05)
+  (output -1)
+  (data-excit 5/100)
   (gross-off))
 
 (defun dfe2 () (defaults-echo2))
@@ -712,7 +712,6 @@
 ; Assessing the results:
 ; See MacECHO
 ; **********************************************************
-
 
 
 

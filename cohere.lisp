@@ -239,7 +239,7 @@
 (defun roundoff (places num)
   "Rounds NUM to PLACES decimal places."
   (cond ((eq places 0) (round num))
-        (t (/ (round (* num (expt 10.0 places))) (expt 10.0 places)))
+        (t (/ (round (* num (expt 10 places))) (expt 10 places)))
         )
   )
 

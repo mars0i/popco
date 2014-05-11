@@ -35,8 +35,8 @@
 
 (defvar *propn-number* 0)
 (defvar *arg-number* 0)
-(defvar *min-match-activation* .6) ; matches have to be this good
-(defvar *ana-assn* .5) ; analogical association in absence of mapping hypothesis
+(defvar *min-match-activation* 6/10) ; matches have to be this good
+(defvar *ana-assn* 5/10) ; analogical association in absence of mapping hypothesis
 (defvar *hypotheses-generated* nil) ; new hypotheses generated
 
 
@@ -83,7 +83,7 @@
 ; The optional arguments are maximum link weights. -MA 1/2012
 ; [The functionality of Thagard's associate-ana is now in associate-ana-from-propns.]
 (defun associate-ana (prop1 prop2 map-unit &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*) (init-activ *init-activ*))
-  (DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT INIT-ACTIV))
+  ;(DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT INIT-ACTIV))
   (associate prop1 prop2                                ; link the two proposition units [associate from imp.lisp]
              (or (get map-unit 'activation) *ana-assn*) ; initial weight of the link
              (or (activation prop1) init-activ)       ; initial activation of source propn, or init-activ if nil
@@ -106,7 +106,7 @@
 ; SET-ASSOC-WEIGHT-FROM-ACTIVN: Set the weight of an existing association
 ; between propositions from the activation of an ACME map unit.  -MA 11/2011
 (defun set-assoc-weight-from-activn (prop1 prop2 map-unit &optional (excit-weight *excit-weight*) (inhib-weight *inhib-weight*))
-  (DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT))
+  ;(DECLARE (LONG-FLOAT EXCIT-WEIGHT INHIB-WEIGHT))
   (set-assoc-weight prop1 prop2 (activation map-unit) excit-weight inhib-weight)) ; set-assoc-weight is in imp.lisp
 
 ;; NOT IN USE:
@@ -433,6 +433,6 @@
 ; allowing degrees of disbelief, i.e. degree of belief in the negation.]
 (defun is-credence (cred)
   (and (numberp cred)
-       (<= cred 1.0)
-       (>= cred -1.0)))
+       (<= cred 1)
+       (>= cred -1)))
 
