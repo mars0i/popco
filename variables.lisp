@@ -57,8 +57,8 @@
 (defvar *special-activation* 1.0L0 "Activation of special unit.") ; Changed from 1 to 1.0 for implementations like SBCL that are finicky about numeric types -MA 8/3/2011
 (setf (get 'special 'activation) *special-activation*)
 ;(setf (get 'semantic 'activation) *special-activation*)
-(defvar *min-activation* -.99L0 "Minimum possible activation for a unit.")
-(defvar *max-activation* .99L0 "Maximum possible activation for a unit.")
+(defvar *min-activation* -1L0 "Minimum possible activation for a unit.")
+(defvar *max-activation* 1L0 "Maximum possible activation for a unit.")
 (defvar *goal-min-activation* 0L0 "minimum possible activation for a goal.")
 (defvar *decay-amount* 0.1L0 "Amount that units' activations decay over time.")
 (defvar *output-threshold* 0L0 "Minimum activation for an influential unit.") ; PT 2-93

@@ -5,8 +5,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Parameters specified by H&T 1989 "Analog retrieval as constraint satisfaction"
 
-(setf *min-activation* -.99L0)
-(setf *max-activation* .99L0)
+(setf *min-activation* -1L0) ; changed for extremal-numbers branch
+(setf *max-activation* 1L0)  ; changed for extremal-numbers branch
 ; These are the default values of .99 and -.99, as per p. 313 bottom,
 ; which says 1 and -1 are max and min.  So don't really have to set
 ; them here.  Note however comment in footnote  on p. 315: 
