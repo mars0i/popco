@@ -13,8 +13,8 @@
 
 (make-both-bias-crime-talker  'jo  crime-propns 'folks '(folks))
 
-(setf *max-pop-ticks* 2)
+(setf *max-pop-ticks* 3)
 (init-pop)
 (print (get 'folks 'members))
 
-(popco)
+;(popco)
