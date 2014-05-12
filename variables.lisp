@@ -44,7 +44,7 @@
 (defvar *report-activn-change* nil) ; If non-nil run-hyp-net calculates, returns total change of all activations of person's units. added by MA 1/2012
 (defvar *all-xs* nil)    ; This is setf'ed in network.lisp.  Added by MA 10/2011 to make SBCL compiler happy.
 (defvar *all-xsit* nil)  ;  ditto
-(defvar *init-activ* 1/10 "Initial activation of units.")
+(defvar *init-activ* 1/100 "Initial activation of units.")
 (defvar *propn-init-activ* 0 "Initial activation of units for POPCO proposition-inference networks.")
 (defvar *default-activ* 1/10 "Default activation of units.")
 (defvar *excit-weight* 4/100 "Weight of excitatory links--for traditional COHERE networks.")
