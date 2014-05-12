@@ -46,7 +46,7 @@
 (defvar *all-xsit* nil)  ;  ditto
 (defvar *init-activ* 1/100 "Initial activation of units.")
 (defvar *propn-init-activ* 0 "Initial activation of units for POPCO proposition-inference networks.")
-(defvar *default-activ* 1/10 "Default activation of units.")
+(defvar *default-activ* 1/100 "Default activation of units.")
 (defvar *excit-weight* 4/100 "Weight of excitatory links--for traditional COHERE networks.")
 (defvar *inhib-weight* -6/100 "Weight of inhibitory links--for traditional COHERE networks.")
 ; See also: *propn-<excit|inhib>-weight* in the POPCO section.
