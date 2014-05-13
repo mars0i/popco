@@ -32,6 +32,6 @@
 (init-pop)
 (print (get 'folks 'members))
 
-;(gc :full t) ; garbage collect first for greater uniformity in time trials
-;(popco)
-;(quit)
+(gc :full t) ; garbage collect first for greater uniformity in time trials
+(popco)
+(quit)
