@@ -1,6 +1,9 @@
 POPCO (population coherence)
 =======
 
+Please see [popco2](https://github.com/mars0i/popco2) for a more
+recent version of this software.
+
 Copyright (c) 2012, 2013 by Marshall Abrams
 
 This work is currently free for academic use.  Distribution and use for
